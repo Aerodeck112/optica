@@ -1,0 +1,130 @@
+# Arhitectura platformei Optica Optofarm
+
+## 1. Stack
+| Strat | Tehnologie | Motiv |
+|---|---|---|
+| Limbaj / framework | PHP ≥ 8.3, Laravel 13 | ARC-01, D-001 |
+| Bază de date | MySQL ≥ 8.0 / MariaDB ≥ 10.6, InnoDB, `utf8mb4` | blocări pe rând, tranzacții |
+| UI | Blade + Livewire 4 + Alpine.js; CSS Tailwind compilat la build | D-002 |
+| Cozi | driver `database`, procesare prin cron | ARC-02, D-006 |
+| PDF | `barryvdh/laravel-dompdf` (PHP pur) | MED-04, RAP-05 |
+| Excel / CSV | `openspout/openspout` (PHP pur, streaming) | RAP-05 |
+| 2FA | `pragmarx/google2fa` + `bacon/bacon-qr-code` | SEC-01 |
+| Semnătură pachete | `ext-sodium` (Ed25519) | UPD-01, D-009 |
+
+Toate dependențele au licență MIT sau LGPL compatibilă (dompdf). Lista completă este în `composer.lock`.
+
+## 2. Organizarea codului
+```
+app/
+  Domain/Scheduling/       motorul de programări (comun site + CRM)
+    Interval.php           interval UTC [start, end)
+    WorkingWindows.php     orare + excepții → ferestre UTC per dată
+    ConflictChecker.php    suprapuneri, capacitate, resurse, deplasare
+    AvailabilityService.php sloturi libere, „primul disponibil”, eligibilitate online
+    BookingService.php     singura cale de scriere a programărilor (tranzacții + blocări)
+    BookingException.php   erori cu cod stabil și mesaj tradus
+  Enums/                   statusuri și surse cu identificatori stabili
+  Events/                  evenimente emise după commit
+  Http/Middleware/         limba angajatului / limba site-ului
+  Models/                  Eloquent
+  Support/Access/          catalogul de permisiuni și AccessControl
+  Support/Translation/     loader cu suprascrieri din DB, flux draft → publicare
+config/optica.php          limbi, fus orar, reguli de rezervare
+lang/{ro,hu}/              textele standard (înlocuite la actualizare)
+routes/console.php         sarcinile cronului
+```
+Modulele următoare urmează aceeași structură: `app/Domain/{Patients,Medical,Leads,Orders,Finance,Messaging,Reports,Cms,System}`.
+
+## 3. Rute (ARC-03)
+| Prefix | Public | Limbă | Middleware |
+|---|---|---|---|
+| `/`, `/hu/…` | da | din URL | `site.locale` |
+| `/programare`, `/hu/programare` | da | din URL | `site.locale`, rate limiting |
+| `/crm/…` | autentificat | din profilul angajatului | `auth`, `staff.locale`, 2FA pentru roluri privilegiate |
+| `/admin/…` | autentificat | din profilul angajatului | `auth`, `staff.locale`, 2FA |
+| `/install` | token unic | selectabilă | activ numai înainte de instalare |
+| `recovery.php` | token din fișier | selectabilă | independent de Laravel (UPD-06) |
+
+## 4. Modelul de date (dicționar)
+
+### Acces
+| Tabel | Rol | Coloane cheie |
+|---|---|---|
+| `users` | angajați | `locale`, `is_active`, `all_locations`, `two_factor_*`, soft delete |
+| `roles` | roluri personalizabile | `key` stabil, `name` {ro, hu}, `is_system` |
+| `permissions` | catalog `modul.acțiune` | `key`, `module` |
+| `permission_role`, `role_user` | atribuiri | |
+| `location_user` | domeniul pe locații | |
+
+### Catalog și programare
+| Tabel | Rol | Coloane cheie |
+|---|---|---|
+| `locations` | puncte de lucru | `content`/`published_content` {ro, hu}, adresă, coordonate, `opening_hours` (magazin), `is_public`, `online_booking_enabled`, `confirmation_mode`, `external_ref` |
+| `resources` | cabinete și aparatură per locație | `type`, `name` {ro, hu} |
+| `specialists` | medici și optometriști | `type` (ophthalmologist / optometrist / other), `display_name`, `content`/`published_content`, `photo_path`, `languages`, `is_public` |
+| `services` | servicii | `content`/`published_content`, `default_duration`, `buffer_before/after`, `default_price`, `color` |
+| `location_specialist` | specialist activ în locație + setări online | `online_enabled`, `online_paused`, `content` (alias, info, mesaj de pauză), `min_lead_minutes`, `max_advance_days` |
+| `offerings` | combinația rezervabilă locație–specialist–serviciu | `duration_minutes`, tampoane, `capacity` (implicit 1), `resource_type`, `price`, `online_enabled` |
+| `location_travel_times` | timp de deplasare între locații | implicit `optica.booking.default_travel_minutes` |
+| `schedules` | orar per specialist × locație | `valid_from/to`, `cycle_weeks`, `cycle_anchor_date` |
+| `schedule_segments` | intervale zilnice | `cycle_week`, `weekday`, `segment`, ore locale, `slot_minutes`, `online_enabled`, `service_ids`, `resource_id` |
+| `schedule_exceptions` | concedii, sărbători, închideri, disponibilitate suplimentară | domeniu `specialist_id`/`location_id` (nul = toate), `kind`, `reason`, interval de date, ore opționale |
+
+### Pacienți și activitate
+| Tabel | Rol | Coloane cheie |
+|---|---|---|
+| `patients` | fișa unică | `code`, `phone_normalized` (neunic), `locale`, `cnp_encrypted` + `cnp_hash`, `legal_guardian_id`, `merged_into_id`, `external_ref` |
+| `patient_relations` | relații de familie | `relation` |
+| `appointments` | programări | ore UTC `starts_at/ends_at`, `block_*` (cu tampoane), `status`, `source`, `locale`, date de contact, `hold_expires_at`, motiv și autor anulare, `idempotency_key` (unic), `lock_version`, `reschedule_count` |
+| `appointment_events` | jurnalul programării | `type`, status vechi/nou, ore vechi/noi, `actor` |
+| `visits` | consultația efectiv realizată (≠ programare) | `appointment_id` unic, `started_at/ended_at` |
+
+### Sistem
+| Tabel | Rol |
+|---|---|
+| `settings` | setări cheie–valoare (inclusiv heartbeat-ul cronului) |
+| `audit_logs` | jurnal de securitate, fără conținut clinic sau secrete |
+| `translation_overrides` | corecturi de traducere (draft / publicat) |
+| `translation_revisions` | istoricul traducerilor |
+| `jobs`, `failed_jobs`, `job_batches`, `cache`, `cache_locks`, `sessions` | infrastructură Laravel pe DB |
+
+Tabele planificate: `medical_records`, `medical_record_amendments`, `prescriptions`, `documents`, `consents`, `leads`, `tasks`, `orders`, `order_status_events`, `payments`, `message_templates`, `messages`, `message_attempts`, `campaigns`, `pages`, `page_versions`, `media`, `menus`, `redirects`, `import_batches`, `import_rows`, `waitlist_entries`, `saved_report_filters`, `update_runs`.
+
+## 5. Motorul de disponibilitate
+1. **Ferestre de lucru** (`WorkingWindows`): pentru fiecare dată locală se aleg orarele active ale combinației specialist × locație. Se calculează săptămâna din ciclu, se iau segmentele zilei (filtrate pe serviciu și, pentru online, pe flagul `online_enabled`), se scad excepțiile „indisponibil” (zi întreagă sau interval) și se adaugă excepțiile „disponibil”. Orele locale se convertesc în UTC **pe fiecare dată în parte**, deci trecerea la ora de vară sau de iarnă nu deplasează programul.
+2. **Sloturi** (`AvailabilityService::slots`): pe grila segmentului (implicit 15 min), cu durata ofertei; se aplică termenele minim și maxim pentru online.
+3. **Conflicte** (`ConflictChecker::check`), aceleași reguli pentru listare și pentru scriere:
+   - același specialist în **altă locație**: suprapunerea este interzisă, cu timpul de deplasare adăugat în ambele sensuri;
+   - aceeași locație: se suprapun doar programări ale aceluiași serviciu, în limita capacității (vârf calculat prin baleiere, deci corect și când duratele diferă);
+   - resurse: se caută o resursă liberă de tipul cerut (sau resursa segmentului).
+4. **Scrierea** (`BookingService`): tranzacție → `SELECT … FOR UPDATE` pe specialist (și pe specialistul vechi la reprogramare, în ordine crescătoare) și pe resurse → reverificare completă → scriere + eveniment → notificări numai după commit.
+
+Rezervările „ținute” (`held`) și cererile „în așteptare” (`pending`) blochează timpul până la `hold_expires_at`. Cronul le marchează `expired`.
+
+## 6. Permisiuni
+Vezi PERMISSIONS.md. `AccessControl` rezolvă permisiunile o singură dată per cerere (singleton scoped). `Gate::before` tratează permisiunile din catalog cu argument opțional de locație. Policies per model vor adăuga relația cu pacientul.
+
+## 7. Bilingvism
+- Interfața: chei stabile în `lang/{ro,hu}/*.php`. `OverrideFileLoader` aplică peste ele corecturile publicate din `translation_overrides`. Cache-ul este versionat: la publicare crește versiunea, fără golirea cache-ului global și fără pierderea sesiunilor (TRD-04).
+- Conținutul: coloane JSON `{ro: {...}, hu: {...}}`, cu `content` (draft) și `published_content`.
+- Comunicările: limba pacientului (`patients.locale` / `appointments.locale`), independentă de limba angajatului.
+- Textele clinice introduse de personal nu se traduc automat și nu sunt editabile prin modul de traducere (TRD-02).
+
+## 8. Cron și cozi
+O singură intrare cron: `* * * * * php /cale/artisan schedule:run`. Sarcini: heartbeat, `bookings:expire`, `queue:work --stop-when-empty --max-time=50` (cu blocare împotriva rulărilor simultane). Ulterior: remindere, rapoarte programate, backup.
+
+## 9. Instalator (proiectat, neimplementat)
+- Pachetul ZIP conține `vendor/` și `public/build/`. Pe server nu se rulează Composer sau npm.
+- Document root = `public/`. Alternativa pentru hosting fără document root configurabil este în DEPLOYMENT.md.
+- `/install` este activ doar când lipsește `storage/app/installed.lock` și cere tokenul unic din `storage/app/install-token.txt` (generat la prima accesare, citit prin File Manager în cPanel).
+- Pași: verificare PHP și extensii (pdo_mysql, mbstring, intl, sodium, zip, gd, fileinfo, openssl), permisiuni, spațiu → conexiune DB → migrații + seed roluri → administrator + 2FA → domeniu, SMTP, fus orar → afișarea liniei de cron → blocare.
+
+## 10. Actualizări ZIP (proiectat, neimplementat)
+- Pachet: `manifest.json` (versiune țintă, versiune sursă minimă, versiune PHP minimă, SHA-256 per fișier, lista de fișiere de șters) + `manifest.sig` (semnătură Ed25519 detașată) + `files/` + `migrations/`.
+- Flux (UPD-03…06): încărcare → verificare semnătură cu cheia publică din aplicație → compatibilitate și spațiu → extragere în director privat cu protecție ZIP Slip, symlinkuri și limită de dimensiune → backup verificat (DB + fișierele aplicației) → mod mentenanță → copiere fișiere (niciodată `storage/`, `.env`, `public/uploads`) → migrații → verificări funcționale → ieșire din mentenanță → jurnal în `update_runs`.
+- Recuperare: fiecare pas este scris într-un jurnal pe disc. `public/recovery.php` (fără Laravel) poate relua sau restaura ultimul backup, cu token.
+- Datele beneficiarului (DB, `storage/app`, încărcări, traduceri personalizate) nu sunt niciodată suprascrise.
+
+## 11. Securitate
+Parolele sunt hash-uite (bcrypt). CNP-ul este criptat cu cheia aplicației și are un hash HMAC pentru căutare. Documentele vor fi stocate în `storage/app/private` și servite numai prin controller cu autorizare. Jurnalele nu conțin secrete sau date clinice. Analytics-ul nu se încarcă în CRM. Detalii în SEC-01…07.
