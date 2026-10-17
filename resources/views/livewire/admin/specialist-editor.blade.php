@@ -1,6 +1,10 @@
 <div class="max-w-5xl">
     @if ($specialist)
-        <div class="mb-6"><x-admin.publish-state :model="$specialist" /></div>
+        <div class="mb-6 flex flex-wrap items-center gap-4">
+            <x-admin.publish-state :model="$specialist" />
+            <a href="{{ route('admin.specialists.services', $specialist) }}" wire:navigate class="btn-secondary ml-auto">{{ __('catalog.offerings.manage') }}</a>
+            <a href="{{ route('admin.schedules.index', ['specialist' => $specialist->id]) }}" wire:navigate class="btn-secondary">{{ __('catalog.schedules.manage') }}</a>
+        </div>
     @endif
 
     <form wire:submit="save" data-preserve class="space-y-10">

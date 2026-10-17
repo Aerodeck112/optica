@@ -78,6 +78,9 @@
     </form>
 
     @if ($location)
+        <div class="mt-12 border-t border-line pt-8">
+            <livewire:admin.resource-manager :location="$location" :key="'resources-'.$location->id" />
+        </div>
         <x-admin.delete-zone :label="__('crm.locations.delete')" :warning="__('crm.locations.delete_warning')" />
     @endif
 </div>

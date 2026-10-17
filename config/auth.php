@@ -99,6 +99,13 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        // Account invitations: same token table, longer validity (72 h).
+        'invites' => [
+            'provider' => 'users',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 4320,
+            'throttle' => 0,
+        ],
     ],
 
     /*

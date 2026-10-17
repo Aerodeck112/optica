@@ -3,6 +3,7 @@
     <form method="POST" action="{{ route('crm.password.update') }}" class="mt-8 space-y-5">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}">
+        <input type="hidden" name="broker" value="{{ $broker }}">
         <div>
             <label for="email" class="field-label">{{ __('auth.login.email') }}</label>
             <input id="email" name="email" type="email" autocomplete="username" required value="{{ old('email', $email) }}" class="input"

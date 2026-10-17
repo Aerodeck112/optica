@@ -13,10 +13,15 @@ return [
         'label' => 'Fő navigáció',
         'open' => 'Menü megnyitása',
         'dashboard' => 'Ma',
+        'group_planning' => 'Tervezés',
+        'schedules' => 'Munkarendek',
+        'exceptions' => 'Szabadságok és kivételek',
         'group_admin' => 'Adminisztráció',
         'locations' => 'Telephelyek',
         'specialists' => 'Orvosok és optometristák',
         'services' => 'Szolgáltatások',
+        'users' => 'Felhasználók',
+        'roles' => 'Szerepkörök és jogosultságok',
     ],
     'dashboard' => [
         'title' => 'Ma',
@@ -80,6 +85,7 @@ return [
         'back_to_list' => 'Vissza a listához',
         'confirm_delete' => 'Biztosan törli? A tétel a „Törölt tételek mutatása” listából visszaállítható.',
         'yes_delete' => 'Igen, törlés',
+        'save' => 'Mentés',
         'cancel' => 'Mégse',
     ],
     'state' => [

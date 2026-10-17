@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\Access\AccessControl;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'password', 'phone', 'locale', 'is_active', 'all_locations'])]
 #[Hidden(['password', 'remember_token', 'two_factor_secret'])]
-class User extends Authenticatable
+class User extends Authenticatable implements HasLocalePreference
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
@@ -65,6 +66,7 @@ class User extends Authenticatable
         return app(AccessControl::class)->allows($this, $permission, $location);
     }
 
+    /** Used by Laravel for every notification to this user (emails in the employee's language). */
     public function preferredLocale(): string
     {
         return in_array($this->locale, config('optica.locales'), true) ? $this->locale : config('app.fallback_locale');

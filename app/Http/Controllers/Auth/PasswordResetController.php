@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\Access\SessionRevoker;
 use App\Support\Audit\AuditLogger;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
@@ -38,7 +39,11 @@ class PasswordResetController extends Controller
 
     public function edit(Request $request, string $token): View
     {
-        return view('auth.reset-password', ['token' => $token, 'email' => $request->query('email')]);
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->query('email'),
+            'broker' => $request->query('invite') ? 'invites' : 'users',
+        ]);
     }
 
     public function update(Request $request): RedirectResponse
@@ -47,12 +52,15 @@ class PasswordResetController extends Controller
             'token' => ['required'],
             'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', PasswordRule::min(10)->letters()->numbers()],
+            'broker' => ['nullable', 'in:users,invites'],
         ]);
 
-        $status = Password::broker()->reset(
+        $status = Password::broker($request->input('broker', 'users'))->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill(['password' => Hash::make($password), 'remember_token' => Str::random(60)])->save();
+                // A new password ends every other session of this account.
+                app(SessionRevoker::class)->revoke($user);
                 event(new PasswordReset($user));
                 app(AuditLogger::class)->log('auth.password_reset', $user, user: $user);
             },

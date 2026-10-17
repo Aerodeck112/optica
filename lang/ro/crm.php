@@ -13,10 +13,15 @@ return [
         'label' => 'Navigare principală',
         'open' => 'Deschide meniul',
         'dashboard' => 'Astăzi',
+        'group_planning' => 'Planificare',
+        'schedules' => 'Orare de lucru',
+        'exceptions' => 'Concedii și excepții',
         'group_admin' => 'Administrare',
         'locations' => 'Locații',
         'specialists' => 'Medici și optometriști',
         'services' => 'Servicii',
+        'users' => 'Utilizatori',
+        'roles' => 'Roluri și permisiuni',
     ],
     'dashboard' => [
         'title' => 'Astăzi',
@@ -80,6 +85,7 @@ return [
         'back_to_list' => 'Înapoi la listă',
         'confirm_delete' => 'Sigur ștergeți? Înregistrarea poate fi restaurată din lista „Afișează șterse”.',
         'yes_delete' => 'Da, șterge',
+        'save' => 'Salvează',
         'cancel' => 'Renunță',
     ],
     'state' => [

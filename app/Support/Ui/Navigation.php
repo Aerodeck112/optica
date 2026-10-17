@@ -21,11 +21,20 @@ class Navigation
                 ],
             ],
             [
+                'label' => 'crm.nav.group_planning',
+                'items' => [
+                    ['label' => 'crm.nav.schedules', 'route' => 'admin.schedules.index', 'active' => 'admin.schedules.*', 'can' => 'schedules.view'],
+                    ['label' => 'crm.nav.exceptions', 'route' => 'admin.exceptions.index', 'active' => 'admin.exceptions.*', 'can' => 'schedules.manage'],
+                ],
+            ],
+            [
                 'label' => 'crm.nav.group_admin',
                 'items' => [
                     ['label' => 'crm.nav.locations', 'route' => 'admin.locations.index', 'active' => 'admin.locations.*', 'can' => 'catalog.manage'],
                     ['label' => 'crm.nav.specialists', 'route' => 'admin.specialists.index', 'active' => 'admin.specialists.*', 'can' => 'catalog.manage'],
                     ['label' => 'crm.nav.services', 'route' => 'admin.services.index', 'active' => 'admin.services.*', 'can' => 'catalog.manage'],
+                    ['label' => 'crm.nav.users', 'route' => 'admin.users.index', 'active' => 'admin.users.*', 'can' => 'users.view'],
+                    ['label' => 'crm.nav.roles', 'route' => 'admin.roles.index', 'active' => 'admin.roles.*', 'can' => 'roles.manage'],
                 ],
             ],
         ];
