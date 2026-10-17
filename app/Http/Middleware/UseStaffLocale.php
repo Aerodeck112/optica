@@ -16,6 +16,13 @@ class UseStaffLocale
     {
         if ($user = $request->user()) {
             app()->setLocale($user->preferredLocale());
+        } else {
+            // Login and password pages: chosen with ?lang=, remembered in the session.
+            $requested = $request->query('lang');
+            if (is_string($requested) && in_array($requested, config('optica.locales'), true)) {
+                $request->session()->put('guest_locale', $requested);
+            }
+            app()->setLocale($request->session()->get('guest_locale', config('app.locale')));
         }
 
         return $next($request);

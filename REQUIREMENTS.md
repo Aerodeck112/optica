@@ -21,16 +21,16 @@ Starea detaliată pe module este în PROGRESS.md.
 | GEN-01 | Inventar pagini RO/HU, URL-uri, imagini, logo, culori, fonturi, locații, servicii | 🟡 | Inventar în `docs/analiza-site.md`. Importul efectiv al resurselor în CMS este ⬜. |
 | GEN-02 | Matrice funcții Evolvo → implementare proprie | 🟡 | `docs/analiza-evolvo.md` + matricea de mai jos. |
 | GEN-03 | Fără date personale din capturi; aplicație independentă de Evolvo | ✅ | Fotografiile nu sunt în repository. Testele și datele demonstrative folosesc persoane fictive. |
-| GEN-04 | Pagini de referință; 8 locații reverificate | 📥 | Neconcordanțe N-01…N-07 în DECISIONS.md. |
+| GEN-04 | Pagini de referință; 8 locații reverificate | ✅ | Beneficiarul a rezolvat N-01…N-07 (DECISIONS.md). Cele 8 locații și 12 servicii sunt importate RO/HU (`SiteContentSeeder`). |
 
 ## 2. Arhitectură și date
 
 | ID | Cerință | Status | Implementare |
 |---|---|---|---|
-| ARC-01 | PHP modular, Laravel, MySQL/MariaDB, server-rendered reactiv | 🟡 | Laravel 13, MariaDB 10.11 în dezvoltare, Livewire 4 instalat. Interfețele nu sunt încă realizate. |
+| ARC-01 | PHP modular, Laravel, MySQL/MariaDB, server-rendered reactiv | ✅ | Laravel 13, MariaDB 10.11, Blade + Livewire 4; CSS compilat (Tailwind) inclus în `public/build`. |
 | ARC-02 | Fără Node, Docker, Redis, WebSocket sau SSH în producție; cozi DB prin cron cu blocare | ✅ | `routes/console.php`: un singur cron, coadă `database`, `withoutOverlapping`. |
-| ARC-03 | Rute `/`, `/programare`, `/crm`, `/admin` | ⬜ | Definite în arhitectură; rutele nu sunt încă create. |
-| ARC-04 | Identificatori stabili, o singură sursă de adevăr, draft–publicare | 🟡 | Tabele unice pentru locații, specialiști și servicii, cu `content` (draft) și `published_content`. Fluxul de publicare din UI este ⬜. |
+| ARC-03 | Rute `/`, `/programare`, `/crm`, `/admin` | 🟡 | `/crm` (autentificare, panou) și `/admin` (catalog) există. `/` este provizoriu. `/programare` este ⬜. |
+| ARC-04 | Identificatori stabili, o singură sursă de adevăr, draft–publicare | ✅ | Locațiile, specialiștii și serviciile se editează ca ciornă și se publică din admin. Site-ul va citi doar `published_content`. |
 | ARC-05 | Scrieri tranzacționale; polling calendar 15 s | 🟡 | Tranzacțiile sunt ✅ (`BookingService`). Polling-ul este configurat (`optica.booking.calendar_poll_seconds`); UI-ul calendarului este ⬜. |
 | ARC-06 | API cu autorizare, paginare, validare; conflicte prin versiuni | 🟡 | `lock_version` pe programări, testat. API-ul HTTP este ⬜. |
 | ARC-07 | Chei externe, indecși, migrații versionate, context istoric | ✅ | Migrații în `database/migrations`. Ștergerile sunt soft pentru specialiști, servicii și locații. |
@@ -42,7 +42,7 @@ Starea detaliată pe module este în PROGRESS.md.
 |---|---|---|
 | WEB-01 | Refacerea site-ului cu identitatea actuală, fără informații inventate | ⬜ (identitatea este inventariată) |
 | WEB-02 | Responsive, accesibil, reduced motion, acces rapid la programare | ⬜ |
-| WEB-03 | Pagini administrabile pentru locații, specialiști, servicii; filtre, primul interval disponibil, hartă și listă, FAQ | 🟡 „Primul disponibil” este ✅ în motor (`AvailabilityService::firstAvailable`); UI ⬜ |
+| WEB-03 | Pagini administrabile pentru locații, specialiști, servicii; filtre, primul interval disponibil, hartă și listă, FAQ | 🟡 Administrarea RO/HU (adăugare, editare, publicare, ștergere, restaurare) este ✅. „Primul disponibil” este ✅ în motor. Paginile publice sunt ⬜. |
 | WEB-04 | Elemente educative interactive, fără diagnostic | ⬜ |
 | WEB-05 | Formulare → leaduri CRM, confirmare doar după salvare, antiabuz | ⬜ |
 | CMS-01…03 | Pagini, secțiuni, meniuri, media, versiuni, previzualizare, publicare | ⬜ |
@@ -52,7 +52,7 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Cerință | Status | Implementare |
 |---|---|---|---|
-| LOC-01 | Locații configurabile, program magazin separat de consultații, vizibilitate | 🟡 | Model `Location` cu `opening_hours` separat de `schedules`, `is_public`, `online_booking_enabled`. Administrarea din UI este ⬜. |
+| LOC-01 | Locații configurabile, program magazin separat de consultații, vizibilitate | ✅ | Admin → Locații: date RO/HU, contact, coordonate, programul magazinului, vizibilitate, programare online, mod de confirmare. Fotografiile locațiilor vin cu biblioteca media (⬜). |
 | LOC-02 | Specialist în mai multe locații; orare săptămânale, alternante, perioade, intervale multiple, pauze, concedii, sărbători, excepții | ✅ | `WorkingWindows`; teste pentru cicluri, concedii, sărbători, excepții parțiale și disponibilitate suplimentară. |
 | LOC-03 | Durată per specialist, resurse, tampoane, timp de deplasare, capacitate implicit 1, online pe locație–specialist–serviciu | ✅ | `offerings` + `ConflictChecker`; teste pentru tampoane, resurse, deplasare și capacitate. |
 | PRG-01 | Confirmare automată sau prin recepție; reguli de blocare și expirare | 🟡 | Statusuri `pending`/`confirmed`, expirare `hold_expires_at`, comanda `bookings:expire` ✅. Comutatorul per locație există (`confirmation_mode`), dar fluxul public este ⬜. |
@@ -70,7 +70,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | CAL-02 | Drag-and-drop cu validare, panou lateral, istoric, listă de așteptare | ⬜ | Validarea folosește `BookingService::reschedule`. |
 | CAL-03 | Statusuri, tranziții controlate, motiv și autor la anulare, vizită ≠ programare | ✅ | `AppointmentStatus::allowedTransitions`, `appointment_events`, tabel `visits` separat. |
 | ACC-01 | Permisiuni granulare, limitate pe locații și relația cu pacientul, refuz implicit | 🟡 | Refuz implicit și domeniu pe locații ✅ (`AccessControl`). Relația cu pacientul (policies) este ⬜. |
-| ACC-02 | Autorizare pe server pentru obiect, API, fișier, export; jurnalizare | 🟡 | Gate-ul global este ✅; tabelul `audit_logs` există. Policies per model și jurnalizarea efectivă sunt ⬜. |
+| ACC-02 | Autorizare pe server pentru obiect, API, fișier, export; jurnalizare | 🟡 | Gate-ul global este ✅. Componentele Livewire verifică permisiunea la fiecare cerere (test cu cerere directă). Autentificările și modificările din catalog se jurnalizează. Policies pe pacienți și documente sunt ⬜. |
 
 ## 6–7. Pacienți, documente medicale, leaduri, comenzi, financiar
 
@@ -90,7 +90,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | ID | Status | Implementare |
 |---|---|---|
 | LNG-01 | 🟡 | Fișiere `lang/ro` și `lang/hu` pentru modulele existente. Restul modulelor primesc traduceri pe măsură ce sunt construite. |
-| LNG-02 | 🟡 | Limba se ia din contul angajatului (`users.locale`, middleware `staff.locale`). Testul de UI pentru T05 este ⬜. |
+| LNG-02 | ✅ | Limba e salvată în contul angajatului; comutatorul RO/HU revine la aceeași pagină și filtre. Datele nesalvate din formulare se păstrează (verificat în browser). Teste `StaffLocaleTest`. |
 | LNG-03 | ✅ | Statusurile și permisiunile au identificatori stabili; etichetele sunt în fișierele de limbă. |
 | TRD-01…02 | ⬜ | Editorul vizual. |
 | TRD-03 | ⬜ | Centrul de traduceri (backend-ul de istoric și restaurare există). |
@@ -113,12 +113,13 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Status | Observații |
 |---|---|---|
-| SEC-01 | 🟡 | Parole hash; coloane 2FA; pachetul `pragmarx/google2fa` instalat. Fluxurile de autentificare sunt ⬜. |
+| SEC-01 | 🟡 | Login cu limitare a încercărilor și mesaj generic, 2FA TOTP obligatoriu pentru superadmin / admin operațional / manager / financiar, resetare parolă cu token expirabil, blocarea imediată a conturilor dezactivate. Teste `LoginTest`. Expirarea sesiunilor inactive și revocarea sesiunilor din admin sunt ⬜. |
 | SEC-02 | 🟡 | Protecțiile Laravel (CSRF, escaping, interogări parametrizate) sunt active implicit. Documentele private sunt ⬜. |
-| SEC-03…07 | ⬜ | |
+| SEC-03 | 🟡 | Imaginile încărcate sunt re-encodate (metadate eliminate) și nu se pot executa. Jurnalele nu conțin parole. |
+| SEC-04…07 | ⬜ | |
 | OPS-01 | 🟡 | Indecși pe interogările de disponibilitate. Măsurătorile de volum sunt ⬜. |
 | OPS-02 | 🟡 | Heartbeat-ul cronului este ✅. Panoul de diagnostic este ⬜. |
-| OPS-03 | ⬜ | |
+| OPS-03 | 🟡 | Ecranele CRM existente: verificate la 390/768/1440 px, etichete și erori asociate câmpurilor, confirmare înainte de ștergere. |
 
 ## 12. Instalare și actualizări
 
@@ -140,10 +141,11 @@ Starea detaliată pe module este în PROGRESS.md.
 | T01 | 🟡 nivel serviciu ✅, prin HTTP ⬜ | `BookingTest::test_online_and_reception_bookings_share_availability` |
 | T02 | ✅ nivel serviciu | `ConcurrentBookingTest` (procese paralele reale) |
 | T03 | ✅ nivel serviciu | `AvailabilityTest` (pauze, concedii, DST) + `BookingTest::test_reschedule_is_atomic` |
-| T04 | 🟡 | `AccessControlTest` (refuz implicit, locații). API și fișiere ⬜. |
-| T05 | 🟡 | Middleware ✅; testul de UI ⬜. |
+| T04 | 🟡 | `AccessControlTest` + `CatalogAdminTest` (pagină și componentă refuzate fără permisiune). API, fișiere și exporturi ⬜. |
+| T05 | ✅ | `StaffLocaleTest` + verificare în browser a păstrării datelor nesalvate. |
 | T06 | 🟡 backend ✅ | `TranslationOverridesTest`; editorul vizual ⬜. |
-| T07–T12 | ⬜ | |
+| T07–T11 | ⬜ | |
+| T12 | 🟡 | Ecranele CRM existente sunt verificate la 390, 768 și 1440 px, fără derulare orizontală. Site-ul public este ⬜. |
 
 ## Matrice Evolvo → platforma nouă (GEN-02)
 

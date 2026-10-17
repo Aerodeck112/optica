@@ -1,0 +1,17 @@
+{
+    "Reset Password Notification": "Resetarea parolei – Optica Optofarm",
+    "You are receiving this email because we received a password reset request for your account.": "Primiți acest email deoarece s-a cerut resetarea parolei pentru contul dumneavoastră.",
+    "Reset Password": "Resetează parola",
+    "This password reset link will expire in :count minutes.": "Linkul de resetare expiră în :count minute.",
+    "If you did not request a password reset, no further action is required.": "Dacă nu ați cerut resetarea parolei, nu este necesară nicio acțiune.",
+    "Hello!": "Bună ziua!",
+    "Regards,": "Cu stimă,",
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Dacă butonul „:actionText” nu funcționează, copiați adresa de mai jos în browser:",
+    "All rights reserved.": "Toate drepturile rezervate.",
+    "Previous": "Anterior",
+    "Next": "Următor",
+    "Showing": "Se afișează",
+    "to": "–",
+    "of": "din",
+    "results": "rezultate"
+}

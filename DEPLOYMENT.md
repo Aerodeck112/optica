@@ -35,6 +35,19 @@ php artisan test
 ```
 Testele folosesc baza de date `optica_test` (vezi `phpunit.xml`) pe MySQL/MariaDB. SQLite nu este suportat pentru teste, deoarece testele de concurență au nevoie de blocări reale pe rând.
 
+## Fișiere încărcate
+Fotografiile și celelalte fișiere publice se salvează în `public/uploads/` (fără `storage:link`, care cere symlink). Directorul trebuie să poată fi scris de PHP și **nu se suprascrie niciodată** la actualizare. Documentele private (fișe, investigații) vor fi în `storage/app/private`, în afara zonei publice.
+
+## Primul administrator
+Până la instalatorul web, primul cont se creează din linia de comandă (doar în dezvoltare sau prin *Terminal* din cPanel, dacă este disponibil):
+```
+php artisan optica:create-admin admin@exemplu.ro "Nume Prenume" --locale=ro
+```
+La prima autentificare, superadministratorul trebuie să activeze verificarea în doi pași.
+
+## Resurse frontend
+CSS-ul și JS-ul se compilează **înainte** de împachetare (`npm ci && npm run build`) și se livrează în `public/build/`. Pe server nu se rulează Node.
+
 ## Fusul orar
 Baza de date stochează UTC (`APP_TIMEZONE` rămâne `UTC`). Ora clinicilor este `CLINIC_TIMEZONE=Europe/Bucharest`. Nu modificați `APP_TIMEZONE` după instalare.
 
@@ -46,6 +59,7 @@ Baza de date stochează UTC (`APP_TIMEZONE` rămâne `UTC`). Ora clinicilor este
 | `BOOKING_PENDING_EXPIRY_HOURS` | 24 | cât blochează o cerere neconfirmată |
 | `BOOKING_DEFAULT_TRAVEL_MINUTES` | 30 | timpul de deplasare implicit între locații |
 | `CALENDAR_POLL_SECONDS` | 15 | reîmprospătarea calendarului CRM |
+| `TWO_FACTOR_ENFORCED` | true | 2FA obligatoriu pentru rolurile privilegiate (nu se dezactivează în producție) |
 
 ## Planificat
 - Instalarea din ZIP prin `/install` (INS-01, INS-02).

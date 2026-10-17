@@ -2,6 +2,18 @@
 
 Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Versiunile urmează SemVer.
 
+## [0.2.0-dev] – 2026-10-17
+### Adăugat
+- Date reale de pornire de pe site-ul actual: 8 locații și 12 servicii RO/HU, telefoanele de programare și cifrele confirmate de beneficiar.
+- Autentificarea personalului: login cu limitare a încercărilor, verificare în doi pași (TOTP) obligatorie pentru rolurile privilegiate, resetare parolă, jurnal de securitate.
+- Layout CRM responsive, în identitatea Optica Optofarm (albastru #004975, galben #FFDF51, Inter găzduit local), cu limbă RO/HU per angajat; datele nesalvate se păstrează la schimbarea limbii.
+- Administrare locații, medici și optometriști, servicii: editare RO/HU alăturată, ciornă și publicare, ștergere protejată de programările viitoare, restaurare, fotografii re-encodate.
+- Comanda `optica:create-admin`.
+- Mesaje de validare, autentificare și email de resetare în română și maghiară.
+
+### Modificat
+- Fișierele publice (de exemplu fotografiile specialiștilor) se salvează în `public/uploads`, fără link simbolic.
+
 ## [0.1.0-dev] – 2026-10-17
 ### Adăugat
 - Proiect Laravel 13 configurat pentru MySQL/MariaDB, limba română implicită și UTC în baza de date (ora clinicilor: Europe/Bucharest).

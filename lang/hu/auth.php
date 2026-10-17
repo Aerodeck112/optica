@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'failed' => 'Az email-cím vagy a jelszó nem megfelelő.',
+    'password' => 'A jelszó nem megfelelő.',
+    'throttle' => 'Túl sok próbálkozás. Próbálja újra :seconds másodperc múlva.',
+    'inactive' => 'A fiók le van tiltva. Forduljon az adminisztrátorhoz.',
+    'login' => [
+        'title' => 'Bejelentkezés',
+        'intro' => 'A hozzáférés az Optica Optofarm munkatársai számára van fenntartva.',
+        'email' => 'Email',
+        'password' => 'Jelszó',
+        'remember' => 'Maradjak bejelentkezve ezen az eszközön',
+        'submit' => 'Bejelentkezés',
+        'forgot' => 'Elfelejtette a jelszavát?',
+    ],
+    'logout' => 'Kijelentkezés',
+    'two_factor' => [
+        'challenge_title' => 'Kétlépcsős azonosítás',
+        'challenge_intro' => 'Adja meg a hitelesítő alkalmazásban látható 6 jegyű kódot.',
+        'code' => 'Ellenőrző kód',
+        'verify' => 'Ellenőrzés',
+        'invalid' => 'A kód érvénytelen vagy lejárt.',
+        'setup_title' => 'Kétlépcsős azonosítás bekapcsolása',
+        'setup_required' => 'Az Ön szerepköréhez a folytatás előtt kétlépcsős azonosítás szükséges.',
+        'setup_steps' => 'Olvassa be a QR-kódot egy hitelesítő alkalmazással (például Google Authenticator, Microsoft Authenticator vagy 2FAS), majd írja be a megjelenő kódot.',
+        'manual_key' => 'Kulcs kézi megadáshoz',
+        'activate' => 'Bekapcsolás',
+        'enabled' => 'A kétlépcsős azonosítás be van kapcsolva.',
+    ],
+    'reset' => [
+        'title' => 'Jelszó visszaállítása',
+        'request_intro' => 'Adja meg a fiókhoz tartozó email-címet. Ha létezik ilyen fiók, 60 percig érvényes visszaállító linket küldünk.',
+        'send' => 'Link küldése',
+        'new_password' => 'Új jelszó',
+        'confirm_password' => 'Jelszó megerősítése',
+        'password_rules' => 'Legalább 10 karakter, betűkkel és számokkal.',
+        'save' => 'Jelszó mentése',
+        'back' => 'Vissza a bejelentkezéshez',
+    ],
+];

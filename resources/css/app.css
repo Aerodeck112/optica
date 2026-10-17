@@ -1,9 +1,89 @@
 @import 'tailwindcss';
+/* Inter self-hosted (latin + latin-ext for Romanian and Hungarian diacritics); no Google request. */
+@import '@fontsource-variable/inter/wght.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../../app/**/*.php';
 
+/* Optica Optofarm brand tokens, taken from the current site (docs/analiza-site.md). */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+    --color-ink: #004975;        /* primary deep blue */
+    --color-ink-700: #003a5d;
+    --color-ink-900: #002a44;
+    --color-lens: #ffdf51;       /* accent yellow */
+    --color-lens-600: #e6c437;
+    --color-sky: #5d9fcf;        /* logo blue */
+    --color-mist: #e7f4fd;
+    --color-mist-300: #c8dbe9;
+    --color-paper: #f6f4f0;
+    --color-sand: #ece5d8;
+    --color-line: #dad9dc;
+    --color-body: #444444;
+    --color-heading: #1a1a1a;
+    --color-muted: #6f6e76;
+
+    --color-ok: #1f7a4d;
+    --color-ok-bg: #e3f3ea;
+    --color-warn: #8a5a00;
+    --color-warn-bg: #fff3d1;
+    --color-bad: #b42318;
+    --color-bad-bg: #fde8e6;
+}
+
+@layer base {
+    html { -webkit-text-size-adjust: 100%; }
+    [x-cloak] { display: none !important; }
+    body { @apply bg-paper text-body font-sans antialiased; font-feature-settings: 'cv11', 'ss01'; }
+    h1, h2, h3 { @apply text-heading; }
+    :focus-visible { outline: 3px solid var(--color-lens); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-11;
+}
+
+@utility badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+@layer components {
+    .btn-primary { @apply btn bg-ink text-white hover:bg-ink-700; }
+    .btn-secondary { @apply btn bg-white text-ink ring-1 ring-inset ring-line hover:bg-mist; }
+    .btn-danger { @apply btn bg-white text-bad ring-1 ring-inset ring-bad/30 hover:bg-bad-bg; }
+    .btn-link { @apply text-ink font-semibold underline-offset-4 hover:underline; }
+
+    .field-label { @apply block text-sm font-medium text-heading mb-1.5; }
+    .field-hint { @apply mt-1 text-xs text-muted; }
+    .field-error { @apply mt-1 text-sm text-bad; }
+    .input { @apply block w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm text-heading placeholder:text-muted/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/20 min-h-11; }
+    .input[aria-invalid='true'] { @apply border-bad focus:ring-bad/20; }
+
+    .panel { @apply rounded-xl bg-white ring-1 ring-line; }
+    .table-base { @apply w-full text-sm; }
+    .table-base th { @apply px-4 py-3 text-left font-medium text-muted border-b border-line bg-paper/60; }
+    .table-base td { @apply px-4 py-3 border-b border-line/70 align-top; }
+    .table-base tbody tr:hover { @apply bg-mist/40; }
+
+    /* Below md, rows become stacked blocks; each cell shows its column name from data-label. */
+    @media (max-width: 767px) {
+        .table-stack thead { @apply sr-only; }
+        .table-stack, .table-stack tbody, .table-stack tr, .table-stack td { display: block; width: 100%; }
+        .table-stack tr { @apply border-b border-line px-4 py-3; }
+        .table-stack td { @apply border-0 px-0 py-1; }
+        .table-stack td[data-label]::before { content: attr(data-label); @apply block text-xs text-muted; }
+        .table-stack td.cell-actions { @apply pt-2 text-left; }
+    }
+
+    .badge-ok { @apply badge bg-ok-bg text-ok; }
+    .badge-warn { @apply badge bg-warn-bg text-warn; }
+    .badge-bad { @apply badge bg-bad-bg text-bad; }
+    .badge-neutral { @apply badge bg-paper text-body ring-1 ring-inset ring-line; }
+    .badge-info { @apply badge bg-mist text-ink; }
 }

@@ -30,7 +30,11 @@ app/
   Models/                  Eloquent
   Support/Access/          catalogul de permisiuni și AccessControl
   Support/Translation/     loader cu suprascrieri din DB, flux draft → publicare
-config/optica.php          limbi, fus orar, reguli de rezervare
+  Livewire/Admin/           editoare catalog (locații, specialiști, servicii)
+  Support/Audit/            jurnalul de securitate
+  Support/Media/            re-encodarea imaginilor încărcate
+  Support/Ui/Navigation.php meniul filtrat după permisiuni
+config/optica.php          limbi, fus orar, reguli de rezervare, securitate
 lang/{ro,hu}/              textele standard (înlocuite la actualizare)
 routes/console.php         sarcinile cronului
 ```
@@ -104,6 +108,9 @@ Rezervările „ținute” (`held`) și cererile „în așteptare” (`pending`
 
 ## 6. Permisiuni
 Vezi PERMISSIONS.md. `AccessControl` rezolvă permisiunile o singură dată per cerere (singleton scoped). `Gate::before` tratează permisiunile din catalog cu argument opțional de locație. Policies per model vor adăuga relația cu pacientul.
+
+### Livewire și securitate
+Cererile Livewire (`/livewire/update`) reaplică middleware-ul persistent: autentificare, cont activ, 2FA și limba angajatului (`AppServiceProvider`). Fiecare componentă de admin verifică permisiunea în `boot` (trait `GuardsCatalog`), deci o cerere construită manual este refuzată la fel ca pagina.
 
 ## 7. Bilingvism
 - Interfața: chei stabile în `lang/{ro,hu}/*.php`. `OverrideFileLoader` aplică peste ele corecturile publicate din `translation_overrides`. Cache-ul este versionat: la publicare crește versiunea, fără golirea cache-ului global și fără pierderea sesiunilor (TRD-04).

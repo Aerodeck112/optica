@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\EnsureActiveUser;
+use App\Http\Middleware\EnsureTwoFactor;
+use App\Http\Middleware\UseStaffLocale;
 use App\Models\Location;
 use App\Models\User;
 use App\Support\Access\AccessControl;
@@ -9,10 +12,12 @@ use App\Support\Access\PermissionCatalog;
 use App\Support\Translation\OverrideFileLoader;
 use App\Support\Translation\TranslationOverrides;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Translation\FileLoader;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +50,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Date::use(CarbonImmutable::class);
+
+        // Livewire update requests re-run these, so a component never escapes auth, 2FA or the staff locale.
+        Livewire::addPersistentMiddleware([
+            UseStaffLocale::class,
+            EnsureActiveUser::class,
+            EnsureTwoFactor::class,
+        ]);
+
+        ResetPassword::createUrlUsing(fn (User $user, string $token) => route('crm.password.reset', [
+            'token' => $token,
+            'email' => $user->getEmailForPasswordReset(),
+        ]));
 
         // Catalog permissions ("module.action") are resolved with deny-by-default and location scope.
         Gate::before(function (User $user, string $ability, array $arguments) {

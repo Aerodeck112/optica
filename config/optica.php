@@ -19,4 +19,12 @@ return [
         // Calendar auto-refresh interval in seconds (ARC-05).
         'calendar_poll_seconds' => (int) env('CALENDAR_POLL_SECONDS', 15),
     ],
+
+    'security' => [
+        // Roles that must use two-factor authentication (SEC-01).
+        'two_factor_roles' => ['superadmin', 'operations_admin', 'location_manager', 'finance'],
+        'two_factor_enforced' => (bool) env('TWO_FACTOR_ENFORCED', true),
+        'login_max_attempts' => 5,
+        'login_decay_seconds' => 300,
+    ],
 ];

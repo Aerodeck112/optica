@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'failed' => 'Emailul sau parola nu sunt corecte.',
+    'password' => 'Parola nu este corectă.',
+    'throttle' => 'Prea multe încercări. Încercați din nou peste :seconds secunde.',
+    'inactive' => 'Contul este dezactivat. Contactați administratorul.',
+    'login' => [
+        'title' => 'Autentificare',
+        'intro' => 'Accesul este rezervat personalului Optica Optofarm.',
+        'email' => 'Email',
+        'password' => 'Parolă',
+        'remember' => 'Păstrează-mă autentificat pe acest dispozitiv',
+        'submit' => 'Intră în cont',
+        'forgot' => 'Ați uitat parola?',
+    ],
+    'logout' => 'Ieșire',
+    'two_factor' => [
+        'challenge_title' => 'Verificare în doi pași',
+        'challenge_intro' => 'Introduceți codul de 6 cifre din aplicația de autentificare.',
+        'code' => 'Cod de verificare',
+        'verify' => 'Verifică',
+        'invalid' => 'Codul nu este valid sau a expirat.',
+        'setup_title' => 'Activați verificarea în doi pași',
+        'setup_required' => 'Rolul dumneavoastră necesită verificare în doi pași înainte de a continua.',
+        'setup_steps' => 'Scanați codul QR cu o aplicație de autentificare (de exemplu Google Authenticator, Microsoft Authenticator sau 2FAS), apoi introduceți codul afișat.',
+        'manual_key' => 'Cheie pentru introducere manuală',
+        'activate' => 'Activează',
+        'enabled' => 'Verificarea în doi pași este activă.',
+    ],
+    'reset' => [
+        'title' => 'Resetare parolă',
+        'request_intro' => 'Introduceți emailul contului. Dacă acesta există, veți primi un link de resetare valabil 60 de minute.',
+        'send' => 'Trimite linkul',
+        'new_password' => 'Parolă nouă',
+        'confirm_password' => 'Confirmați parola',
+        'password_rules' => 'Minimum 10 caractere, cu litere și cifre.',
+        'save' => 'Salvează parola',
+        'back' => 'Înapoi la autentificare',
+    ],
+];

@@ -61,19 +61,21 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 - CRM `/crm` și admin `/admin`: limba vine din profilul angajatului (LNG-02), nu din URL.
 - Programare: `/programare` și `/hu/programare`.
 
-## Neconcordanțe constatate în surse **[DE CONFIRMAT]**
+## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
-| # | Constatare | Surse | Tratare provizorie |
+| # | Constatare | Decizia beneficiarului | Aplicare |
 |---|---|---|---|
-| N-01 | Numărul de locații: „8 locații” (Acasă, Puncte de lucru, caiet GEN-04) față de „10 puncte de lucru” (pagina Fabrica de lentile). | site | Se importă cele 8 locații listate. Textul paginii Fabrica se migrează nemodificat, dar cifra este marcată pentru verificare înainte de publicare. |
-| N-02 | Statistici diferite: „40000 clienți mulțumiți” (Puncte de lucru), „peste 50.000 de pacienți anual” și „aproape 70 de specialiști” (Fabrica). | site | Cifrele nu se inventează și nu se modifică. Se păstrează ca text CMS editabil, marcat pentru verificare. |
-| N-03 | Adresă: „Str. Republicii nr. 5” (site) față de „Piața Republicii 5” (Evolvo). | site, foto | Se folosește varianta de pe site, cu notă de verificare. |
-| N-04 | Locația Bd. 1 Decembrie 1918 nr. 49 este publicată pe site, dar e **inactivă** pentru programare online în Evolvo. | site, foto | Se importă ca locație publică, cu programarea online dezactivată până la confirmare. |
-| N-05 | Telefoane de programare diferite: „0365 430 939” (pagina Medici) și „+40 265 212 304” (Contact). | site | Fiecare locație își păstrează telefonul propriu. Telefonul central de programare este o setare care trebuie confirmată. |
-| N-06 | Pagina publică Medici **nu listează medicii** (conține doar text general și un afiș). Fotografiile Evolvo conțin nume, dar caietul (GEN-03) interzice folosirea lor ca date demonstrative. | site, caiet | Profilurile medicilor (nume, fotografie, descriere, servicii, limbi vorbite) se completează din CMS de către beneficiar. Nu se generează medici. Datele demonstrative folosesc persoane fictive marcate „DEMO”. |
-| N-07 | Programul magazinelor este publicat pe site, dar orarele de consultații ale specialiștilor nu sunt publice. | site, LOC-01 | Programul magazinului se importă. Orarele de consultații se configurează în CRM. |
+| N-01 | 8 locații (Acasă, footer) față de „10 puncte de lucru” (Fabrica de lentile) | Sunt valabile locațiile din footer (8). | `SiteContentSeeder` importă cele 8 locații. La importul paginii Fabrica, cifra devine 8. |
+| N-02 | 40.000 clienți / 50.000 pacienți pe an / ~70 specialiști | Se folosesc **50.000** și **70**. | Setarea `site.stats`; contorul „40000” se înlocuiește cu 50.000. |
+| N-03 | „Str. Republicii nr. 5” față de „Piața Republicii 5” | **Piața Republicii nr. 5**. | Adresa RO corectată. Varianta HU („Szentgyörgy tér (Köztársaság tér) 5. szám”) e propusă după textul HU existent și poate fi editată din admin. |
+| N-04 | Bd. 1 Decembrie 1918 nr. 49 inactivă online în Evolvo | Locația este **activă**, inclusiv pentru programare online. | `online_booking_enabled = true`. |
+| N-05 | Două telefoane de programare | Se afișează **ambele**: 0365 430 939 și +40 265 212 304. | Setarea `site.booking_phones`. |
+| N-06 | Pagina Medici nu listează medicii | Se publică **doar ce există pe site** (niciun profil individual). Medicii se adaugă, se editează și se șterg din admin. | Nu se importă specialiști. Modulul Admin → Specialiști are CRUD complet. |
+| N-07 | Programul magazinelor față de orarele de consultații | Programul magazinelor se importă de pe site. Orarele de consultații se configurează în CRM. | `locations.opening_hours`. |
+| — | Exporturile Evolvo | Se fac **la final**. | Importul (MIG-01…05) rămâne ultimul pas. |
 
 ## Presupuneri
 - P-01: Limbile platformei sunt RO și HU. Evolvo are și „Informații medic EN”, dar caietul nu cere engleza; EN nu se implementează.
 - P-02: Modul de confirmare implicit pentru programările online este „prin recepție” (în așteptare). Se poate trece pe „automat” per locație.
 - P-03: O rezervare temporară (în timpul completării formularului public) blochează slotul timp de 10 minute (configurabil). O solicitare în așteptare blochează slotul până la decizia recepției sau până la expirare (implicit 24 h, configurabil).
+- P-04: Durata serviciilor nu este publicată. Valoarea inițială este 30 de minute (placeholder) și se ajustează pe fiecare serviciu și pe fiecare combinație locație–specialist din admin.
