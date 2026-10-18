@@ -21,6 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn () => route('crm.login'));
         $middleware->redirectUsersTo(fn () => route('crm.dashboard'));
         $middleware->web(prepend: [RemoveTrailingSlash::class]);
+        // Provider callbacks carry a signature instead of a CSRF token.
+        $middleware->validateCsrfTokens(except: ['webhooks/*']);
         $middleware->alias([
             'staff.locale' => UseStaffLocale::class,
             'site.locale' => UseSiteLocale::class,
@@ -31,7 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         // Unknown public URLs: redirect manager, 404 log and a translated page (SEO-02).
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, Request $request) {
-            if ($request->expectsJson() || $request->is('crm/*', 'admin/*', 'livewire*', 'api/*')) {
+            if ($request->expectsJson() || $request->is('crm/*', 'admin/*', 'cms/*', 'livewire*', 'api/*', 'webhooks/*')) {
                 return null;
             }
             app()->setLocale($request->segment(1) === 'hu' ? 'hu' : 'ro');

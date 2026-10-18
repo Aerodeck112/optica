@@ -20,3 +20,6 @@ Schedule::command('queue:work database --stop-when-empty --max-time=50 --tries=3
     ->name('queue-batch')
     ->everyMinute()
     ->withoutOverlapping(5);
+
+// Reminders, campaigns and queued messages (COM-02). Short runs, never two at once.
+Schedule::command('messages:send')->everyMinute()->withoutOverlapping(5);

@@ -211,6 +211,7 @@ class BookingWizard extends Component
                 'locale' => $this->patientLocale,
                 'admin_notes' => $this->message ? __('site.booking.patient_message_prefix', [], 'ro').' '.trim($this->message) : null,
                 'manage_token_hash' => hash('sha256', $token),
+                'manage_token_encrypted' => encrypt($token),
             ], $status);
         } catch (BookingException $e) {
             $this->addError('form', $e->getMessage());

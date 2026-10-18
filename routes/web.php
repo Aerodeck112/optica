@@ -8,6 +8,8 @@ use App\Http\Controllers\Crm\LocaleController;
 use App\Http\Controllers\Crm\PatientFileController;
 use App\Http\Controllers\Site\AvailabilityController;
 use App\Http\Controllers\Site\SitePageController;
+use App\Http\Controllers\Site\UnsubscribeController;
+use App\Http\Controllers\Webhooks\MessagingWebhookController;
 use App\Livewire\Admin\ClinicalTemplates;
 use App\Livewire\Admin\ExceptionIndex;
 use App\Livewire\Admin\LocationEditor;
@@ -60,6 +62,14 @@ foreach (['' => 'site.', 'hu' => 'site.hu.'] as $prefix => $name) {
         Route::get('previzualizare/pagina/{page}', [SitePageController::class, 'preview'])->middleware(['auth', 'active', 'two-factor'])->name('preview');
     });
 }
+// Provider callbacks: authenticated by signature, not by session or CSRF (COM-03).
+Route::prefix('webhooks')->name('webhooks.')->middleware('throttle:240,1')->group(function () {
+    Route::get('whatsapp/{account}', [MessagingWebhookController::class, 'whatsappVerify'])->name('whatsapp.verify');
+    Route::post('whatsapp/{account}', [MessagingWebhookController::class, 'whatsapp'])->name('whatsapp');
+    Route::post('twilio/{account}', [MessagingWebhookController::class, 'twilio'])->name('twilio');
+});
+Route::get('dezabonare/{uuid}', [UnsubscribeController::class, 'show'])->middleware(['signed', 'throttle:30,1'])->name('unsubscribe.show');
+Route::post('dezabonare/{uuid}', [UnsubscribeController::class, 'store'])->middleware(['signed', 'throttle:30,1'])->name('unsubscribe.store');
 Route::get('api/disponibilitate', AvailabilityController::class)->middleware('throttle:60,1')->name('api.availability');
 Route::get('sitemap.xml', [SitePageController::class, 'sitemap'])->name('sitemap');
 Route::get('robots.txt', [SitePageController::class, 'robots'])->name('robots');
