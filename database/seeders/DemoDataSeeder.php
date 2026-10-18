@@ -8,6 +8,7 @@ use App\Domain\Scheduling\BookingService;
 use App\Enums\AppointmentSource;
 use App\Enums\AppointmentStatus;
 use App\Models\Location;
+use App\Models\Lead;
 use App\Models\LocationSpecialist;
 use App\Models\Offering;
 use App\Models\Resource;
@@ -115,5 +116,14 @@ class DemoDataSeeder extends Seeder
         $reception->locations()->syncWithoutDetaching([$location->id]);
         $editor = User::firstOrCreate(['email' => 'demo.site@example.test'], ['name' => 'Editor site DEMO', 'password' => 'DemoParola2026', 'locale' => 'hu']);
         $editor->roles()->syncWithoutDetaching([Role::where('key', 'site_editor')->value('id')]);
+        $medic = User::firstOrCreate(['email' => 'demo.medic@example.test'], ['name' => 'Medic DEMO', 'password' => 'DemoParola2026', 'locale' => 'ro']);
+        $medic->roles()->syncWithoutDetaching([Role::where('key', 'specialist')->value('id')]);
+        $medic->locations()->syncWithoutDetaching([$location->id]);
+        Specialist::where('code', 'DEMO-1')->whereNull('user_id')->update(['user_id' => $medic->id]);
+
+        Lead::firstOrCreate(['idempotency_key' => hash('sha256', 'demo-lead-1')], [
+            'type' => 'product_inquiry', 'name' => 'Solicitant DEMO', 'phone' => '0700 000 901', 'email' => 'solicitant.demo@example.test',
+            'message' => 'Mesaj DEMO: aș dori informații despre lentilele progresive.', 'locale' => 'ro', 'source' => '/contact', 'location_id' => $location->id,
+        ]);
     }
 }

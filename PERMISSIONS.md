@@ -37,6 +37,14 @@ Identificatorii sunt stabili (LNG-03). Etichetele lor sunt traductibile.
 | Utilizatori | `users.view`, `users.manage`, `roles.manage` |
 | Sistem | `settings.manage`, `integrations.manage`, `system.updates`, `system.backups`, `system.diagnostics`, `audit.view` |
 
+## Reguli pentru datele clinice
+
+- `medical_records.view` dă acces la fișele din locațiile atribuite utilizatorului; `medical_records.view_own` dă acces doar la pacienții pe care profilul de specialist al utilizatorului i-a consultat sau îi are programați (programare neanulată sau vizită). Fișele scrise de un specialist îi sunt mereu vizibile.
+- Ciorna se editează și se finalizează doar de specialistul căruia îi aparține. După finalizare, corectura este un amendament cu motiv (`medical_records.amend`), vizibil în istoricul fișei.
+- `prescriptions.view` se aplică pe locațiile utilizatorului sau pe pacienții proprii.
+- Datele clinice (fișe, amendamente, prescripții, instantaneul dosarelor unite) sunt criptate în baza de date. Jurnalul de audit înregistrează cine a deschis, finalizat, corectat sau exportat, fără conținut clinic.
+- Fiecare deschidere a unui dosar de pacient, a unei fișe, afișarea CNP-ului, descărcarea unui document și generarea unui PDF clinic se jurnalizează.
+
 ## Roluri inițiale (personalizabile)
 
 Legendă: ● acordat · L = limitat la locațiile atribuite · O = numai pacienții proprii · – refuzat
@@ -53,9 +61,11 @@ Legendă: ● acordat · L = limitat la locațiile atribuite · O = numai pacien
 | medical_records.view | – (explicit) | – | – | – | – | – | – | – | – |
 | medical_records.view_own | – (explicit) | – | – | – | O | – | – | – | – |
 | medical_records.create / finalize / amend | – | – | – | – | O | – | – | – | – |
+| medical_records.templates (validarea șabloanelor) | – (se acordă explicit unui medic coordonator) | – | – | – | – | – | – | – | – |
 | prescriptions.view | – | – | – | – | O | L (delegat) | – | – | – |
 | prescriptions.create / amend | – | – | – | – | O | – | – | – | – |
 | documents.view / upload | – | – | L | L (administrative) | O | L | – | – | – |
+| documents.delete | – | – | – | – | – | – | – | – | – |
 | leads.view / manage | ● | ● | L | L | – | – | ● | – | – |
 | tasks.manage | ● | ● | L | L | L | L | ● | – | – |
 | orders.view / manage / change_status | ● | ● | L | L | L | L | – | L (view) | – |

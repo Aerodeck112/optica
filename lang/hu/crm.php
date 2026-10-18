@@ -14,6 +14,9 @@ return [
         'open' => 'Menü megnyitása',
         'dashboard' => 'Ma',
         'calendar' => 'Naptár',
+        'patients' => 'Páciensek',
+        'leads' => 'Megkeresések',
+        'tasks' => 'Feladatok',
         'group_planning' => 'Tervezés',
         'schedules' => 'Munkarendek',
         'exceptions' => 'Szabadságok és kivételek',
@@ -30,6 +33,7 @@ return [
         'services' => 'Szolgáltatások',
         'users' => 'Felhasználók',
         'roles' => 'Szerepkörök és jogosultságok',
+        'clinical_templates' => 'Kartonsablonok',
     ],
     'dashboard' => [
         'title' => 'Ma',

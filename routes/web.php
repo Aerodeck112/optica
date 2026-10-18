@@ -5,8 +5,10 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Crm\DashboardController;
 use App\Http\Controllers\Crm\LocaleController;
+use App\Http\Controllers\Crm\PatientFileController;
 use App\Http\Controllers\Site\AvailabilityController;
 use App\Http\Controllers\Site\SitePageController;
+use App\Livewire\Admin\ClinicalTemplates;
 use App\Livewire\Admin\ExceptionIndex;
 use App\Livewire\Admin\LocationEditor;
 use App\Livewire\Admin\LocationIndex;
@@ -30,6 +32,12 @@ use App\Livewire\Cms\PageIndex;
 use App\Livewire\Cms\RedirectManager;
 use App\Livewire\Cms\SiteSettings;
 use App\Livewire\Crm\Calendar;
+use App\Livewire\Crm\ClinicalRecordEditor;
+use App\Livewire\Crm\LeadIndex;
+use App\Livewire\Crm\LeadShow;
+use App\Livewire\Crm\PatientIndex;
+use App\Livewire\Crm\PatientShow;
+use App\Livewire\Crm\TaskList;
 use App\Livewire\Site\BookingWizard;
 use App\Livewire\Site\ManageBooking;
 use Illuminate\Support\Facades\Route;
@@ -79,6 +87,15 @@ Route::prefix('crm')->name('crm.')->middleware('staff.locale')->group(function (
             Route::get('/', DashboardController::class)->name('dashboard');
             Route::post('locale', LocaleController::class)->name('locale');
             Route::livewire('calendar', Calendar::class)->name('calendar');
+            Route::livewire('patients', PatientIndex::class)->name('patients.index');
+            Route::livewire('patients/{patient}', PatientShow::class)->name('patients.show');
+            Route::livewire('records/{record}', ClinicalRecordEditor::class)->name('records.edit');
+            Route::get('records/{record}/pdf', [PatientFileController::class, 'recordPdf'])->middleware('throttle:30,1')->name('records.pdf');
+            Route::get('prescriptions/{prescription}/pdf', [PatientFileController::class, 'prescriptionPdf'])->middleware('throttle:30,1')->name('prescriptions.pdf');
+            Route::get('documents/{document}', [PatientFileController::class, 'document'])->middleware('throttle:60,1')->name('documents.download');
+            Route::livewire('leads', LeadIndex::class)->name('leads.index');
+            Route::livewire('leads/{lead}', LeadShow::class)->name('leads.show');
+            Route::livewire('tasks', TaskList::class)->name('tasks');
         });
     });
 });
@@ -104,6 +121,7 @@ Route::prefix('admin')->name('admin.')->middleware(['staff.locale', 'auth', 'act
     Route::livewire('roles', RoleIndex::class)->name('roles.index');
     Route::livewire('roles/create', RoleEditor::class)->name('roles.create');
     Route::livewire('roles/{role}', RoleEditor::class)->name('roles.edit');
+    Route::livewire('clinical-templates', ClinicalTemplates::class)->name('clinical-templates');
 });
 
 /*

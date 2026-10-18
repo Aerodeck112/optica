@@ -72,13 +72,21 @@ class ConsentRecorder
 
     public function withdrawMarketing(?int $patientId, ?string $phone, ?string $email, string $channel, string $source, string $locale = 'ro'): Consent
     {
+        return $this->recordMarketingChoice($patientId, $phone, $email, $channel, false, $source, $locale);
+    }
+
+    /** A new row per decision: the history of consents and withdrawals is never overwritten. */
+    public function recordMarketingChoice(?int $patientId, ?string $phone, ?string $email, string $channel, bool $granted, string $source, string $locale = 'ro'): Consent
+    {
+        abort_unless(in_array($channel, Consent::CHANNELS, true), 422);
+
         return Consent::create([
             'patient_id' => $patientId,
             'contact_phone' => Patient::normalizePhone($phone),
             'contact_email' => $email ? mb_strtolower($email) : null,
             'purpose' => 'marketing',
             'channel' => $channel,
-            'granted' => false,
+            'granted' => $granted,
             'text_version' => $this->version('marketing'),
             'locale' => $locale,
             'source' => $source,

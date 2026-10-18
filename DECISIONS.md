@@ -74,6 +74,21 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 ### D-014 Imagini
 - Toate imaginile încărcate sunt re-encodate în WebP (480/960/1600 px), ceea ce elimină metadatele (EXIF, locație) și orice conținut executabil. Se stochează în `public/uploads` (fără symlink, compatibil cPanel). O imagine folosită nu poate fi ștearsă.
 
+### D-015 Datele clinice criptate și separate de jurnal
+- Fișele, amendamentele, prescripțiile și instantaneul dosarelor unite folosesc criptarea Laravel (AES-256, cheia `APP_KEY`). O copie a bazei de date fără cheie nu expune conținut clinic. Consecință: cheia trebuie inclusă în backupul configurației (DEPLOYMENT.md), altfel datele nu pot fi recuperate.
+- Căutarea după conținut clinic nu este posibilă direct în SQL; rapoartele clinice vor decripta în aplicație, pe loturi.
+- Jurnalul de audit nu conține valori clinice, doar acțiunea, autorul, ora și, la amendamente, numele câmpurilor modificate.
+
+### D-016 Șabloane de fișă validate de personal medical
+- Șablonul propus (`ClinicalTemplateSeeder`) este construit din lista de câmpuri MED-01; unitățile, intervalele și pașii sunt o propunere tehnică. El rămâne **nevalidat** și nu poate fi folosit până când o persoană cu dreptul `medical_records.templates` îl verifică și îl validează. Dreptul nu este acordat implicit niciunui rol, nici superadministratorului.
+- Un șablon validat nu se mai modifică: o schimbare creează o versiune nouă; fișele existente rămân legate de versiunea cu care au fost scrise.
+
+### D-017 Unirea dosarelor duplicate
+- Se face doar manual, de un utilizator cu `patients.merge`, după compararea celor două dosare și confirmare. Toate referințele (programări, vizite, fișe, prescripții, documente, consimțăminte, solicitări, sarcini, relații de familie) trec în dosarul păstrat; duplicatul rămâne arhivat și trimite la acesta. Un instantaneu criptat al datelor duplicatului se păstrează în `patient_merges`.
+
+### D-018 Documente private
+- Fișierele pacienților se păstrează în `storage/app/private` (în afara directorului public), sub nume aleatorii fără extensie. Tipul se verifică după conținut (PDF, JPEG, PNG, WebP; maximum 20 MB). Descărcarea trece printr-un controller care verifică dreptul, jurnalizează accesul și trimite `X-Content-Type-Options: nosniff`. Ștergerea ascunde documentul; fișierul rămâne până la validarea regulilor de retenție (SEC-05).
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |

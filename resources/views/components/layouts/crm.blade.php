@@ -37,7 +37,7 @@
                     @endif
                     <ul class="space-y-0.5">
                         @foreach ($group['items'] as $item)
-                            @php($active = request()->routeIs($item['active']))
+                            @php($active = request()->routeIs(...explode('|', $item['active'])))
                             <li>
                                 <a href="{{ route($item['route']) }}" wire:navigate
                                    @class([

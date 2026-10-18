@@ -44,7 +44,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | WEB-02 | Responsive, accesibil, reduced motion, acces rapid la programare | ✅ Verificat la 390/768/1440 px; butonul de programare și telefoanele sunt în antet. Auditul WCAG complet rămâne la livrare. |
 | WEB-03 | Pagini administrabile pentru locații, specialiști, servicii; filtre, primul interval disponibil, hartă și listă, FAQ | 🟡 Administrarea RO/HU (adăugare, editare, publicare, ștergere, restaurare) este ✅. „Primul disponibil” este ✅ în motor. Paginile publice (listă, detaliu, filtre, primul interval liber, hartă) sunt ✅. |
 | WEB-04 | Elemente educative interactive, fără diagnostic | ✅ Comparația vedere încețoșată/clară și ghidul „ce consultație mi se potrivește”, cu mențiunea că nu înlocuiesc consultația. |
-| WEB-05 | Formulare → leaduri CRM, confirmare doar după salvare, antiabuz | ✅ Leadul și consimțămintele se salvează înainte de mesajul de confirmare; idempotență, honeypot, limitare. Ecranul CRM de lucru cu leadurile este în etapa următoare (CRM-01). |
+| WEB-05 | Formulare → leaduri CRM, confirmare doar după salvare, antiabuz | ✅ Leadul și consimțămintele se salvează înainte de mesajul de confirmare; idempotență, honeypot, limitare. Leadurile se lucrează în CRM → Solicitări (CRM-01). |
 | CMS-01…03 | Pagini, secțiuni, meniuri, media, versiuni, previzualizare, publicare | ✅ Pagini din 12 tipuri de secțiuni RO/HU, ciornă, previzualizare RO/HU, publicare cu versiuni și restaurare, protecție la editare simultană, meniuri, bibliotecă de imagini cu text alternativ și verificarea utilizării, oferte cu perioadă de valabilitate. |
 | SEO-01…02 | Metadate pe limbă, sitemap, hreflang, redirecturi 301, raport 404 | ✅ Titlu/descriere/noindex per limbă, canonical, hreflang, sitemap.xml, robots.txt, redirecționări 301/302/410 cu detectarea buclelor, raport 404, adresele vechi WordPress redirecționate. |
 
@@ -69,19 +69,20 @@ Starea detaliată pe module este în PROGRESS.md.
 | CAL-01 | Zi, săptămână, lună, agendă; coloane pe specialist/cabinet; filtre; mobil = agendă | ✅ | `Crm\Calendar`: coloane pe specialist (cabinetul apare în orar și pe programare), filtre locație/specialist/status, agenda implicită sub 768 px, căutare pacient și creare din interval. |
 | CAL-02 | Drag-and-drop cu validare, panou lateral, istoric, listă de așteptare | ✅ | Drag-and-drop cu confirmare și formular alternativ, panou lateral cu istoric, culori însoțite de etichete, timpul din alte locații vizibil, listă de așteptare cu propuneri la anulare. |
 | CAL-03 | Statusuri, tranziții controlate, motiv și autor la anulare, vizită ≠ programare | ✅ | `AppointmentStatus::allowedTransitions`, `appointment_events`, tabel `visits` separat. |
-| ACC-01 | Permisiuni granulare, limitate pe locații și relația cu pacientul, refuz implicit | 🟡 | Refuz implicit, domeniu pe locații, roluri personalizabile din admin ✅. Relația cu pacientul (fișe medicale) vine cu modulul de fișe ⬜. |
-| ACC-02 | Autorizare pe server pentru obiect, API, fișier, export; jurnalizare | 🟡 | Gate-ul global este ✅. Componentele Livewire verifică permisiunea la fiecare cerere (test cu cerere directă). Autentificările și modificările din catalog se jurnalizează. Policies pe pacienți și documente sunt ⬜. |
+| ACC-01 | Permisiuni granulare, limitate pe locații și relația cu pacientul, refuz implicit | ✅ | Refuz implicit, domeniu pe locații, roluri personalizabile; `ClinicalAccess` aplică relația specialist–pacient pentru fișe și prescripții (`ClinicalRecordsTest`, `PatientFileTest`). |
+| ACC-02 | Autorizare pe server pentru obiect, API, fișier, export; jurnalizare | ✅ | Verificare pe server la fiecare cerere Livewire, la fiecare fișier și PDF. Se jurnalizează autentificările, deschiderea dosarelor și fișelor, afișarea CNP-ului, descărcările, exporturile PDF și modificările de drepturi. Exporturile Excel/CSV vin cu modulul de rapoarte. |
 
 ## 6–7. Pacienți, documente medicale, leaduri, comenzi, financiar
 
 | ID | Status | Observații |
 |---|---|---|
-| PAC-01 | 🟡 | Tabel `patients`: CNP criptat + hash, limbă, reprezentant legal, relații de familie. UI ⬜. |
-| PAC-02 | 🟡 | Telefon normalizat, neunic; la adăugare se propun posibilele duplicate (telefon sau nume), fără unire automată. Unirea controlată este ⬜. |
-| PAC-03 | ⬜ | |
-| MED-01…05 | ⬜ | Șabloanele clinice trebuie validate de personal medical 📥. |
-| Consimțăminte | ⬜ | Textele sunt validate de beneficiar 📥. |
-| CRM-01…03 | ⬜ | |
+| PAC-01 | ✅ | CRM → Pacienți: cod intern, date personale, limbă, adresă, sursă, reprezentant legal, relații de familie; CNP criptat, afișat doar la cerere cu dreptul `patients.view_sensitive` și jurnalizat. |
+| PAC-02 | ✅ | Telefon neunic; posibilele duplicate se arată înainte de salvare. Unirea se face manual, după comparare și confirmare, mută toate referințele și se jurnalizează (D-017). |
+| PAC-03 | 🟡 | Taburi: date personale, programări și vizite, fișe, prescripții, documente, consimțăminte, sarcini, istoric cronologic. Taburile Comenzi, Financiar și Comunicări apar odată cu modulele lor; exportul dosarului vine cu rapoartele. |
+| MED-01…05 | ✅ / 📥 | Șabloane versionate cu unități, intervale și pași, utilizabile doar după validarea de către personal medical (D-016) 📥; ciornă → finalizare → amendamente cu autor, oră, motiv și valorile vechi/noi; prescripții cu autor, dată și versiune; PDF RO/HU cu antet, locație și specialist, observații netraduse, fără pretenția de semnătură calificată; documente private verificate după conținut (D-018). Aplicația nu calculează diagnostice sau prescripții. |
+| Consimțăminte | ✅ / 📥 | Informare, condiții și marketing pe canal, cu versiune, dată, sursă și istoric; acordul sau retragerea se înregistrează și la recepție; consimțămintele din formulare trec la pacient la conversie. Textele și retenția se validează de beneficiar 📥. |
+| CRM-01…02 | ✅ | CRM → Solicitări: tip, limbă, sursă și UTM, locație, responsabil, termen, istoric, note, sarcini; statusuri nou/contactat/în lucru/convertit/închis; conversia caută întâi pacientul existent. |
+| CRM-03 | 🟡 | UTM-urile din formular se păstrează; nu există pixeli publicitari. Atribuirea campaniilor vine cu rapoartele. |
 | CMD-01…03 | ⬜ | |
 | FIN-01…03 | ⬜ | |
 
@@ -114,7 +115,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | ID | Status | Observații |
 |---|---|---|
 | SEC-01 | 🟡 | Login cu limitare a încercărilor și mesaj generic, 2FA TOTP obligatoriu pentru superadmin / admin operațional / manager / financiar, resetare parolă cu token expirabil, blocarea imediată a conturilor dezactivate. Teste `LoginTest`. Expirarea sesiunilor inactive și revocarea sesiunilor din admin sunt ⬜. |
-| SEC-02 | 🟡 | Protecțiile Laravel (CSRF, escaping, interogări parametrizate) sunt active implicit. Documentele private sunt ⬜. |
+| SEC-02 | 🟡 | CSRF, escaping și interogări parametrizate active; documentele private sunt în afara directorului public, verificate după conținut, descărcate doar prin controller autorizat. Antetele de securitate globale (CSP, HSTS) se configurează la instalare. |
 | SEC-03 | 🟡 | Imaginile încărcate sunt re-encodate (metadate eliminate) și nu se pot executa. Jurnalele nu conțin parole. |
 | SEC-04…07 | ⬜ | |
 | OPS-01 | 🟡 | Indecși pe interogările de disponibilitate. Măsurătorile de volum sunt ⬜. |

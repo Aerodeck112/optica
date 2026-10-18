@@ -36,7 +36,13 @@ php artisan test
 Testele folosesc baza de date `optica_test` (vezi `phpunit.xml`) pe MySQL/MariaDB. SQLite nu este suportat pentru teste, deoarece testele de concurență au nevoie de blocări reale pe rând.
 
 ## Fișiere încărcate
-Fotografiile și celelalte fișiere publice se salvează în `public/uploads/` (fără `storage:link`, care cere symlink). Directorul trebuie să poată fi scris de PHP și **nu se suprascrie niciodată** la actualizare. Documentele private (fișe, investigații) vor fi în `storage/app/private`, în afara zonei publice.
+Fotografiile și celelalte fișiere publice se salvează în `public/uploads/` (fără `storage:link`, care cere symlink). Directorul trebuie să poată fi scris de PHP și **nu se suprascrie niciodată** la actualizare. Documentele private ale pacienților (investigații, documente externe) se salvează în `storage/app/private/patients/`, în afara zonei publice, și se descarcă numai prin aplicație (D-018). Directorul trebuie inclus în backup și nu se suprascrie la actualizare.
+
+## Cheia de criptare (`APP_KEY`)
+Fișele medicale, prescripțiile și CNP-urile sunt criptate cu `APP_KEY` din `.env` (D-015). **Fără această cheie, datele clinice dintr-un backup nu pot fi citite.** Cheia:
+- se generează o singură dată, la instalare, și nu se schimbă niciodată pe un sistem cu date;
+- se păstrează separat de backupul bazei de date, într-un loc sigur (de exemplu, managerul de parole al administratorului);
+- nu se trimite prin email și nu se pune în tichete de suport.
 
 ## Primul administrator
 Până la instalatorul web, primul cont se creează din linia de comandă (doar în dezvoltare sau prin *Terminal* din cPanel, dacă este disponibil):

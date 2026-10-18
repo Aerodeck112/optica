@@ -1,6 +1,6 @@
 # Progres
 
-Ultima actualizare: 18 octombrie 2026. Versiune: `0.3.0-dev`.
+Ultima actualizare: 18 octombrie 2026. Versiune: `0.4.0-dev`.
 
 Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (necesită credențiale sau furnizor), **în așteptarea datelor**, **neimplementat**. O interfață fără backend nu este considerată funcție finalizată.
 
@@ -42,7 +42,15 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 | CMS → Imagini | încărcare multiplă, re-encodare WebP fără metadate, text alternativ RO/HU, filtrul „fără text alternativ”, lista utilizărilor, ștergere blocată pentru imaginile folosite | `CmsAdminTest` |
 | CMS → Meniuri, oferte, redirecționări, date de contact | meniul principal și subsolul (drept de publicare); oferte cu perioadă de valabilitate, ciornă, publicare, retragere; redirecționări cu detectarea buclelor și crearea lor din raportul 404; telefoanele și emailurile afișate pe site | `CmsAdminTest` |
 
-Total: **112 teste, toate trec** (`php artisan test`).
+| CRM → Pacienți | registru cu căutare (nume, telefon în orice format, cod, email), pacient nou cu avertizare de duplicate, dosar cu taburi: date personale, familie și reprezentant legal, CNP criptat afișat la cerere, programări și vizite, fișe, prescripții, documente, consimțăminte, sarcini, istoric cronologic; arhivare; unirea controlată a duplicatelor | `PatientFileTest`, `PatientDataTest` |
+| Fișe oftalmologice | șabloane versionate validate de personal medical, ciornă cu protecție la editare simultană, valori verificate (interval și pas, virgulă acceptată), finalizare cu câmpuri obligatorii, amendamente cu motiv și valorile vechi/noi, PDF RO/HU, date criptate, acces după relația cu pacientul | `ClinicalRecordsTest` (7), `PatientFileTest` |
+| Prescripții | ochelari și lentile de contact, OD/OS, verificarea intervalelor, versiuni la corectură cu motiv, copierea refracției scrise în fișă (fără calcule), PDF RO/HU | `PatientDataTest`, `PatientFileTest` |
+| Documente private | PDF și imagini, tip verificat după conținut, stocare în afara directorului public, descărcare autorizată și jurnalizată | `PatientDataTest`, `PatientFileTest` |
+| CRM → Solicitări | listă cu filtre (status, tip, responsabil), istoric, note interne, responsabil și termen, conversie către pacient existent sau nou, consimțămintele trec la pacient | `PatientDataTest`, `PatientFileTest` |
+| Sarcini | pe pacient, pe solicitare sau generale; responsabil, termen (ora clinicii), urgent, finalizare și redeschidere; liste „ale mele” și „locațiile mele” | `PatientFileTest` |
+| Administrare → Șabloane de fișă | editare ca ciornă (câmpuri, secțiuni, unități, intervale, OD/OS, obligatorii), validare jurnalizată, versiuni noi, retragere | `PatientFileTest` |
+
+Total: **136 de teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
 - Furnizorii de email, WhatsApp și SMS: se aleg la audit (COM-01).
@@ -54,15 +62,14 @@ Total: **112 teste, toate trec** (`php artisan test`).
 - Tarifele (dacă se publică).
 - Exporturile autorizate din Evolvo (MIG-01) – la finalul proiectului, conform deciziei beneficiarului.
 - Textele legale și de consimțământ validate (SEC-05).
-- Șabloanele clinice validate de personal medical (MED-01).
+- Validarea șablonului de fișă oftalmologică de către personal medical (MED-01, D-016): până atunci, fișele nu pot fi completate.
 - Traducerea maghiară a paragrafului „Știai că…” (pagina Medici) și versiunea HU a textelor legale (N-08).
 
 ## Neimplementat încă (ordinea planificată)
-1. Leaduri și sarcini în CRM; pacienți (fișă completă, duplicate, unire), fișe medicale, prescripții, documente private, consimțăminte.
-2. Comenzi de ochelari, financiar operațional.
-3. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
-4. Rapoarte avansate și exporturi (Excel, CSV, PDF).
-5. Editorul vizual de traduceri și centrul de traduceri.
-6. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
-9. Import din Evolvo (la final).
-10. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.
+1. Comenzi de ochelari, financiar operațional (și taburile lor în dosarul pacientului).
+2. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
+3. Rapoarte avansate și exporturi (Excel, CSV, PDF).
+4. Editorul vizual de traduceri și centrul de traduceri.
+5. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
+6. Import din Evolvo (la final).
+7. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.

@@ -2,6 +2,19 @@
 
 Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Versiunile urmează SemVer.
 
+## [0.4.0-dev] – 2026-10-19
+### Adăugat
+- Registrul și dosarul pacientului: date personale, familie, reprezentant legal, CNP criptat afișat la cerere, programări și vizite, consimțăminte, istoric; arhivare; unirea controlată a duplicatelor.
+- Fișe oftalmologice pe șabloane validate de personal medical: ciornă, finalizare, amendamente cu motiv, PDF RO/HU; date clinice criptate.
+- Prescripții pentru ochelari și lentile de contact, cu versiuni și PDF.
+- Documente private ale pacientului cu descărcare autorizată.
+- Solicitările din site în CRM: istoric, note, responsabil, termen, conversie către pacient.
+- Sarcini pe pacient, pe solicitare sau generale.
+- Administrare → Șabloane de fișă; permisiunea nouă `medical_records.templates`.
+
+### Modificat
+- Discul privat (`storage/app/private`) nu mai poate fi servit direct prin URL semnat; fișierele trec doar prin controllerul autorizat.
+
 ## [0.3.0-dev] – 2026-10-18
 ### Adăugat
 - Administrarea utilizatorilor: roluri, locații, profil de specialist, invitații prin email (72 h) în limba angajatului, resetare 2FA, închiderea sesiunilor, protecția ultimului superadministrator.

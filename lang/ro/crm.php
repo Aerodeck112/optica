@@ -14,6 +14,9 @@ return [
         'open' => 'Deschide meniul',
         'dashboard' => 'Astăzi',
         'calendar' => 'Calendar',
+        'patients' => 'Pacienți',
+        'leads' => 'Solicitări',
+        'tasks' => 'Sarcini',
         'group_planning' => 'Planificare',
         'schedules' => 'Orare de lucru',
         'exceptions' => 'Concedii și excepții',
@@ -30,6 +33,7 @@ return [
         'services' => 'Servicii',
         'users' => 'Utilizatori',
         'roles' => 'Roluri și permisiuni',
+        'clinical_templates' => 'Șabloane de fișă',
     ],
     'dashboard' => [
         'title' => 'Astăzi',

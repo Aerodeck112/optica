@@ -19,6 +19,9 @@ class Navigation
                 'items' => [
                     ['label' => 'crm.nav.dashboard', 'route' => 'crm.dashboard', 'active' => 'crm.dashboard', 'can' => null],
                     ['label' => 'crm.nav.calendar', 'route' => 'crm.calendar', 'active' => 'crm.calendar', 'can' => 'appointments.view'],
+                    ['label' => 'crm.nav.patients', 'route' => 'crm.patients.index', 'active' => 'crm.patients.*|crm.records.*', 'can' => 'patients.view'],
+                    ['label' => 'crm.nav.leads', 'route' => 'crm.leads.index', 'active' => 'crm.leads.*', 'can' => 'leads.view'],
+                    ['label' => 'crm.nav.tasks', 'route' => 'crm.tasks', 'active' => 'crm.tasks', 'can' => 'tasks.manage'],
                 ],
             ],
             [
@@ -47,6 +50,7 @@ class Navigation
                     ['label' => 'crm.nav.services', 'route' => 'admin.services.index', 'active' => 'admin.services.*', 'can' => 'catalog.manage'],
                     ['label' => 'crm.nav.users', 'route' => 'admin.users.index', 'active' => 'admin.users.*', 'can' => 'users.view'],
                     ['label' => 'crm.nav.roles', 'route' => 'admin.roles.index', 'active' => 'admin.roles.*', 'can' => 'roles.manage'],
+                    ['label' => 'crm.nav.clinical_templates', 'route' => 'admin.clinical-templates', 'active' => 'admin.clinical-templates', 'can' => 'medical_records.templates'],
                 ],
             ],
         ];
