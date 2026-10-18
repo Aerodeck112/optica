@@ -13,6 +13,7 @@ return [
         'label' => 'Fő navigáció',
         'open' => 'Menü megnyitása',
         'dashboard' => 'Ma',
+        'calendar' => 'Naptár',
         'group_planning' => 'Tervezés',
         'schedules' => 'Munkarendek',
         'exceptions' => 'Szabadságok és kivételek',
@@ -31,6 +32,7 @@ return [
     ],
     'weekdays' => [1 => 'Hétfő', 2 => 'Kedd', 3 => 'Szerda', 4 => 'Csütörtök', 5 => 'Péntek', 6 => 'Szombat', 7 => 'Vasárnap'],
     'fields' => [
+        'title' => 'Szakmai cím',
         'time' => 'Időpont',
         'patient' => 'Páciens',
         'service' => 'Szolgáltatás',

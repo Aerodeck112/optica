@@ -2,6 +2,20 @@
 
 Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Versiunile urmează SemVer.
 
+## [0.3.0-dev] – 2026-10-18
+### Adăugat
+- Administrarea utilizatorilor: roluri, locații, profil de specialist, invitații prin email (72 h) în limba angajatului, resetare 2FA, închiderea sesiunilor, protecția ultimului superadministrator.
+- Administrarea rolurilor: matrice de permisiuni RO/HU, permisiuni clinice marcate, roluri personalizate; modificările de drepturi sunt jurnalizate.
+- Serviciile oferite de fiecare specialist în fiecare locație (durată, capacitate, tampoane, preț, aparatură, online) și setările de programare online per locație.
+- Cabinete și aparatură per locație.
+- Orare de lucru cu săptămâni alternante și intervale pe zile; concedii, sărbători, închideri și program suplimentar; lista programărilor afectate de modificări.
+- Calendarul CRM: zi, săptămână, lună, agendă; creare, mutare (inclusiv drag-and-drop), anulare cu motiv, schimbare status, istoric, listă de așteptare, actualizare automată.
+- Registrul de pacienți (bază): cod intern, căutare, adăugare rapidă, sugestie de duplicate.
+- `DemoDataSeeder` cu date fictive marcate DEMO.
+
+### Modificat
+- Mesajele de validare afișează denumirile traduse ale câmpurilor.
+
 ## [0.2.0-dev] – 2026-10-17
 ### Adăugat
 - Date reale de pornire de pe site-ul actual: 8 locații și 12 servicii RO/HU, telefoanele de programare și cifrele confirmate de beneficiar.

@@ -34,28 +34,44 @@ class WorkingWindows
      */
     public function forRange(Offering $offering, CarbonImmutable $fromDate, CarbonImmutable $toDate, bool $onlineOnly = false): array
     {
-        $from = $fromDate->setTimezone($this->timezone)->startOfDay();
-        $to = $toDate->setTimezone($this->timezone)->startOfDay();
+        return $this->compute($offering->specialist_id, $offering->location_id, $offering->service_id, $fromDate, $toDate, $onlineOnly);
+    }
+
+    /**
+     * Working time of a specialist in a location regardless of service (calendar background).
+     *
+     * @return array<string, list<Interval>>
+     */
+    public function forSpecialist(int $specialistId, int $locationId, CarbonImmutable $fromDate, CarbonImmutable $toDate): array
+    {
+        return $this->compute($specialistId, $locationId, null, $fromDate, $toDate, false);
+    }
+
+    /** @return array<string, list<Interval>> */
+    private function compute(int $specialistId, int $locationId, ?int $serviceId, CarbonImmutable $fromDate, CarbonImmutable $toDate, bool $onlineOnly): array
+    {
+        $from = CarbonImmutable::parse($fromDate->setTimezone($this->timezone)->toDateString(), $this->timezone);
+        $to = CarbonImmutable::parse($toDate->setTimezone($this->timezone)->toDateString(), $this->timezone);
 
         $schedules = Schedule::query()
             ->with('segments')
-            ->where('specialist_id', $offering->specialist_id)
-            ->where('location_id', $offering->location_id)
+            ->where('specialist_id', $specialistId)
+            ->where('location_id', $locationId)
             ->where('is_active', true)
             ->whereDate('valid_from', '<=', $to->toDateString())
             ->where(fn ($q) => $q->whereNull('valid_to')->orWhereDate('valid_to', '>=', $from->toDateString()))
             ->get();
 
         $exceptions = ScheduleException::query()
-            ->where(fn ($q) => $q->whereNull('specialist_id')->orWhere('specialist_id', $offering->specialist_id))
-            ->where(fn ($q) => $q->whereNull('location_id')->orWhere('location_id', $offering->location_id))
+            ->where(fn ($q) => $q->whereNull('specialist_id')->orWhere('specialist_id', $specialistId))
+            ->where(fn ($q) => $q->whereNull('location_id')->orWhere('location_id', $locationId))
             ->whereDate('starts_on', '<=', $to->toDateString())
             ->whereDate('ends_on', '>=', $from->toDateString())
             ->get();
 
         $result = [];
         for ($day = $from; $day <= $to; $day = $day->addDay()) {
-            $result[$day->toDateString()] = $this->windowsForDay($day, $offering, $schedules, $exceptions, $onlineOnly);
+            $result[$day->toDateString()] = $this->windowsForDay($day, $serviceId, $schedules, $exceptions, $onlineOnly);
         }
 
         return $result;
@@ -68,7 +84,7 @@ class WorkingWindows
     }
 
     /** @return list<Interval> */
-    private function windowsForDay(CarbonImmutable $day, Offering $offering, Collection $schedules, Collection $exceptions, bool $onlineOnly): array
+    private function windowsForDay(CarbonImmutable $day, ?int $serviceId, Collection $schedules, Collection $exceptions, bool $onlineOnly): array
     {
         $date = $day->toDateString();
         $windows = [];
@@ -82,7 +98,7 @@ class WorkingWindows
                 if ((int) $segment->weekday !== $day->dayOfWeekIso || (int) $segment->cycle_week !== $cycleWeek) {
                     continue;
                 }
-                if (! $segment->allowsService($offering->service_id) || ($onlineOnly && ! $segment->online_enabled)) {
+                if (($serviceId !== null && ! $segment->allowsService($serviceId)) || ($onlineOnly && ! $segment->online_enabled)) {
                     continue;
                 }
                 $windows[] = $this->localInterval($date, $segment->start_time, $segment->end_time, [

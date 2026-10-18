@@ -1,6 +1,6 @@
 # Progres
 
-Ultima actualizare: 17 octombrie 2026. Versiune: `0.2.0-dev`.
+Ultima actualizare: 17 octombrie 2026. Versiune: `0.3.0-dev`.
 
 Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (necesită credențiale sau furnizor), **în așteptarea datelor**, **neimplementat**. O interfață fără backend nu este considerată funcție finalizată.
 
@@ -24,8 +24,18 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 | Admin → Medici și optometriști | adăugare, editare, ștergere, restaurare; fotografie re-encodată (fără metadate); profil public RO/HU; limbi vorbite; locațiile în care lucrează și programarea online per locație; ciornă/publicare | `CatalogAdminTest` |
 | Admin → Servicii | adăugare, editare RO/HU, durată, tampoane, preț orientativ, culoare în calendar, categorie, ciornă/publicare, ștergere protejată | `CatalogAdminTest` |
 | Comandă `optica:create-admin` | creează primul superadministrator până la instalatorul web | verificat manual |
+| Admin → Utilizatori | conturi cu roluri, locații, legătura cu profilul de specialist; invitație prin email în limba angajatului (link 72 h); resetare 2FA; închiderea sesiunilor; protecția ultimului superadministrator; jurnal al modificărilor de drepturi | `UserAdminTest` (7) |
+| Admin → Roluri | matrice de permisiuni RO/HU, permisiuni clinice marcate, roluri personalizate, diferența de permisiuni jurnalizată | `UserAdminTest` |
+| Servicii oferite | per specialist și locație: durată, capacitate, tampoane, preț, aparatură necesară, online; setări online per locație (termen minim, orizont, pauză cu mesaj RO/HU, notificare) | `PlanningAdminTest` |
+| Cabinete și aparatură | per locație, folosite de motorul de programări | `PlanningAdminTest` |
+| Orare de lucru | perioadă, săptămâni alternante, intervale pe zile cu grilă, online, servicii permise, cabinet; copiere luni → marți–vineri; avertizare de suprapunere între locații; acces limitat la locațiile proprii | `PlanningAdminTest` |
+| Concedii și excepții | concediu, sărbătoare, curs, închidere, program suplimentar; pe specialist sau toți, pe locație sau toate | `PlanningAdminTest` |
+| Programări afectate | la modificarea orarului sau a excepțiilor, programările care nu mai încap sunt listate, nu șterse | `PlanningAdminTest` |
+| Calendar CRM | zi (coloane pe specialist), săptămână, lună, agendă (implicită pe telefon); timp de lucru vizibil; timpul petrecut în altă locație afișat fără date de pacient; linie „acum”; actualizare automată la 15 s cu starea conexiunii; creare din interval cu căutare/adăugare pacient și avertizare de duplicat; detalii, schimbare status, mutare (drag-and-drop și formular), anulare cu motiv, istoric; listă de așteptare cu propuneri la anulare; filtre pe locație, specialist, status | `CalendarTest` (10) + capturi 1440/390 px |
+| Registrul de pacienți (bază) | cod intern `P000123`, căutare după nume, telefon (orice format) sau cod, adăugare rapidă, sugestie de duplicate fără unire automată | `CalendarTest` |
+| Date demonstrative | `DemoDataSeeder`: specialiști, pacienți și programări fictive marcate DEMO; refuză să ruleze în producție | rulat manual |
 
-Total: **55 de teste, toate trec** (`php artisan test`).
+Total: **79 de teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
 - Furnizorii de email, WhatsApp și SMS: se aleg la audit (COM-01).
@@ -40,16 +50,13 @@ Total: **55 de teste, toate trec** (`php artisan test`).
 - Șabloanele clinice validate de personal medical (MED-01).
 
 ## Neimplementat încă (ordinea planificată)
-1. Administrarea utilizatorilor și rolurilor (conturi, locații atribuite, legătura cont–specialist, resetare 2FA), expirarea sesiunilor.
-2. Oferte locație–specialist–serviciu (durată, capacitate, resurse, preț) și resurse/cabinete per locație, în admin.
-3. Calendarul CRM (zi, săptămână, lună, agendă, polling, panou lateral, drag-and-drop, listă de așteptare) și administrarea orarelor și excepțiilor, inclusiv raportul programărilor afectate de modificarea orarului.
-4. Fluxul public de programare (`/programare`, RO/HU), rezervare temporară, linkuri semnate de anulare și reprogramare, rate limiting.
-5. Site public + CMS (pagini, secțiuni, meniuri, media, versiuni, SEO, redirecturi, import din site-ul actual).
-6. Pacienți (fișă, duplicate, unire), fișe medicale, prescripții, documente private, consimțăminte.
-7. Leaduri, sarcini, comenzi de ochelari, financiar operațional.
-8. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
-9. Rapoarte avansate și exporturi (Excel, CSV, PDF).
-10. Editorul vizual de traduceri și centrul de traduceri.
-11. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic.
-12. Import din Evolvo (la final).
-13. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.
+1. Fluxul public de programare (`/programare`, RO/HU), rezervare temporară, linkuri semnate de anulare și reprogramare, rate limiting.
+2. Site public + CMS (pagini, secțiuni, meniuri, media, versiuni, SEO, redirecturi, import din site-ul actual).
+3. Pacienți (fișă completă, duplicate, unire), fișe medicale, prescripții, documente private, consimțăminte.
+4. Leaduri, sarcini, comenzi de ochelari, financiar operațional.
+5. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
+6. Rapoarte avansate și exporturi (Excel, CSV, PDF).
+7. Editorul vizual de traduceri și centrul de traduceri.
+8. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic.
+9. Import din Evolvo (la final).
+10. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.

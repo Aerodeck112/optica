@@ -31,7 +31,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | ARC-02 | Fără Node, Docker, Redis, WebSocket sau SSH în producție; cozi DB prin cron cu blocare | ✅ | `routes/console.php`: un singur cron, coadă `database`, `withoutOverlapping`. |
 | ARC-03 | Rute `/`, `/programare`, `/crm`, `/admin` | 🟡 | `/crm` (autentificare, panou) și `/admin` (catalog) există. `/` este provizoriu. `/programare` este ⬜. |
 | ARC-04 | Identificatori stabili, o singură sursă de adevăr, draft–publicare | ✅ | Locațiile, specialiștii și serviciile se editează ca ciornă și se publică din admin. Site-ul va citi doar `published_content`. |
-| ARC-05 | Scrieri tranzacționale; polling calendar 15 s | 🟡 | Tranzacțiile sunt ✅ (`BookingService`). Polling-ul este configurat (`optica.booking.calendar_poll_seconds`); UI-ul calendarului este ⬜. |
+| ARC-05 | Scrieri tranzacționale; polling calendar 15 s | ✅ | Tranzacții în `BookingService`; calendarul se actualizează la 15 s (configurabil) și afișează ora ultimei actualizări și starea conexiunii. |
 | ARC-06 | API cu autorizare, paginare, validare; conflicte prin versiuni | 🟡 | `lock_version` pe programări, testat. API-ul HTTP este ⬜. |
 | ARC-07 | Chei externe, indecși, migrații versionate, context istoric | ✅ | Migrații în `database/migrations`. Ștergerile sunt soft pentru specialiști, servicii și locații. |
 | ARC-08 | Europe/Bucharest, testare la schimbarea orei, date demo fictive | ✅ | UTC în DB, conversie per dată (D-003). Testul `test_dst_change_keeps_local_hours` trece. |
@@ -58,7 +58,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | PRG-01 | Confirmare automată sau prin recepție; reguli de blocare și expirare | 🟡 | Statusuri `pending`/`confirmed`, expirare `hold_expires_at`, comanda `bookings:expire` ✅. Comutatorul per locație există (`confirmation_mode`), dar fluxul public este ⬜. |
 | PRG-02 | Motor comun site–CRM; recepția blochează online; anularea eliberează | ✅ | Test T01 `test_online_and_reception_bookings_share_availability` și `test_cancellation_releases_the_slot`. |
 | PRG-03 | Reverificare în tranzacție, expirarea rezervărilor temporare, idempotență, concurență cu durate diferite | ✅ | Blocare pesimistă (D-004). Teste cu procese paralele reale pe MariaDB. |
-| PRG-04 | Reprogramare atomică; modificarea orarului nu șterge programări; limite min/max | 🟡 | Reprogramarea atomică și limitele min/max sunt ✅. Raportul programărilor afectate de modificarea orarului este ⬜. |
+| PRG-04 | Reprogramare atomică; modificarea orarului nu șterge programări; limite min/max | ✅ | Reprogramare atomică, limite min/max configurabile per specialist × locație, raportul programărilor afectate (`AffectedAppointments`) la orare și excepții. |
 | PRG-05 | Linkuri de anulare/reprogramare neghicibile, API public doar disponibilitate, rate limiting | 🟡 | UUID per programare. Linkurile semnate și API-ul public sunt ⬜. |
 | PRG-06 | Remindere după commit, invalidate la anulare, reverificare la expediere | 🟡 | Evenimentul `AppointmentChanged` este emis după commit (`DB::afterCommit`). Reminderele sunt ⬜. |
 
@@ -66,10 +66,10 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Cerință | Status | Implementare |
 |---|---|---|---|
-| CAL-01 | Zi, săptămână, lună, agendă; coloane pe specialist/cabinet; filtre; mobil = agendă | ⬜ | |
-| CAL-02 | Drag-and-drop cu validare, panou lateral, istoric, listă de așteptare | ⬜ | Validarea folosește `BookingService::reschedule`. |
+| CAL-01 | Zi, săptămână, lună, agendă; coloane pe specialist/cabinet; filtre; mobil = agendă | ✅ | `Crm\Calendar`: coloane pe specialist (cabinetul apare în orar și pe programare), filtre locație/specialist/status, agenda implicită sub 768 px, căutare pacient și creare din interval. |
+| CAL-02 | Drag-and-drop cu validare, panou lateral, istoric, listă de așteptare | ✅ | Drag-and-drop cu confirmare și formular alternativ, panou lateral cu istoric, culori însoțite de etichete, timpul din alte locații vizibil, listă de așteptare cu propuneri la anulare. |
 | CAL-03 | Statusuri, tranziții controlate, motiv și autor la anulare, vizită ≠ programare | ✅ | `AppointmentStatus::allowedTransitions`, `appointment_events`, tabel `visits` separat. |
-| ACC-01 | Permisiuni granulare, limitate pe locații și relația cu pacientul, refuz implicit | 🟡 | Refuz implicit și domeniu pe locații ✅ (`AccessControl`). Relația cu pacientul (policies) este ⬜. |
+| ACC-01 | Permisiuni granulare, limitate pe locații și relația cu pacientul, refuz implicit | 🟡 | Refuz implicit, domeniu pe locații, roluri personalizabile din admin ✅. Relația cu pacientul (fișe medicale) vine cu modulul de fișe ⬜. |
 | ACC-02 | Autorizare pe server pentru obiect, API, fișier, export; jurnalizare | 🟡 | Gate-ul global este ✅. Componentele Livewire verifică permisiunea la fiecare cerere (test cu cerere directă). Autentificările și modificările din catalog se jurnalizează. Policies pe pacienți și documente sunt ⬜. |
 
 ## 6–7. Pacienți, documente medicale, leaduri, comenzi, financiar
@@ -77,7 +77,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | ID | Status | Observații |
 |---|---|---|
 | PAC-01 | 🟡 | Tabel `patients`: CNP criptat + hash, limbă, reprezentant legal, relații de familie. UI ⬜. |
-| PAC-02 | 🟡 | Telefon normalizat, neunic. Detectarea duplicatelor și unirea controlată sunt ⬜. |
+| PAC-02 | 🟡 | Telefon normalizat, neunic; la adăugare se propun posibilele duplicate (telefon sau nume), fără unire automată. Unirea controlată este ⬜. |
 | PAC-03 | ⬜ | |
 | MED-01…05 | ⬜ | Șabloanele clinice trebuie validate de personal medical 📥. |
 | Consimțăminte | ⬜ | Textele sunt validate de beneficiar 📥. |
@@ -156,13 +156,13 @@ Starea detaliată pe module este în PROGRESS.md.
 | Segmente zilnice (Dimineața … Suplimentar 2) | `schedule_segments.segment` | ✅ |
 | Per segment: tip serviciu, resursă, durată, culoare, online | `service_ids`, `resource_id`, `slot_minutes`, `color`, `online_enabled` | ✅ (culoarea doar stocată; UI ⬜) |
 | Zile nelucrătoare per persoană / locație / toate | `schedule_exceptions` cu domeniu nul = toate | ✅ |
-| Programare online per punct de lucru (activ/inactiv, alias) | `locations.online_booking_enabled`, `content.alias` | 🟡 (UI ⬜) |
+| Programare online per punct de lucru (activ/inactiv, alias) | `locations.online_booking_enabled`, denumire publică RO/HU | ✅ |
 | Per medic × locație: info RO/HU, mesaj pauză, „programabil după”, durată, programări paralele, notificare | `location_specialist` (`content`, `online_paused`, `min_lead_minutes`, `max_advance_days`, `notify_on_online_booking`) + `offerings.capacity`, `duration_minutes` | ✅ în motor |
-| Calendar săptămânal cu carduri colorate și popover | Calendar CRM | ⬜ |
-| Status programare, dezactivare notificări, jurnal | `status`, `notifications_disabled`, `appointment_events` | ✅ model, UI ⬜ |
-| Listă de așteptare | | ⬜ |
+| Calendar săptămânal cu carduri colorate și popover | Calendar CRM (zi/săptămână/lună/agendă, panou lateral) | ✅ |
+| Status programare, dezactivare notificări, jurnal | `status`, `notifications_disabled`, `appointment_events`; istoric în calendar | ✅ (comutatorul de notificări vine cu modulul de comunicare) |
+| Listă de așteptare | `waitlist_entries` + panou în calendar | ✅ |
 | Drepturi pe module (toate / fără) | Permisiuni pe acțiune + locații (mai granular) | ✅ |
-| Gestionare utilizatori: rol, status, fotografie | `users`, `roles`, `specialists.photo_path` | 🟡 |
+| Gestionare utilizatori: rol, status, fotografie | Admin → Utilizatori și Roluri, fotografia pe profilul de specialist | ✅ |
 | Registrul pacienților, pacienți duplicați, pacienți noi | | ⬜ |
 | Rapoarte (încasări, avansuri, datorii, statistici) | | ⬜ |
 | Raport salarizare, cheltuieli/facturi parteneri | **Exclus** din livrarea de bază (cap. 1 „Condiții și limite”) | — |

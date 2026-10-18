@@ -18,6 +18,7 @@ class Navigation
                 'label' => null,
                 'items' => [
                     ['label' => 'crm.nav.dashboard', 'route' => 'crm.dashboard', 'active' => 'crm.dashboard', 'can' => null],
+                    ['label' => 'crm.nav.calendar', 'route' => 'crm.calendar', 'active' => 'crm.calendar', 'can' => 'appointments.view'],
                 ],
             ],
             [

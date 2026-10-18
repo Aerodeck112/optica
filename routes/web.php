@@ -19,6 +19,7 @@ use App\Livewire\Admin\SpecialistEditor;
 use App\Livewire\Admin\SpecialistIndex;
 use App\Livewire\Admin\UserEditor;
 use App\Livewire\Admin\UserIndex;
+use App\Livewire\Crm\Calendar;
 use Illuminate\Support\Facades\Route;
 
 // Public site: built in a later stage (WEB-01). Placeholder keeps "/" answering.
@@ -49,6 +50,7 @@ Route::prefix('crm')->name('crm.')->middleware('staff.locale')->group(function (
         Route::middleware('two-factor')->group(function () {
             Route::get('/', DashboardController::class)->name('dashboard');
             Route::post('locale', LocaleController::class)->name('locale');
+            Route::livewire('calendar', Calendar::class)->name('calendar');
         });
     });
 });

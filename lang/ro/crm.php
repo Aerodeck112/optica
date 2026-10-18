@@ -13,6 +13,7 @@ return [
         'label' => 'Navigare principală',
         'open' => 'Deschide meniul',
         'dashboard' => 'Astăzi',
+        'calendar' => 'Calendar',
         'group_planning' => 'Planificare',
         'schedules' => 'Orare de lucru',
         'exceptions' => 'Concedii și excepții',
@@ -31,6 +32,7 @@ return [
     ],
     'weekdays' => [1 => 'Luni', 2 => 'Marți', 3 => 'Miercuri', 4 => 'Joi', 5 => 'Vineri', 6 => 'Sâmbătă', 7 => 'Duminică'],
     'fields' => [
+        'title' => 'Titlu profesional',
         'time' => 'Ora',
         'patient' => 'Pacient',
         'service' => 'Serviciu',

@@ -30,7 +30,10 @@ app/
   Models/                  Eloquent
   Support/Access/          catalogul de permisiuni și AccessControl
   Support/Translation/     loader cu suprascrieri din DB, flux draft → publicare
-  Livewire/Admin/           editoare catalog (locații, specialiști, servicii)
+  Domain/Patients/          registrul de pacienți (căutare, adăugare, duplicate)
+  Domain/Scheduling/AffectedAppointments.php  programările care nu mai încap în orar
+  Livewire/Admin/           catalog, utilizatori, roluri, oferte, aparatură, orare, excepții
+  Livewire/Crm/Calendar.php calendarul (toate scrierile prin BookingService)
   Support/Audit/            jurnalul de securitate
   Support/Media/            re-encodarea imaginilor încărcate
   Support/Ui/Navigation.php meniul filtrat după permisiuni
@@ -93,7 +96,9 @@ Modulele următoare urmează aceeași structură: `app/Domain/{Patients,Medical,
 | `translation_revisions` | istoricul traducerilor |
 | `jobs`, `failed_jobs`, `job_batches`, `cache`, `cache_locks`, `sessions` | infrastructură Laravel pe DB |
 
-Tabele planificate: `medical_records`, `medical_record_amendments`, `prescriptions`, `documents`, `consents`, `leads`, `tasks`, `orders`, `order_status_events`, `payments`, `message_templates`, `messages`, `message_attempts`, `campaigns`, `pages`, `page_versions`, `media`, `menus`, `redirects`, `import_batches`, `import_rows`, `waitlist_entries`, `saved_report_filters`, `update_runs`.
+| `waitlist_entries` | lista de așteptare per locație |
+
+Tabele planificate: `medical_records`, `medical_record_amendments`, `prescriptions`, `documents`, `consents`, `leads`, `tasks`, `orders`, `order_status_events`, `payments`, `message_templates`, `messages`, `message_attempts`, `campaigns`, `pages`, `page_versions`, `media`, `menus`, `redirects`, `import_batches`, `import_rows`, `saved_report_filters`, `update_runs`.
 
 ## 5. Motorul de disponibilitate
 1. **Ferestre de lucru** (`WorkingWindows`): pentru fiecare dată locală se aleg orarele active ale combinației specialist × locație. Se calculează săptămâna din ciclu, se iau segmentele zilei (filtrate pe serviciu și, pentru online, pe flagul `online_enabled`), se scad excepțiile „indisponibil” (zi întreagă sau interval) și se adaugă excepțiile „disponibil”. Orele locale se convertesc în UTC **pe fiecare dată în parte**, deci trecerea la ora de vară sau de iarnă nu deplasează programul.

@@ -18,6 +18,21 @@ trait GuardsCatalog
         $this->authorize('catalog.manage');
     }
 
+    /** "content.hu.name" becomes "nume (Magyar)" in validation messages. */
+    protected function validationAttributes(): array
+    {
+        $labels = [];
+        foreach ((array) ($this->content ?? []) as $locale => $fields) {
+            foreach (array_keys((array) $fields) as $field) {
+                $key = 'crm.fields.'.$field;
+                $label = __($key) !== $key ? __($key) : $field;
+                $labels["content.$locale.$field"] = mb_strtolower($label).' ('.__('crm.languages.'.$locale).')';
+            }
+        }
+
+        return $labels;
+    }
+
     protected function audit(string $action, Model $subject, array $meta = []): void
     {
         app(AuditLogger::class)->log($action, $subject, $meta);
