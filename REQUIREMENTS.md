@@ -111,7 +111,11 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Status |
 |---|---|
-| RAP-01…05 | ⬜. Datele necesare (sursă, creator, evenimente de reprogramare, vizite separate de programări, locația consultației) sunt deja în model. |
+| RAP-01 | ✅ | CRM → Rapoarte: sinteză globală și pe aria permisă; managerii văd doar locațiile lor; drill-down locație → specialist → programări; indicatorii nu dau acces la documente clinice (în detaliu, numele pacientului apare doar pentru cei cu drept de pacienți). |
+| RAP-02 | ✅ | Filtre combinabile: perioadă și comparație (anterioară / anul trecut), locații, specialiști, servicii, status, sursă, pacient nou/revenit, creator, limba pacientului; filtre salvate. |
+| RAP-03 | ✅ | Centralizator locații, detaliu pe specialiști și servicii, matrice locație × specialist, evoluție, distribuție zile × ore, ocupare, financiar, surse, lista programărilor; fiecare indicator își afișează regula și numitorul (D-021). |
+| RAP-04 | ✅ | Programarea aparține locației consultației; pacienții unici se numără distinct pe tot setul (`ReportEngineTest`). |
+| RAP-05 | ✅ / ⚙️ | Export XLSX, CSV, PDF în RO/HU cu filtrele și data generării, generat în fundal, privat autorului, jurnalizat, șters după 7 zile; protecție la formule în foi de calcul. Rapoarte zilnice / săptămânale / lunare către destinatari expliciți, cu drepturile autorului; trimiterea cere un cont SMTP configurat ⚙️. |
 
 ## 11. Securitate și exploatare
 

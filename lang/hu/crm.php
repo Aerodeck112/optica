@@ -19,6 +19,7 @@ return [
         'tasks' => 'Feladatok',
         'orders' => 'Szemüvegrendelések',
         'payments' => 'Befizetések',
+        'reports' => 'Kimutatások',
         'group_planning' => 'Tervezés',
         'schedules' => 'Munkarendek',
         'exceptions' => 'Szabadságok és kivételek',

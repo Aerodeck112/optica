@@ -70,6 +70,19 @@ class PatientFileController extends Controller
         return $this->pdf('pdf.order-handover', ['order' => $order->load(['patient', 'location', 'items', 'responsible']), 'summary' => $ledger->summary($order)], $locale, 'predare-'.$order->number);
     }
 
+    /** A report export: only its author, only with the export right (RAP-05). */
+    public function reportExport(Request $request, string $uuid): Response
+    {
+        $export = \App\Models\ReportExport::where('uuid', $uuid)->where('user_id', $request->user()->id)->where('status', 'done')->firstOrFail();
+        abort_unless(Gate::allows('reports.export'), 403);
+        abort_unless($export->path && Storage::disk('local')->exists($export->path), 404);
+        app(AuditLogger::class)->log('reports.downloaded', $export, ['report' => $export->report, 'format' => $export->format]);
+
+        return Storage::disk('local')->download($export->path, 'raport-'.$export->report.'-'.$export->created_at->format('Ymd-Hi').'.'.$export->format, [
+            'X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'private, no-store',
+        ]);
+    }
+
     private function locale(Request $request, ?string $default = null): string
     {
         $locale = (string) $request->query('lang', $default ?? app()->getLocale());

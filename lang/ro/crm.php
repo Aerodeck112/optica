@@ -19,6 +19,7 @@ return [
         'tasks' => 'Sarcini',
         'orders' => 'Comenzi ochelari',
         'payments' => 'Încasări',
+        'reports' => 'Rapoarte',
         'group_planning' => 'Planificare',
         'schedules' => 'Orare de lucru',
         'exceptions' => 'Concedii și excepții',

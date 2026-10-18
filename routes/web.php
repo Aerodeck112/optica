@@ -47,6 +47,7 @@ use App\Livewire\Crm\OrderIndex;
 use App\Livewire\Crm\PatientIndex;
 use App\Livewire\Crm\PatientShow;
 use App\Livewire\Crm\PaymentIndex;
+use App\Livewire\Crm\Reports;
 use App\Livewire\Crm\TaskList;
 use App\Livewire\Site\BookingWizard;
 use App\Livewire\Site\ManageBooking;
@@ -121,6 +122,8 @@ Route::prefix('crm')->name('crm.')->middleware('staff.locale')->group(function (
             Route::livewire('payments', PaymentIndex::class)->name('payments.index');
             Route::livewire('messages', MessageLog::class)->name('messages.index');
             Route::livewire('campaigns', Campaigns::class)->name('campaigns');
+            Route::livewire('reports', Reports::class)->name('reports');
+            Route::get('reports/exports/{uuid}', [PatientFileController::class, 'reportExport'])->middleware('throttle:30,1')->name('reports.download');
         });
     });
 });

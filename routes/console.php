@@ -23,3 +23,7 @@ Schedule::command('queue:work database --stop-when-empty --max-time=50 --tries=3
 
 // Reminders, campaigns and queued messages (COM-02). Short runs, never two at once.
 Schedule::command('messages:send')->everyMinute()->withoutOverlapping(5);
+
+// Scheduled reports, early in the morning (clinic time), and cleanup of old export files.
+Schedule::command('reports:send-scheduled')->dailyAt('06:30')->timezone(config('optica.clinic_timezone'))->withoutOverlapping(30);
+Schedule::command('reports:prune-exports')->daily();

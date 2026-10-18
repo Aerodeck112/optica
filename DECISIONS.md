@@ -102,6 +102,16 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 - Linkul de gestionare din mesaje are nevoie de token: acesta se păstrează criptat în programare, iar căutarea folosește în continuare doar hash-ul.
 - Email: SMTP nu oferă confirmare de livrare, deci emailurile rămân „acceptat de furnizor”; deschiderile nu sunt măsurate.
 
+### D-021 Reguli de calcul în rapoarte
+- „Programări” = programări distincte, fără rezervările temporare (`held`); data folosită (consultație sau creare) se alege explicit.
+- Rata anulărilor = anulate / toate programările din set. Rata neprezentărilor = neprezentări / programările scadente (sosit, în consultație, finalizat, neprezentat), ca o programare viitoare să nu scadă rata.
+- Reprogramări = evenimente de mutare datate în perioadă, separat de programări și pacienți.
+- Ocupare = minute ale programărilor în statusurile care ocupă timp (în așteptare, confirmată, sosit, în consultație, finalizată, neprezentat) / minute de lucru calculate de același motor ca programarea online (orare, pauze, concedii, excepții, ora de vară), înmulțite cu capacitatea maximă configurată.
+- Pacient nou = fără o programare anterioară neanulată, în nicio locație.
+- Financiar: valoarea serviciilor, valoarea comenzilor predate, încasări, avansuri (incluse o singură dată), restituiri și soldurile de încasat sunt afișate separat.
+- Sursele lipsă rămân vizibile; nicio conversie nu este atribuită unei campanii fără legătură înregistrată.
+- Calculele se fac în aplicație pentru grupările pe zi și oră (ora clinicii), fără a depinde de tabelele de fus orar ale MySQL, care lipsesc adesea pe găzduirea partajată.
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |

@@ -24,6 +24,7 @@ class Navigation
                     ['label' => 'crm.nav.tasks', 'route' => 'crm.tasks', 'active' => 'crm.tasks', 'can' => 'tasks.manage'],
                     ['label' => 'crm.nav.orders', 'route' => 'crm.orders.index', 'active' => 'crm.orders.*', 'can' => 'orders.view'],
                     ['label' => 'crm.nav.payments', 'route' => 'crm.payments.index', 'active' => 'crm.payments.*', 'can' => 'payments.view'],
+                    ['label' => 'crm.nav.reports', 'route' => 'crm.reports', 'active' => 'crm.reports*', 'can' => 'reports.view'],
                 ],
             ],
             [
