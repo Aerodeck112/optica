@@ -95,6 +95,13 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 - O plată nu poate depăși soldul, o restituire nu poate depăși suma încasată; operațiunile pe aceeași comandă sunt serializate prin blocare. O greșeală se anulează cu motiv (rândul rămâne în jurnal) și se reintroduce corect.
 - Aplicația nu emite documente fiscale și nu transmite e-Factura (FIN-03); documentul de predare și jurnalul de încasări spun explicit acest lucru. Un eventual conector fiscal va fi un modul separat, documentat împreună cu costurile.
 
+### D-020 Furnizori de comunicare și expedierea prin cron
+- Adaptoare implementate: SMTP (email), Twilio (SMS) și WhatsApp Business Cloud API de la Meta (WhatsApp). Sunt API-uri publice, documentate, cu confirmări de livrare semnate (WhatsApp: HMAC-SHA256 cu App Secret; Twilio: HMAC-SHA1 cu Auth Token). Un alt furnizor de SMS (de ex. unul românesc) se adaugă ca adaptor nou, după audit, fără schimbări în restul aplicației.
+- Nu există un „driver de test” care să marcheze mesaje ca trimise: fără credențiale, canalul este „neconfigurat” și mesajul rămâne „netrimis”, cu motivul afișat.
+- Mesajele se trimit din comanda `messages:send`, rulată de cron în fiecare minut, cu revendicare atomică a fiecărui mesaj (fără Redis sau worker permanent). Erorile temporare se reîncearcă de cel mult 5 ori (1, 5, 15, 60 minute); un timeout după trimiterea cererii marchează mesajul „rezultat neconfirmat” și nu se retrimite automat.
+- Linkul de gestionare din mesaje are nevoie de token: acesta se păstrează criptat în programare, iar căutarea folosește în continuare doar hash-ul.
+- Email: SMTP nu oferă confirmare de livrare, deci emailurile rămân „acceptat de furnizor”; deschiderile nu sunt măsurate.
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |

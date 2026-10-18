@@ -13,6 +13,7 @@ Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Vers
 - Administrare → Șabloane de fișă; permisiunea nouă `medical_records.templates`.
 - Comenzi de ochelari: articole, prescripție, statusuri cu istoric, comenzi întârziate, document de predare.
 - Financiar operațional: servicii efectuate, încasări, avansuri, restituiri, anulări cu motiv, jurnal de încasări.
+- Comunicare: canale email (SMTP), SMS (Twilio), WhatsApp (Cloud API); șabloane RO/HU; reguli de trimitere cu fallback; remindere; rechemări; jurnal de mesaje; webhookuri semnate; campanii cu dezabonare.
 
 ### Modificat
 - Discul privat (`storage/app/private`) nu mai poate fi servit direct prin URL semnat; fișierele trec doar prin controllerul autorizat.

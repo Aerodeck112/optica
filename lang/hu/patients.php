@@ -22,6 +22,7 @@ return [
         'orders' => 'Rendelések',
         'finance' => 'Pénzügyek',
         'documents' => 'Dokumentumok',
+        'communications' => 'Kommunikáció',
         'consents' => 'Hozzájárulások',
         'tasks' => 'Feladatok',
         'history' => 'Előzmények',
@@ -160,7 +161,7 @@ return [
     ],
     'timeline' => [
         'record' => 'Orvosi karton – :name',
-        'types' => ['appointment' => 'Időpont', 'record' => 'Karton', 'prescription' => 'Recept', 'document' => 'Dokumentum', 'lead' => 'Megkeresés', 'consent' => 'Hozzájárulás'],
+        'types' => ['appointment' => 'Időpont', 'record' => 'Karton', 'prescription' => 'Recept', 'document' => 'Dokumentum', 'lead' => 'Megkeresés', 'consent' => 'Hozzájárulás', 'message' => 'Üzenet'],
     ],
     'pdf' => [
         'footer' => 'A dokumentum :date időpontban készült az Optica Optofarm rendszerében. Bizalmas egészségügyi adatokat tartalmaz.',

@@ -60,7 +60,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | PRG-03 | Reverificare în tranzacție, expirarea rezervărilor temporare, idempotență, concurență cu durate diferite | ✅ | Blocare pesimistă (D-004). Teste cu procese paralele reale pe MariaDB. |
 | PRG-04 | Reprogramare atomică; modificarea orarului nu șterge programări; limite min/max | ✅ | Reprogramare atomică, limite min/max configurabile per specialist × locație, raportul programărilor afectate (`AffectedAppointments`) la orare și excepții. |
 | PRG-05 | Linkuri de anulare/reprogramare neghicibile, API public doar disponibilitate, rate limiting | ✅ | Link de gestionare cu token de 192 biți (în baza de date doar hash-ul), `/api/disponibilitate` returnează doar intervale, limitare pe IP (`OnlineBookingTest`). |
-| PRG-06 | Remindere după commit, invalidate la anulare, reverificare la expediere | 🟡 | Evenimentul `AppointmentChanged` este emis după commit (`DB::afterCommit`). Reminderele sunt ⬜. |
+| PRG-06 | Remindere după commit, invalidate la anulare, reverificare la expediere | ✅ | Mesajele se creează după commit; la mutare sau anulare reminderele în așteptare se retrag; la trimitere se reverifică statusul și ora programării (`MessagingTest`). |
 
 ## 5. Calendar CRM și acces
 
@@ -83,7 +83,7 @@ Starea detaliată pe module este în PROGRESS.md.
 | Consimțăminte | ✅ / 📥 | Informare, condiții și marketing pe canal, cu versiune, dată, sursă și istoric; acordul sau retragerea se înregistrează și la recepție; consimțămintele din formulare trec la pacient la conversie. Textele și retenția se validează de beneficiar 📥. |
 | CRM-01…02 | ✅ | CRM → Solicitări: tip, limbă, sursă și UTM, locație, responsabil, termen, istoric, note, sarcini; statusuri nou/contactat/în lucru/convertit/închis; conversia caută întâi pacientul existent. |
 | CRM-03 | 🟡 | UTM-urile din formular se păstrează; nu există pixeli publicitari. Atribuirea campaniilor vine cu rapoartele. |
-| CMD-01…03 | ✅ / ⚙️ | CRM → Comenzi ochelari: pacient, locație, responsabil, prescripție (valorile doar pentru cei autorizați), articole (ramă, lentile, tratamente), preț, avans, sold, termen; statusuri cu autor și oră; lista întârziatelor; istoric; document de predare PDF; legătura cu consultația. Notificarea „gata de ridicare” este emisă ca eveniment și se trimite odată cu modulul de comunicare ⚙️. |
+| CMD-01…03 | ✅ / ⚙️ | CRM → Comenzi ochelari: pacient, locație, responsabil, prescripție (valorile doar pentru cei autorizați), articole (ramă, lentile, tratamente), preț, avans, sold, termen; statusuri cu autor și oră; lista întârziatelor; istoric; document de predare PDF; legătura cu consultația. Mesajul „gata de ridicare” pleacă în limba pacientului, fără detalii medicale, când regula și canalul sunt configurate ⚙️. |
 | FIN-01…03 | ✅ | Valoarea serviciilor și a comenzilor separată de încasări; plăți, avansuri, restituiri cu dată, metodă, locație și operator; corecturile anulează cu motiv, fără ștergere; sume în bani întregi; avansul nu se numără de două ori; nicio pretenție de document fiscal (D-019). |
 
 ## 8. Bilingvism și traduceri
@@ -102,7 +102,10 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Status |
 |---|---|
-| COM-01…05, MKT-01…03, SMS-01, WAP-01 | ⬜ și ⚙️ (furnizorii și credențialele se stabilesc la audit) |
+| COM-01…05 | ✅ / ⚙️ | Adaptoare reale: SMTP, Twilio (SMS), WhatsApp Business Cloud API (Meta); credențiale criptate; canalele fără cont complet apar „neconfigurate” și nu trimit. Reguli pe tip și locație, șabloane RO/HU, test real către destinatarul introdus, coadă persistentă prin cron, limite pe minut, istoric pe pacient și programare, stări separate (în așteptare, acceptat, trimis, livrat, eșuat, rezultat neconfirmat). Webhookuri semnate și idempotente; reîncercări limitate doar la erori temporare; timeout-ul nu provoacă retrimitere automată. Fallback doar după eșec definitiv. Furnizorii și credențialele reale se stabilesc la audit ⚙️. |
+| MKT-01…03 | ✅ / ⚙️ | Campanii email/SMS: segmente doar după limbă și locație, destinatari doar cu acord pe canal, test, programare, pauză, reluare, oprire; consimțământul și limita de frecvență se reverifică la trimitere; dezabonare cu link semnat (email) și STOP (SMS/WhatsApp); interval de liniște; cost estimat separat de cel raportat; deschiderile email nu sunt urmărite (declarat). Campaniile WhatsApp nu sunt activate (necesită șabloane de marketing aprobate). |
+| SMS-01 | ✅ | Calculul segmentelor GSM-7/UCS-2 și explicarea efectului diacriticelor; opțiune de trimitere fără diacritice. |
+| WAP-01 | ✅ / ⚙️ | Doar API-ul oficial; șabloanele au nume și stare de aprobare Meta; modificarea textului unui șablon aprobat îl readuce la ciornă. Nu se folosește WhatsApp Web. |
 
 ## 10. Rapoarte
 

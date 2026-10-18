@@ -53,10 +53,14 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 | Comenzi de ochelari | articole cu preț, prescripție legată (valorile vizibile doar celor autorizați), responsabil, termen, statusuri controlate cu istoric, predare cu sold doar cu confirmare, lista întârziatelor, document de predare PDF, acces pe locații | `LedgerTest`, `OrdersScreensTest` |
 | Financiar operațional | servicii efectuate (preț propus din configurare), încasări, avansuri, restituiri, anulări cu motiv, sold pe comandă, serviciu și pacient, jurnal de încasări pe perioadă și locație cu totaluri pe metode, separat de valoarea serviciilor și a comenzilor predate; protecție la dublu clic | `LedgerTest` (8), `OrdersScreensTest` (5) |
 
-Total: **149 de teste, toate trec** (`php artisan test`).
+| Comunicare | conturi email (SMTP), SMS (Twilio), WhatsApp (Cloud API) cu credențiale criptate și stare „neconfigurat”; test real către destinatarul introdus (WhatsApp: verificarea conexiunii); șabloane RO/HU cu variabile validate, previzualizare cu date fictive, segmente SMS; reguli pe tip și locație cu ordinea canalelor; coadă prin cron cu reverificare, limite pe minut, interval de liniște; webhookuri semnate; jurnal cu stări reale, cost estimat și raportat, retrimitere manuală; tab Comunicări în dosar cu rechemare la control | `MessagingTest` (10), `CommunicationScreensTest` (7) |
+| Mesaje operaționale | cerere primită, confirmare, mutare, anulare, reminder (retras la schimbări), comandă gata, rechemare – fără detalii medicale; șabloane implicite RO/HU, reguli inițial dezactivate | `MessagingTest` |
+| Campanii | email și SMS; segmente după limbă și locație; doar pacienți cu acord; test; programare, pauză, reluare, oprire; reverificarea acordului și a limitei de frecvență la trimitere; dezabonare cu link semnat și STOP | `MessagingTest`, `CommunicationScreensTest` |
+
+Total: **166 de teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
-- Furnizorii de email, WhatsApp și SMS: se aleg la audit (COM-01).
+- Conturile reale de email (SMTP), SMS (Twilio sau alt furnizor, după audit) și WhatsApp Business (Meta), plus aprobarea șabloanelor WhatsApp (COM-01, WAP-01). Până atunci, canalele apar „neconfigurate” și nu se trimite nimic.
 - Hostingul cPanel: versiunea PHP, extensiile, cronul și document root trebuie verificate (INS-02, D-001).
 
 ## În așteptarea datelor de la beneficiar
@@ -69,9 +73,8 @@ Total: **149 de teste, toate trec** (`php artisan test`).
 - Traducerea maghiară a paragrafului „Știai că…” (pagina Medici) și versiunea HU a textelor legale (N-08).
 
 ## Neimplementat încă (ordinea planificată)
-1. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
-2. Rapoarte avansate și exporturi (Excel, CSV, PDF).
-3. Editorul vizual de traduceri și centrul de traduceri.
-4. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
-5. Import din Evolvo (la final).
-6. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.
+1. Rapoarte avansate și exporturi (Excel, CSV, PDF).
+2. Editorul vizual de traduceri și centrul de traduceri.
+3. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
+4. Import din Evolvo (la final).
+5. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.

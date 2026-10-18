@@ -34,6 +34,16 @@ class Navigation
                 ],
             ],
             [
+                'label' => 'crm.nav.group_communication',
+                'items' => [
+                    ['label' => 'crm.nav.messages', 'route' => 'crm.messages.index', 'active' => 'crm.messages.*', 'can' => 'communications.view_log'],
+                    ['label' => 'crm.nav.campaigns', 'route' => 'crm.campaigns', 'active' => 'crm.campaigns', 'can' => 'campaigns.view'],
+                    ['label' => 'crm.nav.message_templates', 'route' => 'admin.communication.templates', 'active' => 'admin.communication.templates', 'can' => 'communications.templates'],
+                    ['label' => 'crm.nav.message_rules', 'route' => 'admin.communication.rules', 'active' => 'admin.communication.rules', 'can' => 'communications.templates'],
+                    ['label' => 'crm.nav.channels', 'route' => 'admin.communication.channels', 'active' => 'admin.communication.channels', 'can' => 'integrations.manage'],
+                ],
+            ],
+            [
                 'label' => 'crm.nav.group_site',
                 'items' => [
                     ['label' => 'crm.nav.pages', 'route' => 'cms.pages.index', 'active' => 'cms.pages.*', 'can' => 'cms.edit'],

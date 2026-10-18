@@ -22,6 +22,7 @@ return [
         'orders' => 'Comenzi',
         'finance' => 'Financiar',
         'documents' => 'Documente',
+        'communications' => 'Comunicări',
         'consents' => 'Consimțăminte',
         'tasks' => 'Sarcini',
         'history' => 'Istoric',
@@ -160,7 +161,7 @@ return [
     ],
     'timeline' => [
         'record' => 'Fișă medicală – :name',
-        'types' => ['appointment' => 'Programare', 'record' => 'Fișă', 'prescription' => 'Prescripție', 'document' => 'Document', 'lead' => 'Solicitare', 'consent' => 'Consimțământ'],
+        'types' => ['appointment' => 'Programare', 'record' => 'Fișă', 'prescription' => 'Prescripție', 'document' => 'Document', 'lead' => 'Solicitare', 'consent' => 'Consimțământ', 'message' => 'Mesaj'],
     ],
     'pdf' => [
         'footer' => 'Document generat la :date din sistemul Optica Optofarm. Conține date medicale confidențiale.',

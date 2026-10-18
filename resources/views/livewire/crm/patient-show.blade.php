@@ -50,6 +50,8 @@
             <livewire:crm.patient.finance-tab :patient-id="$patient->id" :key="'finance-'.$patient->id" />
         @elseif ($tab === 'documents')
             <livewire:crm.patient.documents-tab :patient-id="$patient->id" :key="'docs-'.$patient->id" />
+        @elseif ($tab === 'communications')
+            <livewire:crm.patient.communications-tab :patient-id="$patient->id" :key="'comms-'.$patient->id" />
         @elseif ($tab === 'consents')
             @include('livewire.crm.patient.consents')
         @elseif ($tab === 'tasks')

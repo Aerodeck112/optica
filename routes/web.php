@@ -11,6 +11,9 @@ use App\Http\Controllers\Site\SitePageController;
 use App\Http\Controllers\Site\UnsubscribeController;
 use App\Http\Controllers\Webhooks\MessagingWebhookController;
 use App\Livewire\Admin\ClinicalTemplates;
+use App\Livewire\Admin\Communication\ChannelAccounts;
+use App\Livewire\Admin\Communication\MessageRules;
+use App\Livewire\Admin\Communication\MessageTemplates;
 use App\Livewire\Admin\ExceptionIndex;
 use App\Livewire\Admin\LocationEditor;
 use App\Livewire\Admin\LocationIndex;
@@ -34,9 +37,11 @@ use App\Livewire\Cms\PageIndex;
 use App\Livewire\Cms\RedirectManager;
 use App\Livewire\Cms\SiteSettings;
 use App\Livewire\Crm\Calendar;
+use App\Livewire\Crm\Campaigns;
 use App\Livewire\Crm\ClinicalRecordEditor;
 use App\Livewire\Crm\LeadIndex;
 use App\Livewire\Crm\LeadShow;
+use App\Livewire\Crm\MessageLog;
 use App\Livewire\Crm\OrderEditor;
 use App\Livewire\Crm\OrderIndex;
 use App\Livewire\Crm\PatientIndex;
@@ -114,6 +119,8 @@ Route::prefix('crm')->name('crm.')->middleware('staff.locale')->group(function (
             Route::livewire('orders/{order}', OrderEditor::class)->name('orders.edit');
             Route::get('orders/{order}/handover', [PatientFileController::class, 'orderHandover'])->middleware('throttle:30,1')->name('orders.handover');
             Route::livewire('payments', PaymentIndex::class)->name('payments.index');
+            Route::livewire('messages', MessageLog::class)->name('messages.index');
+            Route::livewire('campaigns', Campaigns::class)->name('campaigns');
         });
     });
 });
@@ -140,6 +147,9 @@ Route::prefix('admin')->name('admin.')->middleware(['staff.locale', 'auth', 'act
     Route::livewire('roles/create', RoleEditor::class)->name('roles.create');
     Route::livewire('roles/{role}', RoleEditor::class)->name('roles.edit');
     Route::livewire('clinical-templates', ClinicalTemplates::class)->name('clinical-templates');
+    Route::livewire('communication/channels', ChannelAccounts::class)->name('communication.channels');
+    Route::livewire('communication/templates', MessageTemplates::class)->name('communication.templates');
+    Route::livewire('communication/rules', MessageRules::class)->name('communication.rules');
 });
 
 /*

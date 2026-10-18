@@ -60,4 +60,20 @@ class WhatsAppCloudAdapter implements ChannelAdapter
 
         return new SendResult('accepted', (string) $response->json('messages.0.id'));
     }
+
+    /** @return array{ok: bool, message: string} connection check that sends nothing to anyone */
+    public function check(ChannelAccount $account): array
+    {
+        try {
+            $response = Http::withToken((string) $account->credential('access_token'))->timeout(15)
+                ->get('https://graph.facebook.com/'.($account->credential('api_version') ?? 'v21.0').'/'.rawurlencode((string) $account->credential('phone_number_id')), ['fields' => 'display_phone_number,verified_name']);
+        } catch (ConnectionException $e) {
+            return ['ok' => false, 'message' => __('messages.accounts.test_failed', ['reason' => $e->getMessage()])];
+        }
+        if (! $response->successful()) {
+            return ['ok' => false, 'message' => __('messages.accounts.test_failed', ['reason' => (string) $response->json('error.message')])];
+        }
+
+        return ['ok' => true, 'message' => __('messages.accounts.whatsapp_check_ok', ['name' => $response->json('verified_name'), 'number' => $response->json('display_phone_number')])];
+    }
 }

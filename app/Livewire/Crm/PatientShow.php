@@ -26,7 +26,7 @@ use Livewire\Component;
  */
 class PatientShow extends Component
 {
-    public const TABS = ['overview', 'appointments', 'records', 'prescriptions', 'orders', 'finance', 'documents', 'consents', 'tasks', 'history'];
+    public const TABS = ['overview', 'appointments', 'records', 'prescriptions', 'orders', 'finance', 'documents', 'communications', 'consents', 'tasks', 'history'];
 
     #[Locked]
     public int $patientId;
@@ -88,6 +88,7 @@ class PatientShow extends Component
             'documents' => $user->can('documents.view'),
             'orders' => $user->can('orders.view'),
             'finance' => $user->can('payments.view'),
+            'communications' => $user->can('communications.view_log'),
             'tasks' => $user->can('tasks.manage'),
             default => true,
         }));
@@ -272,6 +273,11 @@ class PatientShow extends Component
         }
         foreach ($patient->leads()->latest()->limit(50)->get() as $l) {
             $items->push(['at' => $l->created_at, 'type' => 'lead', 'title' => __('leads.types.'.$l->type), 'meta' => __('leads.statuses.'.$l->status)]);
+        }
+        if ($user->can('communications.view_log')) {
+            foreach (\App\Models\Message::where('patient_id', $patient->id)->latest('id')->limit(100)->get() as $m) {
+                $items->push(['at' => $m->created_at, 'type' => 'message', 'title' => __('messages.types.'.$m->type).' · '.__('messages.channels.'.$m->channel), 'meta' => __('messages.statuses.'.$m->status)]);
+            }
         }
         foreach (Consent::where('patient_id', $patient->id)->latest('given_at')->limit(100)->get() as $c) {
             $items->push(['at' => $c->given_at, 'type' => 'consent', 'title' => __('patients.consents.purposes.'.$c->purpose).($c->channel ? ' · '.__('patients.consents.channels.'.$c->channel) : ''), 'meta' => $c->granted ? __('patients.consents.granted') : __('patients.consents.refused')]);

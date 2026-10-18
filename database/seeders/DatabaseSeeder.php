@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             SiteContentSeeder::class,
             CmsContentSeeder::class,
             ClinicalTemplateSeeder::class,
+            MessageTemplateSeeder::class,
         ]);
     }
 }

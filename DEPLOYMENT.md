@@ -35,6 +35,12 @@ php artisan test
 ```
 Testele folosesc baza de date `optica_test` (vezi `phpunit.xml`) pe MySQL/MariaDB. SQLite nu este suportat pentru teste, deoarece testele de concurență au nevoie de blocări reale pe rând.
 
+## Comunicare (email, SMS, WhatsApp)
+- Conturile se configurează în **Comunicare → Canale**; datele de acces se păstrează criptat cu `APP_KEY`.
+- Pentru Twilio și WhatsApp, adresa de notificare afișată în ecranul contului (`/webhooks/twilio/{id}`, `/webhooks/whatsapp/{id}`) se introduce în contul furnizorului. Site-ul trebuie să fie accesibil prin HTTPS, iar `APP_URL` trebuie să fie exact adresa publică (semnătura Twilio include URL-ul).
+- Regulile de trimitere pornesc dezactivate. Nicio programare nu generează mesaje până când un administrator configurează un canal și activează regula.
+- Cronul unic rulează și `messages:send` (remindere, campanii, coadă).
+
 ## Fișiere încărcate
 Fotografiile și celelalte fișiere publice se salvează în `public/uploads/` (fără `storage:link`, care cere symlink). Directorul trebuie să poată fi scris de PHP și **nu se suprascrie niciodată** la actualizare. Documentele private ale pacienților (investigații, documente externe) se salvează în `storage/app/private/patients/`, în afara zonei publice, și se descarcă numai prin aplicație (D-018). Directorul trebuie inclus în backup și nu se suprascrie la actualizare.
 
