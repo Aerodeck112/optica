@@ -43,6 +43,7 @@ return [
         'users' => 'Utilizatori',
         'roles' => 'Roluri și permisiuni',
         'clinical_templates' => 'Șabloane de fișă',
+        'translations' => 'Traduceri',
     ],
     'dashboard' => [
         'title' => 'Astăzi',

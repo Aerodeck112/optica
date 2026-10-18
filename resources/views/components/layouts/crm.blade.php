@@ -72,6 +72,16 @@
             </button>
             <h1 class="min-w-0 flex-1 truncate text-lg font-semibold">{{ $title }}</h1>
 
+            @can('translations.edit')
+                @unless (\App\Http\Middleware\TranslationMode::activeFor(request()))
+                    <form method="POST" action="{{ route('crm.translation-mode') }}" class="hidden sm:flex">
+                        @csrf
+                        <input type="hidden" name="return_to" value="{{ request()->getRequestUri() }}">
+                        <button type="submit" class="btn-secondary min-h-9 px-3 text-sm">{{ __('translations.mode.turn_on') }}</button>
+                    </form>
+                @endunless
+            @endcan
+
             <form method="POST" action="{{ route('crm.locale') }}" class="flex" x-data
                   @submit="window.OptofarmDrafts && window.OptofarmDrafts.save()">
                 @csrf
@@ -101,6 +111,7 @@
     </div>
 </div>
 
+<x-translation-mode />
 @livewireScripts
 <script>
     // Keeps unsaved form input across a language switch (LNG-02): saved before submit, restored on load.

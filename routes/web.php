@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Crm\DashboardController;
 use App\Http\Controllers\Crm\LocaleController;
 use App\Http\Controllers\Crm\PatientFileController;
+use App\Http\Controllers\Crm\TranslationModeController;
 use App\Http\Controllers\Site\AvailabilityController;
 use App\Http\Controllers\Site\SitePageController;
 use App\Http\Controllers\Site\UnsubscribeController;
@@ -26,6 +27,7 @@ use App\Livewire\Admin\ServiceEditor;
 use App\Livewire\Admin\ServiceIndex;
 use App\Livewire\Admin\SpecialistEditor;
 use App\Livewire\Admin\SpecialistIndex;
+use App\Livewire\Admin\TranslationCenter;
 use App\Livewire\Admin\UserEditor;
 use App\Livewire\Admin\UserIndex;
 use App\Livewire\Cms\MediaManager;
@@ -105,6 +107,7 @@ Route::prefix('crm')->name('crm.')->middleware('staff.locale')->group(function (
         Route::middleware('two-factor')->group(function () {
             Route::get('/', DashboardController::class)->name('dashboard');
             Route::post('locale', LocaleController::class)->name('locale');
+            Route::post('translation-mode', TranslationModeController::class)->name('translation-mode');
             Route::livewire('calendar', Calendar::class)->name('calendar');
             Route::livewire('patients', PatientIndex::class)->name('patients.index');
             Route::livewire('patients/{patient}', PatientShow::class)->name('patients.show');
@@ -150,6 +153,7 @@ Route::prefix('admin')->name('admin.')->middleware(['staff.locale', 'auth', 'act
     Route::livewire('roles/create', RoleEditor::class)->name('roles.create');
     Route::livewire('roles/{role}', RoleEditor::class)->name('roles.edit');
     Route::livewire('clinical-templates', ClinicalTemplates::class)->name('clinical-templates');
+    Route::livewire('translations', TranslationCenter::class)->name('translations');
     Route::livewire('communication/channels', ChannelAccounts::class)->name('communication.channels');
     Route::livewire('communication/templates', MessageTemplates::class)->name('communication.templates');
     Route::livewire('communication/rules', MessageRules::class)->name('communication.rules');

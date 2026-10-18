@@ -64,6 +64,7 @@ class Navigation
                     ['label' => 'crm.nav.users', 'route' => 'admin.users.index', 'active' => 'admin.users.*', 'can' => 'users.view'],
                     ['label' => 'crm.nav.roles', 'route' => 'admin.roles.index', 'active' => 'admin.roles.*', 'can' => 'roles.manage'],
                     ['label' => 'crm.nav.clinical_templates', 'route' => 'admin.clinical-templates', 'active' => 'admin.clinical-templates', 'can' => 'medical_records.templates'],
+                    ['label' => 'crm.nav.translations', 'route' => 'admin.translations', 'active' => 'admin.translations', 'can' => 'translations.edit'],
                 ],
             ],
         ];

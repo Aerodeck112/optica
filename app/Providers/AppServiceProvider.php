@@ -8,12 +8,17 @@ use App\Http\Middleware\UseStaffLocale;
 use App\Models\Appointment;
 use App\Models\Lead;
 use App\Models\Location;
+use App\Models\Order;
 use App\Models\Patient;
+use App\Models\ServiceCharge;
 use App\Models\User;
 use App\Support\Access\AccessControl;
 use App\Support\Access\PermissionCatalog;
 use App\Support\Translation\OverrideFileLoader;
+use App\Support\Translation\RecordingTranslator;
+use App\Support\Translation\TranslationCatalog;
 use App\Support\Translation\TranslationOverrides;
+use App\Support\Translation\TranslationRecorder;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -34,6 +39,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(AccessControl::class);
 
         $this->app->singleton(TranslationOverrides::class);
+        $this->app->scoped(TranslationRecorder::class);
+        $this->app->scoped(TranslationCatalog::class);
+        // Same translator as Laravel's, able to report displayed texts in translation mode (TRD-01).
+        $this->app->extend('translator', function ($translator, $app) {
+            $recording = new RecordingTranslator($app['translation.loader'], $translator->getLocale());
+            $recording->setFallback($translator->getFallback());
+
+            return $recording;
+        });
         // Database corrections on top of the shipped language files (D-008).
         $this->app->extend('translation.loader', function (FileLoader $loader, $app) {
             $overrideLoader = new OverrideFileLoader($app['files'], $loader->paths());
@@ -58,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
         // Short, stable names for polymorphic links (tasks, audit), independent of class names.
         Relation::morphMap([
             'lead' => Lead::class, 'patient' => Patient::class, 'appointment' => Appointment::class,
-            'order' => \App\Models\Order::class, 'service_charge' => \App\Models\ServiceCharge::class,
+            'order' => Order::class, 'service_charge' => ServiceCharge::class,
         ]);
 
         // Livewire update requests re-run these, so a component never escapes auth, 2FA or the staff locale.

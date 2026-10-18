@@ -112,6 +112,16 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 - Sursele lipsă rămân vizibile; nicio conversie nu este atribuită unei campanii fără legătură înregistrată.
 - Calculele se fac în aplicație pentru grupările pe zi și oră (ora clinicii), fără a depinde de tabelele de fus orar ale MySQL, care lipsesc adesea pe găzduirea partajată.
 
+### D-022 Editorul vizual de traduceri
+- Modul de traducere se pornește per sesiune, doar de utilizatorii cu `translations.edit`, din CRM sau de pe site. Serverul verifică dreptul la fiecare cerere; un indicator rămas în sesiune nu ajunge la cineva fără drept.
+- Textele nu sunt modificate în HTML (fără marcaje în conținut): serverul atașează paginii lista cheilor afișate, iar pagina marchează elementele după text. Astfel, datele salvate, emailurile, PDF-urile și exporturile nu pot fi „poluate”.
+- Textele cu variabile (ex. „Bună ziua, :name”) intră în listă doar ca șablon și se recunosc pe pagină după model; numele și alte date nu ajung în dicționar.
+- Un clic pe un element marcat deschide editorul și nu execută acțiunea elementului (buton, link, formular).
+- Modificarea unei chei se aplică în toate locurile unde este folosită; editorul arată cheile diferite care au același text, pentru a o alege pe cea corectă.
+- Paginile în care apare un text se înregistrează doar în modul de traducere (cel mult o dată la 10 minute pe pagină) și alimentează filtrul „Pagina” din centru.
+- Importul din CSV/XLSX creează doar ciorne, cu validarea variabilelor; publicarea rămâne un pas separat, cu `translations.publish`.
+- Observațiile medicale și alte texte introduse de personal nu sunt texte de interfață și nu apar în editor sau în centru.
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |

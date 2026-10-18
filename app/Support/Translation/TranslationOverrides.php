@@ -59,20 +59,22 @@ class TranslationOverrides
         if ($item === null) {
             return null;
         }
-        $value = Arr::get(app('translation.loader')->loadDefaults($locale, $group), $item);
+        $defaults = app('translation.loader')->loadDefaults($locale, $group);
+        $value = $group === '__json' ? ($defaults[$item] ?? null) : Arr::get($defaults, $item);
 
         return is_string($value) ? $value : null;
     }
 
-    public function saveDraft(string $locale, string $key, string $value, ?User $user = null): TranslationOverride
+    /** @param  string  $action  draft | import | restore – recorded in the history */
+    public function saveDraft(string $locale, string $key, string $value, ?User $user = null, string $action = 'draft'): TranslationOverride
     {
         $this->assertLocale($locale);
         $this->assertPlaceholders($locale, $key, $value);
 
-        return DB::transaction(function () use ($locale, $key, $value, $user) {
+        return DB::transaction(function () use ($locale, $key, $value, $user, $action) {
             $override = TranslationOverride::firstOrNew(['locale' => $locale, 'key' => $key]);
-            $override->fill(['draft_value' => $value, 'updated_by' => $user?->id])->save();
-            $this->revision($locale, $key, $value, 'draft', $user);
+            $override->fill(['draft_value' => $value, 'is_verified' => false, 'updated_by' => $user?->id])->save();
+            $this->revision($locale, $key, $value, $action, $user);
 
             return $override;
         });

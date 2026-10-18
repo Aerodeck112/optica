@@ -43,6 +43,7 @@ return [
         'users' => 'Felhasználók',
         'roles' => 'Szerepkörök és jogosultságok',
         'clinical_templates' => 'Kartonsablonok',
+        'translations' => 'Fordítások',
     ],
     'dashboard' => [
         'title' => 'Ma',

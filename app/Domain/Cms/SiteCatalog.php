@@ -50,7 +50,8 @@ class SiteCatalog
     {
         $bucket = intdiv(time(), 300);
 
-        return Cache::remember('site.first_available.'.$bucket, 300, function () {
+        // Stored as ISO strings: the cache never unserializes objects (cache.serializable_classes).
+        $cached = Cache::remember('site.first_available.'.$bucket, 300, function () {
             $availability = app(AvailabilityService::class);
             $now = CarbonImmutable::now();
             $result = [];
@@ -61,7 +62,9 @@ class SiteCatalog
                 }
             }
 
-            return $result;
+            return array_map(fn (CarbonImmutable $at) => $at->toIso8601String(), $result);
         });
+
+        return array_map(fn (string $at) => CarbonImmutable::parse($at), $cached);
     }
 }

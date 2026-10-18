@@ -15,7 +15,15 @@ class OverrideFileLoader extends FileLoader
     {
         $lines = parent::load($locale, $group, $namespace);
 
-        if ($group === '*' || ($namespace !== null && $namespace !== '*')) {
+        // JSON lines (texts used as keys, e.g. the password email) are stored as "__json.<text>".
+        if ($group === '*' && ($namespace === '*' || $namespace === null)) {
+            foreach (app(TranslationOverrides::class)->publishedForGroup($locale, '__json') as $text => $value) {
+                $lines[$text] = $value;
+            }
+
+            return $lines;
+        }
+        if ($namespace !== null && $namespace !== '*') {
             return $lines;
         }
 
@@ -29,6 +37,6 @@ class OverrideFileLoader extends FileLoader
     /** Lines without database corrections: the reference for placeholder validation and "reset". */
     public function loadDefaults(string $locale, string $group): array
     {
-        return parent::load($locale, $group);
+        return $group === '__json' ? parent::load($locale, '*', '*') : parent::load($locale, $group);
     }
 }

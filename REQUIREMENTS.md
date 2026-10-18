@@ -93,8 +93,8 @@ Starea detaliată pe module este în PROGRESS.md.
 | LNG-01 | 🟡 | Fișiere `lang/ro` și `lang/hu` pentru modulele existente. Restul modulelor primesc traduceri pe măsură ce sunt construite. |
 | LNG-02 | ✅ | Limba e salvată în contul angajatului; comutatorul RO/HU revine la aceeași pagină și filtre. Datele nesalvate din formulare se păstrează (verificat în browser). Teste `StaffLocaleTest`. |
 | LNG-03 | ✅ | Statusurile și permisiunile au identificatori stabili; etichetele sunt în fișierele de limbă. |
-| TRD-01…02 | ⬜ | Editorul vizual. |
-| TRD-03 | ⬜ | Centrul de traduceri (backend-ul de istoric și restaurare există). |
+| TRD-01…02 | ✅ | Modul de traducere (comutator în CRM și pe site, doar cu `translations.edit`): textele afișate sunt marcate, clicul deschide editorul RO/HU fără a executa butonul sau linkul; ciornă, publicare, previzualizare pe pagină, revenire la standard, istoric cu restaurare. Textele cu variabile intră în dicționar doar ca șablon (fără date). Teste ✅. |
+| TRD-03 | ✅ | Administrare → Traduceri: căutare după text sau cheie, filtre pe modul, pagină, lipsă/ciornă/corectat; editare RO/HU; export CSV/XLSX; import ca ciorne cu validarea variabilelor; publicarea tuturor ciornelor; șabloanele de mesaje fără variantă într-o limbă. Teste ✅. |
 | TRD-04 | ✅ | `translation_overrides` aplicate peste fișiere, cu versiune de cache. Teste ✅. |
 | TRD-05 | ✅ | Validarea variabilelor `:name` și `{name}`. Teste ✅. |
 

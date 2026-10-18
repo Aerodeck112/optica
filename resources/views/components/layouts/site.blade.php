@@ -128,6 +128,7 @@
         <p class="mx-auto max-w-7xl px-4 py-5 text-xs sm:px-6">© {{ now()->year }} Optica Optofarm</p>
     </div>
 </footer>
+<x-translation-mode offer />
 @livewireScripts
 </body>
 </html>

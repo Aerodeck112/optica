@@ -93,7 +93,8 @@ Modulele următoare urmează aceeași structură: `app/Domain/{Patients,Medical,
 | `settings` | setări cheie–valoare (inclusiv heartbeat-ul cronului) |
 | `audit_logs` | jurnal de securitate, fără conținut clinic sau secrete |
 | `translation_overrides` | corecturi de traducere (draft / publicat) |
-| `translation_revisions` | istoricul traducerilor |
+| `translation_revisions` | istoricul traducerilor (ciornă, publicare, import, restaurare, revenire) |
+| `translation_usages` | paginile pe care a apărut fiecare cheie în modul de traducere |
 | `jobs`, `failed_jobs`, `job_batches`, `cache`, `cache_locks`, `sessions` | infrastructură Laravel pe DB |
 
 | `waitlist_entries` | lista de așteptare per locație |
@@ -122,6 +123,7 @@ Cererile Livewire (`/livewire/update`) reaplică middleware-ul persistent: auten
 - Conținutul: coloane JSON `{ro: {...}, hu: {...}}`, cu `content` (draft) și `published_content`.
 - Comunicările: limba pacientului (`patients.locale` / `appointments.locale`), independentă de limba angajatului.
 - Textele clinice introduse de personal nu se traduc automat și nu sunt editabile prin modul de traducere (TRD-02).
+- Modul de traducere (D-022): `RecordingTranslator` (extinde translatorul Laravel) notează cheile afișate într-un `TranslationRecorder` per cerere; middleware-ul `TranslationMode` adaugă lista la sfârșitul paginii, iar `components/translation-mode` marchează textele și deschide `Translations\InlineEditor`. Centrul de traduceri (`Admin\TranslationCenter`) citește toate cheile prin `TranslationCatalog`.
 
 ## 8. Cron și cozi
 O singură intrare cron: `* * * * * php /cale/artisan schedule:run`. Sarcini: heartbeat, `bookings:expire`, `queue:work --stop-when-empty --max-time=50` (cu blocare împotriva rulărilor simultane). Ulterior: remindere, rapoarte programate, backup.

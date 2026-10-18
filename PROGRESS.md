@@ -59,7 +59,9 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 
 | Rapoarte | sinteză cu comparație și regula fiecărui indicator; locații, specialiști, servicii, matrice, ocupare, evoluție, zile × ore, financiar, surse, listă de detaliu; filtre combinabile și salvate; drill-down; exporturi XLSX/CSV/PDF în fundal, private și jurnalizate; rapoarte periodice pe email | `ReportEngineTest` (6), `ReportScreensTest` (5) |
 
-Total: **177 de teste, toate trec** (`php artisan test`).
+| Traduceri | modul de traducere pe paginile CRM și ale site-ului (marcare, editor RO/HU, ciornă, publicare, previzualizare, revenire, istoric cu restaurare); centrul de traduceri cu căutare, filtre (modul, pagină, lipsă, ciornă, corectat), export CSV/XLSX, import ca ciorne, publicarea ciornelor, verificarea șabloanelor de mesaje RO/HU | `TranslationEditorTest` (8), `TranslationOverridesTest` (5) + capturi 1440/390 px |
+
+Total: **186 de teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
 - Conturile reale de email (SMTP), SMS (Twilio sau alt furnizor, după audit) și WhatsApp Business (Meta), plus aprobarea șabloanelor WhatsApp (COM-01, WAP-01). Până atunci, canalele apar „neconfigurate” și nu se trimite nimic.
@@ -75,7 +77,6 @@ Total: **177 de teste, toate trec** (`php artisan test`).
 - Traducerea maghiară a paragrafului „Știai că…” (pagina Medici) și versiunea HU a textelor legale (N-08).
 
 ## Neimplementat încă (ordinea planificată)
-1. Editorul vizual de traduceri și centrul de traduceri.
-2. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
-3. Import din Evolvo (la final).
-4. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.
+1. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
+2. Import din Evolvo (la final).
+3. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.

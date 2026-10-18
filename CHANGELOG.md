@@ -15,6 +15,11 @@ Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Vers
 - Financiar operațional: servicii efectuate, încasări, avansuri, restituiri, anulări cu motiv, jurnal de încasări.
 - Rapoarte: indicatori cu reguli de calcul, centralizator, matrice, ocupare, evoluție, distribuție, financiar, surse, drill-down; exporturi XLSX/CSV/PDF în fundal; rapoarte periodice pe email.
 - Comunicare: canale email (SMTP), SMS (Twilio), WhatsApp (Cloud API); șabloane RO/HU; reguli de trimitere cu fallback; remindere; rechemări; jurnal de mesaje; webhookuri semnate; campanii cu dezabonare.
+- Modul de traducere: textele afișate pe CRM și pe site se corectează direct pe pagină, în RO și HU, cu ciornă, publicare, istoric și revenire la textul standard.
+- Administrare → Traduceri: centrul de traduceri cu căutare, filtre, export și import CSV/XLSX, publicarea ciornelor.
+
+### Reparat
+- Primul interval liber afișat pe site pentru fiecare locație se citea greșit din cache după 5 minute (eroare la afișarea paginii).
 
 ### Modificat
 - Discul privat (`storage/app/private`) nu mai poate fi servit direct prin URL semnat; fișierele trec doar prin controllerul autorizat.
