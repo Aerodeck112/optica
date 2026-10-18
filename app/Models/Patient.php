@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Crypt;
 
 class Patient extends Model
@@ -89,5 +90,35 @@ class Patient extends Model
     public function relations(): HasMany
     {
         return $this->hasMany(PatientRelation::class);
+    }
+
+    public function documents(): HasMany
+    {
+        return $this->hasMany(PatientDocument::class);
+    }
+
+    public function consents(): HasMany
+    {
+        return $this->hasMany(Consent::class);
+    }
+
+    public function leads(): HasMany
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function tasks(): MorphMany
+    {
+        return $this->morphMany(Task::class, 'subject');
+    }
+
+    public function mergedInto(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class, 'merged_into_id');
+    }
+
+    public function age(): ?int
+    {
+        return $this->birth_date?->diffInYears(now());
     }
 }

@@ -52,6 +52,7 @@ return [
             'finalize' => 'Finalizează fișe',
             'amend' => 'Corectează fișe finalizate (amendament)',
             'export' => 'Exportă fișe',
+            'templates' => 'Validează șabloanele de fișă (personal medical)',
         ],
         'prescriptions' => [
             'view' => 'Vezi prescripțiile',

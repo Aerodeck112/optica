@@ -5,7 +5,10 @@ namespace App\Providers;
 use App\Http\Middleware\EnsureActiveUser;
 use App\Http\Middleware\EnsureTwoFactor;
 use App\Http\Middleware\UseStaffLocale;
+use App\Models\Appointment;
+use App\Models\Lead;
 use App\Models\Location;
+use App\Models\Patient;
 use App\Models\User;
 use App\Support\Access\AccessControl;
 use App\Support\Access\PermissionCatalog;
@@ -13,6 +16,7 @@ use App\Support\Translation\OverrideFileLoader;
 use App\Support\Translation\TranslationOverrides;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -50,6 +54,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Date::use(CarbonImmutable::class);
+
+        // Short, stable names for polymorphic links (tasks, audit), independent of class names.
+        Relation::morphMap(['lead' => Lead::class, 'patient' => Patient::class, 'appointment' => Appointment::class]);
 
         // Livewire update requests re-run these, so a component never escapes auth, 2FA or the staff locale.
         Livewire::addPersistentMiddleware([

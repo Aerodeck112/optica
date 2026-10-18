@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             SiteContentSeeder::class,
             CmsContentSeeder::class,
+            ClinicalTemplateSeeder::class,
         ]);
     }
 }

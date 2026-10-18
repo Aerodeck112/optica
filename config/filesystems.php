@@ -33,7 +33,8 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            // Private files (patient documents) are downloaded only through an authorised controller (MED-05).
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],

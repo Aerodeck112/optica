@@ -11,7 +11,7 @@ final class PermissionCatalog
     public const PERMISSIONS = [
         'patients' => ['view', 'create', 'update', 'archive', 'export', 'merge', 'view_sensitive'],
         'appointments' => ['view', 'create', 'update', 'cancel', 'change_status', 'export'],
-        'medical_records' => ['view', 'view_own', 'create', 'finalize', 'amend', 'export'],
+        'medical_records' => ['view', 'view_own', 'create', 'finalize', 'amend', 'export', 'templates'],
         'prescriptions' => ['view', 'create', 'amend'],
         'documents' => ['view', 'upload', 'delete'],
         'leads' => ['view', 'manage', 'export'],
@@ -38,7 +38,7 @@ final class PermissionCatalog
     /** Permissions never granted implicitly, even to the superadministrator (cap. 5). */
     public const CLINICAL = [
         'medical_records.view', 'medical_records.view_own', 'medical_records.create',
-        'medical_records.finalize', 'medical_records.amend', 'medical_records.export',
+        'medical_records.finalize', 'medical_records.amend', 'medical_records.export', 'medical_records.templates',
         'prescriptions.view', 'prescriptions.create', 'prescriptions.amend',
     ];
 

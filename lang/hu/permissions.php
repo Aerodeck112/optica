@@ -52,6 +52,7 @@ return [
             'finalize' => 'Kartonok lezárása',
             'amend' => 'Lezárt kartonok javítása (kiegészítés)',
             'export' => 'Kartonok exportálása',
+            'templates' => 'Kartonsablonok jóváhagyása (egészségügyi személyzet)',
         ],
         'prescriptions' => [
             'view' => 'Receptek megtekintése',

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Site;
 
+use App\Domain\Leads\LeadWorkflow;
 use App\Models\Lead;
 use App\Models\Location;
 use App\Support\Consent\ConsentRecorder;
@@ -75,6 +76,7 @@ class LeadForm extends Component
                 'location_id' => $this->locationId,
             ]);
             if ($lead->wasRecentlyCreated) {
+                app(LeadWorkflow::class)->recordCreated($lead);
                 $consents->recordBooking(['phone' => $this->phone, 'email' => $this->email], app()->getLocale(), true,
                     $this->email ? ['email' => $this->marketingEmail] : [], null, 'contact_form', $lead->id);
             }
