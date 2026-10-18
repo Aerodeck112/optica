@@ -1,6 +1,28 @@
 <?php
 
 return [
+    // Installed version; replaced by every update package (UPD-01).
+    'version' => trim((string) @file_get_contents(base_path('VERSION'))) ?: '0.0.0',
+
+    // Null = decided by storage/app/installed.lock; tests and CLI tools may force it (INS-02).
+    'installed' => env('OPTICA_INSTALLED') === null ? null : (bool) env('OPTICA_INSTALLED'),
+
+    'updates' => [
+        // Trusted Ed25519 public keys (base64), in addition to resources/update-keys.txt (D-009).
+        'public_keys' => array_values(array_filter(array_map('trim', explode(',', (string) env('UPDATE_PUBLIC_KEYS', ''))))),
+        // Limits against oversized or malicious archives (UPD-03).
+        'max_package_bytes' => 300 * 1024 * 1024,
+        'max_extracted_bytes' => 900 * 1024 * 1024,
+        'max_entries' => 40000,
+        // Files applied per step, so each request stays short on shared hosting.
+        'apply_batch' => 400,
+    ],
+
+    'backups' => [
+        // Scheduled backups kept; pre-update and pre-restore backups keep their own last 3.
+        'keep' => (int) env('BACKUP_KEEP', 7),
+    ],
+
     // Interface and content languages (LNG-01). The first one is the default.
     'locales' => ['ro', 'hu'],
 

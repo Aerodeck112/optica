@@ -7,6 +7,7 @@ use App\Http\Controllers\Crm\DashboardController;
 use App\Http\Controllers\Crm\LocaleController;
 use App\Http\Controllers\Crm\PatientFileController;
 use App\Http\Controllers\Crm\TranslationModeController;
+use App\Http\Controllers\Install\InstallController;
 use App\Http\Controllers\Site\AvailabilityController;
 use App\Http\Controllers\Site\SitePageController;
 use App\Http\Controllers\Site\UnsubscribeController;
@@ -81,6 +82,19 @@ Route::post('dezabonare/{uuid}', [UnsubscribeController::class, 'store'])->middl
 Route::get('api/disponibilitate', AvailabilityController::class)->middleware('throttle:60,1')->name('api.availability');
 Route::get('sitemap.xml', [SitePageController::class, 'sitemap'])->name('sitemap');
 Route::get('robots.txt', [SitePageController::class, 'robots'])->name('robots');
+
+/*
+ | Web installer (INS-02): answers only until storage/app/installed.lock exists (EnsureInstalled).
+ */
+Route::prefix('install')->name('install.')->middleware('throttle:60,1')->group(function () {
+    Route::get('/', [InstallController::class, 'index'])->name('index');
+    Route::post('token', [InstallController::class, 'token'])->middleware('throttle:10,1')->name('token');
+    Route::post('database', [InstallController::class, 'saveDatabase'])->name('database');
+    Route::post('migrate', [InstallController::class, 'migrate'])->name('migrate');
+    Route::post('admin', [InstallController::class, 'saveAdmin'])->name('admin');
+    Route::post('settings', [InstallController::class, 'saveSettings'])->name('settings');
+    Route::get('{step}', [InstallController::class, 'step'])->name('step');
+});
 
 /*
  | Staff area. Language comes from the employee profile (LNG-02).

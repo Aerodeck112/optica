@@ -2,16 +2,21 @@
 
 use App\Http\Controllers\Site\NotFoundResponder;
 use App\Http\Middleware\EnsureActiveUser;
+use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\EnsureTwoFactor;
 use App\Http\Middleware\RemoveTrailingSlash;
 use App\Http\Middleware\TranslationMode;
 use App\Http\Middleware\UseSiteLocale;
 use App\Http\Middleware\UseStaffLocale;
+use App\Support\Install\EnvBootstrap;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+// First request after unzipping: a production .env with a fresh key (INS-01).
+EnvBootstrap::ensure(dirname(__DIR__));
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,6 +28,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // Unauthenticated staff go to the CRM login; signed-in users hitting guest pages go to the dashboard.
         $middleware->redirectGuestsTo(fn () => route('crm.login'));
         $middleware->redirectUsersTo(fn () => route('crm.dashboard'));
+        // Before routing, so even unknown URLs lead to the installer until it has run.
+        $middleware->prepend(EnsureInstalled::class);
         $middleware->web(prepend: [RemoveTrailingSlash::class], append: [TranslationMode::class]);
         // Provider callbacks carry a signature instead of a CSRF token.
         $middleware->validateCsrfTokens(except: ['webhooks/*']);
