@@ -20,10 +20,11 @@ class ConsentRecorder
     /**
      * @param  array<string, bool>  $marketing  channel => granted
      */
-    public function recordBooking(array $contact, string $locale, bool $privacyAcknowledged, array $marketing, ?int $appointmentId, string $source = 'online_booking'): Collection
+    public function recordBooking(array $contact, string $locale, bool $privacyAcknowledged, array $marketing, ?int $appointmentId, string $source = 'online_booking', ?int $leadId = null): Collection
     {
         $base = [
             'appointment_id' => $appointmentId,
+            'lead_id' => $leadId,
             'patient_id' => $contact['patient_id'] ?? null,
             'contact_phone' => Patient::normalizePhone($contact['phone'] ?? null),
             'contact_email' => isset($contact['email']) && $contact['email'] ? mb_strtolower($contact['email']) : null,

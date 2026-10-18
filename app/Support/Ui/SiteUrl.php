@@ -15,14 +15,13 @@ class SiteUrl
         return route($locale === 'hu' ? 'site.hu.'.$name : 'site.'.$name, $parameters);
     }
 
-    /** A CMS path such as "servicii" in the current language, with the trailing slash of the old site. */
+    /** A public path such as "servicii" in the given language; canonical URLs have no trailing slash (D-012). */
     public static function path(string $slug = '', ?string $locale = null): string
     {
         $locale ??= app()->getLocale();
-        $slug = trim($slug, '/');
-        $path = trim(($locale === 'hu' ? 'hu/' : '').$slug, '/');
+        $path = trim(($locale === 'hu' ? 'hu/' : '').trim($slug, '/'), '/');
 
-        return $path === '' ? url('/') : url($path).'/';
+        return url($path === '' ? '/' : $path);
     }
 
     /** The same page in the other language (keeps the path and query). */

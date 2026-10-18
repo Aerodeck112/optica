@@ -5,14 +5,14 @@
     $locale = app()->getLocale();
     $phones = Settings::get('site.booking_phones', []);
     $footerLocations = \App\Models\Location::query()->where('is_active', true)->where('is_public', true)->whereNotNull('published_at')->orderBy('sort_order')->get();
-    $nav = [
-        ['servicii', __('site.nav.services')],
-        ['medici', __('site.nav.doctors')],
-        ['puncte-lucru', __('site.nav.locations')],
-        ['fabrica-lentile', __('site.nav.factory')],
-        ['reduceri-actuale', __('site.nav.offers')],
-        ['contact', __('site.nav.contact')],
-    ];
+    // Menus are edited in Admin → Meniuri; the list below is only the fallback before content exists.
+    $menu = fn (string $name) => \App\Models\MenuItem::with('page')->where('menu', $name)->where('is_active', true)->orderBy('sort_order')->get()
+        ->map(fn ($i) => [$i->path(), $i->label(), $i->url()])->all();
+    $nav = $menu('header') ?: collect([
+        ['servicii', __('site.nav.services')], ['medici', __('site.nav.doctors')], ['puncte-lucru', __('site.nav.locations')],
+        ['fabrica-lentile', __('site.nav.factory')], ['reduceri-actuale', __('site.nav.offers')], ['contact', __('site.nav.contact')],
+    ])->map(fn ($n) => [$n[0], $n[1], SiteUrl::path($n[0])])->all();
+    $legalMenu = $menu('footer');
     $fullTitle = $title ? $title.' – Optica Optofarm' : 'Optica Optofarm – '.__('site.tagline');
 @endphp
 <!DOCTYPE html>
@@ -48,9 +48,9 @@
         </a>
         <nav class="ml-6 hidden flex-1 lg:block" aria-label="{{ __('site.nav.label') }}">
             <ul class="flex gap-1">
-                @foreach ($nav as [$slug, $label])
-                    @php($active = trim(preg_replace('#^hu/?#', '', request()->path()), '/') === $slug)
-                    <li><a href="{{ SiteUrl::path($slug) }}" @if ($active) aria-current="page" @endif
+                @foreach ($nav as [$slug, $label, $href])
+                    @php($active = $slug !== null && trim(preg_replace('#^hu/?#', '', request()->path()), '/') === $slug)
+                    <li><a href="{{ $href }}" @if ($active) aria-current="page" @endif
                            @class(['inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium', 'bg-mist text-ink' => $active, 'text-heading hover:bg-paper' => ! $active])>{{ $label }}</a></li>
                 @endforeach
             </ul>
@@ -71,8 +71,8 @@
     </div>
     <nav id="site-menu" x-show="menu" x-cloak class="border-t border-line bg-white lg:hidden" aria-label="{{ __('site.nav.label') }}">
         <ul class="mx-auto max-w-7xl px-4 py-2">
-            @foreach ($nav as [$slug, $label])
-                <li><a href="{{ SiteUrl::path($slug) }}" class="flex min-h-12 items-center border-b border-line/60 text-base font-medium text-heading">{{ $label }}</a></li>
+            @foreach ($nav as [$slug, $label, $href])
+                <li><a href="{{ $href }}" class="flex min-h-12 items-center border-b border-line/60 text-base font-medium text-heading">{{ $label }}</a></li>
             @endforeach
             <li class="py-3"><a href="{{ SiteUrl::route('booking') }}" class="btn w-full bg-lens text-ink">{{ __('site.book_online') }}</a></li>
         </ul>
@@ -107,14 +107,18 @@
             </ul>
             <h2 class="mt-8 text-lg font-light text-white">{{ __('site.footer.pages') }}</h2>
             <ul class="mt-4 space-y-2 text-sm">
-                @foreach ($nav as [$slug, $label])<li><a href="{{ SiteUrl::path($slug) }}" class="hover:text-white">{{ $label }}</a></li>@endforeach
+                @foreach ($nav as [$slug, $label, $href])<li><a href="{{ $href }}" class="hover:text-white">{{ $label }}</a></li>@endforeach
             </ul>
         </section>
         <section aria-labelledby="footer-legal">
             <h2 id="footer-legal" class="text-lg font-light text-white">{{ __('site.footer.legal') }}</h2>
             <ul class="mt-4 space-y-2 text-sm">
-                <li><a href="{{ SiteUrl::path('privacy-policy') }}" class="hover:text-white">{{ __('site.footer.privacy') }}</a></li>
-                <li><a href="{{ SiteUrl::path('politica-de-cookies') }}" class="hover:text-white">{{ __('site.footer.cookies') }}</a></li>
+                @forelse ($legalMenu as [$slug, $label, $href])
+                    <li><a href="{{ $href }}" class="hover:text-white">{{ $label }}</a></li>
+                @empty
+                    <li><a href="{{ SiteUrl::path('privacy-policy') }}" class="hover:text-white">{{ __('site.footer.privacy') }}</a></li>
+                    <li><a href="{{ SiteUrl::path('politica-de-cookies') }}" class="hover:text-white">{{ __('site.footer.cookies') }}</a></li>
+                @endforelse
                 <li><a href="https://anpc.ro/ce-este-sal/" rel="noopener" class="hover:text-white">ANPC – SAL</a></li>
                 <li><a href="https://ec.europa.eu/consumers/odr" rel="noopener" class="hover:text-white">ANPC – SOL</a></li>
             </ul>

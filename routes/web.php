@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Crm\DashboardController;
 use App\Http\Controllers\Crm\LocaleController;
 use App\Http\Controllers\Site\AvailabilityController;
+use App\Http\Controllers\Site\SitePageController;
 use App\Livewire\Admin\ExceptionIndex;
 use App\Livewire\Admin\LocationEditor;
 use App\Livewire\Admin\LocationIndex;
@@ -33,10 +34,16 @@ foreach (['' => 'site.', 'hu' => 'site.hu.'] as $prefix => $name) {
     Route::prefix($prefix)->name($name)->middleware('site.locale')->group(function () {
         Route::livewire('programare', BookingWizard::class)->name('booking');
         Route::livewire('programare/gestionare/{token}', ManageBooking::class)->name('booking.manage')->middleware('throttle:60,1');
+        Route::get('servicii/{code}', [SitePageController::class, 'service'])->name('service');
+        Route::get('medici/{code}', [SitePageController::class, 'specialist'])->name('specialist');
+        Route::get('puncte-lucru/{code}', [SitePageController::class, 'location'])->name('location');
+        Route::get('reduceri-actuale/{slug}', [SitePageController::class, 'offer'])->name('offer');
     });
 }
 Route::get('api/disponibilitate', AvailabilityController::class)->middleware('throttle:60,1')->name('api.availability');
-Route::view('/', 'welcome')->middleware('site.locale');
+Route::get('sitemap.xml', [SitePageController::class, 'sitemap'])->name('sitemap');
+Route::get('robots.txt', [SitePageController::class, 'robots'])->name('robots');
+Route::get('previzualizare/pagina/{page}', [SitePageController::class, 'preview'])->middleware(['site.locale', 'auth', 'active', 'two-factor'])->name('site.preview');
 
 /*
  | Staff area. Language comes from the employee profile (LNG-02).
@@ -89,4 +96,14 @@ Route::prefix('admin')->name('admin.')->middleware(['staff.locale', 'auth', 'act
     Route::livewire('roles', RoleIndex::class)->name('roles.index');
     Route::livewire('roles/create', RoleEditor::class)->name('roles.create');
     Route::livewire('roles/{role}', RoleEditor::class)->name('roles.edit');
+});
+
+/*
+ | CMS pages: registered last so they never shadow the routes above.
+ */
+Route::prefix('hu')->name('site.hu.')->middleware('site.locale')->group(function () {
+    Route::get('{slug?}', [SitePageController::class, 'page'])->where('slug', '[a-z0-9\-]*')->name('page');
+});
+Route::name('site.')->middleware('site.locale')->group(function () {
+    Route::get('{slug?}', [SitePageController::class, 'page'])->where('slug', '(?!hu$)[a-z0-9\-]*')->name('page');
 });
