@@ -14,6 +14,9 @@ Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Vers
 - Comenzi: `optica:release`, `optica:update-keygen`, `optica:update`, `optica:backup`, `optica:backup-decrypt`, `optica:recovery-token`.
 - Permisiunea `system.import`; permisiunile noi ajung automat la rolurile implicite la actualizare.
 
+### Modificat
+- Site-ul public are o identitate vizuală axată pe optică și oftalmologie: hero cu razele de lumină focalizate printr-o lentilă și titlul care „intră în focus”, scala TABO (0°–180°) în jurul fotografiilor, schema ochiului (cornee, cristalin, retină), pictograme proprii pentru fiecare investigație, rândul de optotipuri Landolt, titluri în Archivo lat. Cifrele afișate sunt cele confirmate de beneficiar.
+
 ### Reparat
 - Încărcarea documentelor în dosarul pacientului nu funcționa în browser (numele acțiunii intra în conflict cu funcția de încărcare a Livewire).
 - Programările marcate fără notificări (de exemplu cele importate) nu mai generează mesaje.

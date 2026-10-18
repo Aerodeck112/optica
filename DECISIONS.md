@@ -149,6 +149,13 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 - Duplicatele se raportează, nu se unesc: același CNP leagă identificatorul de pacientul existent; același nume cu același telefon sau aceeași dată de naștere marchează un posibil duplicat pentru decizie manuală (PAC-02).
 - Simularea este obligatorie înainte de import. Programările importate au notificările dezactivate (trecute: întotdeauna; viitoare: dacă nu se alege altfel), ca să nu plece remindere retroactive (MIG-05). Datele clinice nu se importă prin acest ecran.
 
+### D-027 Identitatea vizuală a site-ului
+- Cerința beneficiarului: un site mai modern, cu grafică legată de ochi, optică și oftalmologie.
+- Grafica vine din instrumentele domeniului, desenată pentru acest site (fără imagini de stoc): razele de lumină focalizate de o lentilă (hero), scala TABO de pe rețetele de ochelari ca ramă a fotografiilor, schema ochiului cu focalizarea pe retină, pictograme pentru fiecare investigație (lampă cu fantă, fund de ochi, tonometrie, câmp vizual etc.), optotipuri Landolt.
+- Culorile rămân cele ale mărcii; galbenul marchează punctul de focalizare și acțiunile principale. Titlurile folosesc Archivo lat (literele amintesc de optotipuri), găzduit local ca Inter, fără cereri către Google.
+- O singură animație: titlul din hero trece din neclar în clar la încărcare; este dezactivată pentru cine a ales mișcare redusă.
+- Cifrele din hero (1991, 8 puncte de lucru, ~70 de specialiști, peste 50.000 de pacienți pe an) sunt cele din textele site-ului confirmate de beneficiar (N-02) și se pot corecta din centrul de traduceri.
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |

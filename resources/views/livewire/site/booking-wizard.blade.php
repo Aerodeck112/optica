@@ -5,7 +5,7 @@
 @endphp
 <div class="bg-paper">
     <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
-        <h1 class="text-3xl font-light text-heading sm:text-4xl">{{ __('site.booking.title') }}</h1>
+        <h1 class="text-3xl font-display font-semibold text-heading sm:text-4xl">{{ __('site.booking.title') }}</h1>
         <p class="mt-3 max-w-prose text-body">{{ __('site.booking.intro') }}</p>
 
         @if ($step <= 5)
@@ -195,9 +195,9 @@
                 @default
                     <div class="rounded-2xl bg-white p-6 ring-1 ring-line sm:p-8" role="status">
                         @if ($finalStatus === 'confirmed')
-                            <h2 class="text-2xl font-light text-ok">{{ __('site.booking.done_confirmed') }}</h2>
+                            <h2 class="text-2xl font-display font-semibold text-ok">{{ __('site.booking.done_confirmed') }}</h2>
                         @else
-                            <h2 class="text-2xl font-light text-ink">{{ __('site.booking.done_pending') }}</h2>
+                            <h2 class="text-2xl font-display font-semibold text-ink">{{ __('site.booking.done_pending') }}</h2>
                             <p class="mt-2">{{ __('site.booking.done_pending_text') }}</p>
                         @endif
                         @if ($hold)

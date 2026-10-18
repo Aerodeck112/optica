@@ -8,7 +8,7 @@
         <div class="mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-2">
             <div>
                 <p class="text-sm"><a href="{{ SiteUrl::path('puncte-lucru') }}" class="btn-link">{{ __('site.nav.locations') }}</a></p>
-                <h1 class="mt-3 text-3xl font-light text-heading sm:text-4xl">{{ $location->publicValue('address') ?? $location->address }}</h1>
+                <h1 class="mt-3 text-3xl font-display font-semibold text-heading sm:text-4xl">{{ $location->publicValue('address') ?? $location->address }}</h1>
                 <p class="mt-1 text-lg">{{ $location->publicValue('city') ?? $location->city }}</p>
                 <div class="mt-5 space-y-4 leading-relaxed">{{ \App\Domain\Cms\SafeText::render($location->publicValue('description')) }}</div>
                 <dl class="mt-6 grid grid-cols-[8rem_1fr] gap-y-2">

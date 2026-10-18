@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 /* Inter self-hosted (latin + latin-ext for Romanian and Hungarian diacritics); no Google request. */
 @import '@fontsource-variable/inter/wght.css';
+/* Site headings: Archivo set wide, close to the square letters of an eye chart (latin-ext for ș, ț, ő, ű). */
+@import '@fontsource-variable/archivo/wdth.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -49,6 +51,13 @@
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-11;
 }
 
+/* Site headings: wide and firm, like optotype letters. */
+@utility font-display {
+    font-family: 'Archivo Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    font-stretch: 118%;
+    letter-spacing: -0.01em;
+}
+
 @utility badge {
     @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium;
 }
@@ -86,4 +95,23 @@
     .badge-bad { @apply badge bg-bad-bg text-bad; }
     .badge-neutral { @apply badge bg-paper text-body ring-1 ring-inset ring-line; }
     .badge-info { @apply badge bg-mist text-ink; }
+}
+
+/* The hero headline comes into focus once, like a lens being adjusted in front of the eye. */
+@keyframes focus-in {
+    0% { filter: blur(9px); opacity: 0.35; letter-spacing: 0.04em; }
+    60% { filter: blur(1.5px); opacity: 0.9; }
+    100% { filter: blur(0); opacity: 1; letter-spacing: -0.01em; }
+}
+@utility animate-focus-in {
+    animation: focus-in 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+}
+@layer components {
+    /* Lists in site text: small lens rings instead of dots. */
+    .site-text ul { list-style: none !important; padding-left: 0 !important; }
+    .site-text ul li { position: relative; padding-left: 1.75rem; }
+    .site-text ul li::before {
+        content: ''; position: absolute; left: 0; top: 0.45em; width: 0.95rem; height: 0.75rem;
+        border: 2px solid var(--color-sky); border-radius: 50%;
+    }
 }

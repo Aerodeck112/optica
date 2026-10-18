@@ -86,7 +86,7 @@
 <footer class="bg-ink text-mist-300">
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <section aria-labelledby="footer-locations">
-            <h2 id="footer-locations" class="text-lg font-light text-white">{{ __('site.footer.locations') }}</h2>
+            <h2 id="footer-locations" class="text-lg font-display font-semibold text-white">{{ __('site.footer.locations') }}</h2>
             <ul class="mt-4 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
                 @foreach ($footerLocations as $l)
                     <li>
@@ -98,20 +98,20 @@
             </ul>
         </section>
         <section aria-labelledby="footer-book">
-            <h2 id="footer-book" class="text-lg font-light text-white">{{ __('site.footer.booking') }}</h2>
+            <h2 id="footer-book" class="text-lg font-display font-semibold text-white">{{ __('site.footer.booking') }}</h2>
             <ul class="mt-4 space-y-2 text-sm">
                 @foreach ($phones as $phone)
                     <li><a href="tel:{{ preg_replace('/[^0-9+]/', '', $phone) }}" class="text-lens hover:underline">{{ $phone }}</a></li>
                 @endforeach
                 <li><a href="{{ SiteUrl::route('booking') }}" class="text-white underline underline-offset-4 hover:text-lens">{{ __('site.book_online') }}</a></li>
             </ul>
-            <h2 class="mt-8 text-lg font-light text-white">{{ __('site.footer.pages') }}</h2>
+            <h2 class="mt-8 text-lg font-display font-semibold text-white">{{ __('site.footer.pages') }}</h2>
             <ul class="mt-4 space-y-2 text-sm">
                 @foreach ($nav as [$slug, $label, $href])<li><a href="{{ $href }}" class="hover:text-white">{{ $label }}</a></li>@endforeach
             </ul>
         </section>
         <section aria-labelledby="footer-legal">
-            <h2 id="footer-legal" class="text-lg font-light text-white">{{ __('site.footer.legal') }}</h2>
+            <h2 id="footer-legal" class="text-lg font-display font-semibold text-white">{{ __('site.footer.legal') }}</h2>
             <ul class="mt-4 space-y-2 text-sm">
                 @forelse ($legalMenu as [$slug, $label, $href])
                     <li><a href="{{ $href }}" class="hover:text-white">{{ $label }}</a></li>

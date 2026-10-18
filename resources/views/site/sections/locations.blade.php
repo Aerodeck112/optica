@@ -2,7 +2,7 @@
 <section class="{{ $index % 2 ? 'bg-white' : 'bg-paper' }}">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div class="max-w-2xl">
-            @if ($first)<h1 class="text-3xl font-light text-heading sm:text-4xl">{{ S::text($section, 'heading') }}</h1>@else<h2 class="text-2xl font-light text-heading sm:text-3xl">{{ S::text($section, 'heading') }}</h2>@endif
+            @if ($first)<h1 class="text-3xl font-display font-semibold text-heading sm:text-4xl">{{ S::text($section, 'heading') }}</h1>@else<h2 class="text-2xl font-display font-semibold text-heading sm:text-3xl">{{ S::text($section, 'heading') }}</h2>@endif
             <div class="mt-4 text-lg leading-relaxed">{{ \App\Domain\Cms\SafeText::render(S::text($section, 'body')) }}</div>
         </div>
         <ul class="mt-10 grid gap-x-10 md:grid-cols-2">

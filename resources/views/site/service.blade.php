@@ -4,7 +4,7 @@
         <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-2">
             <div>
                 <p class="text-sm"><a href="{{ SiteUrl::path('servicii') }}" class="btn-link">{{ __('site.nav.services') }}</a></p>
-                <h1 class="mt-3 text-3xl font-light text-heading sm:text-4xl">{{ $service->publicValue('name') }}</h1>
+                <h1 class="mt-3 text-3xl font-display font-semibold text-heading sm:text-4xl">{{ $service->publicValue('name') }}</h1>
                 <div class="mt-5 space-y-4 text-lg leading-relaxed">{{ \App\Domain\Cms\SafeText::render($service->publicValue('description')) }}</div>
                 @if ($service->publicValue('preparation'))
                     <div class="mt-6 rounded-xl bg-white p-4 ring-1 ring-line">
@@ -14,7 +14,7 @@
                 @endif
                 <a href="{{ SiteUrl::route('booking') }}" class="btn mt-8 bg-lens px-6 py-3 text-ink hover:bg-lens-600">{{ __('site.book_online') }}</a>
             </div>
-            <x-site.lens-image :media="$img" eager class="mx-auto w-full max-w-lg" />
+            <x-site.lens-image :media="$img" eager class="mx-auto w-[84%] max-w-lg sm:w-full" />
         </div>
     </article>
 </x-layouts.site>

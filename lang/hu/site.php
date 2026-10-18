@@ -135,4 +135,19 @@ return [
         'rescheduled' => 'A foglalás áthelyezve.',
         'not_editable' => 'Ez a foglalás online már nem módosítható. Változtatáshoz hívja az üzletet.',
     ],
+
+    'eye' => [
+        'title' => 'A szem vázlata: a fény a szaruhártyán és a szemlencsén át a retinára fókuszálódik',
+        'cornea' => 'Szaruhártya',
+        'lens' => 'Szemlencse',
+        'retina' => 'Retina',
+        'caption' => 'Akkor látunk élesen, ha a fény pontosan a retinára fókuszálódik. A szemüveg és a kontaktlencse azt korrigálja, hol jön létre a kép.',
+    ],
+    'facts' => [
+        'founded' => 'az alapítás éve',
+        'locations' => 'munkapont',
+        'specialists' => 'szakember',
+        'patients' => 'páciens évente',
+        'values' => ['founded' => '1991', 'locations' => '8', 'specialists' => '~70', 'patients' => '50 000+'],
+    ],
 ];

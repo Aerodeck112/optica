@@ -5,7 +5,7 @@
     @if ($page->template === 'legal')
         <div class="bg-paper">
             <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-                <h1 class="text-3xl font-light text-heading sm:text-4xl">{{ $content['title'][app()->getLocale()] ?? $content['title']['ro'] }}</h1>
+                <h1 class="text-3xl font-display font-semibold text-heading sm:text-4xl">{{ $content['title'][app()->getLocale()] ?? $content['title']['ro'] }}</h1>
                 @if (app()->getLocale() === 'hu')<p class="mt-3 rounded-lg bg-white px-4 py-3 text-sm text-muted ring-1 ring-line">{{ __('site.legal_ro_only') }}</p>@endif
                 <div class="prose-site mt-8 space-y-8">
                     @foreach ($content['sections'] as $section)

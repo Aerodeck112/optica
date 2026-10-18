@@ -1,7 +1,7 @@
 @php use App\Domain\Cms\SectionView as S; use App\Support\Ui\SiteUrl; $offers = $catalog->offers(); @endphp
 <section class="bg-paper">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        @if ($first)<h1 class="text-3xl font-light text-heading sm:text-4xl">{{ S::text($section, 'heading') }}</h1>@else<h2 class="text-2xl font-light text-heading sm:text-3xl">{{ S::text($section, 'heading') }}</h2>@endif
+        @if ($first)<h1 class="text-3xl font-display font-semibold text-heading sm:text-4xl">{{ S::text($section, 'heading') }}</h1>@else<h2 class="text-2xl font-display font-semibold text-heading sm:text-3xl">{{ S::text($section, 'heading') }}</h2>@endif
         <div class="mt-4 max-w-2xl text-lg">{{ \App\Domain\Cms\SafeText::render(S::text($section, 'body')) }}</div>
         @if ($offers->isEmpty())
             <p class="mt-8 rounded-2xl bg-white p-6 ring-1 ring-line">{{ __('site.offers.none') }}</p>

@@ -9,7 +9,7 @@
             </div>
             <div>
                 <p class="text-sm"><a href="{{ SiteUrl::path('medici') }}" class="btn-link">{{ __('site.nav.doctors') }}</a></p>
-                <h1 class="mt-3 text-3xl font-light text-heading sm:text-4xl">{{ $specialist->display_name }}</h1>
+                <h1 class="mt-3 text-3xl font-display font-semibold text-heading sm:text-4xl">{{ $specialist->display_name }}</h1>
                 <p class="mt-2 text-lg text-body">{{ $specialist->publicValue('title') ?: __('crm.specialists.types.'.$specialist->type) }}</p>
                 @if ($specialist->languages)<p class="mt-2 text-sm text-muted">{{ __('site.booking.speaks') }}: {{ collect($specialist->languages)->map(fn ($l) => __('crm.spoken.'.$l))->join(', ') }}</p>@endif
                 <div class="mt-6 space-y-4 text-lg leading-relaxed">{{ \App\Domain\Cms\SafeText::render($specialist->publicValue('bio')) }}</div>

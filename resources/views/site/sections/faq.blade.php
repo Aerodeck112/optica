@@ -1,7 +1,7 @@
 @php use App\Domain\Cms\SectionView as S; $items = S::text($section, 'items') ?: []; @endphp
 <section class="{{ $index % 2 ? 'bg-white' : 'bg-paper' }}">
     <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-        <h2 class="text-2xl font-light text-heading sm:text-3xl">{{ S::text($section, 'heading') }}</h2>
+        <h2 class="text-2xl font-display font-semibold text-heading sm:text-3xl">{{ S::text($section, 'heading') }}</h2>
         <div class="mt-8 divide-y divide-line border-y border-line">
             @foreach ($items as $item)
                 <details class="group py-4">

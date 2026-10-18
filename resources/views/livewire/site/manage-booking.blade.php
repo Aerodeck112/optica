@@ -2,7 +2,7 @@
 @php($loc = app()->getLocale())
 <div class="bg-paper">
     <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
-        <h1 class="text-3xl font-light text-heading">{{ __('site.manage.title') }}</h1>
+        <h1 class="text-3xl font-display font-semibold text-heading">{{ __('site.manage.title') }}</h1>
         @if ($notice)<p class="mt-6 rounded-lg bg-ok-bg px-4 py-3 text-ok" role="status">{{ $notice }}</p>@endif
 
         <div class="mt-6 rounded-2xl bg-white p-6 ring-1 ring-line">

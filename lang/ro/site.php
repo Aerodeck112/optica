@@ -135,4 +135,19 @@ return [
         'rescheduled' => 'Programarea a fost mutată.',
         'not_editable' => 'Această programare nu mai poate fi modificată online. Pentru schimbări, sunați locația.',
     ],
+
+    'eye' => [
+        'title' => 'Schema ochiului: lumina trece prin cornee și cristalin și se focalizează pe retină',
+        'cornea' => 'Cornee',
+        'lens' => 'Cristalin',
+        'retina' => 'Retină',
+        'caption' => 'Vederea este clară când lumina se focalizează exact pe retină. Ochelarii și lentilele de contact corectează locul în care se formează imaginea.',
+    ],
+    'facts' => [
+        'founded' => 'anul înființării',
+        'locations' => 'puncte de lucru',
+        'specialists' => 'specialiști',
+        'patients' => 'pacienți în fiecare an',
+        'values' => ['founded' => '1991', 'locations' => '8', 'specialists' => '~70', 'patients' => '50.000+'],
+    ],
 ];
