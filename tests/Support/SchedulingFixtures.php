@@ -19,9 +19,13 @@ trait SchedulingFixtures
     {
         $code = 'DEMO-LOC-'.Str::upper(Str::random(5));
 
+        $content = ['ro' => ['name' => 'Locație demo '.$code], 'hu' => ['name' => 'Demo rendelő '.$code]];
+
         return Location::create($overrides + [
             'code' => $code,
-            'content' => ['ro' => ['name' => 'Locație demo '.$code], 'hu' => ['name' => 'Demo rendelő '.$code]],
+            'content' => $content,
+            'published_content' => $content,
+            'published_at' => now(),
             'city' => 'Oraș Demo',
             'address' => 'Strada Demo nr. 1',
             'is_active' => true,
@@ -39,6 +43,8 @@ trait SchedulingFixtures
             'type' => 'ophthalmologist',
             'display_name' => 'Dr. Demo '.$code,
             'content' => ['ro' => ['bio' => ''], 'hu' => ['bio' => '']],
+            'published_content' => ['ro' => ['bio' => ''], 'hu' => ['bio' => '']],
+            'published_at' => now(),
             'is_active' => true,
             'is_public' => true,
         ]);
@@ -48,9 +54,13 @@ trait SchedulingFixtures
     {
         $code = 'demo-service-'.Str::lower(Str::random(5));
 
+        $content = $overrides['content'] ?? ['ro' => ['name' => 'Consultație demo'], 'hu' => ['name' => 'Demo vizsgálat']];
+
         return Service::create($overrides + [
             'code' => $code,
-            'content' => ['ro' => ['name' => 'Consultație demo'], 'hu' => ['name' => 'Demo vizsgálat']],
+            'content' => $content,
+            'published_content' => $content,
+            'published_at' => now(),
             'default_duration' => 30,
             'is_active' => true,
             'is_public' => true,

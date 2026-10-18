@@ -27,4 +27,12 @@ return [
         'login_max_attempts' => 5,
         'login_decay_seconds' => 300,
     ],
+
+    // Text versions of notices and agreements; bump when the beneficiary changes the wording (SEC-05).
+    'consents' => [
+        'versions' => [
+            'privacy_notice' => env('CONSENT_PRIVACY_VERSION', '2026-10'),
+            'marketing' => env('CONSENT_MARKETING_VERSION', '2026-10'),
+        ],
+    ],
 ];

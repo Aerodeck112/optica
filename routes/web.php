@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Crm\DashboardController;
 use App\Http\Controllers\Crm\LocaleController;
+use App\Http\Controllers\Site\AvailabilityController;
 use App\Livewire\Admin\ExceptionIndex;
 use App\Livewire\Admin\LocationEditor;
 use App\Livewire\Admin\LocationIndex;
@@ -20,9 +21,21 @@ use App\Livewire\Admin\SpecialistIndex;
 use App\Livewire\Admin\UserEditor;
 use App\Livewire\Admin\UserIndex;
 use App\Livewire\Crm\Calendar;
+use App\Livewire\Site\BookingWizard;
+use App\Livewire\Site\ManageBooking;
 use Illuminate\Support\Facades\Route;
 
-// Public site: built in a later stage (WEB-01). Placeholder keeps "/" answering.
+/*
+ | Public site: Romanian without prefix, Hungarian under /hu (D-011). Each route exists twice,
+ | named "site.x" and "site.hu.x".
+ */
+foreach (['' => 'site.', 'hu' => 'site.hu.'] as $prefix => $name) {
+    Route::prefix($prefix)->name($name)->middleware('site.locale')->group(function () {
+        Route::livewire('programare', BookingWizard::class)->name('booking');
+        Route::livewire('programare/gestionare/{token}', ManageBooking::class)->name('booking.manage')->middleware('throttle:60,1');
+    });
+}
+Route::get('api/disponibilitate', AvailabilityController::class)->middleware('throttle:60,1')->name('api.availability');
 Route::view('/', 'welcome')->middleware('site.locale');
 
 /*

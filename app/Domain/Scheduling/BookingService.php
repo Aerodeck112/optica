@@ -210,6 +210,19 @@ class BookingService
         });
     }
 
+    /** Releases a temporary hold immediately (the visitor picked another slot or left the form). */
+    public function releaseHold(Appointment $hold): void
+    {
+        DB::transaction(function () use ($hold) {
+            $current = Appointment::whereKey($hold->id)->lockForUpdate()->first();
+            if (! $current || $current->status !== AppointmentStatus::Held) {
+                return;
+            }
+            $current->update(['status' => AppointmentStatus::Expired, 'lock_version' => $current->lock_version + 1]);
+            $this->record($current, 'expired', AppointmentStatus::Held, AppointmentStatus::Expired, actor: 'patient');
+        });
+    }
+
     /** Releases holds and pending requests whose time ran out (PRG-01, PRG-03). */
     public function expireStale(?CarbonImmutable $now = null): int
     {
