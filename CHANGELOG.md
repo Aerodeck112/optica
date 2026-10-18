@@ -12,9 +12,15 @@ Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Vers
 - Calendarul CRM: zi, săptămână, lună, agendă; creare, mutare (inclusiv drag-and-drop), anulare cu motiv, schimbare status, istoric, listă de așteptare, actualizare automată.
 - Registrul de pacienți (bază): cod intern, căutare, adăugare rapidă, sugestie de duplicate.
 - `DemoDataSeeder` cu date fictive marcate DEMO.
+- Programarea online pe site, în română și maghiară, cu rezervare temporară, consimțăminte și link de gestionare.
+- Site-ul public construit din CMS, cu conținutul și imaginile site-ului actual, aceleași adrese, SEO (sitemap, hreflang, canonical), redirecționări pentru adresele vechi și jurnal 404.
+- Formularele site-ului creează leaduri cu consimțăminte.
+- Adminul CMS: pagini pe secțiuni cu ciornă, previzualizare, publicare, versiuni și protecție la editare simultană; bibliotecă de imagini; meniuri; oferte cu perioadă de valabilitate; redirecționări și raport 404; datele de contact ale site-ului.
 
 ### Modificat
 - Mesajele de validare afișează denumirile traduse ale câmpurilor.
+- Adresele publice nu mai au „/” la final; varianta veche răspunde cu 301 (D-012).
+- Eliminat `public/robots.txt` static: `robots.txt` este generat de aplicație și indică sitemap-ul.
 
 ## [0.2.0-dev] – 2026-10-17
 ### Adăugat

@@ -1,6 +1,6 @@
 # Progres
 
-Ultima actualizare: 17 octombrie 2026. Versiune: `0.3.0-dev`.
+Ultima actualizare: 18 octombrie 2026. Versiune: `0.3.0-dev`.
 
 Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (necesită credențiale sau furnizor), **în așteptarea datelor**, **neimplementat**. O interfață fără backend nu este considerată funcție finalizată.
 
@@ -33,9 +33,16 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 | Programări afectate | la modificarea orarului sau a excepțiilor, programările care nu mai încap sunt listate, nu șterse | `PlanningAdminTest` |
 | Calendar CRM | zi (coloane pe specialist), săptămână, lună, agendă (implicită pe telefon); timp de lucru vizibil; timpul petrecut în altă locație afișat fără date de pacient; linie „acum”; actualizare automată la 15 s cu starea conexiunii; creare din interval cu căutare/adăugare pacient și avertizare de duplicat; detalii, schimbare status, mutare (drag-and-drop și formular), anulare cu motiv, istoric; listă de așteptare cu propuneri la anulare; filtre pe locație, specialist, status | `CalendarTest` (10) + capturi 1440/390 px |
 | Registrul de pacienți (bază) | cod intern `P000123`, căutare după nume, telefon (orice format) sau cod, adăugare rapidă, sugestie de duplicate fără unire automată | `CalendarTest` |
-| Date demonstrative | `DemoDataSeeder`: specialiști, pacienți și programări fictive marcate DEMO; refuză să ruleze în producție | rulat manual |
+| Date demonstrative | `DemoDataSeeder`: specialiști, pacienți și programări fictive marcate DEMO; utilizatori demo (admin operațional, recepție, editor site); refuză să ruleze în producție | rulat manual |
+| Programare online (RO/HU) | `/programare`: locație → serviciu → specialist sau „primul disponibil” → dată și oră → date de contact → confirmare; rezervare temporară 10 min; confirmare automată sau de către recepție după setarea locației; consimțăminte separate (marketing nebifat); link de gestionare pentru anulare și reprogramare; specialiști în pauză cu mesajul lor; limitare pe IP | `OnlineBookingTest` (9) |
+| Site public RO/HU | pagini construite din secțiuni, cu conținutul și imaginile site-ului actual; servicii, puncte de lucru (cu primul interval liber), oferte; elemente educative fără diagnostic; aceleași adrese ca site-ul actual, adrese canonice fără „/” final (301) | `PublicSiteTest` (10) + capturi |
+| SEO | titlu, descriere, noindex per limbă, canonical, hreflang, sitemap.xml, robots.txt; redirecționări 301/302/410 pentru adresele WordPress vechi; jurnal 404 | `PublicSiteTest`, `CmsAdminTest` |
+| Formulare → leaduri | formularul de contact salvează leadul și consimțămintele înainte de confirmare; fără duplicate la dublu clic; honeypot și limitare | `PublicSiteTest` |
+| CMS → Pagini | 12 tipuri de secțiuni RO/HU alăturate, reordonare, ciornă, previzualizare RO/HU, publicare cu versiuni numerotate, readucerea unei versiuni în ciornă, renunțarea la modificări, protecție la editare simultană, adrese și SEO doar cu dreptul `seo.manage`, 301 automat la schimbarea adresei, pagini de bază nedeletabile | `CmsAdminTest` (14) |
+| CMS → Imagini | încărcare multiplă, re-encodare WebP fără metadate, text alternativ RO/HU, filtrul „fără text alternativ”, lista utilizărilor, ștergere blocată pentru imaginile folosite | `CmsAdminTest` |
+| CMS → Meniuri, oferte, redirecționări, date de contact | meniul principal și subsolul (drept de publicare); oferte cu perioadă de valabilitate, ciornă, publicare, retragere; redirecționări cu detectarea buclelor și crearea lor din raportul 404; telefoanele și emailurile afișate pe site | `CmsAdminTest` |
 
-Total: **79 de teste, toate trec** (`php artisan test`).
+Total: **112 teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
 - Furnizorii de email, WhatsApp și SMS: se aleg la audit (COM-01).
@@ -48,15 +55,14 @@ Total: **79 de teste, toate trec** (`php artisan test`).
 - Exporturile autorizate din Evolvo (MIG-01) – la finalul proiectului, conform deciziei beneficiarului.
 - Textele legale și de consimțământ validate (SEC-05).
 - Șabloanele clinice validate de personal medical (MED-01).
+- Traducerea maghiară a paragrafului „Știai că…” (pagina Medici) și versiunea HU a textelor legale (N-08).
 
 ## Neimplementat încă (ordinea planificată)
-1. Fluxul public de programare (`/programare`, RO/HU), rezervare temporară, linkuri semnate de anulare și reprogramare, rate limiting.
-2. Site public + CMS (pagini, secțiuni, meniuri, media, versiuni, SEO, redirecturi, import din site-ul actual).
-3. Pacienți (fișă completă, duplicate, unire), fișe medicale, prescripții, documente private, consimțăminte.
-4. Leaduri, sarcini, comenzi de ochelari, financiar operațional.
-5. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
-6. Rapoarte avansate și exporturi (Excel, CSV, PDF).
-7. Editorul vizual de traduceri și centrul de traduceri.
-8. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic.
+1. Leaduri și sarcini în CRM; pacienți (fișă completă, duplicate, unire), fișe medicale, prescripții, documente private, consimțăminte.
+2. Comenzi de ochelari, financiar operațional.
+3. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
+4. Rapoarte avansate și exporturi (Excel, CSV, PDF).
+5. Editorul vizual de traduceri și centrul de traduceri.
+6. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
 9. Import din Evolvo (la final).
 10. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.

@@ -18,7 +18,7 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Cerință (rezumat) | Status | Implementare / observații |
 |---|---|---|---|
-| GEN-01 | Inventar pagini RO/HU, URL-uri, imagini, logo, culori, fonturi, locații, servicii | 🟡 | Inventar în `docs/analiza-site.md`. Importul efectiv al resurselor în CMS este ⬜. |
+| GEN-01 | Inventar pagini RO/HU, URL-uri, imagini, logo, culori, fonturi, locații, servicii | ✅ | Inventar în `docs/analiza-site.md`; resursele sunt importate în CMS. |
 | GEN-02 | Matrice funcții Evolvo → implementare proprie | 🟡 | `docs/analiza-evolvo.md` + matricea de mai jos. |
 | GEN-03 | Fără date personale din capturi; aplicație independentă de Evolvo | ✅ | Fotografiile nu sunt în repository. Testele și datele demonstrative folosesc persoane fictive. |
 | GEN-04 | Pagini de referință; 8 locații reverificate | ✅ | Beneficiarul a rezolvat N-01…N-07 (DECISIONS.md). Cele 8 locații și 12 servicii sunt importate RO/HU (`SiteContentSeeder`). |
@@ -40,26 +40,26 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Cerință | Status |
 |---|---|---|
-| WEB-01 | Refacerea site-ului cu identitatea actuală, fără informații inventate | ⬜ (identitatea este inventariată) |
-| WEB-02 | Responsive, accesibil, reduced motion, acces rapid la programare | ⬜ |
-| WEB-03 | Pagini administrabile pentru locații, specialiști, servicii; filtre, primul interval disponibil, hartă și listă, FAQ | 🟡 Administrarea RO/HU (adăugare, editare, publicare, ștergere, restaurare) este ✅. „Primul disponibil” este ✅ în motor. Paginile publice sunt ⬜. |
-| WEB-04 | Elemente educative interactive, fără diagnostic | ⬜ |
-| WEB-05 | Formulare → leaduri CRM, confirmare doar după salvare, antiabuz | ⬜ |
-| CMS-01…03 | Pagini, secțiuni, meniuri, media, versiuni, previzualizare, publicare | ⬜ |
-| SEO-01…02 | Metadate pe limbă, sitemap, hreflang, redirecturi 301, raport 404 | ⬜ (URL-urile de păstrat sunt inventariate) |
+| WEB-01 | Refacerea site-ului cu identitatea actuală, fără informații inventate | ✅ Conținutul, imaginile, locațiile și serviciile site-ului actual sunt importate în CMS (`CmsContentSeeder`, `SiteContentSeeder`). |
+| WEB-02 | Responsive, accesibil, reduced motion, acces rapid la programare | ✅ Verificat la 390/768/1440 px; butonul de programare și telefoanele sunt în antet. Auditul WCAG complet rămâne la livrare. |
+| WEB-03 | Pagini administrabile pentru locații, specialiști, servicii; filtre, primul interval disponibil, hartă și listă, FAQ | 🟡 Administrarea RO/HU (adăugare, editare, publicare, ștergere, restaurare) este ✅. „Primul disponibil” este ✅ în motor. Paginile publice (listă, detaliu, filtre, primul interval liber, hartă) sunt ✅. |
+| WEB-04 | Elemente educative interactive, fără diagnostic | ✅ Comparația vedere încețoșată/clară și ghidul „ce consultație mi se potrivește”, cu mențiunea că nu înlocuiesc consultația. |
+| WEB-05 | Formulare → leaduri CRM, confirmare doar după salvare, antiabuz | ✅ Leadul și consimțămintele se salvează înainte de mesajul de confirmare; idempotență, honeypot, limitare. Ecranul CRM de lucru cu leadurile este în etapa următoare (CRM-01). |
+| CMS-01…03 | Pagini, secțiuni, meniuri, media, versiuni, previzualizare, publicare | ✅ Pagini din 12 tipuri de secțiuni RO/HU, ciornă, previzualizare RO/HU, publicare cu versiuni și restaurare, protecție la editare simultană, meniuri, bibliotecă de imagini cu text alternativ și verificarea utilizării, oferte cu perioadă de valabilitate. |
+| SEO-01…02 | Metadate pe limbă, sitemap, hreflang, redirecturi 301, raport 404 | ✅ Titlu/descriere/noindex per limbă, canonical, hreflang, sitemap.xml, robots.txt, redirecționări 301/302/410 cu detectarea buclelor, raport 404, adresele vechi WordPress redirecționate. |
 
 ## 4. Locații, specialiști, programări online
 
 | ID | Cerință | Status | Implementare |
 |---|---|---|---|
-| LOC-01 | Locații configurabile, program magazin separat de consultații, vizibilitate | ✅ | Admin → Locații: date RO/HU, contact, coordonate, programul magazinului, vizibilitate, programare online, mod de confirmare. Fotografiile locațiilor vin cu biblioteca media (⬜). |
+| LOC-01 | Locații configurabile, program magazin separat de consultații, vizibilitate | ✅ | Admin → Locații: date RO/HU, contact, coordonate, programul magazinului, vizibilitate, programare online, mod de confirmare. Fotografiile locațiilor se aleg din biblioteca de imagini. |
 | LOC-02 | Specialist în mai multe locații; orare săptămânale, alternante, perioade, intervale multiple, pauze, concedii, sărbători, excepții | ✅ | `WorkingWindows`; teste pentru cicluri, concedii, sărbători, excepții parțiale și disponibilitate suplimentară. |
 | LOC-03 | Durată per specialist, resurse, tampoane, timp de deplasare, capacitate implicit 1, online pe locație–specialist–serviciu | ✅ | `offerings` + `ConflictChecker`; teste pentru tampoane, resurse, deplasare și capacitate. |
-| PRG-01 | Confirmare automată sau prin recepție; reguli de blocare și expirare | 🟡 | Statusuri `pending`/`confirmed`, expirare `hold_expires_at`, comanda `bookings:expire` ✅. Comutatorul per locație există (`confirmation_mode`), dar fluxul public este ⬜. |
+| PRG-01 | Confirmare automată sau prin recepție; reguli de blocare și expirare | ✅ | Statusuri `pending`/`confirmed`, rezervare temporară de 10 min, expirare prin `bookings:expire`; fluxul public respectă `confirmation_mode` al locației (`OnlineBookingTest`). |
 | PRG-02 | Motor comun site–CRM; recepția blochează online; anularea eliberează | ✅ | Test T01 `test_online_and_reception_bookings_share_availability` și `test_cancellation_releases_the_slot`. |
 | PRG-03 | Reverificare în tranzacție, expirarea rezervărilor temporare, idempotență, concurență cu durate diferite | ✅ | Blocare pesimistă (D-004). Teste cu procese paralele reale pe MariaDB. |
 | PRG-04 | Reprogramare atomică; modificarea orarului nu șterge programări; limite min/max | ✅ | Reprogramare atomică, limite min/max configurabile per specialist × locație, raportul programărilor afectate (`AffectedAppointments`) la orare și excepții. |
-| PRG-05 | Linkuri de anulare/reprogramare neghicibile, API public doar disponibilitate, rate limiting | 🟡 | UUID per programare. Linkurile semnate și API-ul public sunt ⬜. |
+| PRG-05 | Linkuri de anulare/reprogramare neghicibile, API public doar disponibilitate, rate limiting | ✅ | Link de gestionare cu token de 192 biți (în baza de date doar hash-ul), `/api/disponibilitate` returnează doar intervale, limitare pe IP (`OnlineBookingTest`). |
 | PRG-06 | Remindere după commit, invalidate la anulare, reverificare la expediere | 🟡 | Evenimentul `AppointmentChanged` este emis după commit (`DB::afterCommit`). Reminderele sunt ⬜. |
 
 ## 5. Calendar CRM și acces
@@ -138,7 +138,7 @@ Starea detaliată pe module este în PROGRESS.md.
 
 | ID | Status | Test automat |
 |---|---|---|
-| T01 | 🟡 nivel serviciu ✅, prin HTTP ⬜ | `BookingTest::test_online_and_reception_bookings_share_availability` |
+| T01 | ✅ nivel serviciu și flux public | `BookingTest::test_online_and_reception_bookings_share_availability` |
 | T02 | ✅ nivel serviciu | `ConcurrentBookingTest` (procese paralele reale) |
 | T03 | ✅ nivel serviciu | `AvailabilityTest` (pauze, concedii, DST) + `BookingTest::test_reschedule_is_atomic` |
 | T04 | 🟡 | `AccessControlTest` + `CatalogAdminTest` (pagină și componentă refuzate fără permisiune). API, fișiere și exporturi ⬜. |

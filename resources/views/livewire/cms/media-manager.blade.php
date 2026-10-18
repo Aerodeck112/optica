@@ -9,8 +9,9 @@
             {{ __('cms.media.only_missing_alt') }}
         </label>
         <div class="ml-auto">
-            <label for="uploads" class="btn-primary cursor-pointer">{{ __('cms.media.upload') }}</label>
-            <input id="uploads" type="file" multiple accept="image/jpeg,image/png,image/webp" wire:model="uploads" class="sr-only">
+            {{-- The real input stays keyboard-focusable; the label shows its focus ring. --}}
+            <input id="uploads" type="file" multiple accept="image/jpeg,image/png,image/webp" wire:model="uploads" class="peer sr-only">
+            <label for="uploads" class="btn-primary cursor-pointer peer-focus-visible:ring-2 peer-focus-visible:ring-ink peer-focus-visible:ring-offset-2">{{ __('cms.media.upload') }}</label>
         </div>
     </div>
     <p class="mt-2 text-xs text-muted">{{ __('cms.media.upload_hint') }}</p>

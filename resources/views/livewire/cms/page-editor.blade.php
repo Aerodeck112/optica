@@ -275,8 +275,10 @@
                     </div>
                     @can('media.manage')
                         <div>
-                            <label for="picker-upload" class="field-label">{{ __('cms.media.upload_new') }}</label>
-                            <input id="picker-upload" type="file" accept="image/jpeg,image/png,image/webp" wire:model="upload" class="block text-sm">
+                            <p class="field-label">{{ __('cms.media.upload_new') }}</p>
+                            <label for="picker-upload" class="btn-secondary cursor-pointer focus-within:ring-2 focus-within:ring-ink">{{ __('cms.media.upload') }}
+                                <input id="picker-upload" type="file" accept="image/jpeg,image/png,image/webp" wire:model="upload" class="sr-only">
+                            </label>
                             <p wire:loading wire:target="upload" class="field-hint">{{ __('crm.uploading') }}</p>
                             @error('upload')<p class="field-error">{{ $message }}</p>@enderror
                         </div>

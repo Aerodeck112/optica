@@ -61,18 +61,37 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 - CRM `/crm` și admin `/admin`: limba vine din profilul angajatului (LNG-02), nu din URL.
 - Programare: `/programare` și `/hu/programare`.
 
+### D-012 Adrese canonice fără „/” final
+- Context: site-ul actual folosește `/servicii/`; Laravel generează `/servicii`. Două adrese pentru aceeași pagină dublează indexarea.
+- Decizie: adresa canonică nu are „/” la final. `RemoveTrailingSlash` răspunde cu 301 la orice cerere GET cu „/” final (inclusiv parametrii), pe orice server, nu doar pe Apache. Linkurile vechi și cele din Google continuă să funcționeze.
+
+### D-013 Conținutul paginilor: secțiuni structurate, text simplu fără HTML
+- Context: CMS-01, SEC-02. Un editor WYSIWYG cu HTML liber permite injectarea de cod și strică designul.
+- Decizie: paginile sunt liste ordonate de secțiuni tipizate (`App\Domain\Cms\Sections`). Textele se scriu simplu (rând gol = paragraf, „- ” = listă, `**text**` = îngroșat) și sunt escapate la afișare (`SafeText`). La salvare, ciorna este reconstruită după definiția secțiunii: cheile necunoscute dispar, imaginile inexistente se elimină.
+- Concurență: fiecare salvare verifică `lock_version`; dacă altcineva a salvat între timp, modificarea este refuzată și editorul poate încărca varianta salvată.
+- Schimbarea adresei unei pagini publicate creează automat o redirecționare 301 de la adresa veche.
+
+### D-014 Imagini
+- Toate imaginile încărcate sunt re-encodate în WebP (480/960/1600 px), ceea ce elimină metadatele (EXIF, locație) și orice conținut executabil. Se stochează în `public/uploads` (fără symlink, compatibil cPanel). O imagine folosită nu poate fi ștearsă.
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |
 |---|---|---|---|
-| N-01 | 8 locații (Acasă, footer) față de „10 puncte de lucru” (Fabrica de lentile) | Sunt valabile locațiile din footer (8). | `SiteContentSeeder` importă cele 8 locații. La importul paginii Fabrica, cifra devine 8. |
-| N-02 | 40.000 clienți / 50.000 pacienți pe an / ~70 specialiști | Se folosesc **50.000** și **70**. | Setarea `site.stats`; contorul „40000” se înlocuiește cu 50.000. |
+| N-01 | 8 locații (Acasă, footer) față de „10 puncte de lucru” (Fabrica de lentile) | Sunt valabile locațiile din footer (8). | `SiteContentSeeder` importă cele 8 locații. Pe pagina Fabrica de lentile, textul RO a fost aliniat la explicația din HU: 8 puncte de lucru, o sală de operații și fabrica proprie. |
+| N-02 | 40.000 clienți / 50.000 pacienți pe an / ~70 specialiști | Se folosesc **50.000** și **70**. | Cifrele apar în textul paginilor (editabil din CMS); contorul „40000” a fost înlocuit cu 50.000. |
 | N-03 | „Str. Republicii nr. 5” față de „Piața Republicii 5” | **Piața Republicii nr. 5**. | Adresa RO corectată. Varianta HU („Szentgyörgy tér (Köztársaság tér) 5. szám”) e propusă după textul HU existent și poate fi editată din admin. |
 | N-04 | Bd. 1 Decembrie 1918 nr. 49 inactivă online în Evolvo | Locația este **activă**, inclusiv pentru programare online. | `online_booking_enabled = true`. |
 | N-05 | Două telefoane de programare | Se afișează **ambele**: 0365 430 939 și +40 265 212 304. | Setarea `site.booking_phones`. |
 | N-06 | Pagina Medici nu listează medicii | Se publică **doar ce există pe site** (niciun profil individual). Medicii se adaugă, se editează și se șterg din admin. | Nu se importă specialiști. Modulul Admin → Specialiști are CRUD complet. |
 | N-07 | Programul magazinelor față de orarele de consultații | Programul magazinelor se importă de pe site. Orarele de consultații se configurează în CRM. | `locations.opening_hours`. |
 | — | Exporturile Evolvo | Se fac **la final**. | Importul (MIG-01…05) rămâne ultimul pas. |
+
+## De verificat de beneficiar
+
+| # | Constatare | Ce am făcut | Ce trebuie verificat |
+|---|---|---|---|
+| N-08 | Paginile legale (confidențialitate, cookie-uri) există pe site doar în română, inclusiv pe /hu/. Paragraful „Știai că…” de pe pagina Medici nu are variantă HU. | Paginile legale HU afișează textul românesc cu o notă că versiunea maghiară nu este disponibilă. Paragraful „Știai că…” a fost tradus în maghiară. | Traducerea maghiară a paragrafului; dacă se dorește o versiune HU a textelor legale (SEC-05). |
 
 ## Presupuneri
 - P-01: Limbile platformei sunt RO și HU. Evolvo are și „Informații medic EN”, dar caietul nu cere engleza; EN nu se implementează.
