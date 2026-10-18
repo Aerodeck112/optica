@@ -113,5 +113,7 @@ class DemoDataSeeder extends Seeder
         $reception = User::firstOrCreate(['email' => 'demo.receptie@example.test'], ['name' => 'Recepție DEMO', 'password' => 'DemoParola2026', 'locale' => 'ro']);
         $reception->roles()->syncWithoutDetaching([Role::where('key', 'reception')->value('id')]);
         $reception->locations()->syncWithoutDetaching([$location->id]);
+        $editor = User::firstOrCreate(['email' => 'demo.site@example.test'], ['name' => 'Editor site DEMO', 'password' => 'DemoParola2026', 'locale' => 'hu']);
+        $editor->roles()->syncWithoutDetaching([Role::where('key', 'site_editor')->value('id')]);
     }
 }

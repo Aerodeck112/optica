@@ -29,6 +29,17 @@ class Navigation
                 ],
             ],
             [
+                'label' => 'crm.nav.group_site',
+                'items' => [
+                    ['label' => 'crm.nav.pages', 'route' => 'cms.pages.index', 'active' => 'cms.pages.*', 'can' => 'cms.edit'],
+                    ['label' => 'crm.nav.offers', 'route' => 'cms.offers.index', 'active' => 'cms.offers.*', 'can' => 'cms.edit'],
+                    ['label' => 'crm.nav.media', 'route' => 'cms.media', 'active' => 'cms.media', 'can' => 'media.manage'],
+                    ['label' => 'crm.nav.menus', 'route' => 'cms.menus', 'active' => 'cms.menus', 'can' => 'cms.publish'],
+                    ['label' => 'crm.nav.redirects', 'route' => 'cms.redirects', 'active' => 'cms.redirects', 'can' => 'seo.manage'],
+                    ['label' => 'crm.nav.site_settings', 'route' => 'cms.settings', 'active' => 'cms.settings', 'can' => 'cms.publish'],
+                ],
+            ],
+            [
                 'label' => 'crm.nav.group_admin',
                 'items' => [
                     ['label' => 'crm.nav.locations', 'route' => 'admin.locations.index', 'active' => 'admin.locations.*', 'can' => 'catalog.manage'],

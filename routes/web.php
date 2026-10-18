@@ -21,6 +21,14 @@ use App\Livewire\Admin\SpecialistEditor;
 use App\Livewire\Admin\SpecialistIndex;
 use App\Livewire\Admin\UserEditor;
 use App\Livewire\Admin\UserIndex;
+use App\Livewire\Cms\MediaManager;
+use App\Livewire\Cms\MenuEditor;
+use App\Livewire\Cms\OfferEditor;
+use App\Livewire\Cms\OfferIndex;
+use App\Livewire\Cms\PageEditor;
+use App\Livewire\Cms\PageIndex;
+use App\Livewire\Cms\RedirectManager;
+use App\Livewire\Cms\SiteSettings;
 use App\Livewire\Crm\Calendar;
 use App\Livewire\Site\BookingWizard;
 use App\Livewire\Site\ManageBooking;
@@ -38,12 +46,12 @@ foreach (['' => 'site.', 'hu' => 'site.hu.'] as $prefix => $name) {
         Route::get('medici/{code}', [SitePageController::class, 'specialist'])->name('specialist');
         Route::get('puncte-lucru/{code}', [SitePageController::class, 'location'])->name('location');
         Route::get('reduceri-actuale/{slug}', [SitePageController::class, 'offer'])->name('offer');
+        Route::get('previzualizare/pagina/{page}', [SitePageController::class, 'preview'])->middleware(['auth', 'active', 'two-factor'])->name('preview');
     });
 }
 Route::get('api/disponibilitate', AvailabilityController::class)->middleware('throttle:60,1')->name('api.availability');
 Route::get('sitemap.xml', [SitePageController::class, 'sitemap'])->name('sitemap');
 Route::get('robots.txt', [SitePageController::class, 'robots'])->name('robots');
-Route::get('previzualizare/pagina/{page}', [SitePageController::class, 'preview'])->middleware(['site.locale', 'auth', 'active', 'two-factor'])->name('site.preview');
 
 /*
  | Staff area. Language comes from the employee profile (LNG-02).
@@ -96,6 +104,21 @@ Route::prefix('admin')->name('admin.')->middleware(['staff.locale', 'auth', 'act
     Route::livewire('roles', RoleIndex::class)->name('roles.index');
     Route::livewire('roles/create', RoleEditor::class)->name('roles.create');
     Route::livewire('roles/{role}', RoleEditor::class)->name('roles.edit');
+});
+
+/*
+ | Site content (CMS). Each component checks its own permission on every request.
+ */
+Route::prefix('cms')->name('cms.')->middleware(['staff.locale', 'auth', 'active', 'two-factor'])->group(function () {
+    Route::livewire('pages', PageIndex::class)->name('pages.index');
+    Route::livewire('pages/{page}', PageEditor::class)->name('pages.edit');
+    Route::livewire('media', MediaManager::class)->name('media');
+    Route::livewire('menus', MenuEditor::class)->name('menus');
+    Route::livewire('offers', OfferIndex::class)->name('offers.index');
+    Route::livewire('offers/create', OfferEditor::class)->name('offers.create');
+    Route::livewire('offers/{offer}', OfferEditor::class)->name('offers.edit')->withTrashed();
+    Route::livewire('redirects', RedirectManager::class)->name('redirects');
+    Route::livewire('settings', SiteSettings::class)->name('settings');
 });
 
 /*

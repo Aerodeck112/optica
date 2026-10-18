@@ -22,7 +22,7 @@ class Sections
         'faq' => ['text' => ['heading', 'items'], 'data' => []],
         'cta' => ['text' => ['heading', 'body', 'button_label'], 'data' => ['button_target']],
         'contact_form' => ['text' => ['heading', 'body'], 'data' => ['lead_type']],
-        'education' => ['text' => ['heading', 'body'], 'data' => ['tool']],
+        'education' => ['text' => ['heading', 'body'], 'data' => ['tool', 'image_ids']],
     ];
 
     public static function make(string $type): array
