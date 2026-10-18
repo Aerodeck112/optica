@@ -89,6 +89,12 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 ### D-018 Documente private
 - Fișierele pacienților se păstrează în `storage/app/private` (în afara directorului public), sub nume aleatorii fără extensie. Tipul se verifică după conținut (PDF, JPEG, PNG, WebP; maximum 20 MB). Descărcarea trece printr-un controller care verifică dreptul, jurnalizează accesul și trimite `X-Content-Type-Options: nosniff`. Ștergerea ascunde documentul; fișierul rămâne până la validarea regulilor de retenție (SEC-05).
 
+### D-019 Financiar operațional ca registru
+- Sumele se păstrează în bani întregi (`*_cents`), nu în zecimale cu virgulă mobilă; totalurile și soldurile sunt exacte.
+- Valoarea (servicii efectuate, comenzi neanulate) și încasările (plăți minus restituiri) sunt separate. Avansul este o plată obișnuită marcată „avans”, deci achitarea soldului nu îl numără din nou. Fiecare plată are legătură explicită cu comanda sau serviciul plătit.
+- O plată nu poate depăși soldul, o restituire nu poate depăși suma încasată; operațiunile pe aceeași comandă sunt serializate prin blocare. O greșeală se anulează cu motiv (rândul rămâne în jurnal) și se reintroduce corect.
+- Aplicația nu emite documente fiscale și nu transmite e-Factura (FIN-03); documentul de predare și jurnalul de încasări spun explicit acest lucru. Un eventual conector fiscal va fi un modul separat, documentat împreună cu costurile.
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |

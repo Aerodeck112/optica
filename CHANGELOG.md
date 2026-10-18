@@ -11,6 +11,8 @@ Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Vers
 - Solicitările din site în CRM: istoric, note, responsabil, termen, conversie către pacient.
 - Sarcini pe pacient, pe solicitare sau generale.
 - Administrare → Șabloane de fișă; permisiunea nouă `medical_records.templates`.
+- Comenzi de ochelari: articole, prescripție, statusuri cu istoric, comenzi întârziate, document de predare.
+- Financiar operațional: servicii efectuate, încasări, avansuri, restituiri, anulări cu motiv, jurnal de încasări.
 
 ### Modificat
 - Discul privat (`storage/app/private`) nu mai poate fi servit direct prin URL semnat; fișierele trec doar prin controllerul autorizat.

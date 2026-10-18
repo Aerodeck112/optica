@@ -19,6 +19,8 @@ return [
         'appointments' => 'Programări și vizite',
         'records' => 'Fișe medicale',
         'prescriptions' => 'Prescripții',
+        'orders' => 'Comenzi',
+        'finance' => 'Financiar',
         'documents' => 'Documente',
         'consents' => 'Consimțăminte',
         'tasks' => 'Sarcini',

@@ -50,7 +50,10 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 | Sarcini | pe pacient, pe solicitare sau generale; responsabil, termen (ora clinicii), urgent, finalizare și redeschidere; liste „ale mele” și „locațiile mele” | `PatientFileTest` |
 | Administrare → Șabloane de fișă | editare ca ciornă (câmpuri, secțiuni, unități, intervale, OD/OS, obligatorii), validare jurnalizată, versiuni noi, retragere | `PatientFileTest` |
 
-Total: **136 de teste, toate trec** (`php artisan test`).
+| Comenzi de ochelari | articole cu preț, prescripție legată (valorile vizibile doar celor autorizați), responsabil, termen, statusuri controlate cu istoric, predare cu sold doar cu confirmare, lista întârziatelor, document de predare PDF, acces pe locații | `LedgerTest`, `OrdersScreensTest` |
+| Financiar operațional | servicii efectuate (preț propus din configurare), încasări, avansuri, restituiri, anulări cu motiv, sold pe comandă, serviciu și pacient, jurnal de încasări pe perioadă și locație cu totaluri pe metode, separat de valoarea serviciilor și a comenzilor predate; protecție la dublu clic | `LedgerTest` (8), `OrdersScreensTest` (5) |
+
+Total: **149 de teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
 - Furnizorii de email, WhatsApp și SMS: se aleg la audit (COM-01).
@@ -66,10 +69,9 @@ Total: **136 de teste, toate trec** (`php artisan test`).
 - Traducerea maghiară a paragrafului „Știai că…” (pagina Medici) și versiunea HU a textelor legale (N-08).
 
 ## Neimplementat încă (ordinea planificată)
-1. Comenzi de ochelari, financiar operațional (și taburile lor în dosarul pacientului).
-2. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
-3. Rapoarte avansate și exporturi (Excel, CSV, PDF).
-4. Editorul vizual de traduceri și centrul de traduceri.
-5. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
-6. Import din Evolvo (la final).
-7. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.
+1. Comunicare (adaptoare email / WhatsApp / SMS, cozi, webhookuri, remindere, campanii).
+2. Rapoarte avansate și exporturi (Excel, CSV, PDF).
+3. Editorul vizual de traduceri și centrul de traduceri.
+4. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
+5. Import din Evolvo (la final).
+6. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.

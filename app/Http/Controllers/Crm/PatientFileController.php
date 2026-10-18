@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Crm;
 use App\Domain\Clinical\ClinicalAccess;
 use App\Domain\Documents\DocumentVault;
 use App\Http\Controllers\Controller;
+use App\Domain\Finance\Ledger;
 use App\Models\ClinicalRecord;
+use App\Models\Order;
 use App\Models\PatientDocument;
 use App\Models\Prescription;
 use App\Support\Audit\AuditLogger;
@@ -58,9 +60,19 @@ class PatientFileController extends Controller
             'prescriptie-'.$prescription->patient->code.'-v'.$prescription->version);
     }
 
-    private function locale(Request $request): string
+    /** Handover document for an order (CMD-03); it is not a fiscal document (FIN-03). */
+    public function orderHandover(Request $request, Order $order, Ledger $ledger): Response
     {
-        $locale = (string) $request->query('lang', app()->getLocale());
+        abort_unless($request->user()->can('orders.view', $order->location_id), 403);
+        $locale = $this->locale($request, $order->patient?->locale);
+        app(AuditLogger::class)->log('orders.handover_pdf', $order, [], null, $order->location_id);
+
+        return $this->pdf('pdf.order-handover', ['order' => $order->load(['patient', 'location', 'items', 'responsible']), 'summary' => $ledger->summary($order)], $locale, 'predare-'.$order->number);
+    }
+
+    private function locale(Request $request, ?string $default = null): string
+    {
+        $locale = (string) $request->query('lang', $default ?? app()->getLocale());
 
         return in_array($locale, config('optica.locales'), true) ? $locale : config('app.fallback_locale');
     }

@@ -56,7 +56,10 @@ class AppServiceProvider extends ServiceProvider
         Date::use(CarbonImmutable::class);
 
         // Short, stable names for polymorphic links (tasks, audit), independent of class names.
-        Relation::morphMap(['lead' => Lead::class, 'patient' => Patient::class, 'appointment' => Appointment::class]);
+        Relation::morphMap([
+            'lead' => Lead::class, 'patient' => Patient::class, 'appointment' => Appointment::class,
+            'order' => \App\Models\Order::class, 'service_charge' => \App\Models\ServiceCharge::class,
+        ]);
 
         // Livewire update requests re-run these, so a component never escapes auth, 2FA or the staff locale.
         Livewire::addPersistentMiddleware([

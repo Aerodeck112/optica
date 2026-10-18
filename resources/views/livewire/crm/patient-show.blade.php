@@ -44,6 +44,10 @@
             <livewire:crm.patient.records-tab :patient-id="$patient->id" :key="'records-'.$patient->id" />
         @elseif ($tab === 'prescriptions')
             <livewire:crm.patient.prescriptions-tab :patient-id="$patient->id" :key="'rx-'.$patient->id" />
+        @elseif ($tab === 'orders')
+            <livewire:crm.patient.orders-tab :patient-id="$patient->id" :key="'orders-'.$patient->id" />
+        @elseif ($tab === 'finance')
+            <livewire:crm.patient.finance-tab :patient-id="$patient->id" :key="'finance-'.$patient->id" />
         @elseif ($tab === 'documents')
             <livewire:crm.patient.documents-tab :patient-id="$patient->id" :key="'docs-'.$patient->id" />
         @elseif ($tab === 'consents')

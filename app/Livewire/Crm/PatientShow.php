@@ -26,7 +26,7 @@ use Livewire\Component;
  */
 class PatientShow extends Component
 {
-    public const TABS = ['overview', 'appointments', 'records', 'prescriptions', 'documents', 'consents', 'tasks', 'history'];
+    public const TABS = ['overview', 'appointments', 'records', 'prescriptions', 'orders', 'finance', 'documents', 'consents', 'tasks', 'history'];
 
     #[Locked]
     public int $patientId;
@@ -86,6 +86,8 @@ class PatientShow extends Component
             'records' => $user->can('medical_records.create') || app(ClinicalAccess::class)->canSeeAnyRecords($user, $patient),
             'prescriptions' => $user->can('prescriptions.view') || $user->can('prescriptions.create'),
             'documents' => $user->can('documents.view'),
+            'orders' => $user->can('orders.view'),
+            'finance' => $user->can('payments.view'),
             'tasks' => $user->can('tasks.manage'),
             default => true,
         }));

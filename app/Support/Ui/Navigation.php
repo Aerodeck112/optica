@@ -22,6 +22,8 @@ class Navigation
                     ['label' => 'crm.nav.patients', 'route' => 'crm.patients.index', 'active' => 'crm.patients.*|crm.records.*', 'can' => 'patients.view'],
                     ['label' => 'crm.nav.leads', 'route' => 'crm.leads.index', 'active' => 'crm.leads.*', 'can' => 'leads.view'],
                     ['label' => 'crm.nav.tasks', 'route' => 'crm.tasks', 'active' => 'crm.tasks', 'can' => 'tasks.manage'],
+                    ['label' => 'crm.nav.orders', 'route' => 'crm.orders.index', 'active' => 'crm.orders.*', 'can' => 'orders.view'],
+                    ['label' => 'crm.nav.payments', 'route' => 'crm.payments.index', 'active' => 'crm.payments.*', 'can' => 'payments.view'],
                 ],
             ],
             [

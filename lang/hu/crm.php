@@ -17,6 +17,8 @@ return [
         'patients' => 'Páciensek',
         'leads' => 'Megkeresések',
         'tasks' => 'Feladatok',
+        'orders' => 'Szemüvegrendelések',
+        'payments' => 'Befizetések',
         'group_planning' => 'Tervezés',
         'schedules' => 'Munkarendek',
         'exceptions' => 'Szabadságok és kivételek',

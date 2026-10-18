@@ -78,13 +78,13 @@ Starea detaliată pe module este în PROGRESS.md.
 |---|---|---|
 | PAC-01 | ✅ | CRM → Pacienți: cod intern, date personale, limbă, adresă, sursă, reprezentant legal, relații de familie; CNP criptat, afișat doar la cerere cu dreptul `patients.view_sensitive` și jurnalizat. |
 | PAC-02 | ✅ | Telefon neunic; posibilele duplicate se arată înainte de salvare. Unirea se face manual, după comparare și confirmare, mută toate referințele și se jurnalizează (D-017). |
-| PAC-03 | 🟡 | Taburi: date personale, programări și vizite, fișe, prescripții, documente, consimțăminte, sarcini, istoric cronologic. Taburile Comenzi, Financiar și Comunicări apar odată cu modulele lor; exportul dosarului vine cu rapoartele. |
+| PAC-03 | 🟡 | Taburi: date personale, programări și vizite, fișe, prescripții, comenzi, financiar, documente, consimțăminte, sarcini, istoric cronologic. Tabul Comunicări apare cu modulul de comunicare; exportul dosarului vine cu rapoartele. |
 | MED-01…05 | ✅ / 📥 | Șabloane versionate cu unități, intervale și pași, utilizabile doar după validarea de către personal medical (D-016) 📥; ciornă → finalizare → amendamente cu autor, oră, motiv și valorile vechi/noi; prescripții cu autor, dată și versiune; PDF RO/HU cu antet, locație și specialist, observații netraduse, fără pretenția de semnătură calificată; documente private verificate după conținut (D-018). Aplicația nu calculează diagnostice sau prescripții. |
 | Consimțăminte | ✅ / 📥 | Informare, condiții și marketing pe canal, cu versiune, dată, sursă și istoric; acordul sau retragerea se înregistrează și la recepție; consimțămintele din formulare trec la pacient la conversie. Textele și retenția se validează de beneficiar 📥. |
 | CRM-01…02 | ✅ | CRM → Solicitări: tip, limbă, sursă și UTM, locație, responsabil, termen, istoric, note, sarcini; statusuri nou/contactat/în lucru/convertit/închis; conversia caută întâi pacientul existent. |
 | CRM-03 | 🟡 | UTM-urile din formular se păstrează; nu există pixeli publicitari. Atribuirea campaniilor vine cu rapoartele. |
-| CMD-01…03 | ⬜ | |
-| FIN-01…03 | ⬜ | |
+| CMD-01…03 | ✅ / ⚙️ | CRM → Comenzi ochelari: pacient, locație, responsabil, prescripție (valorile doar pentru cei autorizați), articole (ramă, lentile, tratamente), preț, avans, sold, termen; statusuri cu autor și oră; lista întârziatelor; istoric; document de predare PDF; legătura cu consultația. Notificarea „gata de ridicare” este emisă ca eveniment și se trimite odată cu modulul de comunicare ⚙️. |
+| FIN-01…03 | ✅ | Valoarea serviciilor și a comenzilor separată de încasări; plăți, avansuri, restituiri cu dată, metodă, locație și operator; corecturile anulează cu motiv, fără ștergere; sume în bani întregi; avansul nu se numără de două ori; nicio pretenție de document fiscal (D-019). |
 
 ## 8. Bilingvism și traduceri
 

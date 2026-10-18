@@ -17,6 +17,8 @@ return [
         'patients' => 'Pacienți',
         'leads' => 'Solicitări',
         'tasks' => 'Sarcini',
+        'orders' => 'Comenzi ochelari',
+        'payments' => 'Încasări',
         'group_planning' => 'Planificare',
         'schedules' => 'Orare de lucru',
         'exceptions' => 'Concedii și excepții',

@@ -19,6 +19,8 @@ return [
         'appointments' => 'Időpontok és vizitek',
         'records' => 'Orvosi kartonok',
         'prescriptions' => 'Receptek',
+        'orders' => 'Rendelések',
+        'finance' => 'Pénzügyek',
         'documents' => 'Dokumentumok',
         'consents' => 'Hozzájárulások',
         'tasks' => 'Feladatok',
