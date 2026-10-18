@@ -27,3 +27,6 @@ Schedule::command('messages:send')->everyMinute()->withoutOverlapping(5);
 // Scheduled reports, early in the morning (clinic time), and cleanup of old export files.
 Schedule::command('reports:send-scheduled')->dailyAt('06:30')->timezone(config('optica.clinic_timezone'))->withoutOverlapping(30);
 Schedule::command('reports:prune-exports')->daily();
+
+// Daily verified backup when enabled in Sistem → Backup; the command decides whether it is due.
+Schedule::command('optica:backup --scheduled')->everyFifteenMinutes()->withoutOverlapping(120);

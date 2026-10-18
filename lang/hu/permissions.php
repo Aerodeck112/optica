@@ -137,6 +137,7 @@ return [
             'updates' => 'Frissítések telepítése',
             'backups' => 'Biztonsági mentések',
             'diagnostics' => 'Rendszerdiagnosztika',
+            'import' => 'Adatimportálás',
         ],
         'audit' => [
             'view' => 'Naplózás megtekintése',

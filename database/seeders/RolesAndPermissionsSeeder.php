@@ -16,8 +16,12 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run(): void
     {
+        $new = [];
         foreach (PermissionCatalog::all() as $key) {
-            Permission::firstOrCreate(['key' => $key], ['module' => PermissionCatalog::module($key)]);
+            $permission = Permission::firstOrCreate(['key' => $key], ['module' => PermissionCatalog::module($key)]);
+            if ($permission->wasRecentlyCreated) {
+                $new[] = $key;
+            }
         }
 
         $ids = Permission::pluck('id', 'key');
@@ -26,6 +30,9 @@ class RolesAndPermissionsSeeder extends Seeder
             if (! $role->exists) {
                 $role->fill(['name' => $definition['name'], 'is_system' => true])->save();
                 $role->permissions()->sync($ids->only($definition['permissions'])->values());
+            } elseif ($added = array_intersect($new, $definition['permissions'])) {
+                // A permission introduced by an update reaches the default roles; earlier customisations stay.
+                $role->permissions()->syncWithoutDetaching($ids->only($added)->values());
             }
         }
 

@@ -31,7 +31,7 @@ final class PermissionCatalog
         'roles' => ['manage'],
         'settings' => ['manage'],
         'integrations' => ['manage'],
-        'system' => ['updates', 'backups', 'diagnostics'],
+        'system' => ['updates', 'backups', 'diagnostics', 'import'],
         'audit' => ['view'],
     ];
 

@@ -137,6 +137,7 @@ return [
             'updates' => 'Instalează actualizări',
             'backups' => 'Copii de siguranță',
             'diagnostics' => 'Diagnostic sistem',
+            'import' => 'Import de date',
         ],
         'audit' => [
             'view' => 'Vezi jurnalul de audit',

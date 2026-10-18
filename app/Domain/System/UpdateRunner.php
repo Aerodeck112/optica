@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Support\Audit\AuditLogger;
 use App\Support\Recovery\RecoveryKit;
 use App\Support\Settings;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -82,7 +83,18 @@ class UpdateRunner
             return ['ok' => false, 'errors' => $package->errors, 'journal' => null];
         }
 
-        $package->extractTo($this->kit->path($dir.'/files'));
+        try {
+            $package->extractTo($this->kit->path($dir.'/files'));
+        } catch (RuntimeException $e) {
+            // A file that does not match the signed manifest: the package was altered.
+            $errors = [__('system.updates.errors.checksum', ['detail' => Str::after($e->getMessage(), ': ')])];
+            $this->record(['run' => $uuid, 'from_version' => $from, 'to_version' => $package->manifest['version'], 'package_name' => $originalName,
+                'status' => 'rejected', 'errors' => $errors, 'log' => [], 'started_by' => $user?->id]);
+            $this->cleanup(['dir' => $dir]);
+            app(AuditLogger::class)->log('system.update_rejected', null, ['package' => $originalName, 'errors' => $errors], $user);
+
+            return ['ok' => false, 'errors' => $errors, 'journal' => null];
+        }
         $manifest = $package->manifest;
 
         // Only files that differ are copied; files of the old release missing from the new one are removed.
@@ -248,6 +260,8 @@ class UpdateRunner
 
             case 'finalize':
                 $this->kit->clearCompiled();
+                // New permissions of this version reach the default roles (customisations stay).
+                Artisan::call('db:seed', ['--class' => RolesAndPermissionsSeeder::class, '--force' => true]);
                 Settings::flush();
                 $journal['step'] = 'check';
                 break;

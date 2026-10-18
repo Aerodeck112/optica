@@ -9,7 +9,6 @@ use App\Models\MessageRule;
 use App\Models\MessageTemplate;
 use App\Models\Order;
 use App\Models\Patient;
-use App\Support\Settings;
 use App\Support\Ui\SiteUrl;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
@@ -39,6 +38,10 @@ class MessageDispatcher
 
     public function forAppointment(Appointment $appointment, string $type, ?CarbonImmutable $sendAfter = null): ?Message
     {
+        // Imported history (MIG-05) and appointments marked by staff never produce messages.
+        if ($appointment->notifications_disabled) {
+            return null;
+        }
         $appointment->loadMissing(['patient', 'location', 'specialist', 'service']);
         $patient = $appointment->patient;
         $locale = $appointment->locale ?: ($patient?->locale ?? 'ro');

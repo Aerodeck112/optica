@@ -67,6 +67,15 @@ class Navigation
                     ['label' => 'crm.nav.translations', 'route' => 'admin.translations', 'active' => 'admin.translations', 'can' => 'translations.edit'],
                 ],
             ],
+            [
+                'label' => 'crm.nav.group_system',
+                'items' => [
+                    ['label' => 'crm.nav.diagnostics', 'route' => 'admin.system.diagnostics', 'active' => 'admin.system.diagnostics', 'can' => 'system.diagnostics'],
+                    ['label' => 'crm.nav.backups', 'route' => 'admin.system.backups', 'active' => 'admin.system.backups*', 'can' => 'system.backups'],
+                    ['label' => 'crm.nav.updates', 'route' => 'admin.system.updates', 'active' => 'admin.system.updates', 'can' => 'system.updates'],
+                    ['label' => 'crm.nav.import', 'route' => 'admin.system.import', 'active' => 'admin.system.import*', 'can' => 'system.import'],
+                ],
+            ],
         ];
 
         $result = [];

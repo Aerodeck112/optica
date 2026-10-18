@@ -44,6 +44,11 @@ return [
         'roles' => 'Roluri și permisiuni',
         'clinical_templates' => 'Șabloane de fișă',
         'translations' => 'Traduceri',
+        'group_system' => 'Sistem',
+        'diagnostics' => 'Diagnostic',
+        'backups' => 'Backup',
+        'updates' => 'Actualizări',
+        'import' => 'Import date',
     ],
     'dashboard' => [
         'title' => 'Astăzi',

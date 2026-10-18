@@ -1,0 +1,4 @@
+# Trusted Ed25519 public keys for update packages (base64), one per line (D-009).
+# Generate the pair on the build machine with: php artisan optica:update-keygen /secure/path/optica-update.key
+# Only the public key goes here; the secret key stays offline with the supplier.
+# Without a key, Sistem → Actualizări shows updates as "not configured" and accepts no package.

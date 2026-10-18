@@ -44,6 +44,11 @@ return [
         'roles' => 'Szerepkörök és jogosultságok',
         'clinical_templates' => 'Kartonsablonok',
         'translations' => 'Fordítások',
+        'group_system' => 'Rendszer',
+        'diagnostics' => 'Diagnosztika',
+        'backups' => 'Biztonsági mentés',
+        'updates' => 'Frissítések',
+        'import' => 'Adatimportálás',
     ],
     'dashboard' => [
         'title' => 'Ma',

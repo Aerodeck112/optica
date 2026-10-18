@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Domain\Import\TableReader;
 use App\Models\MessageTemplate;
 use App\Models\TranslationOverride;
 use App\Support\Audit\AuditLogger;
@@ -16,7 +17,6 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use OpenSpout\Common\Entity\Row;
-use OpenSpout\Reader\XLSX\Reader as XlsxReader;
 use OpenSpout\Writer\XLSX\Writer as XlsxWriter;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
@@ -205,36 +205,7 @@ class TranslationCenter extends Component
     /** @return list<list<string>> */
     private function readTable(string $path, string $extension): array
     {
-        $rows = [];
-        if ($extension === 'xlsx') {
-            $reader = new XlsxReader;
-            $reader->open($path);
-            foreach ($reader->getSheetIterator() as $sheet) {
-                foreach ($sheet->getRowIterator() as $row) {
-                    $rows[] = array_map(fn ($v) => is_scalar($v) ? (string) $v : '', $row->toArray());
-                    if (count($rows) > 20000) {
-                        break;
-                    }
-                }
-                break;
-            }
-            $reader->close();
-
-            return $rows;
-        }
-        $content = (string) file_get_contents($path);
-        $content = preg_replace('/^\xEF\xBB\xBF/', '', $content);
-        $first = strtok($content, "\n");
-        $delimiter = substr_count((string) $first, ';') >= substr_count((string) $first, ',') ? ';' : ',';
-        $handle = fopen('php://memory', 'r+');
-        fwrite($handle, $content);
-        rewind($handle);
-        while (($row = fgetcsv($handle, null, $delimiter, '"', '')) !== false && count($rows) <= 20000) {
-            $rows[] = array_map('strval', $row);
-        }
-        fclose($handle);
-
-        return $rows;
+        return iterator_to_array(TableReader::rows($path, $extension, 20000), false);
     }
 
     // ----- data -------------------------------------------------------------------------------

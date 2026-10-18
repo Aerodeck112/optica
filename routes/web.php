@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\BackupDownloadController;
+use App\Http\Controllers\Admin\ImportReportController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\TwoFactorController;
@@ -28,6 +30,10 @@ use App\Livewire\Admin\ServiceEditor;
 use App\Livewire\Admin\ServiceIndex;
 use App\Livewire\Admin\SpecialistEditor;
 use App\Livewire\Admin\SpecialistIndex;
+use App\Livewire\Admin\System\DataImport;
+use App\Livewire\Admin\System\SystemBackups;
+use App\Livewire\Admin\System\SystemDiagnostics;
+use App\Livewire\Admin\System\SystemUpdates;
 use App\Livewire\Admin\TranslationCenter;
 use App\Livewire\Admin\UserEditor;
 use App\Livewire\Admin\UserIndex;
@@ -168,6 +174,12 @@ Route::prefix('admin')->name('admin.')->middleware(['staff.locale', 'auth', 'act
     Route::livewire('roles/{role}', RoleEditor::class)->name('roles.edit');
     Route::livewire('clinical-templates', ClinicalTemplates::class)->name('clinical-templates');
     Route::livewire('translations', TranslationCenter::class)->name('translations');
+    Route::livewire('system/diagnostics', SystemDiagnostics::class)->name('system.diagnostics');
+    Route::livewire('system/backups', SystemBackups::class)->name('system.backups');
+    Route::get('system/backups/{name}/download', BackupDownloadController::class)->middleware('throttle:10,1')->name('system.backups.download');
+    Route::livewire('system/updates', SystemUpdates::class)->name('system.updates');
+    Route::livewire('system/import', DataImport::class)->name('system.import');
+    Route::get('system/import/{uuid}/report', ImportReportController::class)->middleware('throttle:30,1')->name('system.import.report');
     Route::livewire('communication/channels', ChannelAccounts::class)->name('communication.channels');
     Route::livewire('communication/templates', MessageTemplates::class)->name('communication.templates');
     Route::livewire('communication/rules', MessageRules::class)->name('communication.rules');
