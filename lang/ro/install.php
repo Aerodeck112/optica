@@ -31,6 +31,7 @@ return [
         'https' => 'Conexiune securizată (HTTPS)',
         'docroot' => 'Document root indică directorul public/',
         'docroot_hint' => 'Nu s-a putut confirma; vezi DEPLOYMENT.md, secțiunea „Document root”.',
+        'docroot_htaccess' => 'Aplicația rulează prin fișierul .htaccess din rădăcină (varianta pentru document root fix). Verificați că adresa /.env răspunde cu eroare 403 sau 404.',
         'ok' => 'În regulă',
         'warning' => 'Avertisment',
         'error' => 'Trebuie rezolvat',

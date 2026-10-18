@@ -7,7 +7,7 @@
     </div>
 
     @if (! $run)
-        <form wire:submit="upload" class="panel mt-6 grid gap-4 p-5 sm:grid-cols-3">
+        <form wire:submit="uploadFile" class="panel mt-6 grid gap-4 p-5 sm:grid-cols-3">
             <h2 class="text-base font-semibold text-heading sm:col-span-3">{{ __('system.import.new') }}</h2>
             <div>
                 <label for="im-target" class="field-label">{{ __('system.import.target') }}</label>

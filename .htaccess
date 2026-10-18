@@ -1,0 +1,12 @@
+# Only for hosting where the document root cannot point to public/ (DEPLOYMENT.md, "Document root").
+# Every request is served from public/; the code, .env and storage/ are never reachable.
+# When the document root already is public/, Apache never reads this file.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<FilesMatch "^(\.env.*|\.htaccess|composer\.(json|lock)|artisan|release\.json|VERSION|.*\.md)$">
+    Require all denied
+</FilesMatch>

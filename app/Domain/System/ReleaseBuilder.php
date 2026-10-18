@@ -16,7 +16,7 @@ class ReleaseBuilder
 {
     /** Top-level entries of the application that are shipped. */
     private const INCLUDE = ['app', 'bootstrap', 'config', 'database', 'lang', 'public', 'resources', 'routes', 'storage', 'vendor',
-        'artisan', 'composer.json', 'composer.lock', 'VERSION', '.env.example', 'README.md', 'DEPLOYMENT.md', 'CHANGELOG.md'];
+        'artisan', 'composer.json', 'composer.lock', 'VERSION', '.env.example', '.htaccess', 'README.md', 'DEPLOYMENT.md', 'CHANGELOG.md'];
 
     /** Never shipped: development files, customer data, local state. */
     private const EXCLUDE_PATTERNS = [
@@ -66,6 +66,19 @@ class ReleaseBuilder
         return $this->files = $files;
     }
 
+    /** Placeholders that keep the empty storage folders in the archive. */
+    private const SKELETON = ['storage/app/private/.gitignore', 'storage/app/public/.gitignore', 'storage/framework/cache/data/.gitignore',
+        'storage/framework/sessions/.gitignore', 'storage/framework/views/.gitignore', 'storage/logs/.gitignore', 'bootstrap/cache/.gitignore'];
+
+    private function addSkeleton(ZipArchive $zip): void
+    {
+        foreach (self::SKELETON as $placeholder) {
+            if (! isset($this->files[$placeholder])) {
+                $zip->addFromString($placeholder, "*\n!.gitignore\n");
+            }
+        }
+    }
+
     private function excluded(string $relative): bool
     {
         foreach (self::EXCLUDE_PATTERNS as $pattern) {
@@ -100,6 +113,7 @@ class ReleaseBuilder
         foreach (array_keys($this->files) as $relative) {
             $zip->addFile($this->source.'/'.$relative, $relative);
         }
+        $this->addSkeleton($zip);
         $zip->addFromString('release.json', $this->releaseJson());
         $zip->close();
 

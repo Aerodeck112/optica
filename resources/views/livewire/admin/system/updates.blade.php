@@ -30,7 +30,7 @@
             @if (! empty($journal['changelog'][app()->getLocale()]))
                 <details class="mt-3" @if ($status === 'verified') open @endif>
                     <summary class="cursor-pointer text-sm font-medium text-ink">{{ __('system.updates.changelog') }}</summary>
-                    <div class="mt-2 max-h-64 overflow-y-auto whitespace-pre-line rounded-lg bg-paper p-3 text-sm ring-1 ring-line">{{ $journal['changelog'][app()->getLocale()] }}</div>
+                    <div class="mt-2 max-h-64 overflow-y-auto whitespace-pre-line rounded-lg bg-paper p-3 text-sm ring-1 ring-line">{{ preg_replace('/^#+\s*/m', '', $journal['changelog'][app()->getLocale()]) }}</div>
                 </details>
             @endif
             @if (! empty($journal['migration_notes'][app()->getLocale()]))
@@ -71,7 +71,7 @@
         @elseif ($status === 'rolled_back')
             <p class="mt-6 rounded-lg bg-warn-bg px-4 py-3 text-sm" role="status">{{ __('system.updates.rolled_back', ['version' => $journal['from_version']]) }}@if (! empty($journal['error'])) {{ __('system.updates.reason') }}: {{ \Illuminate\Support\Str::limit($journal['error'], 200) }}@endif</p>
         @endif
-        <form wire:submit="upload" class="panel mt-6 p-5">
+        <form wire:submit="checkPackage" class="panel mt-6 p-5">
             <h2 class="text-base font-semibold text-heading">{{ __('system.updates.upload_title') }}</h2>
             <p class="mt-1 text-sm text-muted">{{ __('system.updates.upload_hint') }}</p>
             <div class="mt-3 flex flex-wrap items-end gap-3">
@@ -82,7 +82,7 @@
                 </div>
                 <button type="submit" class="btn-primary" wire:loading.attr="disabled" @disabled(! $keys)>{{ __('system.updates.check') }}</button>
             </div>
-            <p class="mt-2 text-xs text-muted" wire:loading wire:target="package,upload">{{ __('system.updates.checking') }}</p>
+            <p class="mt-2 text-xs text-muted" wire:loading wire:target="package,checkPackage">{{ __('system.updates.checking') }}</p>
         </form>
     @endif
 

@@ -108,8 +108,8 @@
             <form wire:submit="import" class="mt-4 flex flex-wrap items-end gap-3">
                 <div class="min-w-0 flex-1">
                     <label for="tc-file" class="field-label">{{ __('translations.center.file') }}</label>
-                    <input id="tc-file" type="file" wire:model="upload" accept=".csv,.xlsx,text/csv" class="input">
-                    @error('upload')<p class="field-error">{{ $message }}</p>@enderror
+                    <input id="tc-file" type="file" wire:model="importFile" accept=".csv,.xlsx,text/csv" class="input">
+                    @error('importFile')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
                 <button type="submit" class="btn-secondary" wire:loading.attr="disabled">{{ __('translations.center.import') }}</button>
             </form>

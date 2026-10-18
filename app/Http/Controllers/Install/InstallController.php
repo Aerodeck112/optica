@@ -145,8 +145,16 @@ class InstallController extends Controller
         $add(__('install.req.upload'), $this->bytes($upload) >= 64 * 1024 * 1024, $upload, 'warning');
         $add(__('install.req.https'), $request->isSecure(), '', 'warning');
         // The document root must be public/: otherwise .env and the code would be reachable from the web.
+        // The alternative is the root .htaccess, which routes every request into public/.
         $docRoot = realpath((string) $request->server('DOCUMENT_ROOT')) ?: '';
-        $add(__('install.req.docroot'), $docRoot === '' || $docRoot !== realpath(base_path()), $docRoot === realpath(public_path()) ? 'public/' : __('install.req.docroot_hint'), $docRoot === realpath(base_path()) ? 'error' : 'warning');
+        $viaRootHtaccess = $docRoot === realpath(base_path()) && str_starts_with((string) $request->server('SCRIPT_NAME'), '/public/');
+        if ($docRoot === realpath(public_path())) {
+            $add(__('install.req.docroot'), true, 'public/');
+        } elseif ($viaRootHtaccess) {
+            $add(__('install.req.docroot'), false, __('install.req.docroot_htaccess'), 'warning');
+        } else {
+            $add(__('install.req.docroot'), $docRoot !== realpath(base_path()), __('install.req.docroot_hint'), $docRoot === realpath(base_path()) ? 'error' : 'warning');
+        }
 
         return $checks;
     }

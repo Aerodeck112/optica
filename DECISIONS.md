@@ -122,6 +122,33 @@ Format: fiecare decizie are ID, context, decizie, motiv și dacă este reversibi
 - Importul din CSV/XLSX creează doar ciorne, cu validarea variabilelor; publicarea rămâne un pas separat, cu `translations.publish`.
 - Observațiile medicale și alte texte introduse de personal nu sunt texte de interfață și nu apar în editor sau în centru.
 
+### D-023 Instalatorul web
+- Context: INS-01, INS-02; pe cPanel nu există SSH, Composer sau npm.
+- Prima cerere scrie `.env` din `.env.example`, cu cheie nouă și sesiuni/cache pe fișiere, ca instalatorul să funcționeze înainte de baza de date. Instalatorul folosește formulare simple, nu Livewire.
+- Protecție: un token aleator scris pe server (citit prin File Manager), schimbat de fiecare instalare; fără token nu se poate face niciun pas. După finalizare, fișierul de blocare face `/install` inexistent.
+- Baza de date trebuie să fie goală (sau să conțină doar o instalare întreruptă a platformei); o bază cu alte tabele este refuzată, ca nimic să nu fie suprascris.
+- Varianta pentru document root fix: `.htaccess` în rădăcină, care trimite toate cererile în `public/` (verificată pe Apache 2.4). Copierea lui `public/` în altă parte a fost respinsă: actualizările nu ar mai ajunge la fișierele publice.
+
+### D-024 Backup în PHP, criptat
+- Context: UPD-04, SEC-06; pe găzduirea partajată `exec`/`mysqldump` sunt de obicei interzise.
+- Exportul bazei de date este scris de aplicație, cu o instrucțiune pe linie (valorile cu linii noi sunt escapate), astfel încât restaurarea nu interpretează SQL. Ultima linie marchează un export complet; un export trunchiat nu se restaurează niciodată.
+- Restaurarea șterge întâi toate tabelele, ca o migrare eșuată să nu lase tabele noi.
+- Piesele se criptează cu XChaCha20-Poly1305 (libsodium, autentificat), cu o cheie derivată din `APP_KEY`: cine poate citi datele clinice poate citi backupul, nimeni altcineva. Pierderea `APP_KEY` face backupurile ilizibile, la fel ca datele clinice (DEPLOYMENT.md).
+- Tabelele `sessions`, `cache`, `cache_locks` și `jobs` se salvează fără conținut.
+
+### D-025 Actualizări în pași, cu rollback automat
+- Fiecare cerere execută un singur pas (fișierele în loturi de 400), ca să nu depășească limitele de timp ale găzduirii partajate. Jurnalul pe disc (nu baza de date) este sursa de adevăr, pentru că baza de date poate fi restaurată în timpul procesului.
+- Revenirea bazei de date este restaurarea backupului făcut la începutul actualizării, nu metodele `down()` ale migrărilor. În mentenanță nu se pot introduce date, deci restaurarea nu pierde nimic.
+- Un fișier nou este notat în jurnal înainte de a fi scris, ca rollbackul să-l poată șterge chiar dacă procesul se oprește în mijlocul lotului.
+- Permisiunile introduse de o versiune nouă se adaugă rolurilor implicite la actualizare; modificările făcute de administrator rolurilor rămân.
+- Cheia privată de semnare nu există în repository. `resources/update-keys.txt` este gol până când furnizorul își generează perechea (`optica:update-keygen`); până atunci actualizările apar „neconfigurate”.
+
+### D-026 Importul de date
+- Identificatorii externi se păstrează cu prefixul sursei (`evolvo:…`), ca două sisteme să nu se amestece.
+- Un import repetat completează doar câmpurile goale ale înregistrărilor create de importuri anterioare; nu suprascrie modificările personalului.
+- Duplicatele se raportează, nu se unesc: același CNP leagă identificatorul de pacientul existent; același nume cu același telefon sau aceeași dată de naștere marchează un posibil duplicat pentru decizie manuală (PAC-02).
+- Simularea este obligatorie înainte de import. Programările importate au notificările dezactivate (trecute: întotdeauna; viitoare: dacă nu se alege altfel), ca să nu plece remindere retroactive (MIG-05). Datele clinice nu se importă prin acest ecran.
+
 ## Neconcordanțe constatate în surse – rezolvate de beneficiar (17.10.2026)
 
 | # | Constatare | Decizia beneficiarului | Aplicare |

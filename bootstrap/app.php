@@ -31,6 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // Before routing, so even unknown URLs lead to the installer until it has run.
         $middleware->prepend(EnsureInstalled::class);
         $middleware->web(prepend: [RemoveTrailingSlash::class], append: [TranslationMode::class]);
+        // The maintenance bypass cookie is signed by Laravel and read before decryption; an update
+        // started from the CRM sets it in a normal response, so it must stay unencrypted (UPD-04).
+        $middleware->encryptCookies(except: ['laravel_maintenance']);
         // Provider callbacks carry a signature instead of a CSRF token.
         $middleware->validateCsrfTokens(except: ['webhooks/*']);
         $middleware->alias([

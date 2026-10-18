@@ -163,7 +163,7 @@ class TranslationEditorTest extends TestCase
         $file = UploadedFile::fake()->createWithContent('traduceri.csv', $csv);
 
         $component = Livewire::actingAs($editor)->test(TranslationCenter::class)
-            ->set('upload', $file)
+            ->set('importFile', $file)
             ->call('import')
             ->assertHasNoErrors();
         $result = $component->get('importResult');

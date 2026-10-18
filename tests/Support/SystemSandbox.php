@@ -44,7 +44,7 @@ trait SystemSandbox
         file_put_contents($this->sandbox.'/app/Changed.php', "<?php // version 1.0.0\n");
         file_put_contents($this->sandbox.'/app/Removed.php', "<?php // only in 1.0.0\n");
         $c = config('database.connections.mysql');
-        file_put_contents($this->sandbox.'/.env', "DB_HOST={$c['host']}\nDB_PORT={$c['port']}\nDB_DATABASE=$database\nDB_USERNAME={$c['username']}\nDB_PASSWORD=\"{$c['password']}\"\n");
+        file_put_contents($this->sandbox.'/.env', "DB_HOST={$c['host']}\nDB_PORT={$c['port']}\nDB_DATABASE=$database\nDB_USERNAME={$c['username']}\nDB_PASSWORD=\"{$c['password']}\"\nAPP_KEY=".config('app.key')."\n");
         file_put_contents($this->sandbox.'/release.json', json_encode(['version' => '1.0.0', 'files' => [
             'app/Kept.php' => hash_file('sha256', $this->sandbox.'/app/Kept.php'),
             'app/Changed.php' => hash_file('sha256', $this->sandbox.'/app/Changed.php'),

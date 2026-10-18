@@ -32,7 +32,7 @@ class DocumentsTab extends Component
         $this->authorize('documents.view');
     }
 
-    public function upload(DocumentVault $vault): void
+    public function uploadDocument(DocumentVault $vault): void
     {
         $this->authorize('documents.upload');
         $this->validate([

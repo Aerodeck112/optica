@@ -31,6 +31,7 @@ return [
         'https' => 'Biztonságos kapcsolat (HTTPS)',
         'docroot' => 'A document root a public/ könyvtárra mutat',
         'docroot_hint' => 'Nem sikerült megerősíteni; lásd a DEPLOYMENT.md „Document root” részét.',
+        'docroot_htaccess' => 'Az alkalmazás a gyökérben lévő .htaccess fájlon keresztül fut (rögzített document root esetére). Ellenőrizze, hogy a /.env cím 403-as vagy 404-es hibát ad.',
         'ok' => 'Rendben',
         'warning' => 'Figyelmeztetés',
         'error' => 'Javítandó',

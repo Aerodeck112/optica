@@ -44,7 +44,7 @@ return [
 
     'backups' => [
         'title' => 'Biztonsági mentés',
-        'intro' => 'Minden mentés tartalmazza az adatbázist és a feltöltött fájlokat (képek, páciensdokumentumok), és írás után ellenőrzésre kerül. A mentések a szerveren, a nyilvános könyvtáron kívül maradnak; a biztonság kedvéért rendszeresen töltsön le egy másolatot.',
+        'intro' => 'Minden mentés tartalmazza az adatbázist és a feltöltött fájlokat (képek, páciensdokumentumok), az alkalmazás kulcsával (APP_KEY) titkosítva van, és írás után ellenőrzésre kerül. A mentések a szerveren, a nyilvános könyvtáron kívül maradnak; a biztonság kedvéért rendszeresen töltsön le egy másolatot.',
         'list' => 'Mentések',
         'create' => 'Mentés most',
         'creating' => 'Mentés folyamatban…',
@@ -58,6 +58,7 @@ return [
         'unverified' => 'Nem ellenőrzött',
         'tables' => '{1} egy tábla|[2,*] :count tábla',
         'rows' => 'rekord',
+        'encrypted' => 'titkosítva',
         'with_files' => 'fájlokkal',
         'download' => 'Letöltés',
         'verify' => 'Ellenőrzés',

@@ -3,7 +3,7 @@
         @if ($notice)<div class="rounded-lg bg-ok-bg px-4 py-3 text-sm text-ok" role="status">{{ $notice }}</div>@endif
     </div>
     @can('documents.upload')
-        <form wire:submit="upload" class="panel space-y-4 p-5">
+        <form wire:submit="uploadDocument" class="panel space-y-4 p-5">
             <h2 class="text-base font-semibold">{{ __('patients.documents.upload') }}</h2>
             <div class="grid gap-4 md:grid-cols-3">
                 <div>

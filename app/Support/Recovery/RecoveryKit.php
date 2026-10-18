@@ -288,6 +288,115 @@ final class RecoveryKit
         return true;
     }
 
+    // ----- encryption at rest (SEC-06) -------------------------------------------------------
+
+    private const ENC_MAGIC = 'OPTB1';
+
+    private const ENC_CHUNK = 1048576;
+
+    /**
+     * Key for backup files, derived from APP_KEY: whoever can read the clinical data of a backup
+     * can also open the backup, and nobody else (downloaded copies stay protected).
+     */
+    public function backupKey(?string $appKey = null): string
+    {
+        $appKey ??= (string) ($this->env()['APP_KEY'] ?? '');
+        if (str_starts_with($appKey, 'base64:')) {
+            $appKey = (string) base64_decode(substr($appKey, 7), true);
+        }
+        if ($appKey === '') {
+            throw new RuntimeException('APP_KEY is missing; backups cannot be encrypted or read.');
+        }
+
+        return hash_hkdf('sha256', $appKey, SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_KEYBYTES, 'optica-backup-v1');
+    }
+
+    /** Authenticated streaming encryption (XChaCha20-Poly1305); a truncated or altered file never decrypts. */
+    public function encryptFile(string $in, string $out, string $key): void
+    {
+        $src = fopen($in, 'rb');
+        $dst = fopen($out, 'wb');
+        [$state, $header] = sodium_crypto_secretstream_xchacha20poly1305_init_push($key);
+        fwrite($dst, self::ENC_MAGIC.$header);
+        do {
+            $chunk = (string) fread($src, self::ENC_CHUNK);
+            $last = feof($src);
+            $cipher = sodium_crypto_secretstream_xchacha20poly1305_push($state, $chunk, '', $last ? SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL : SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_MESSAGE);
+            fwrite($dst, pack('N', strlen($cipher)).$cipher);
+        } while (! $last);
+        fclose($src);
+        fclose($dst);
+    }
+
+    public function decryptFile(string $in, string $out, string $key): void
+    {
+        $src = fopen($in, 'rb');
+        $dst = fopen($out, 'wb');
+        try {
+            $magic = fread($src, strlen(self::ENC_MAGIC));
+            $header = fread($src, SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_HEADERBYTES);
+            if ($magic !== self::ENC_MAGIC || strlen((string) $header) !== SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_HEADERBYTES) {
+                throw new RuntimeException('Not an encrypted backup file.');
+            }
+            $state = sodium_crypto_secretstream_xchacha20poly1305_init_pull($header, $key);
+            $final = false;
+            while (! $final && ($len = fread($src, 4)) !== false && strlen($len) === 4) {
+                $cipher = (string) fread($src, unpack('N', $len)[1]);
+                $result = sodium_crypto_secretstream_xchacha20poly1305_pull($state, $cipher);
+                if ($result === false) {
+                    throw new RuntimeException('The backup file is damaged or the key is wrong.');
+                }
+                fwrite($dst, $result[0]);
+                $final = $result[1] === SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL;
+            }
+            if (! $final) {
+                throw new RuntimeException('The backup file is incomplete.');
+            }
+        } finally {
+            fclose($src);
+            fclose($dst);
+        }
+    }
+
+    /**
+     * Plain path of a backup part: encrypted parts are decrypted to a temporary file, which the
+     * caller passes to forget() when done.
+     */
+    public function readable(string $path, ?string $appKey = null): string
+    {
+        if (! str_ends_with($path, '.enc')) {
+            return $path;
+        }
+        $tmp = dirname($path).'/.tmp-'.bin2hex(random_bytes(6)).'-'.basename($path, '.enc');
+        try {
+            $this->decryptFile($path, $tmp, $this->backupKey($appKey));
+        } catch (\Throwable $e) {
+            @unlink($tmp);
+            throw $e;
+        }
+
+        return $tmp;
+    }
+
+    public function forget(string $original, string $readable): void
+    {
+        if ($readable !== $original) {
+            @unlink($readable);
+        }
+    }
+
+    /** The part as written by BackupManager: encrypted when an .enc file exists. */
+    public function part(string $dir, string $name): ?string
+    {
+        foreach ([$dir.'/'.$name.'.enc', $dir.'/'.$name] as $candidate) {
+            if (is_file($candidate)) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
     // ----- maintenance and compiled caches ----------------------------------------------------
 
     public function maintenanceOn(string $secret): void
@@ -353,7 +462,7 @@ final class RecoveryKit
      * Puts back the state before the update: replaced files, removed new files, database (if
      * the update reached the migrations), compiled caches, and leaves maintenance mode.
      */
-    public function rollback(?PDO $pdo = null): array
+    public function rollback(?PDO $pdo = null, ?string $appKey = null): array
     {
         $journal = $this->journal();
         if (! $journal || empty($journal['backup_dir'])) {
@@ -367,8 +476,13 @@ final class RecoveryKit
         $this->log($journal, 'Rollback started');
         $this->writeJournal($journal);
 
-        if (is_file($this->path($dir.'/app-files.zip'))) {
-            $this->unzipFiles($this->path($dir.'/app-files.zip'));
+        if ($files = $this->part($this->path($dir), 'app-files.zip')) {
+            $plain = $this->readable($files, $appKey);
+            try {
+                $this->unzipFiles($plain);
+            } finally {
+                $this->forget($files, $plain);
+            }
         }
         foreach ($journal['new_files'] ?? [] as $relative) {
             if (self::safeRelativePath($relative) && is_file($this->path($relative))) {
@@ -376,7 +490,13 @@ final class RecoveryKit
             }
         }
         if (! empty($journal['db_touched'])) {
-            $this->restoreDatabase($pdo ?? $this->pdo(), $this->path($dir.'/database.sql.gz'));
+            $dump = $this->part($this->path($dir), 'database.sql.gz') ?? throw new RuntimeException('The database backup is missing.');
+            $plain = $this->readable($dump, $appKey);
+            try {
+                $this->restoreDatabase($pdo ?? $this->pdo(), $plain);
+            } finally {
+                $this->forget($dump, $plain);
+            }
             $this->log($journal, 'Database restored from the backup');
         }
         $this->clearCompiled();

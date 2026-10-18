@@ -30,7 +30,7 @@ class SystemUpdates extends Component
         $this->authorize('system.updates');
     }
 
-    public function upload(): void
+    public function checkPackage(): void
     {
         $this->packageErrors = [];
         $this->validate(['package' => ['required', 'file', 'mimes:zip', 'max:'.(int) (config('optica.updates.max_package_bytes') / 1024)]], [], ['package' => __('system.updates.package')]);

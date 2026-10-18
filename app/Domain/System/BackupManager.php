@@ -9,6 +9,7 @@ use App\Support\Settings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use RuntimeException;
+use Throwable;
 use ZipArchive;
 
 /**
@@ -62,12 +63,21 @@ class BackupManager
             $parts[] = 'app-files.zip';
         }
 
+        // Encrypted at rest (SEC-06); the plain files never stay on disk.
+        $key = $this->kit->backupKey(config('app.key'));
+        foreach ($parts as $i => $part) {
+            $this->kit->encryptFile($dir.'/'.$part, $dir.'/'.$part.'.enc', $key);
+            unlink($dir.'/'.$part);
+            $parts[$i] = $part.'.enc';
+        }
+
         $manifest = [
             'name' => $name,
             'type' => $type,
             'version' => config('optica.version'),
             'created_at' => now()->utc()->toIso8601String(),
             'created_by' => $user?->id,
+            'encrypted' => true,
             'database' => $dbInfo,
             'parts' => [],
         ];
@@ -97,20 +107,30 @@ class BackupManager
     private function verifyParts(string $dir, array $manifest): bool
     {
         foreach ($manifest['parts'] as $part => $info) {
-            if (! is_file($dir.'/'.$part) || hash_file('sha256', $dir.'/'.$part) !== $info['sha256']) {
+            $path = $dir.'/'.$part;
+            if (! is_file($path) || hash_file('sha256', $path) !== $info['sha256']) {
                 return false;
             }
-            if ($part === 'database.sql.gz') {
-                $check = $this->kit->verifyDump($dir.'/'.$part);
-                if ($check === null || $check['tables'] !== $manifest['database']['tables']) {
-                    return false;
+            try {
+                $plain = $this->kit->readable($path, config('app.key'));
+            } catch (Throwable) {
+                return false;
+            }
+            try {
+                if (str_starts_with($part, 'database.sql.gz')) {
+                    $check = $this->kit->verifyDump($plain);
+                    if ($check === null || $check['tables'] !== $manifest['database']['tables']) {
+                        return false;
+                    }
+                } else {
+                    $zip = new ZipArchive;
+                    if ($zip->open($plain, ZipArchive::CHECKCONS) !== true) {
+                        return false;
+                    }
+                    $zip->close();
                 }
-            } else {
-                $zip = new ZipArchive;
-                if ($zip->open($dir.'/'.$part, ZipArchive::CHECKCONS) !== true) {
-                    return false;
-                }
-                $zip->close();
+            } finally {
+                $this->kit->forget($path, $plain);
             }
         }
 
@@ -179,9 +199,20 @@ class BackupManager
         $secret = Str::random(40);
         $this->kit->maintenanceOn($secret);
         try {
-            $this->kit->restoreDatabase(DB::connection()->getPdo(), $this->dir($name).'/database.sql.gz');
-            if (isset($manifest['parts']['files.zip'])) {
-                $this->kit->unzipFiles($this->dir($name).'/files.zip');
+            $dump = $this->kit->part($this->dir($name), 'database.sql.gz');
+            $plain = $this->kit->readable($dump, config('app.key'));
+            try {
+                $this->kit->restoreDatabase(DB::connection()->getPdo(), $plain);
+            } finally {
+                $this->kit->forget($dump, $plain);
+            }
+            if ($files = $this->kit->part($this->dir($name), 'files.zip')) {
+                $plain = $this->kit->readable($files, config('app.key'));
+                try {
+                    $this->kit->unzipFiles($plain);
+                } finally {
+                    $this->kit->forget($files, $plain);
+                }
             }
         } finally {
             $this->kit->maintenanceOff();

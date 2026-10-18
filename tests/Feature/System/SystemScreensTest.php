@@ -7,6 +7,7 @@ use App\Domain\System\Diagnostics;
 use App\Livewire\Admin\System\SystemBackups;
 use App\Livewire\Admin\System\SystemUpdates;
 use App\Support\Settings;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,12 @@ class SystemScreensTest extends TestCase
         }
         $this->get(route('admin.system.backups.download', '20260101-000000-manual-abcd'))->assertNotFound();
         $this->signIn($reception)->get(route('admin.system.backups.download', '20260101-000000-manual-abcd'))->assertForbidden();
+    }
+
+    public function test_maintenance_bypass_cookie_is_not_encrypted(): void
+    {
+        // Set from a Livewire response during an update; Laravel reads it before decrypting cookies.
+        $this->assertTrue(app(EncryptCookies::class)->isDisabled('laravel_maintenance'));
     }
 
     public function test_diagnostics_report_missing_cron_and_unconfigured_parts(): void
@@ -101,7 +108,7 @@ class SystemScreensTest extends TestCase
 
         Livewire::actingAs($admin)->test(SystemUpdates::class)
             ->set('package', UploadedFile::fake()->createWithContent('optica-99.0.0-update.zip', (string) file_get_contents($path)))
-            ->call('upload')
+            ->call('checkPackage')
             ->assertSet('packageErrors', [__('system.updates.errors.signature')]);
         $this->assertSame('rejected', DB::table('update_runs')->value('status'));
         $this->assertSame(config('optica.version'), trim((string) file_get_contents(base_path('VERSION'))));

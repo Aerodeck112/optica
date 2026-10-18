@@ -35,7 +35,7 @@ Identificatorii sunt stabili (LNG-03). Etichetele lor sunt traductibile.
 | CMS și SEO | `cms.edit`, `cms.publish`, `media.manage`, `seo.manage` |
 | Traduceri | `translations.edit`, `translations.publish` |
 | Utilizatori | `users.view`, `users.manage`, `roles.manage` |
-| Sistem | `settings.manage`, `integrations.manage`, `system.updates`, `system.backups`, `system.diagnostics`, `audit.view` |
+| Sistem | `settings.manage`, `integrations.manage`, `system.updates`, `system.backups`, `system.diagnostics`, `system.import`, `audit.view` |
 
 ## Reguli pentru datele clinice
 
@@ -86,7 +86,7 @@ Legendă: ● acordat · L = limitat la locațiile atribuite · O = numai pacien
 | translations.edit / publish | ● | – | – | – | – | – | – | – | ● |
 | users.view / manage, roles.manage | ● | – | – | – | – | – | – | – | – |
 | settings.manage, integrations.manage | ● | – | – | – | – | – | – | – | – |
-| system.updates / backups / diagnostics | ● | – | – | – | – | – | – | – | – |
+| system.updates / backups / diagnostics / import | ● | – | – | – | – | – | – | – | – |
 | audit.view | ● | – | – | – | – | – | – | – | – |
 
 Note:

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Crm;
 
+use App\Domain\Clinical\RecordService;
 use App\Livewire\Admin\ClinicalTemplates;
 use App\Livewire\Crm\ClinicalRecordEditor;
 use App\Livewire\Crm\LeadShow;
@@ -18,8 +19,11 @@ use App\Models\ClinicalTemplate;
 use App\Models\Lead;
 use App\Models\Patient;
 use App\Models\PatientDocument;
+use App\Models\Permission;
 use App\Models\Prescription;
+use App\Models\Role;
 use App\Models\Task;
+use App\Support\Access\AccessControl;
 use Database\Seeders\ClinicalTemplateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -107,7 +111,7 @@ class PatientFileTest extends TestCase
         $template = $this->validatedTemplate();
         $location = $this->makeLocation();
         $doctor = $this->doctor($location);
-        $record = app(\App\Domain\Clinical\RecordService::class)->createDraft($this->makePatient(), $template, $doctor, $location->id);
+        $record = app(RecordService::class)->createDraft($this->makePatient(), $template, $doctor, $location->id);
 
         foreach (['superadmin', 'reception', 'location_manager'] as $role) {
             $this->signIn($this->staff($role, [], [$location->id]));
@@ -144,7 +148,7 @@ class PatientFileTest extends TestCase
         Livewire::test(DocumentsTab::class, ['patientId' => $patient->id])
             ->set('file', UploadedFile::fake()->createWithContent('scrisoare.pdf', "%PDF-1.4\n%DEMO\n"))
             ->set('title', 'Scrisoare medicală DEMO')->set('category', 'external_report')
-            ->call('upload')->assertHasNoErrors();
+            ->call('uploadDocument')->assertHasNoErrors();
         $document = PatientDocument::firstOrFail();
 
         $this->get(route('crm.documents.download', $document))->assertOk()
@@ -232,10 +236,10 @@ class PatientFileTest extends TestCase
     private function staffWith(array $permissions)
     {
         $user = $this->staff('reception');
-        $role = \App\Models\Role::create(['key' => 'medical-chief-'.uniqid(), 'name' => ['ro' => 'Test', 'hu' => 'Test']]);
-        $role->permissions()->sync(\App\Models\Permission::whereIn('key', $permissions)->pluck('id'));
+        $role = Role::create(['key' => 'medical-chief-'.uniqid(), 'name' => ['ro' => 'Test', 'hu' => 'Test']]);
+        $role->permissions()->sync(Permission::whereIn('key', $permissions)->pluck('id'));
         $user->roles()->sync([$role->id]);
-        app(\App\Support\Access\AccessControl::class)->flush();
+        app(AccessControl::class)->flush();
 
         return $user->fresh();
     }

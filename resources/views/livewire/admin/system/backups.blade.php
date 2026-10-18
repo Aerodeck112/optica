@@ -32,7 +32,8 @@
                             @if (! ($b['verified'] ?? false))<span class="badge-bad">{{ __('system.backups.unverified') }}</span>@endif</td>
                         <td data-label="{{ __('system.backups.content') }}" class="text-xs text-muted">
                             {{ trans_choice('system.backups.tables', $b['database']['tables'], ['count' => $b['database']['tables']]) }} · {{ number_format($b['database']['rows'], 0, ',', '.') }} {{ __('system.backups.rows') }}
-                            @isset($b['parts']['files.zip']) · {{ __('system.backups.with_files') }}@endisset
+                            @if (isset($b['parts']['files.zip']) || isset($b['parts']['files.zip.enc'])) · {{ __('system.backups.with_files') }}@endif
+                            @if ($b['encrypted'] ?? false) · {{ __('system.backups.encrypted') }}@endif
                         </td>
                         <td class="cell-actions whitespace-nowrap text-right">
                             <a href="{{ route('admin.system.backups.download', $b['name']) }}" class="btn-link text-sm">{{ __('system.backups.download') }}</a>

@@ -2,6 +2,22 @@
 
 Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Versiunile urmează SemVer.
 
+## [0.5.0-dev] – 2026-10-19
+### Adăugat
+- Instalatorul web RO/HU (`/install`): token unic, verificarea serverului și a bazei de date, administrator, domeniu, fus orar, SMTP, linia de cron, token de recuperare, blocare după finalizare.
+- Varianta pentru document root fix: `.htaccess` în rădăcina aplicației.
+- Sistem → Backup: backupuri criptate și verificate, backup zilnic, descărcare, restaurare cu backup de siguranță.
+- Sistem → Actualizări: pachete semnate Ed25519, verificări complete, backup, mentenanță, aplicare în pași, rollback automat, reluare, istoric.
+- `/recovery.php`: recuperarea unei actualizări întrerupte fără aplicație.
+- Sistem → Diagnostic: cron, coadă, comunicare, erori, spațiu, backup, actualizări.
+- Sistem → Import date: pacienți și programări din CSV/XLSX, cu simulare, import repetabil și reluabil, reconciliere.
+- Comenzi: `optica:release`, `optica:update-keygen`, `optica:update`, `optica:backup`, `optica:backup-decrypt`, `optica:recovery-token`.
+- Permisiunea `system.import`; permisiunile noi ajung automat la rolurile implicite la actualizare.
+
+### Reparat
+- Încărcarea documentelor în dosarul pacientului nu funcționa în browser (numele acțiunii intra în conflict cu funcția de încărcare a Livewire).
+- Programările marcate fără notificări (de exemplu cele importate) nu mai generează mesaje.
+
 ## [0.4.0-dev] – 2026-10-19
 ### Adăugat
 - Registrul și dosarul pacientului: date personale, familie, reprezentant legal, CNP criptat afișat la cerere, programări și vizite, consimțăminte, istoric; arhivare; unirea controlată a duplicatelor.

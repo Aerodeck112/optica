@@ -1,29 +1,100 @@
 # Instalare și operare
 
-> **Stare:** instalatorul web și pachetul ZIP nu sunt încă implementate (PROGRESS.md). Acest document descrie mediul de dezvoltare și cerințele cPanel stabilite până acum. Secțiunile marcate „planificat” se completează când componentele sunt gata.
+Ghid pentru instalarea pe găzduire cPanel, cron, backup și restaurare, actualizări semnate, recuperare și import. Toate ecranele instalatorului și ale actualizatorului sunt în română și maghiară.
 
 ## Cerințe server (de verificat la auditul hostingului)
 - PHP **8.3 sau mai nou** (în cPanel: *MultiPHP Manager* sau *Select PHP Version*).
-- Extensii PHP: `pdo_mysql`, `mbstring`, `intl`, `sodium`, `zip`, `gd`, `fileinfo`, `openssl`, `ctype`, `tokenizer`, `xml`, `curl`, `bcmath` (opțional).
+- Extensii PHP: `pdo_mysql`, `mbstring`, `intl`, `sodium`, `zip`, `gd`, `fileinfo`, `openssl`, `ctype`, `curl`, `dom`, `tokenizer`, `xml`. Instalatorul le verifică pe toate.
 - MySQL 8.0+ sau MariaDB 10.6+, cu InnoDB și `utf8mb4`.
 - Cron cPanel cu rulare la fiecare minut.
-- Funcții PHP permise: `proc_open` (pentru `schedule:run`), `symlink` (opțional).
-- Spațiu: minimum 1 GB plus documentele și backup-urile.
-- **Nu sunt necesare** Node.js, Composer, SSH, Docker, Redis sau WebSocket.
+- `upload_max_filesize` și `post_max_size` de cel puțin 64 MB pentru pachetele de actualizare (ideal 100 MB; pachetul complet are ~50 MB).
+- Spațiu: minimum 1 GB, plus documentele și backupurile (fiecare backup conține baza de date și fișierele încărcate).
+- **Nu sunt necesare** Node.js, Composer, SSH, Docker, Redis sau WebSocket. Nu se folosesc `exec`, `mysqldump` sau symlinkuri.
+
+## Pachetele livrate
+| Fișier | Rol |
+|---|---|
+| `optica-<versiune>-install.zip` | aplicația completă: cod, `vendor/` (fără pachete de dezvoltare), CSS/JS compilate, `release.json` (sumele SHA-256 ale fișierelor) |
+| `optica-<versiune>-update.zip` | aceleași fișiere sub `files/`, cu `manifest.json` (versiune, versiune sursă minimă, PHP minim, changelog RO/HU) și `manifest.sig` (semnătură Ed25519) |
+
+## Instalarea pe cPanel (INS-01, INS-02)
+1. **Baza de date:** cPanel → *MySQL Databases* → creați o bază de date (de ex. `cont_optica`) și un utilizator cu parolă puternică; adăugați utilizatorul la bază cu *ALL PRIVILEGES*. Baza trebuie să fie goală.
+2. **Fișierele:** cPanel → *File Manager* → creați directorul `/home/UTILIZATOR/optica`, încărcați `optica-<versiune>-install.zip` în el și alegeți *Extract*.
+3. **Domeniul:** cPanel → *Domains* → domeniul (sau un subdomeniu de test) → *Document Root* = `/home/UTILIZATOR/optica/public`. Dacă document rootul nu se poate schimba, vezi secțiunea „Document root” de mai jos.
+4. **PHP:** cPanel → *MultiPHP Manager* → PHP 8.3 pentru domeniu; în *MultiPHP INI Editor* creșteți `upload_max_filesize` și `post_max_size` la 100M.
+5. **Instalatorul:** deschideți `https://domeniu/`. Prima cerere scrie un fișier `.env` cu o cheie nouă (`APP_KEY`) și vă trimite la `/install`. Codul de instalare se află în `storage/app/install-token.txt` (îl citiți din *File Manager*).
+6. **Pașii instalatorului:** verificarea serverului → baza de date (conexiunea, versiunea, drepturile; o bază cu alte tabele este refuzată) → crearea structurii, a rolurilor, a conținutului site-ului actual, a șabloanelor de mesaje RO/HU (fără date demonstrative) → administratorul (parolă de minimum 12 caractere cu litere mari, mici și cifre; 2FA se configurează la prima autentificare) → adresa site-ului, fusul orar, SMTP (opțional; butonul de verificare testează doar conectarea, fără a trimite mesaje) → finalizare.
+7. **Finalizare:** instalatorul afișează linia de cron și **tokenul de recuperare** (o singură dată). Se scrie `storage/app/installed.lock`, codul de instalare se șterge, iar `/install` răspunde de acum cu 404.
+8. Adăugați linia de cron (mai jos), autentificați-vă la `/crm/login`, configurați 2FA, apoi **Sistem → Backup → Backup zilnic**.
+
+Verificat în acest mediu: pachetul de instalare a fost dezarhivat într-un director gol și instalat prin browser pe Apache și pe serverul PHP integrat, cu baza de date goală (vezi PROGRESS.md).
+
+## Document root
+**Varianta recomandată:** domeniul indică spre `public/` (pasul 3). Codul, `.env`, `storage/` și backupurile rămân în afara zonei publice (SEC-02).
+
+**Varianta pentru document root fix** (de exemplu, domeniul principal în `public_html`, fără posibilitate de schimbare): dezarhivați aplicația direct în `public_html`. Fișierul `.htaccess` din rădăcina pachetului trimite fiecare cerere în `public/` și blochează `.env`, `artisan`, `composer.*`, `release.json` și fișierele `.md`; `storage/` nu este accesibil, pentru că nicio cerere nu ajunge în afara lui `public/`. Actualizările funcționează la fel, pentru că structura rămâne aceeași. Verificați după instalare că `https://domeniu/.env` răspunde cu 403 sau 404. Instalatorul recunoaște această variantă și o marchează cu avertisment. Ambele variante au fost verificate pe Apache 2.4 cu mod_php (rezultate în PROGRESS.md).
 
 ## Linia de cron (unică)
 ```
 * * * * * /usr/local/bin/php /home/UTILIZATOR/optica/artisan schedule:run >> /dev/null 2>&1
 ```
-Calea exactă către PHP diferă între servere. Instalatorul o va afișa pe cea corectă (planificat). Cronul rulează:
-- heartbeat-ul (panoul de diagnostic avertizează dacă lipsește);
+Calea exactă către PHP diferă între servere; instalatorul o afișează pe cea a serverului. Cronul rulează:
+- heartbeat-ul (Diagnosticul avertizează dacă lipsește de peste 5 minute);
 - expirarea rezervărilor temporare și a cererilor neconfirmate;
-- procesarea cozii (emailuri, mesaje, exporturi) în loturi de maximum 50 de secunde, fără rulări suprapuse.
+- coada (emailuri, exporturi) în loturi de maximum 50 de secunde, fără rulări suprapuse;
+- `messages:send` (remindere, campanii, coada de mesaje);
+- rapoartele periodice și ștergerea exporturilor vechi;
+- `optica:backup --scheduled` (backupul zilnic, dacă este activat).
 
-## Document root
-Varianta recomandată: domeniul indică direct spre directorul `public/` al aplicației (cPanel → *Domains* → *Document Root*: `/home/UTILIZATOR/optica/public`). Codul, `.env`, `storage/` și backup-urile rămân în afara zonei publice (SEC-02).
+În timpul unei actualizări (mod mentenanță) cronul nu pornește sarcini: scrierile sunt blocate.
 
-Varianta pentru hosting cu document root fix (`public_html`), planificată: aplicația se pune în `/home/UTILIZATOR/optica`, iar în `public_html` se copiază numai conținutul lui `public/`, cu un `index.php` care indică spre `../optica`. Instalatorul va genera acest fișier.
+## Backup și restaurare (ghid)
+- **Ce conține:** baza de date (export PHP, fără `mysqldump`), `public/uploads/` și `storage/app/private/` (documentele pacienților), fără backupurile anterioare, exporturile temporare și fișierele de import.
+- **Criptare (SEC-06):** fiecare parte este criptată (XChaCha20-Poly1305, autentificat) cu o cheie derivată din `APP_KEY`; pe disc și în copiile descărcate nu rămâne nimic în clar. Fără `APP_KEY`, backupul nu poate fi citit.
+- **Verificare:** fiecare parte are suma SHA-256 în `manifest.json`; exportul bazei de date se termină cu un marcaj de completitudine. Un backup incomplet sau modificat este marcat și nu poate fi restaurat.
+- **Unde:** `storage/app/private/backups/<data>-<tip>-<cod>/`, în afara zonei publice. Descărcați periodic o copie (Sistem → Backup → Descarcă); descărcarea este jurnalizată.
+- **Automat:** Sistem → Backup → Backup zilnic (ora clinicii). Se păstrează ultimele 7 backupuri regulate (`BACKUP_KEEP`) și ultimele 3 de fiecare alt tip.
+- **Restaurare:** Sistem → Backup → Restaurează, cu confirmarea scrisă „RESTAUREAZĂ”. Înainte se face automat un backup al stării curente („Înainte de restaurare”), deci restaurarea poate fi anulată. Tot ce s-a introdus după data backupului se pierde din aplicație: alegeți momentul cu grijă.
+- **Fără aplicație:** pentru o actualizare întreruptă, folosiți `/recovery.php` (mai jos).
+- **Pe alt server (dezastru):** instalați aceeași versiune, puneți în `.env` cheia `APP_KEY` a instalării vechi, copiați directorul backupului descărcat (dezarhivat) în `storage/app/private/backups/`, apoi Sistem → Backup → Restaurează. Pentru o inspecție manuală: `php artisan optica:backup-decrypt database.sql.gz.enc database.sql.gz --key=base64:...`.
+- **Cheia de criptare:** datele clinice din backup se pot citi numai cu `APP_KEY` (secțiunea următoare). Păstrați cheia separat de backup.
+
+## Actualizări (UPD-01…06)
+1. Furnizorul livrează `optica-<versiune>-update.zip`.
+2. **Sistem → Actualizări → Verifică pachetul.** Se verifică: semnătura Ed25519 cu o cheie de încredere, versiunea (mai nouă decât cea instalată, compatibilă cu versiunea sursă), PHP minim, spațiul liber, numărul și dimensiunea fișierelor, căile (fără `..`, căi absolute sau symlinkuri), corespondența exactă cu manifestul și suma fiecărui fișier. Fișierele protejate (`.env`, `storage/`, `public/uploads/`, `bootstrap/cache/`) nu pot fi modificate de niciun pachet. Pachetele respinse rămân în istoric, cu motivul.
+3. Se afișează versiunile, changelogul RO/HU și numărul de fișiere care se schimbă; actualizarea pornește doar la confirmare.
+4. **Pașii:** backup verificat (baza de date + fișierele care se înlocuiesc sau se șterg) → mod mentenanță (vizitatorii primesc 503; administratorul care a pornit actualizarea continuă) → fișierele, în loturi, fiecare scris atomic → migrările → permisiunile noi pentru rolurile implicite → verificări (sume, versiune, migrări aplicate) → ieșire din mentenanță. Fiecare pas este scris în `storage/app/private/updates/current.json` înainte și după execuție.
+5. **La eroare:** fișierele înlocuite revin, fișierele noi se șterg, iar baza de date se restaurează din backup dacă actualizarea ajunsese la migrări. În mentenanță nu s-au putut introduce date noi, deci restaurarea nu pierde nimic.
+6. **Întreruperi:** dacă pagina se închide, actualizarea se poate relua (pașii sunt repetabili) sau anula din aceeași pagină; dacă aplicația nu mai pornește, din `/recovery.php`.
+7. Linie de comandă (dacă hostingul are *Terminal*): `php artisan optica:update pachet.zip`, `--resume`, `--rollback`.
+
+**Strategia de revenire a bazei de date:** pentru fiecare migrare, revenirea este restaurarea backupului verificat făcut la începutul actualizării (nu se folosesc metodele `down()` pe date de producție). Câmpul `migration_notes` din manifest descrie, per versiune, migrările care schimbă date existente; changelogul le menționează.
+
+## Recuperare (`/recovery.php`)
+Pagină independentă de aplicație (doar PHP și datele din `.env`), RO/HU. Cere tokenul de recuperare afișat la instalare (sau generat din Sistem → Actualizări / `php artisan optica:recovery-token`); serverul păstrează doar hash-ul tokenului. După 5 încercări greșite, adresa IP este blocată 15 minute. Permite: afișarea stării ultimei actualizări și a jurnalului, **restaurarea stării dinaintea actualizării** (fișiere și bază de date) și **ieșirea din modul mentenanță**. Dacă aplicația este instalată în altă cale decât `public/..`, modificați variabila `$base` de la începutul fișierului.
+
+## Semnarea pachetelor (furnizor)
+- Perechea de chei se generează o singură dată, pe calculatorul de build: `php artisan optica:update-keygen /cale/sigura/optica-update.key`. Comanda refuză să scrie cheia secretă în directorul aplicației.
+- **Cheia secretă** rămâne offline, la furnizor; nu se pune în repository, în pachete sau pe server. **Cheia publică** (afișată de comandă) se adaugă în `resources/update-keys.txt`, care se livrează cu aplicația. O schimbare de cheie se face printr-o actualizare semnată cu cheia veche care adaugă cheia nouă. Variabila `UPDATE_PUBLIC_KEYS` din `.env` poate adăuga chei, separate prin virgulă.
+- Fără nicio cheie publică, pagina Actualizări afișează „Neconfigurat” și nu acceptă pachete.
+- **Construirea unei versiuni:**
+  ```
+  composer install --no-dev --optimize-autoloader   # într-o copie curată a sursei
+  npm ci && npm run build
+  # actualizați VERSION și secțiunea din CHANGELOG.md
+  php artisan optica:release --source=/cale/copie --out=build \
+      --sign-key=/cale/sigura/optica-update.key --min-from=<versiunea minimă> --changelog-hu=changelog-hu.txt
+  ```
+  Comanda refuză sursele cu pachete de dezvoltare (PHPUnit, Pint) și cele fără `public/build`.
+
+## Import de date (MIG-01…05)
+- **Sistem → Import date**, cu permisiunea `system.import`. Formate: CSV (`;` sau `,`, UTF-8 sau Windows-1250) și XLSX.
+- Ordinea: pacienții, apoi programările (legate prin ID-ul extern al pacientului). Locațiile, specialiștii și serviciile trebuie să existe deja în platformă; cele lipsă sunt raportate, nu create.
+- Pași: încărcare → asocierea coloanelor (recunoscute automat după denumirile uzuale RO/HU) → previzualizare → **simulare obligatorie** (nu scrie nimic) → import în loturi → reconciliere și raport CSV.
+- Repetabil: identificatorii externi se păstrează cu prefixul sursei (`evolvo:1234`). Un pacient deja importat se completează doar în câmpurile goale; modificările personalului nu se suprascriu. Același CNP leagă înregistrarea de pacientul existent; numele + telefonul sau data nașterii marchează un posibil duplicat pentru decizie manuală.
+- Reluabil: fiecare lot se salvează împreună cu poziția din fișier; un import întrerupt continuă de la primul rând neprocesat, fără duplicate.
+- Programările importate nu trimit mesaje (trecute: niciodată; viitoare: doar dacă se bifează opțiunea), ca să nu existe remindere retroactive (MIG-05).
+- Fișierul original se păstrează în `storage/app/private/imports/` pe perioada convenită cu beneficiarul. Datele clinice nu se importă prin acest ecran.
 
 ## Mediu de dezvoltare
 ```bash
@@ -33,7 +104,7 @@ cp .env.example .env && php artisan key:generate
 php artisan migrate --seed
 php artisan test
 ```
-Testele folosesc baza de date `optica_test` (vezi `phpunit.xml`) pe MySQL/MariaDB. SQLite nu este suportat pentru teste, deoarece testele de concurență au nevoie de blocări reale pe rând.
+Testele folosesc baza de date `optica_test` (vezi `phpunit.xml`) pe MySQL/MariaDB. Testele de backup, restaurare și actualizare au nevoie și de o bază separată, `optica_scratch` (sau `DB_SCRATCH_DATABASE`), pe care o șterg și o recreează; fără ea, aceste teste sunt sărite. SQLite nu este suportat pentru teste, deoarece testele de concurență au nevoie de blocări reale pe rând.
 
 ## Comunicare (email, SMS, WhatsApp)
 - Conturile se configurează în **Comunicare → Canale**; datele de acces se păstrează criptat cu `APP_KEY`.
@@ -51,7 +122,7 @@ Fișele medicale, prescripțiile și CNP-urile sunt criptate cu `APP_KEY` din `.
 - nu se trimite prin email și nu se pune în tichete de suport.
 
 ## Primul administrator
-Până la instalatorul web, primul cont se creează din linia de comandă (doar în dezvoltare sau prin *Terminal* din cPanel, dacă este disponibil):
+Instalatorul creează primul superadministrator. În dezvoltare (sau prin *Terminal* din cPanel) există și comanda:
 ```
 php artisan optica:create-admin admin@exemplu.ro "Nume Prenume" --locale=ro
 ```
@@ -72,9 +143,5 @@ Baza de date stochează UTC (`APP_TIMEZONE` rămâne `UTC`). Ora clinicilor este
 | `BOOKING_DEFAULT_TRAVEL_MINUTES` | 30 | timpul de deplasare implicit între locații |
 | `CALENDAR_POLL_SECONDS` | 15 | reîmprospătarea calendarului CRM |
 | `TWO_FACTOR_ENFORCED` | true | 2FA obligatoriu pentru rolurile privilegiate (nu se dezactivează în producție) |
-
-## Planificat
-- Instalarea din ZIP prin `/install` (INS-01, INS-02).
-- Actualizarea din „Sistem → Actualizări” (UPD-01…06).
-- Backup și restaurare (SEC-06).
-- Semnarea pachetelor (cheia privată se păstrează offline, la furnizor).
+| `BACKUP_KEEP` | 7 | câte backupuri regulate se păstrează |
+| `UPDATE_PUBLIC_KEYS` | — | chei publice suplimentare pentru pachetele de actualizare |

@@ -44,7 +44,7 @@ class TranslationCenter extends Component
     #[Url]
     public string $status = '';
 
-    public $upload = null;
+    public $importFile = null;
 
     public ?array $importResult = null;
 
@@ -147,16 +147,16 @@ class TranslationCenter extends Component
 
     public function import(TranslationOverrides $overrides, TranslationCatalog $catalog): void
     {
-        $this->validate(['upload' => ['required', 'file', 'max:5120', 'mimes:csv,txt,xlsx']], [], ['upload' => __('translations.center.file')]);
+        $this->validate(['importFile' => ['required', 'file', 'max:5120', 'mimes:csv,txt,xlsx']], [], ['importFile' => __('translations.center.file')]);
         try {
-            $table = $this->readTable($this->upload->getRealPath(), strtolower($this->upload->getClientOriginalExtension()));
+            $table = $this->readTable($this->importFile->getRealPath(), strtolower($this->importFile->getClientOriginalExtension()));
         } catch (Throwable) {
             $table = null;
         }
         $header = $table ? array_map(fn ($h) => mb_strtolower(trim((string) $h)), array_shift($table)) : [];
         $keyCol = array_search('key', $header, true);
         if ($keyCol === false) {
-            $this->addError('upload', __('translations.center.bad_file'));
+            $this->addError('importFile', __('translations.center.bad_file'));
 
             return;
         }
@@ -199,7 +199,7 @@ class TranslationCenter extends Component
         app(AuditLogger::class)->log('translations.imported', null, ['drafts' => $result['drafts'], 'errors' => count($result['errors'])]);
         $result['errors'] = array_slice($result['errors'], 0, 30);
         $this->importResult = $result;
-        $this->upload = null;
+        $this->importFile = null;
     }
 
     /** @return list<list<string>> */

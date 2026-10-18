@@ -77,8 +77,22 @@ class BackupTest extends TestCase
         $manifest = $backups->create('manual', $user);
         $this->assertTrue($manifest['verified']);
         $this->assertTrue($backups->verify($manifest['name']));
+        // Encrypted at rest: no personal data or document content in the clear (SEC-06).
+        $dir = $backups->dir($manifest['name']);
+        $this->assertFileDoesNotExist($dir.'/files.zip');
+        $this->assertFileDoesNotExist($dir.'/database.sql.gz');
+        $this->assertStringNotContainsString('pdf-v1', (string) file_get_contents($dir.'/files.zip.enc'));
+        $plainDump = $this->kit()->readable($dir.'/database.sql.gz.enc');
+        $this->assertStringContainsString('Ioana', (string) gzdecode((string) file_get_contents($plainDump)));
+        $this->kit()->forget($dir.'/database.sql.gz.enc', $plainDump);
+        try {
+            $this->kit()->readable($dir.'/database.sql.gz.enc', 'base64:'.base64_encode(random_bytes(32)));
+            $this->fail('A wrong key must not open the backup');
+        } catch (\RuntimeException) {
+        }
+        $plainFiles = $this->kit()->readable($dir.'/files.zip.enc');
         $zip = new ZipArchive;
-        $zip->open($backups->dir($manifest['name']).'/files.zip');
+        $zip->open($plainFiles);
         $this->assertNotFalse($zip->locateName('public/uploads/photo.webp'));
         $this->assertNotFalse($zip->locateName('storage/app/private/patient-documents/doc.pdf'));
         // Backups never contain other backups.
@@ -86,6 +100,7 @@ class BackupTest extends TestCase
             $this->assertStringNotContainsString('backups/', $zip->getNameIndex($i));
         }
         $zip->close();
+        $this->kit()->forget($dir.'/files.zip.enc', $plainFiles);
 
         $patient->delete();
         file_put_contents($this->sandbox.'/public/uploads/photo.webp', 'image-v2');
@@ -99,7 +114,7 @@ class BackupTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['action' => 'system.backup_restored']);
 
         // A modified backup fails verification and cannot be restored.
-        file_put_contents($backups->dir($manifest['name']).'/files.zip', 'corrupted');
+        file_put_contents($backups->dir($manifest['name']).'/files.zip.enc', 'corrupted');
         $this->assertFalse($backups->verify($manifest['name']));
         $this->expectException(\RuntimeException::class);
         $backups->restore($manifest['name'], $user);

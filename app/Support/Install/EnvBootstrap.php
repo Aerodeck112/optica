@@ -9,8 +9,19 @@ namespace App\Support\Install;
  */
 class EnvBootstrap
 {
+    /** Writable directories Laravel needs; an archive tool may drop empty folders when unzipping. */
+    public const DIRECTORIES = ['storage/app/private', 'storage/app/public', 'storage/framework/cache/data', 'storage/framework/sessions',
+        'storage/framework/views', 'storage/logs', 'bootstrap/cache', 'public/uploads'];
+
     public static function ensure(string $basePath): void
     {
+        if (! is_dir($basePath.'/storage/framework/views')) {
+            foreach (self::DIRECTORIES as $dir) {
+                if (! is_dir($basePath.'/'.$dir)) {
+                    @mkdir($basePath.'/'.$dir, 0755, true);
+                }
+            }
+        }
         $env = $basePath.'/.env';
         if (is_file($env) || is_file($basePath.'/storage/app/installed.lock') || getenv('APP_ENV') === 'testing' || ! is_file($basePath.'/.env.example')) {
             return;

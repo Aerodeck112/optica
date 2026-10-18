@@ -124,23 +124,26 @@ Starea detaliată pe module este în PROGRESS.md.
 | SEC-01 | 🟡 | Login cu limitare a încercărilor și mesaj generic, 2FA TOTP obligatoriu pentru superadmin / admin operațional / manager / financiar, resetare parolă cu token expirabil, blocarea imediată a conturilor dezactivate. Teste `LoginTest`. Expirarea sesiunilor inactive și revocarea sesiunilor din admin sunt ⬜. |
 | SEC-02 | 🟡 | CSRF, escaping și interogări parametrizate active; documentele private sunt în afara directorului public, verificate după conținut, descărcate doar prin controller autorizat. Antetele de securitate globale (CSP, HSTS) se configurează la instalare. |
 | SEC-03 | 🟡 | Imaginile încărcate sunt re-encodate (metadate eliminate) și nu se pot executa. Jurnalele nu conțin parole. |
-| SEC-04…07 | ⬜ | |
+| SEC-04 | ✅ | Nu există analytics sau pixeli în CRM și nici pe site; nu se trimit evenimente către terți. |
+| SEC-05 | 🟡 | Retenție aplicată: exporturile de rapoarte 7 zile, backupurile după `BACKUP_KEEP`, fișierele de import păstrate privat. Arhivarea pacienților există (fără ștergere). Politicile configurabile de retenție și fluxul pentru solicitările persoanelor vizate sunt ⬜ și se stabilesc cu beneficiarul. |
+| SEC-06 | ✅ / 📥 | Backupuri criptate (XChaCha20-Poly1305, cheie derivată din `APP_KEY`), verificate, accesibile doar cu `system.backups`, descărcare jurnalizată; restaurarea completă este testată (`BackupTest`). 📥 Frecvența, retenția, locația copiei externe și obiectivele de recuperare se stabilesc la audit. |
+| SEC-07 | ✅ | Testele folosesc date fictive și baze separate (`optica_test`, `optica_scratch`); furnizorii de mesaje sunt simulați în teste (nicio trimitere reală); nu există integrare AI. |
 | OPS-01 | 🟡 | Indecși pe interogările de disponibilitate. Măsurătorile de volum sunt ⬜. |
-| OPS-02 | 🟡 | Heartbeat-ul cronului este ✅. Panoul de diagnostic este ⬜. |
+| OPS-02 | ✅ | Sistem → Diagnostic: cron (avertizare peste 5 minute), coadă, lucrări eșuate, email, canale, mesaje eșuate, erori din ultimele 24 h (doar ora și tipul, fără mesaje sau date), spațiu, backup, actualizări, chei, token de recuperare, migrări, mod de depanare, HTTPS. Teste `SystemScreensTest`. |
 | OPS-03 | 🟡 | Ecranele CRM existente: verificate la 390/768/1440 px, etichete și erori asociate câmpurilor, confirmare înainte de ștergere. |
 
 ## 12. Instalare și actualizări
 
 | ID | Status | Observații |
 |---|---|---|
-| INS-01…02 | ⬜ | Proiectat în ARCHITECTURE.md §9. |
-| UPD-01…06 | ⬜ | Proiectat în ARCHITECTURE.md §10 (semnătură Ed25519, D-009). |
+| INS-01…02 | ✅ | Pachet ZIP complet (`optica:release`), instalator `/install` RO/HU cu token unic, verificarea serverului, a bazei de date și a drepturilor, administrator, domeniu, fus orar, SMTP (verificare fără trimitere), linia de cron, token de recuperare, blocare. Alternativa pentru document root fix: `.htaccess` în rădăcină. Teste `InstallerTest`; instalare reală din ZIP verificată prin browser pe Apache 2.4 și pe serverul PHP integrat. |
+| UPD-01…06 | ✅ | Sistem → Actualizări: versiuni, changelog RO/HU, verificări, progres, jurnal, istoric. Semnătură Ed25519 cu chei de încredere, versiune sursă/țintă, PHP, spațiu, ZIP Slip, symlinkuri, limite, fișiere protejate, sume SHA-256. Backup verificat, mentenanță (scrieri și cron blocate), fișiere atomice în loturi, migrări, verificări, rollback automat; reluare sau restaurare după întrerupere, inclusiv prin `/recovery.php` fără aplicație. Teste `UpdateTest`, `BackupTest`; actualizare reală 0.5.0 → 0.5.1 prin interfață și recuperare reală prin `/recovery.php` verificate. |
 
 ## 13. Migrare
 
 | ID | Status | Observații |
 |---|---|---|
-| MIG-01…05 | ⬜ / 📥 | Coloanele `external_ref` sunt pregătite pentru import repetabil. Așteptăm exporturile Evolvo autorizate. |
+| MIG-01…05 | ✅ / 📥 | Sistem → Import date: pacienți și programări din CSV/XLSX, asocierea coloanelor, previzualizare, simulare obligatorie, normalizare și validare (date, telefon, email, CNP cu cifră de control), duplicate raportate, ID-uri externe cu prefixul sursei, import repetabil fără dublare și fără suprascrierea modificărilor, loturi reluabile, raport CSV și reconciliere; programările importate nu trimit mesaje retroactive. Teste `ImportTest`. 📥 Maparea exactă a exporturilor Evolvo se face când sosesc fișierele (decizia beneficiarului: la final). |
 
 ## 14. Teste de acceptanță
 
@@ -149,11 +152,15 @@ Starea detaliată pe module este în PROGRESS.md.
 | T01 | ✅ nivel serviciu și flux public | `BookingTest::test_online_and_reception_bookings_share_availability` |
 | T02 | ✅ nivel serviciu | `ConcurrentBookingTest` (procese paralele reale) |
 | T03 | ✅ nivel serviciu | `AvailabilityTest` (pauze, concedii, DST) + `BookingTest::test_reschedule_is_atomic` |
-| T04 | 🟡 | `AccessControlTest` + `CatalogAdminTest` (pagină și componentă refuzate fără permisiune). API, fișiere și exporturi ⬜. |
+| T04 | ✅ | `AccessControlTest`, `CatalogAdminTest`, `PatientFileTest` (fișe, PDF, documente, CNP), `ReportScreensTest` (exporturi), `SystemScreensTest` și `ImportTest` (ecrane și descărcări de sistem), `TranslationEditorTest`: refuz pe server pentru pagini, componente, fișiere și exporturi. |
 | T05 | ✅ | `StaffLocaleTest` + verificare în browser a păstrării datelor nesalvate. |
-| T06 | 🟡 backend ✅ | `TranslationOverridesTest`; editorul vizual ⬜. |
-| T07–T11 | ⬜ | |
-| T12 | 🟡 | Ecranele CRM existente sunt verificate la 390, 768 și 1440 px, fără derulare orizontală. Site-ul public este ⬜. |
+| T06 | ✅ | `TranslationOverridesTest`, `TranslationEditorTest` (mod de traducere, editor, centru, import/export) + verificare în browser la 390 și 1440 px. |
+| T07 | ✅ | `MessagingTest`: stări reale din webhookuri semnate, fallback, reîncercări, remindere retrase la mutare/anulare, marketing doar cu acord reverificat la trimitere, STOP. Trimitere reală către furnizori: 📥 (credențiale). |
+| T08 | ✅ | `ReportEngineTest::test_a_specialist_in_two_locations_and_unique_patients_are_never_double_counted` și restul `ReportEngineTest`. |
+| T09 | ✅ | `ImportTest`: import repetat fără duplicate, lot întrerupt reluat fără duplicate, reconciliere. |
+| T10 | ✅ | `InstallerTest`, `UpdateTest` (pachet valid aplicat, pachete neautentice sau nesigure respinse, date păstrate) + instalare și actualizare reale prin browser. |
+| T11 | ✅ | `UpdateTest` (migrare eșuată → rollback automat; actualizare întreruptă → recuperare fără aplicație sau reluare), `BackupTest` (restaurare cu verificarea integrității) + recuperare reală prin `/recovery.php`. |
+| T12 | ✅ | Parcurgere automată în browser: 12 pagini ale site-ului (RO/HU, programare, 404) și 32 de ecrane CRM/CMS/sistem, plus taburile dosarului de pacient, la 390, 768 și 1440 px: fără derulare orizontală, fără erori JavaScript. |
 
 ## Matrice Evolvo → platforma nouă (GEN-02)
 

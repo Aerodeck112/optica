@@ -126,19 +126,24 @@ Cererile Livewire (`/livewire/update`) reaplică middleware-ul persistent: auten
 - Modul de traducere (D-022): `RecordingTranslator` (extinde translatorul Laravel) notează cheile afișate într-un `TranslationRecorder` per cerere; middleware-ul `TranslationMode` adaugă lista la sfârșitul paginii, iar `components/translation-mode` marchează textele și deschide `Translations\InlineEditor`. Centrul de traduceri (`Admin\TranslationCenter`) citește toate cheile prin `TranslationCatalog`.
 
 ## 8. Cron și cozi
-O singură intrare cron: `* * * * * php /cale/artisan schedule:run`. Sarcini: heartbeat, `bookings:expire`, `queue:work --stop-when-empty --max-time=50` (cu blocare împotriva rulărilor simultane). Ulterior: remindere, rapoarte programate, backup.
+O singură intrare cron: `* * * * * php /cale/artisan schedule:run`. Sarcini: heartbeat, `bookings:expire`, `queue:work --stop-when-empty --max-time=50` (cu blocare împotriva rulărilor simultane), `messages:send`, rapoarte periodice, ștergerea exporturilor, `optica:backup --scheduled`. În mod mentenanță, planificatorul nu pornește sarcini.
 
-## 9. Instalator (proiectat, neimplementat)
-- Pachetul ZIP conține `vendor/` și `public/build/`. Pe server nu se rulează Composer sau npm.
-- Document root = `public/`. Alternativa pentru hosting fără document root configurabil este în DEPLOYMENT.md.
-- `/install` este activ doar când lipsește `storage/app/installed.lock` și cere tokenul unic din `storage/app/install-token.txt` (generat la prima accesare, citit prin File Manager în cPanel).
-- Pași: verificare PHP și extensii (pdo_mysql, mbstring, intl, sodium, zip, gd, fileinfo, openssl), permisiuni, spațiu → conexiune DB → migrații + seed roluri → administrator + 2FA → domeniu, SMTP, fus orar → afișarea liniei de cron → blocare.
+## 9. Instalator (D-023)
+- Pachetul ZIP (`optica:release`, `App\Domain\System\ReleaseBuilder`) conține `vendor/` fără pachete de dezvoltare, `public/build/`, scheletul `storage/` și `release.json`. Pe server nu se rulează Composer sau npm.
+- Prima cerere fără `.env`: `App\Support\Install\EnvBootstrap` (apelat din `bootstrap/app.php`) scrie un `.env` de producție cu `APP_KEY` nou, sesiuni și cache pe fișiere, și recreează directoarele lipsă.
+- Middleware-ul global `EnsureInstalled` trimite orice cerere la `/install` cât timp lipsește `storage/app/installed.lock`; după instalare, `/install` răspunde cu 404.
+- `Install\InstallController` (formulare simple, fără Livewire, ca să funcționeze înainte de baza de date): token unic din `storage/app/install-token.txt` → verificarea serverului → baza de date (versiune, tabele existente, drept de creare) → migrări + `DatabaseSeeder` (fără date demonstrative) → superadministrator → adresă, fus orar, SMTP → finalizare (lock, token de recuperare, linia de cron). Fiecare pas verifică pe server că pașii anteriori sunt făcuți.
+- Document root = `public/`; alternativa este `.htaccess` din rădăcină, care trimite totul în `public/`.
 
-## 10. Actualizări ZIP (proiectat, neimplementat)
-- Pachet: `manifest.json` (versiune țintă, versiune sursă minimă, versiune PHP minimă, SHA-256 per fișier, lista de fișiere de șters) + `manifest.sig` (semnătură Ed25519 detașată) + `files/` + `migrations/`.
-- Flux (UPD-03…06): încărcare → verificare semnătură cu cheia publică din aplicație → compatibilitate și spațiu → extragere în director privat cu protecție ZIP Slip, symlinkuri și limită de dimensiune → backup verificat (DB + fișierele aplicației) → mod mentenanță → copiere fișiere (niciodată `storage/`, `.env`, `public/uploads`) → migrații → verificări funcționale → ieșire din mentenanță → jurnal în `update_runs`.
-- Recuperare: fiecare pas este scris într-un jurnal pe disc. `public/recovery.php` (fără Laravel) poate relua sau restaura ultimul backup, cu token.
-- Datele beneficiarului (DB, `storage/app`, încărcări, traduceri personalizate) nu sunt niciodată suprascrise.
+## 10. Backup, actualizări și recuperare (D-024, D-025)
+- `App\Support\Recovery\RecoveryKit` nu depinde de Laravel: export și restaurare a bazei de date în PHP (o instrucțiune pe linie, marcaj de completitudine), arhive de fișiere, scriere atomică, criptare XChaCha20-Poly1305 a pieselor de backup (cheie derivată din `APP_KEY`), mod mentenanță, jurnalul actualizării și rollback. Același cod este folosit de aplicație și de `public/recovery.php`.
+- `BackupManager`: backup verificat (SHA-256 per parte, decriptare de probă, marcaj, `CHECKCONS`), listare fără bază de date (manifestele de pe disc), restaurare cu backup de siguranță, retenție.
+- `UpdatePackage`: semnătura Ed25519 a `manifest.json` cu cheile din `resources/update-keys.txt` / `UPDATE_PUBLIC_KEYS`, versiuni, PHP, spațiu, limite, căi sigure, fără symlinkuri, fără fișiere protejate, corespondență 1:1 cu manifestul, sume la extragere.
+- `UpdateRunner`: pași scurți și repetabili (`backup → maintenance → apply (loturi) → migrate → finalize → check → done`), scriși în `storage/app/private/updates/current.json` înainte și după fiecare pas; o eroare după backup declanșează rollback automat; istoricul se oglindește în `update_runs` (rescris după o restaurare a bazei de date). Interfața (Sistem → Actualizări) avansează câte un pas pe cerere; cookie-ul de ocolire a mentenanței rămâne necriptat (îl semnează Laravel).
+- Fișierele șterse de o versiune se deduc din `release.json` (versiunea instalată) minus manifestul noii versiuni.
+
+## 10b. Import (D-026)
+- `App\Domain\Import\ImportRunner`: încărcare (fișierul original + rânduri normalizate în JSON Lines), asociere, previzualizare, simulare, loturi în tranzacție împreună cu cursorul (reluare fără duplicate), rândurile repetate în fișier calculate la pornire, raport și reconciliere. Ținte: `PatientImport`, `AppointmentImport`. Tabel `import_runs`.
 
 ## 11. Securitate
 Parolele sunt hash-uite (bcrypt). CNP-ul este criptat cu cheia aplicației și are un hash HMAC pentru căutare. Documentele vor fi stocate în `storage/app/private` și servite numai prin controller cu autorizare. Jurnalele nu conțin secrete sau date clinice. Analytics-ul nu se încarcă în CRM. Detalii în SEC-01…07.

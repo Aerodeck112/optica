@@ -50,7 +50,7 @@ class DataImport extends Component
         return $this->runUuid ? ImportRun::where('uuid', $this->runUuid)->first() : null;
     }
 
-    public function upload(ImportRunner $runner): void
+    public function uploadFile(ImportRunner $runner): void
     {
         $this->validate([
             'target' => ['required', Rule::in(array_keys(ImportRunner::TARGETS))],

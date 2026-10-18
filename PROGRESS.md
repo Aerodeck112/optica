@@ -1,6 +1,6 @@
 # Progres
 
-Ultima actualizare: 18 octombrie 2026. Versiune: `0.4.0-dev`.
+Ultima actualizare: 18 octombrie 2026. Versiune: `0.5.0-dev`.
 
 Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (necesită credențiale sau furnizor), **în așteptarea datelor**, **neimplementat**. O interfață fără backend nu este considerată funcție finalizată.
 
@@ -61,7 +61,16 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 
 | Traduceri | modul de traducere pe paginile CRM și ale site-ului (marcare, editor RO/HU, ciornă, publicare, previzualizare, revenire, istoric cu restaurare); centrul de traduceri cu căutare, filtre (modul, pagină, lipsă, ciornă, corectat), export CSV/XLSX, import ca ciorne, publicarea ciornelor, verificarea șabloanelor de mesaje RO/HU | `TranslationEditorTest` (8), `TranslationOverridesTest` (5) + capturi 1440/390 px |
 
-Total: **186 de teste, toate trec** (`php artisan test`).
+| Instalator web | prima cerere scrie `.env` cu cheie nouă; `/install` RO/HU protejat cu token; verificarea serverului, a bazei de date și a drepturilor; structură și conținut inițial fără date demonstrative; superadministrator; adresă, fus orar, SMTP (verificare fără trimitere); cron; token de recuperare; blocare | `InstallerTest` (5) + instalare reală din ZIP prin browser (Apache 2.4 și server PHP), cazuri greșite incluse |
+| Backup | export PHP al bazei de date + fișierele încărcate, criptat (XChaCha20-Poly1305, cheie din `APP_KEY`), verificat după scriere; backup zilnic prin cron cu retenție; descărcare jurnalizată; restaurare cu confirmare scrisă și backup de siguranță | `BackupTest` (3, inclusiv valori dificile, export trunchiat, cheie greșită, backup modificat) |
+| Actualizări semnate | Sistem → Actualizări: verificarea semnăturii Ed25519, a versiunilor, PHP, spațiului, căilor, symlinkurilor, fișierelor protejate și sumelor; backup, mentenanță, fișiere atomice în loturi, migrări, permisiuni noi, verificări; rollback automat; reluare; istoric | `UpdateTest` (6) + actualizare reală 0.5.0 → 0.5.1 prin interfață (vizitatorii primesc 503 în timpul ei, datele rămân) |
+| Recuperare | `/recovery.php` fără Laravel: token cu hash, blocare după 5 încercări, starea și jurnalul actualizării, restaurarea stării anterioare, ieșirea din mentenanță | `UpdateTest::test_interrupted_update_is_recovered_without_the_application` + recuperare reală prin HTTP a unei actualizări blocate |
+| Diagnostic | cron, coadă, lucrări eșuate, email și canale, mesaje eșuate, erori (doar ora și tipul), spațiu, backup, actualizări, chei, token, migrări, depanare, HTTPS | `SystemScreensTest` (6) |
+| Import de date | pacienți și programări din CSV/XLSX: asociere, previzualizare, simulare obligatorie, validare (inclusiv CNP), duplicate raportate, import repetabil și reluabil, reconciliere, raport; programările importate nu trimit mesaje | `ImportTest` (8) |
+| Pachete de livrare | `optica:release` (pachet de instalare + pachet de actualizare semnat), `optica:update-keygen`, `optica:update`, `optica:backup`, `optica:backup-decrypt`, `optica:recovery-token` | `BackupTest::test_release_builder_…` + construire reală din sursă cu `composer install --no-dev` |
+| Parcurgere responsive finală | 12 pagini ale site-ului și 32 de ecrane CRM/CMS/sistem + taburile dosarului, la 390/768/1440 px: fără derulare orizontală și fără erori JavaScript | script Playwright (rezultat: 0 probleme) |
+
+Total: **214 teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
 - Conturile reale de email (SMTP), SMS (Twilio sau alt furnizor, după audit) și WhatsApp Business (Meta), plus aprobarea șabloanelor WhatsApp (COM-01, WAP-01). Până atunci, canalele apar „neconfigurate” și nu se trimite nimic.
@@ -76,7 +85,11 @@ Total: **186 de teste, toate trec** (`php artisan test`).
 - Validarea șablonului de fișă oftalmologică de către personal medical (MED-01, D-016): până atunci, fișele nu pot fi completate.
 - Traducerea maghiară a paragrafului „Știai că…” (pagina Medici) și versiunea HU a textelor legale (N-08).
 
-## Neimplementat încă (ordinea planificată)
-1. Instalatorul web, actualizatorul ZIP semnat, backup/restaurare, panoul de diagnostic, importuri.
-2. Import din Evolvo (la final).
-3. Testele de acceptanță T01–T12 la nivel HTTP/UI, inclusiv lățimile 390 / 768 / 1440 px.
+## Neimplementat încă
+1. Maparea exactă a exporturilor Evolvo (MIG): importul generic funcționează; coloanele reale se asociază când sosesc exporturile autorizate (decizia beneficiarului: la final).
+2. Politicile configurabile de retenție și fluxul pentru solicitările persoanelor vizate (SEC-05) – de stabilit cu beneficiarul.
+3. Expirarea sesiunilor inactive și revocarea sesiunilor din administrare (SEC-01).
+4. Măsurătorile de performanță pe volumul convenit la audit (OPS-01).
+
+## Pachete demonstrative
+Pachetul de instalare și pachetul demonstrativ de actualizare (0.5.0 → 0.5.1) se construiesc cu `optica:release` (DEPLOYMENT.md). În acest mediu au fost construite și verificate cu o cheie de test; cheia privată de producție se generează de furnizor și nu se află în repository, deci `resources/update-keys.txt` este gol până atunci.

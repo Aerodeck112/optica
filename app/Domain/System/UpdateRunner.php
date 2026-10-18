@@ -318,7 +318,7 @@ class UpdateRunner
             return $journal;
         }
         try {
-            $journal = $this->kit->rollback(DB::connection()->getPdo());
+            $journal = $this->kit->rollback(DB::connection()->getPdo(), config('app.key'));
             DB::purge();
             Settings::flush();
             $this->cleanup($journal);
@@ -337,7 +337,7 @@ class UpdateRunner
     /** Manual rollback of an interrupted or failed update (from the Updates page or the console). */
     public function rollback(?User $user): array
     {
-        $journal = $this->kit->rollback(DB::connection()->getPdo());
+        $journal = $this->kit->rollback(DB::connection()->getPdo(), config('app.key'));
         DB::purge();
         Settings::flush();
         $this->cleanup($journal);

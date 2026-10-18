@@ -44,7 +44,7 @@ return [
 
     'backups' => [
         'title' => 'Backup',
-        'intro' => 'Fiecare backup conține baza de date și fișierele încărcate (imagini, documente ale pacienților) și este verificat după scriere. Backupurile se păstrează pe server, în afara directorului public; pentru siguranță, descărcați periodic o copie.',
+        'intro' => 'Fiecare backup conține baza de date și fișierele încărcate (imagini, documente ale pacienților), este criptat cu cheia aplicației (APP_KEY) și este verificat după scriere. Backupurile se păstrează pe server, în afara directorului public; pentru siguranță, descărcați periodic o copie.',
         'list' => 'Backupuri',
         'create' => 'Fă un backup acum',
         'creating' => 'Se face backupul…',
@@ -58,6 +58,7 @@ return [
         'unverified' => 'Neverificat',
         'tables' => '{1} un tabel|[2,*] :count tabele',
         'rows' => 'înregistrări',
+        'encrypted' => 'criptat',
         'with_files' => 'cu fișiere',
         'download' => 'Descarcă',
         'verify' => 'Verifică',
