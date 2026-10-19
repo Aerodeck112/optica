@@ -326,7 +326,7 @@ class InstallController extends Controller
             'demo_data' => ['nullable', 'boolean'],
         ]);
         $testSite = (bool) ($data['test_site'] ?? false);
-        $recipients = collect(preg_split('/[,;\s]+/', (string) ($data['test_recipients'] ?? '')))->map(fn ($r) => trim($r))->filter()->values();
+        $recipients = collect(preg_split('/[,;\n]+/', (string) ($data['test_recipients'] ?? '')))->map(fn ($r) => trim($r))->filter()->values();
         foreach ($recipients as $r) {
             if (! filter_var($r, FILTER_VALIDATE_EMAIL) && strlen(preg_replace('/\D+/', '', $r)) < 9) {
                 return back()->withInput($request->except('mail_password'))->withErrors(['test_recipients' => __('install.settings.test_recipients_invalid', ['value' => $r])]);
