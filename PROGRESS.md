@@ -1,6 +1,6 @@
 # Progres
 
-Ultima actualizare: 18 octombrie 2026. Versiune: `0.5.0-dev`.
+Ultima actualizare: 18 octombrie 2026. Versiune: `0.6.0-rc1` (pregătită pentru instalarea pe test.optica-optofarm.ro).
 
 Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (necesită credențiale sau furnizor), **în așteptarea datelor**, **neimplementat**. O interfață fără backend nu este considerată funcție finalizată.
 
@@ -70,7 +70,9 @@ Statusurile urmează LIV-01: **implementat și testat**, **neconfigurat** (neces
 | Pachete de livrare | `optica:release` (pachet de instalare + pachet de actualizare semnat), `optica:update-keygen`, `optica:update`, `optica:backup`, `optica:backup-decrypt`, `optica:recovery-token` | `BackupTest::test_release_builder_…` + construire reală din sursă cu `composer install --no-dev` |
 | Parcurgere responsive finală | 12 pagini ale site-ului și 32 de ecrane CRM/CMS/sistem + taburile dosarului, la 390/768/1440 px: fără derulare orizontală și fără erori JavaScript | script Playwright (rezultat: 0 probleme) |
 
-Total: **214 teste, toate trec** (`php artisan test`).
+| Instalare de test | neindexată, marcată ca test pe site și în CRM, mesaje doar către adresele de test, date demonstrative fără conturi de acces | `TestSiteTest` (3), `MessagingTest::test_a_test_installation_only_messages_the_listed_test_recipients` |
+
+Total: **218 teste, toate trec** (`php artisan test`).
 
 ## Neconfigurat (necesită date externe)
 - Conturile reale de email (SMTP), SMS (Twilio sau alt furnizor, după audit) și WhatsApp Business (Meta), plus aprobarea șabloanelor WhatsApp (COM-01, WAP-01). Până atunci, canalele apar „neconfigurate” și nu se trimite nimic.
@@ -92,4 +94,4 @@ Total: **214 teste, toate trec** (`php artisan test`).
 4. Măsurătorile de performanță pe volumul convenit la audit (OPS-01).
 
 ## Pachete demonstrative
-Pachetul de instalare și pachetul demonstrativ de actualizare (0.5.0 → 0.5.1) se construiesc cu `optica:release` (DEPLOYMENT.md). În acest mediu au fost construite și verificate cu o cheie de test; cheia privată de producție se generează de furnizor și nu se află în repository, deci `resources/update-keys.txt` este gol până atunci.
+Pachetele se construiesc cu `optica:release` (DEPLOYMENT.md). Cheia publică a furnizorului este în `resources/update-keys.txt`; cheia privată nu se află în repository și se păstrează offline de furnizor.

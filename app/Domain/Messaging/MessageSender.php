@@ -6,12 +6,13 @@ use App\Domain\Messaging\Channels\SendFailure;
 use App\Enums\AppointmentStatus;
 use App\Models\Appointment;
 use App\Models\Campaign;
-use App\Models\ChannelAccount;
 use App\Models\Message;
 use App\Models\MessageEvent;
+use App\Models\Patient;
 use App\Support\Consent\ConsentRecorder;
 use App\Support\Settings;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -64,6 +65,11 @@ class MessageSender
 
             return;
         }
+        if (config('optica.test_site') && ! $this->allowedOnTestSite($message->recipient)) {
+            $this->finish($message, 'skipped', 'test_site');
+
+            return;
+        }
         if ($until = $this->deferUntil($message)) {
             $message->forceFill(['status' => 'pending', 'attempts' => max(0, $message->attempts - 1), 'next_attempt_at' => $until])->save();
 
@@ -96,6 +102,15 @@ class MessageSender
             'next_attempt_at' => null,
         ])->save();
         $this->event($message, 'sender', $result->status);
+    }
+
+    /** On a test installation only the listed test addresses and numbers receive anything. */
+    private function allowedOnTestSite(?string $recipient): bool
+    {
+        $normal = fn (?string $v) => str_contains((string) $v, '@') ? mb_strtolower(trim((string) $v)) : (string) Patient::normalizePhone($v);
+        $target = $normal($recipient);
+
+        return $target !== '' && collect(config('optica.test_recipients'))->map($normal)->contains($target);
     }
 
     /** Why a queued message must not go out any more, or null. */
@@ -268,7 +283,7 @@ class MessageSender
         try {
             MessageEvent::create(['message_id' => $message?->id, 'source' => $source, 'event_key' => mb_substr($eventKey, 0, 190), 'status' => $status,
                 'detail' => $detail ? mb_substr($detail, 0, 300) : null, 'created_at' => now()]);
-        } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+        } catch (UniqueConstraintViolationException) {
             return $message;
         }
         if (! $message || (Message::RANK[$status] ?? 0) <= (Message::RANK[$message->status] ?? 0)) {

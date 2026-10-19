@@ -29,6 +29,30 @@ Ghid pentru instalarea pe găzduire cPanel, cron, backup și restaurare, actuali
 
 Verificat în acest mediu: pachetul de instalare a fost dezarhivat într-un director gol și instalat prin browser pe Apache și pe serverul PHP integrat, cu baza de date goală (vezi PROGRESS.md).
 
+## Site de test: test.optica-optofarm.ro
+Instalarea de test are același cod ca site-ul live, dar:
+- nu apare în Google (`robots.txt` blochează tot, fiecare răspuns are `X-Robots-Tag: noindex`);
+- fiecare pagină a site-ului are o bandă „Site de test”, iar CRM-ul are eticheta „Mediu de test”;
+- **niciun mesaj nu ajunge la pacienți**: emailurile, SMS-urile și mesajele WhatsApp pleacă doar către adresele și numerele de test trecute la instalare (`OPTICA_TEST_RECIPIENTS`); celelalte apar în jurnal ca „sărit – site de test”;
+- poate primi date demonstrative fictive (pacienți, programări, comenzi marcate DEMO), fără conturi de acces cu parole cunoscute.
+
+Pași:
+1. cPanel → *Domains* → *Create A New Domain* → `test.optica-optofarm.ro`, cu document root `/home/UTILIZATOR/optica-test/public` (debifați *Share document root*). Activați SSL (cPanel → *SSL/TLS Status* → *Run AutoSSL*).
+2. cPanel → *MySQL Databases*: bază și utilizator separate pentru test (de ex. `cont_optica_test`). Nu folosiți baza site-ului live.
+3. Încărcați `optica-<versiune>-install.zip` în `/home/UTILIZATOR/optica-test` și dezarhivați-l.
+4. Deschideți `https://test.optica-optofarm.ro` și urmați instalatorul. La pasul „Domeniu, fus orar, email”, opțiunea **„Aceasta este o instalare de test”** este deja bifată pentru un domeniu care începe cu `test.`; completați adresele și numerele de test și, dacă doriți, bifați datele demonstrative.
+5. Adăugați linia de cron afișată la final (cu calea `optica-test`).
+6. Opțional, pentru ca doar echipa și beneficiarul să vadă site-ul: cPanel → *Directory Privacy* pe `optica-test/public`, cu un utilizator și o parolă comune pentru test.
+7. Versiunile noi se aplică din CRM → Sistem → Actualizări (pachetele sunt semnate cu cheia furnizorului, deja de încredere în pachet).
+
+## Trecerea pe live (după aprobare)
+1. Backup al site-ului actual (WordPress): cPanel → *Backup* (fișiere + bază de date).
+2. Instalare **separată** pe live, din același pachet aprobat: director nou (de ex. `/home/UTILIZATOR/optica`), bază de date nouă, **fără** opțiunea de test și fără date demonstrative.
+3. Configurare: medicii, orarele, conturile de email/SMS/WhatsApp, utilizatorii; textele și traducerile corectate pe test se mută prin export/import din Centrul de traduceri.
+4. Importul final din Evolvo (Sistem → Import date), cu simulare și reconciliere.
+5. Comutarea domeniului: cPanel → *Domains* → `optica-optofarm.ro` → document root = `/home/UTILIZATOR/optica/public`. Adresele vechi ale site-ului sunt păstrate sau redirecționate (SEO).
+6. Verificare pe live: pagini, programare online, autentificare CRM, Diagnostic (cron, backup, email). Site-ul WordPress rămâne pe server, neatins, până la confirmare; revenirea înseamnă doar schimbarea înapoi a document rootului.
+
 ## Document root
 **Varianta recomandată:** domeniul indică spre `public/` (pasul 3). Codul, `.env`, `storage/` și backupurile rămân în afara zonei publice (SEC-02).
 

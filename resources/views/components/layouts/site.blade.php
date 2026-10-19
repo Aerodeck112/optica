@@ -22,7 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $fullTitle }}</title>
     @if ($description)<meta name="description" content="{{ $description }}">@endif
-    @if ($noindex)<meta name="robots" content="noindex, nofollow">@endif
+    @if ($noindex || config('optica.test_site'))<meta name="robots" content="noindex, nofollow">@endif
     <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
     @foreach (($alternates ?? ['ro' => SiteUrl::switchTo('ro'), 'hu' => SiteUrl::switchTo('hu')]) as $alt => $href)
         <link rel="alternate" hreflang="{{ $alt }}" href="{{ $href }}">
@@ -38,6 +38,9 @@
     {{ $head ?? '' }}
 </head>
 <body class="flex min-h-dvh flex-col bg-white" x-data="{ menu: false }" @keydown.escape.window="menu = false">
+@if (config('optica.test_site'))
+    <p class="bg-lens px-4 py-1.5 text-center text-sm font-semibold text-ink" role="note">{{ __('site.test_site') }}</p>
+@endif
 <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-lens focus:px-4 focus:py-2 focus:text-ink">{{ __('crm.skip_to_content') }}</a>
 
 <header class="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur">

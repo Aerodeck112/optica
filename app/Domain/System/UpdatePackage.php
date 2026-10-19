@@ -32,7 +32,7 @@ class UpdatePackage
     public static function trustedKeys(): array
     {
         $keys = config('optica.updates.public_keys', []);
-        $file = resource_path('update-keys.txt');
+        $file = (string) config('optica.updates.keys_file');
         if (is_file($file)) {
             foreach (file($file, FILE_IGNORE_NEW_LINES) as $line) {
                 $line = trim($line);

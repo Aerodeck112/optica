@@ -206,4 +206,6 @@ return [
         'delete' => 'Szolgáltatás törlése',
         'delete_warning' => 'A szolgáltatás eltűnik a weboldalról és az új foglalásokból. A meglévő időpontok megmaradnak az előzményekben.',
     ],
+    'test_site' => 'Tesztkörnyezet',
+    'test_site_hint' => 'Az itteni adatok tesztelésre szolgálnak; üzenetet csak a tesztcímek kapnak.',
 ];

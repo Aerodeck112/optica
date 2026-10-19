@@ -30,6 +30,7 @@ return [
         'not_configured' => 'a(z) :channel nincs beállítva',
         'no_template' => 'hiányzik a jóváhagyott :channel sablon',
         'no_contact' => 'a páciensnek nincs :channel elérhetősége',
+        'test_site' => 'tesztoldal: a címzett nem szerepel a tesztlistán',
         'appointment_deleted' => 'az időpont már nem létezik',
         'appointment_moved' => 'az időpontot időközben áthelyezték',
         'appointment_passed' => 'az időpont már elmúlt',

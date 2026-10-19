@@ -11,6 +11,22 @@
                 @foreach ($timezones as $tz)<option value="{{ $tz }}" @selected(old('timezone', 'Europe/Bucharest') === $tz)>{{ $tz }}</option>@endforeach
             </select>
         </div>
+        <fieldset class="space-y-3 border-t border-line pt-4">
+            <legend class="text-base font-semibold text-heading">{{ __('install.settings.environment') }}</legend>
+            <input type="hidden" name="test_site" value="0">
+            <label class="flex min-h-11 items-start gap-3 text-sm"><input type="checkbox" name="test_site" value="1" @checked(old('test_site', $looksLikeTest)) class="mt-0.5 h-5 w-5 rounded border-line">
+                <span><span class="font-medium text-heading">{{ __('install.settings.test_site') }}</span><span class="block text-muted">{{ __('install.settings.test_site_hint') }}</span></span></label>
+            <div class="space-y-3 pl-8">
+                <div>
+                    <label for="test_recipients" class="field-label">{{ __('install.settings.test_recipients') }}</label>
+                    <input id="test_recipients" name="test_recipients" class="input" value="{{ old('test_recipients') }}" placeholder="ex. test@optica-optofarm.ro, 0740 000 000">
+                    <p class="mt-1 text-xs text-muted">{{ __('install.settings.test_recipients_hint') }}</p>
+                </div>
+                <input type="hidden" name="demo_data" value="0">
+                <label class="flex min-h-11 items-start gap-3 text-sm"><input type="checkbox" name="demo_data" value="1" @checked(old('demo_data')) class="mt-0.5 h-5 w-5 rounded border-line">
+                    <span><span class="font-medium text-heading">{{ __('install.settings.demo_data') }}</span><span class="block text-muted">{{ __('install.settings.demo_data_hint') }}</span></span></label>
+            </div>
+        </fieldset>
         <fieldset class="space-y-4 border-t border-line pt-4">
             <legend class="text-base font-semibold text-heading">{{ __('install.settings.smtp') }}</legend>
             <p class="text-sm text-muted">{{ __('install.settings.smtp_hint') }}</p>

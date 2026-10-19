@@ -150,4 +150,5 @@ return [
         'patients' => 'pacienți în fiecare an',
         'values' => ['founded' => '1991', 'locations' => '8', 'specialists' => '~70', 'patients' => '50.000+'],
     ],
+    'test_site' => 'Site de test: conținutul este în curs de verificare și nu este site-ul oficial Optica Optofarm.',
 ];

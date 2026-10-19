@@ -4,6 +4,7 @@ use App\Http\Controllers\Site\NotFoundResponder;
 use App\Http\Middleware\EnsureActiveUser;
 use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\EnsureTwoFactor;
+use App\Http\Middleware\MarkTestSite;
 use App\Http\Middleware\RemoveTrailingSlash;
 use App\Http\Middleware\TranslationMode;
 use App\Http\Middleware\UseSiteLocale;
@@ -30,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn () => route('crm.dashboard'));
         // Before routing, so even unknown URLs lead to the installer until it has run.
         $middleware->prepend(EnsureInstalled::class);
+        $middleware->append(MarkTestSite::class);
         $middleware->web(prepend: [RemoveTrailingSlash::class], append: [TranslationMode::class]);
         // The maintenance bypass cookie is signed by Laravel and read before decryption; an update
         // started from the CRM sets it in a normal response, so it must stay unencrypted (UPD-04).

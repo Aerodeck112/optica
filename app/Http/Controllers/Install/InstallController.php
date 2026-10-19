@@ -9,6 +9,7 @@ use App\Support\Install\EnvBootstrap;
 use App\Support\Install\InstallState;
 use App\Support\Recovery\RecoveryKit;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\DemoDataSeeder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -87,7 +88,9 @@ class InstallController extends Controller
             'database' => view('install.database', $data + ['env' => (new RecoveryKit(base_path()))->env()]),
             'migrate' => view('install.migrate', $data),
             'admin' => view('install.admin', $data + ['hasAdmin' => $this->hasSuperadmin()]),
-            'settings' => view('install.settings', $data + ['url' => $request->getSchemeAndHttpHost().$request->getBasePath(), 'timezones' => \DateTimeZone::listIdentifiers(\DateTimeZone::EUROPE)]),
+            'settings' => view('install.settings', $data + ['url' => $request->getSchemeAndHttpHost().$request->getBasePath(), 'timezones' => \DateTimeZone::listIdentifiers(\DateTimeZone::EUROPE),
+                // A host starting with "test." is almost certainly the test installation.
+                'looksLikeTest' => str_starts_with($request->getHost(), 'test.') || str_starts_with($request->getHost(), 'staging.')]),
             'finish' => $this->finish($request, $data),
         };
     }
@@ -318,7 +321,17 @@ class InstallController extends Controller
             'mail_scheme' => ['nullable', 'in:smtp,smtps'],
             'mail_from' => ['nullable', 'required_with:mail_host', 'email', 'max:190'],
             'action' => ['nullable', 'in:test,save'],
+            'test_site' => ['nullable', 'boolean'],
+            'test_recipients' => ['nullable', 'string', 'max:500'],
+            'demo_data' => ['nullable', 'boolean'],
         ]);
+        $testSite = (bool) ($data['test_site'] ?? false);
+        $recipients = collect(preg_split('/[,;\s]+/', (string) ($data['test_recipients'] ?? '')))->map(fn ($r) => trim($r))->filter()->values();
+        foreach ($recipients as $r) {
+            if (! filter_var($r, FILTER_VALIDATE_EMAIL) && strlen(preg_replace('/\D+/', '', $r)) < 9) {
+                return back()->withInput($request->except('mail_password'))->withErrors(['test_recipients' => __('install.settings.test_recipients_invalid', ['value' => $r])]);
+            }
+        }
         $smtp = ! empty($data['mail_host']);
         if ($smtp && ($data['action'] ?? 'save') === 'test') {
             // Connection and authentication only; no message is sent.
@@ -349,7 +362,18 @@ class InstallController extends Controller
             'MAIL_PASSWORD' => $smtp ? (string) ($data['mail_password'] ?? '') : null,
             'MAIL_SCHEME' => $smtp ? ($data['mail_scheme'] ?? 'smtp') : null,
             'MAIL_FROM_ADDRESS' => $smtp ? $data['mail_from'] : null,
+            'OPTICA_TEST_SITE' => $testSite ? 'true' : 'false',
+            'OPTICA_TEST_RECIPIENTS' => $testSite ? $recipients->implode(',') : '',
         ], fn ($v) => $v !== null));
+        // Fictitious patients and appointments to try the CRM; only ever on a test installation.
+        if ($testSite && ($data['demo_data'] ?? false)) {
+            config(['optica.test_site' => true]);
+            try {
+                Artisan::call('db:seed', ['--class' => DemoDataSeeder::class, '--force' => true]);
+            } catch (Throwable $e) {
+                return back()->withInput($request->except('mail_password'))->withErrors(['demo_data' => Str::limit($e->getMessage(), 200)]);
+            }
+        }
         $request->session()->put('install.settings_done', true);
 
         return redirect()->route('install.step', 'finish');

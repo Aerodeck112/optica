@@ -2,3 +2,5 @@
 # Generate the pair on the build machine with: php artisan optica:update-keygen /secure/path/optica-update.key
 # Only the public key goes here; the secret key stays offline with the supplier.
 # Without a key, Sistem → Actualizări shows updates as "not configured" and accepts no package.
+# Optica Optofarm – cheia de semnare a furnizorului, generată 19.10.2026
+ihrMf5Ry3Zo17Z4x6DUNj+RM6hf+YD1Jfuf70aGAOb8=

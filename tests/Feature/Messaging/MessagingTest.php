@@ -3,13 +3,12 @@
 namespace Tests\Feature\Messaging;
 
 use App\Domain\Messaging\CampaignService;
-use App\Domain\Messaging\MessageDispatcher;
 use App\Domain\Messaging\MessageSender;
 use App\Domain\Messaging\SmsSegments;
 use App\Domain\Messaging\TemplateRenderer;
+use App\Domain\Orders\OrderService;
 use App\Domain\Scheduling\BookingService;
 use App\Enums\AppointmentSource;
-use App\Enums\AppointmentStatus;
 use App\Models\Campaign;
 use App\Models\ChannelAccount;
 use App\Models\Consent;
@@ -22,6 +21,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Tests\Support\ClinicalFixtures;
 use Tests\TestCase;
 
@@ -139,6 +139,29 @@ class MessagingTest extends TestCase
         $this->assertSame('delivered', $message->fresh()->status);
     }
 
+    public function test_a_test_installation_only_messages_the_listed_test_recipients(): void
+    {
+        config(['optica.test_site' => true, 'optica.test_recipients' => ['0744 123 456']]);
+        $this->sms();
+        MessageRule::create(['type' => 'appointment_confirmed', 'enabled' => true, 'channels' => ['sms']]);
+        $this->templates('appointment_confirmed', ['sms']);
+        Http::fake(['api.twilio.com/*' => Http::response(['sid' => 'SM900', 'status' => 'queued', 'num_segments' => '1'], 201)]);
+
+        // The booking's phone (+40 744 123 456) is on the test list: it is sent.
+        $listed = $this->booking();
+        app(MessageSender::class)->processDue();
+        $this->assertSame('accepted', Message::where('appointment_id', $listed->id)->value('status'));
+
+        // Anybody else is skipped, never sent.
+        config(['optica.test_recipients' => ['test@example.test']]);
+        $other = $this->booking(['starts_at' => CarbonImmutable::parse('2026-11-04 11:00', 'Europe/Bucharest')]);
+        app(MessageSender::class)->processDue();
+        $message = Message::where('appointment_id', $other->id)->firstOrFail();
+        $this->assertSame('skipped', $message->status);
+        $this->assertSame('test_site', $message->status_reason);
+        Http::assertSentCount(1);
+    }
+
     public function test_definitive_failure_falls_back_once_and_timeouts_are_never_resent_automatically(): void
     {
         $this->whatsapp();
@@ -251,7 +274,7 @@ class MessagingTest extends TestCase
         $this->get(route('webhooks.whatsapp.verify', $account).'?hub.mode=subscribe&hub.verify_token=wrong&hub.challenge=42')->assertForbidden();
         $this->get(route('webhooks.whatsapp.verify', $account).'?hub.mode=subscribe&hub.verify_token=verify-me&hub.challenge=42')->assertOk()->assertSee('42');
 
-        $message = Message::create(['uuid' => (string) \Illuminate\Support\Str::uuid(), 'type' => 'appointment_confirmed', 'category' => 'operational', 'channel' => 'whatsapp',
+        $message = Message::create(['uuid' => (string) Str::uuid(), 'type' => 'appointment_confirmed', 'category' => 'operational', 'channel' => 'whatsapp',
             'locale' => 'ro', 'recipient' => '+40744000001', 'body' => 'x', 'status' => 'accepted', 'provider_message_id' => 'wamid.1', 'send_after' => now()]);
         $payload = json_encode(['entry' => [['changes' => [['value' => [
             'statuses' => [['id' => 'wamid.1', 'status' => 'read', 'timestamp' => '1']],
@@ -272,10 +295,10 @@ class MessagingTest extends TestCase
         MessageTemplate::create(['type' => 'order_ready', 'channel' => 'sms', 'locale' => 'hu', 'body' => 'Kedves {patient_name}! A(z) {order_number} rendelése átvehető: {location}.']);
         $patient = $this->makePatient(['locale' => 'hu', 'phone' => '0744 555 666']);
         $location = $this->makeLocation();
-        $order = app(\App\Domain\Orders\OrderService::class)->create($patient, ['location_id' => $location->id], [['kind' => 'frame', 'description' => 'Keret', 'quantity' => 1, 'unit_price_cents' => 100]], $this->staff('reception'));
+        $order = app(OrderService::class)->create($patient, ['location_id' => $location->id], [['kind' => 'frame', 'description' => 'Keret', 'quantity' => 1, 'unit_price_cents' => 100]], $this->staff('reception'));
         $user = $this->staff('reception');
         foreach (['lab', 'quality_check', 'ready'] as $status) {
-            $order = app(\App\Domain\Orders\OrderService::class)->changeStatus($order, $status, $user);
+            $order = app(OrderService::class)->changeStatus($order, $status, $user);
         }
 
         $message = Message::where('order_id', $order->id)->firstOrFail();

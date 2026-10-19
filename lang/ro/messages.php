@@ -30,6 +30,7 @@ return [
         'not_configured' => ':channel nu este configurat',
         'no_template' => 'lipsește șablonul :channel aprobat',
         'no_contact' => 'pacientul nu are contact pentru :channel',
+        'test_site' => 'site de test: destinatarul nu este pe lista de test',
         'appointment_deleted' => 'programarea nu mai există',
         'appointment_moved' => 'programarea a fost mutată între timp',
         'appointment_passed' => 'ora programării a trecut',

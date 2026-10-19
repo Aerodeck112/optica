@@ -150,4 +150,5 @@ return [
         'patients' => 'páciens évente',
         'values' => ['founded' => '1991', 'locations' => '8', 'specialists' => '~70', 'patients' => '50 000+'],
     ],
+    'test_site' => 'Tesztoldal: a tartalom ellenőrzés alatt áll, ez nem az Optica Optofarm hivatalos oldala.',
 ];

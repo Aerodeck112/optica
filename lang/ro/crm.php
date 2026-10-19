@@ -206,4 +206,6 @@ return [
         'delete' => 'Șterge serviciul',
         'delete_warning' => 'Serviciul dispare de pe site și din programările noi. Programările existente rămân în istoric.',
     ],
+    'test_site' => 'Mediu de test',
+    'test_site_hint' => 'Datele de aici sunt pentru test; mesajele ajung doar la adresele de test.',
 ];

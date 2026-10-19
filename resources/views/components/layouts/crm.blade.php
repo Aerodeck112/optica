@@ -71,6 +71,7 @@
                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M3 5h14v1.5H3zM3 9.25h14v1.5H3zM3 13.5h14V15H3z"/></svg>
             </button>
             <h1 class="min-w-0 flex-1 truncate text-lg font-semibold">{{ $title }}</h1>
+            @if (config('optica.test_site'))<span class="badge-warn shrink-0" title="{{ __('crm.test_site_hint') }}">{{ __('crm.test_site') }}</span>@endif
 
             @can('translations.edit')
                 @unless (\App\Http\Middleware\TranslationMode::activeFor(request()))

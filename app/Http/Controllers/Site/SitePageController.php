@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Site;
 
 use App\Domain\Cms\SiteCatalog;
 use App\Http\Controllers\Controller;
-use App\Models\Location;
 use App\Models\Page;
 use App\Models\Post;
-use App\Models\Service;
-use App\Models\Specialist;
 use App\Support\Ui\SiteUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class SitePageController extends Controller
@@ -111,7 +109,7 @@ class SitePageController extends Controller
     {
         return ['meta' => [
             'title' => $title,
-            'description' => $description ? \Illuminate\Support\Str::limit(strip_tags($description), 155) : null,
+            'description' => $description ? Str::limit(strip_tags($description), 155) : null,
             'canonical' => SiteUrl::path($path),
             'alternates' => ['ro' => SiteUrl::path($path, 'ro'), 'hu' => SiteUrl::path($path, 'hu')],
             'noindex' => false,
@@ -141,6 +139,9 @@ class SitePageController extends Controller
 
     public function robots(): Response
     {
+        if (config('optica.test_site')) {
+            return response("User-agent: *\nDisallow: /\n", 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+        }
         $lines = [
             'User-agent: *',
             'Disallow: /crm',

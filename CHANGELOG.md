@@ -2,6 +2,14 @@
 
 Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Versiunile urmează SemVer.
 
+## [0.6.0-rc1] – 2026-10-19
+### Adăugat
+- Instalare de test (`test.optica-optofarm.ro`): neindexată, marcată pe fiecare pagină, mesaje doar către adresele de test, date demonstrative opționale fără conturi de acces.
+- Cheia de semnare a furnizorului pentru actualizări este inclusă ca cheie de încredere.
+
+### Modificat
+- Site-ul public: identitate vizuală axată pe optică și oftalmologie (vezi D-027).
+
 ## [0.5.0-dev] – 2026-10-19
 ### Adăugat
 - Instalatorul web RO/HU (`/install`): token unic, verificarea serverului și a bazei de date, administrator, domeniu, fus orar, SMTP, linia de cron, token de recuperare, blocare după finalizare.
@@ -13,9 +21,6 @@ Formatul urmează [Keep a Changelog](https://keepachangelog.com/ro/1.1.0/). Vers
 - Sistem → Import date: pacienți și programări din CSV/XLSX, cu simulare, import repetabil și reluabil, reconciliere.
 - Comenzi: `optica:release`, `optica:update-keygen`, `optica:update`, `optica:backup`, `optica:backup-decrypt`, `optica:recovery-token`.
 - Permisiunea `system.import`; permisiunile noi ajung automat la rolurile implicite la actualizare.
-
-### Modificat
-- Site-ul public are o identitate vizuală axată pe optică și oftalmologie: hero cu razele de lumină focalizate printr-o lentilă și titlul care „intră în focus”, scala TABO (0°–180°) în jurul fotografiilor, schema ochiului (cornee, cristalin, retină), pictograme proprii pentru fiecare investigație, rândul de optotipuri Landolt, titluri în Archivo lat. Cifrele afișate sunt cele confirmate de beneficiar.
 
 ### Reparat
 - Încărcarea documentelor în dosarul pacientului nu funcționa în browser (numele acțiunii intra în conflict cu funcția de încărcare a Livewire).

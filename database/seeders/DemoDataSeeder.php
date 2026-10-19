@@ -7,8 +7,8 @@ use App\Domain\Scheduling\BookingException;
 use App\Domain\Scheduling\BookingService;
 use App\Enums\AppointmentSource;
 use App\Enums\AppointmentStatus;
-use App\Models\Location;
 use App\Models\Lead;
+use App\Models\Location;
 use App\Models\LocationSpecialist;
 use App\Models\Offering;
 use App\Models\Resource;
@@ -31,8 +31,8 @@ class DemoDataSeeder extends Seeder
 {
     public function run(): void
     {
-        if (app()->isProduction()) {
-            throw new RuntimeException('Demo data is never seeded in production.');
+        if (app()->isProduction() && ! config('optica.test_site')) {
+            throw new RuntimeException('Demo data is never seeded in production (only on a test installation).');
         }
 
         $location = Location::firstWhere('code', 'tgm-postei-3') ?? throw new RuntimeException('Run SiteContentSeeder first.');
@@ -109,6 +109,21 @@ class DemoDataSeeder extends Seeder
             }
         }
 
+        // A test site is reachable from the internet: no accounts with a password written in the code.
+        // Staff accounts are created there from Administrare → Utilizatori.
+        if (! config('optica.test_site')) {
+            $this->demoAccounts($location);
+        }
+
+        Lead::firstOrCreate(['idempotency_key' => hash('sha256', 'demo-lead-1')], [
+            'type' => 'product_inquiry', 'name' => 'Solicitant DEMO', 'phone' => '0700 000 901', 'email' => 'solicitant.demo@example.test',
+            'message' => 'Mesaj DEMO: aș dori informații despre lentilele progresive.', 'locale' => 'ro', 'source' => '/contact', 'location_id' => $location->id,
+        ]);
+    }
+
+    /** Demo staff accounts (password DemoParola2026), only on development machines. */
+    private function demoAccounts(Location $location): void
+    {
         $admin = User::firstOrCreate(['email' => 'demo.admin@example.test'], ['name' => 'Admin DEMO', 'password' => 'DemoParola2026', 'all_locations' => true]);
         $admin->roles()->syncWithoutDetaching([Role::where('key', 'operations_admin')->value('id')]);
         $reception = User::firstOrCreate(['email' => 'demo.receptie@example.test'], ['name' => 'Recepție DEMO', 'password' => 'DemoParola2026', 'locale' => 'ro']);
@@ -120,10 +135,5 @@ class DemoDataSeeder extends Seeder
         $medic->roles()->syncWithoutDetaching([Role::where('key', 'specialist')->value('id')]);
         $medic->locations()->syncWithoutDetaching([$location->id]);
         Specialist::where('code', 'DEMO-1')->whereNull('user_id')->update(['user_id' => $medic->id]);
-
-        Lead::firstOrCreate(['idempotency_key' => hash('sha256', 'demo-lead-1')], [
-            'type' => 'product_inquiry', 'name' => 'Solicitant DEMO', 'phone' => '0700 000 901', 'email' => 'solicitant.demo@example.test',
-            'message' => 'Mesaj DEMO: aș dori informații despre lentilele progresive.', 'locale' => 'ro', 'source' => '/contact', 'location_id' => $location->id,
-        ]);
     }
 }

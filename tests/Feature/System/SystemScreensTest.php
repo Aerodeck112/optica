@@ -95,6 +95,7 @@ class SystemScreensTest extends TestCase
     public function test_updates_screen_rejects_an_unsigned_package_and_shows_missing_keys(): void
     {
         $admin = $this->staff('superadmin', ['all_locations' => true]);
+        config(['optica.updates.keys_file' => '/nonexistent']);
         Livewire::actingAs($admin)->test(SystemUpdates::class)->assertSee(__('system.updates.not_configured'));
 
         $pair = sodium_crypto_sign_keypair();

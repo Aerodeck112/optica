@@ -7,8 +7,14 @@ return [
     // Null = decided by storage/app/installed.lock; tests and CLI tools may force it (INS-02).
     'installed' => env('OPTICA_INSTALLED') === null ? null : (bool) env('OPTICA_INSTALLED'),
 
+    // Test installation (e.g. test.optica-optofarm.ro): not indexed, marked on every page, and no
+    // message reaches a patient; only the addresses and numbers listed here receive messages.
+    'test_site' => (bool) env('OPTICA_TEST_SITE', false),
+    'test_recipients' => array_values(array_filter(array_map('trim', explode(',', (string) env('OPTICA_TEST_RECIPIENTS', ''))))),
+
     'updates' => [
         // Trusted Ed25519 public keys (base64), in addition to resources/update-keys.txt (D-009).
+        'keys_file' => resource_path('update-keys.txt'),
         'public_keys' => array_values(array_filter(array_map('trim', explode(',', (string) env('UPDATE_PUBLIC_KEYS', ''))))),
         // Limits against oversized or malicious archives (UPD-03).
         'max_package_bytes' => 300 * 1024 * 1024,
