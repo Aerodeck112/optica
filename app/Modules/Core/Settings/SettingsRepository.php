@@ -20,7 +20,8 @@ class SettingsRepository
             return $all[$key];
         }
 
-        return $default ?? (SettingsSchema::get($key)['default'] ?? null);
+        // valoarea implicită din schemă are prioritate; $default este doar rezerva pentru chei fără valoare implicită
+        return SettingsSchema::get($key)['default'] ?? $default;
     }
 
     /** Valoarea doar dacă a fost completată explicit (fără valori implicite) — folosită pentru afișare publică. */

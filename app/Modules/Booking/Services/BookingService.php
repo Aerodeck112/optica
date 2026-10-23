@@ -237,6 +237,7 @@ class BookingService
                     'price_snapshot' => $quote->toArray() + ['package' => ['id' => $package->id, 'name' => $package->getTranslation('name', 'ro'), 'slot_minutes' => $package->slot_minutes, 'play_minutes' => $package->play_minutes]],
                     'accepted_policies' => $this->policyRecords($data),
                     'manage_token_hash' => hash('sha256', $manageToken),
+                    'manage_token_encrypted' => \Illuminate\Support\Facades\Crypt::encryptString($manageToken),
                     'checkin_token_hash' => hash('sha256', $checkinToken),
                     'expires_at' => $expiresAt,
                     'confirmed_at' => $status === 'confirmed' ? now() : null,

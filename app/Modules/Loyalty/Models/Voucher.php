@@ -25,6 +25,9 @@ class Voucher extends Model
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['balance_minor' => 0, 'allows_partial_use' => true, 'currency' => 'RON', 'status' => 'active', 'origin' => 'sale'];
+
     protected function casts(): array
     {
         return [

@@ -87,6 +87,7 @@ return new class extends Migration
             $table->json('price_snapshot')->nullable();     // pachet, reguli de preț aplicate, TVA
             $table->json('accepted_policies')->nullable();  // [{type, version, hash, accepted_at}]
             $table->string('manage_token_hash', 64)->nullable()->unique();
+            $table->text('manage_token_encrypted')->nullable(); // pentru linkul din remindere (criptat cu cheia aplicației)
             $table->string('checkin_token_hash', 64)->nullable()->unique();
             $table->timestamp('expires_at')->nullable();   // pentru pending: termenul de plată/confirmare
             $table->timestamp('confirmed_at')->nullable();

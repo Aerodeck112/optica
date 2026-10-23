@@ -30,6 +30,9 @@ class Package extends Model
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['type' => 'session', 'session_mode' => 'private', 'buffer_before_minutes' => 0, 'buffer_after_minutes' => 0, 'pricing_model' => 'per_person', 'currency' => 'RON', 'vat_group' => 'standard', 'deposit_type' => 'none', 'booking_mode' => 'request', 'requires_adult_contact' => true, 'is_active' => false, 'is_featured' => false, 'use_in_ai' => true, 'sort' => 0];
+
     public array $translatable = ['slug', 'name', 'summary', 'description', 'included', 'conditions', 'seo_title', 'seo_description'];
 
     protected function casts(): array

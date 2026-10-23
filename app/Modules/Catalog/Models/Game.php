@@ -33,6 +33,9 @@ class Game extends Model
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['audience' => 'all', 'cluj_status' => 'unconfirmed', 'is_featured' => false, 'use_in_ai' => true, 'sort' => 0];
+
     public array $translatable = ['slug', 'title', 'tagline', 'description', 'rules', 'seo_title', 'seo_description'];
 
     protected function casts(): array

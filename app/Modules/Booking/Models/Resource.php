@@ -16,6 +16,9 @@ class Resource extends Model
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['type' => 'arena', 'is_active' => true, 'is_public' => true, 'sort' => 0];
+
     protected function casts(): array
     {
         return [

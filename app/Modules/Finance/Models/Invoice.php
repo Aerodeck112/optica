@@ -35,6 +35,9 @@ class Invoice extends Model
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['kind' => 'standard', 'status' => 'draft', 'currency' => 'RON', 'prices_include_vat' => true, 'net_total_minor' => 0, 'vat_total_minor' => 0, 'gross_total_minor' => 0, 'paid_minor' => 0, 'efactura_status' => 'not_applicable'];
+
     protected function casts(): array
     {
         return [

@@ -37,6 +37,9 @@ class Lead extends Model
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['stage' => 'new', 'source' => 'web'];
+
     protected function casts(): array
     {
         return [

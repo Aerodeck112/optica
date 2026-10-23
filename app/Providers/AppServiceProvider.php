@@ -4,7 +4,10 @@ namespace App\Providers;
 
 use App\Modules\Audit\AuditLogger;
 use App\Modules\Core\Settings\SettingsRepository;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,8 +21,14 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // În dezvoltare semnalăm accesul la atribute inexistente și lazy-loading-ul (probleme de performanță).
-        Model::preventAccessingMissingAttributes(! $this->app->isProduction());
+        $this->configureRateLimits();
+
+        \Illuminate\Support\Facades\Event::subscribe(\App\Modules\Notifications\Listeners\NotificationSubscriber::class);
+
+        \Illuminate\Support\Facades\View::composer(['site.*'], \App\Http\View\SiteComposer::class);
+        \Illuminate\Support\Facades\Blade::componentNamespace('App\\View\\Components', 'aw');
+
+        // În dezvoltare semnalăm atributele ignorate la mass-assignment (greșeli de nume de coloană).
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 
         // Nume stabile pentru relațiile polimorfice (nu depind de namespace-ul clasei).
@@ -49,5 +58,20 @@ class AppServiceProvider extends ServiceProvider
             'resource' => \App\Modules\Booking\Models\Resource::class,
             'banner' => \App\Modules\Cms\Models\Banner::class,
         ]);
+    }
+
+    private function configureRateLimits(): void
+    {
+        RateLimiter::for('booking-api', fn (Request $request) => Limit::perMinute(60)->by($request->ip()));
+        RateLimiter::for('public-forms', fn (Request $request) => [
+            Limit::perMinute(6)->by('form:'.$request->ip()),
+            Limit::perHour(40)->by('form-h:'.$request->ip()),
+        ]);
+        RateLimiter::for('ai-chat', fn (Request $request) => [
+            Limit::perMinute((int) config('aw.ai.requests_per_minute_per_ip', 8))->by('ai:'.$request->ip()),
+            Limit::perDay(300)->by('ai-d:'.$request->ip()),
+        ]);
+        RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(300)->by($request->ip()));
+        RateLimiter::for('fiscal-agent', fn (Request $request) => Limit::perMinute(120)->by($request->ip()));
     }
 }

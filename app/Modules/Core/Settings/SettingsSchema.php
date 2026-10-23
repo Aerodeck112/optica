@@ -74,6 +74,8 @@ final class SettingsSchema
             'site.show_unconfirmed_games' => ['group' => 'site', 'label' => 'Afișează și jocurile din catalogul rețelei neconfirmate pentru Cluj (marcate clar)', 'type' => 'bool', 'default' => false],
             'site.default_og_image' => ['group' => 'site', 'label' => 'Imagine implicită pentru distribuire', 'type' => 'string', 'default' => '/media/brand/og-default.jpg'],
             'site.search_console_verification' => ['group' => 'site', 'label' => 'Cod verificare Google Search Console', 'type' => 'string'],
+            'legal.sal_url' => ['group' => 'site', 'label' => 'Link SAL (ANPC)', 'type' => 'url', 'default' => 'https://reclamatiisal.anpc.ro/', 'launch' => true, 'help' => 'Ordinul ANPC 270/2026 modifică Ordinul 449/2022 după desființarea platformei europene SOL (20.07.2025). Verificați textul în vigoare: destinația linkului și pictograma oficială (250×50 px, descărcabilă de pe anpc.ro).'],
+            'legal.sal_pictogram' => ['group' => 'site', 'label' => 'Pictograma oficială SAL (cale fișier, ex: /media/brand/anpc-sal.png)', 'type' => 'string'],
             'site.anti_spam_turnstile_site_key' => ['group' => 'site', 'label' => 'Cloudflare Turnstile — cheie site (opțional)', 'type' => 'string'],
             'site.anti_spam_turnstile_secret' => ['group' => 'site', 'label' => 'Cloudflare Turnstile — cheie secretă', 'type' => 'string', 'secret' => true],
 

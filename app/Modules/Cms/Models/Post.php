@@ -2,13 +2,14 @@
 
 namespace App\Modules\Cms\Models;
 
+use App\Modules\Core\Concerns\PublishedInLocales;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
 
 class Post extends Model
 {
-    use HasTranslations;
+    use HasTranslations, PublishedInLocales;
 
     protected $table = 'posts';
 

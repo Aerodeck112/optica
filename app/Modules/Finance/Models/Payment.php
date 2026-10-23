@@ -32,6 +32,9 @@ class Payment extends Model
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['purpose' => 'booking', 'currency' => 'RON', 'status' => 'pending', 'refunded_minor' => 0];
+
     protected function casts(): array
     {
         return [

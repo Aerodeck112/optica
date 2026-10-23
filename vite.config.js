@@ -1,21 +1,20 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/site.css', 'resources/js/site.js'],
             refresh: true,
-            fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
-                }),
-            ],
         }),
-        tailwindcss(),
     ],
+    build: {
+        target: 'es2020',
+        cssMinify: true,
+        // fonturile mici (<4KB) nu se inline-uiesc; fișierele woff2 rămân cache-uite separat
+        assetsInlineLimit: 0,
+        modulePreload: { polyfill: false },
+    },
     server: {
         watch: {
             ignored: ['**/storage/framework/views/**'],

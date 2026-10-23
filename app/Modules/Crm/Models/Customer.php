@@ -26,6 +26,9 @@ class Customer extends Authenticatable
 
     protected $guarded = ['id'];
 
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['type' => 'person', 'locale' => 'ro', 'billing_country' => 'RO', 'bookings_count' => 0, 'visits_count' => 0, 'paid_total_minor' => 0];
+
     protected $hidden = ['remember_token'];
 
     protected function casts(): array

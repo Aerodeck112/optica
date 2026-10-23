@@ -67,7 +67,36 @@ class Booking extends Model
 
     protected $guarded = ['id'];
 
-    protected $hidden = ['manage_token_hash', 'checkin_token_hash'];
+    /** Valorile implicite din baza de date, disponibile și pe modelele abia create. */
+    protected $attributes = ['status' => 'request', 'payment_status' => 'unpaid', 'invoice_status' => 'not_invoiced', 'source' => 'web', 'currency' => 'RON', 'discount_minor' => 0, 'deposit_minor' => 0, 'paid_minor' => 0, 'refunded_minor' => 0, 'participants' => 1, 'reschedule_count' => 0, 'locale' => 'ro'];
+
+    protected $hidden = ['manage_token_hash', 'manage_token_encrypted', 'checkin_token_hash'];
+
+    /** Linkul de gestionare (pentru e-mailuri). Null dacă tokenul nu poate fi recuperat. */
+    public function manageUrl(): ?string
+    {
+        if (! $this->manage_token_encrypted) {
+            return null;
+        }
+        try {
+            $token = \Illuminate\Support\Facades\Crypt::decryptString($this->manage_token_encrypted);
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return lroute('booking.manage', ['token' => $token], $this->locale ?: 'ro');
+    }
+
+    public function rotateManageToken(): string
+    {
+        $token = \Illuminate\Support\Str::random(48);
+        $this->forceFill([
+            'manage_token_hash' => hash('sha256', $token),
+            'manage_token_encrypted' => \Illuminate\Support\Facades\Crypt::encryptString($token),
+        ])->save();
+
+        return $token;
+    }
 
     protected function casts(): array
     {
