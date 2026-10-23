@@ -17,6 +17,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone', 32)->nullable();
+            $table->boolean('is_active')->default(true);
+            // MFA (Filament): secret TOTP și coduri de recuperare, stocate criptat prin cast-ul modelului
+            $table->text('app_authentication_secret')->nullable();
+            $table->text('app_authentication_recovery_codes')->nullable();
+            $table->boolean('has_email_authentication')->default(false);
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('last_login_ip_hash', 64)->nullable();
+            $table->timestamp('password_changed_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

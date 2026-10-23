@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Modules\Core\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class WebhookEvent extends Model
+{
+    protected $table = 'webhook_events';
+
+    protected $guarded = ['id'];
+
+    protected function casts(): array
+    {
+        return [
+            'payload' => 'array',
+            'signature_valid' => 'boolean',
+            'processed_at' => 'immutable_datetime',
+        ];
+    }
+}
