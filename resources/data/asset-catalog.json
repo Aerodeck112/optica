@@ -1,0 +1,2037 @@
+{
+ "version": 1,
+ "images": [
+  {
+   "key": "cosmos-planet",
+   "kind": "brand-art",
+   "alt_ro": "Planetă văzută de pe orbită, cu o navă spațială în prim-plan",
+   "game": null,
+   "aspect": "21:9",
+   "color": "#183e60",
+   "variants": [
+    {
+     "width": 640,
+     "height": 274
+    },
+    {
+     "width": 1280,
+     "height": 549
+    },
+    {
+     "width": 1920,
+     "height": 823
+    },
+    {
+     "width": 2560,
+     "height": 1097
+    }
+   ],
+   "fallback_width": 1280,
+   "source": {
+    "drive_id": "11honsdq96NKekvQIuffhSBDSLpr1De_V",
+    "path": "Colony: Code Red/Backgrounds/Space.png"
+   },
+   "rights": "Artă de brand Another World furnizată de franciză. Randare/ilustrație, nu fotografie reală."
+  },
+  {
+   "key": "cosmos-cliffs",
+   "kind": "brand-art",
+   "alt_ro": "Peisaj fantastic cu stânci uriașe deasupra unui ocean, sub o planetă enormă",
+   "game": null,
+   "aspect": "21:9",
+   "color": "#8a848e",
+   "variants": [
+    {
+     "width": 640,
+     "height": 274
+    },
+    {
+     "width": 1280,
+     "height": 549
+    },
+    {
+     "width": 1920,
+     "height": 823
+    },
+    {
+     "width": 2560,
+     "height": 1097
+    }
+   ],
+   "fallback_width": 1280,
+   "source": {
+    "drive_id": "1fgt77ZUHVubo9f8aIqSzBd4xE8OuWqwI",
+    "path": "Colony: Code Red/Backgrounds/Land.jpg"
+   },
+   "rights": "Artă de brand Another World furnizată de franciză. Randare/ilustrație, nu fotografie reală."
+  },
+  {
+   "key": "cosmos-red-planet",
+   "kind": "brand-art",
+   "alt_ro": "Echipaj în costume spațiale pe suprafața unei planete roșii",
+   "game": null,
+   "aspect": "21:9",
+   "color": "#6b2c12",
+   "variants": [
+    {
+     "width": 640,
+     "height": 274
+    },
+    {
+     "width": 1280,
+     "height": 549
+    },
+    {
+     "width": 1920,
+     "height": 823
+    }
+   ],
+   "fallback_width": 1280,
+   "source": {
+    "drive_id": "1Jx_as3nYBqi07sShPJ-8KMI99b3e-5bn",
+    "path": "Colony: Code Red/Backgrounds/Promo 2.png"
+   },
+   "rights": "Artă de brand Another World furnizată de franciză. Randare/ilustrație, nu fotografie reală."
+  },
+  {
+   "key": "cosmos-cryo",
+   "kind": "brand-art",
+   "alt_ro": "Capsulă criogenică într-o navă spațială, în lumină albastră",
+   "game": null,
+   "aspect": "21:9",
+   "color": "#253445",
+   "variants": [
+    {
+     "width": 640,
+     "height": 274
+    },
+    {
+     "width": 1280,
+     "height": 549
+    },
+    {
+     "width": 1920,
+     "height": 823
+    }
+   ],
+   "fallback_width": 1280,
+   "source": {
+    "drive_id": "1xequ5mPDJHSPRHOPRyQ9l_gERhIp3gZE",
+    "path": "Background pictures/cryo_v04_2.jpg"
+   },
+   "rights": "Artă de brand Another World furnizată de franciză. Randare/ilustrație, nu fotografie reală."
+  },
+  {
+   "key": "cosmos-city",
+   "kind": "brand-art",
+   "alt_ro": "Oraș futurist pe timp de noapte, cu un turn marcat de logo-ul Another World",
+   "game": null,
+   "aspect": "21:9",
+   "color": "#303541",
+   "variants": [
+    {
+     "width": 640,
+     "height": 274
+    },
+    {
+     "width": 1280,
+     "height": 549
+    }
+   ],
+   "fallback_width": 1280,
+   "source": {
+    "drive_id": "1Hz2sodjd00oNslmCv77rFRPdkpmBLvrW",
+    "path": "Background pictures/cit01.png"
+   },
+   "rights": "Artă de brand Another World furnizată de franciză. Randare/ilustrație, nu fotografie reală."
+  },
+  {
+   "key": "logo-wall",
+   "kind": "network-photo",
+   "alt_ro": "Logo-ul Another World luminat pe un perete cu benzi de neon roșu și albastru",
+   "game": null,
+   "aspect": "4:3",
+   "color": "#2b123d",
+   "variants": [
+    {
+     "width": 480,
+     "height": 360
+    },
+    {
+     "width": 960,
+     "height": 720
+    },
+    {
+     "width": 1600,
+     "height": 1200
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1yvtYarvh6Vmxrx_FA4rtDJIimBrSj8iI",
+    "path": "arena photoshoot (surgut 2024)/JR7A8563.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "headsets-row",
+   "kind": "network-photo",
+   "alt_ro": "Căști VR numerotate, aliniate pe podeaua unei arene Another World",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#68606a",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "19JAYq8w5H3eQncf273A9xDce_8vStogR",
+    "path": "arena photoshoot (surgut 2024)/JR7A8322.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "headsets-shelf",
+   "kind": "network-photo",
+   "alt_ro": "Raft iluminat cu căști VR numerotate",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#735e80",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1Ama72cJPhINfSJ8pEmIzRR2F6H8eHwuj",
+    "path": "arena photoshoot (surgut 2024)/JR7A8476.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "arena-purple",
+   "kind": "network-photo",
+   "alt_ro": "Arenă VR goală în lumină violet, cu marcaje albe pe podea",
+   "game": null,
+   "aspect": "16:9",
+   "color": "#360564",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "14UBl2XXWG_w2qgt6XpgBAr51BO9KZYcf",
+    "path": "arena photoshoot (surgut 2024)/JR7A8131.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "headset-product",
+   "kind": "network-photo",
+   "alt_ro": "Cască VR albă cu numărul 01, pe o masă, în lumină caldă",
+   "game": null,
+   "aspect": "4:5",
+   "color": "#443c38",
+   "variants": [
+    {
+     "width": 480,
+     "height": 600
+    },
+    {
+     "width": 960,
+     "height": 1200
+    },
+    {
+     "width": 1600,
+     "height": 2000
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1iyKMEBo5ZroRGAa1tUndkBsmDOCQ2Njn",
+    "path": "Photosession AW Promo/Edited photos/For the designer/DSC08072.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "players-duo-red",
+   "kind": "network-photo",
+   "alt_ro": "Doi jucători cu căști VR în fața logo-ului Another World luminat",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#363563",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1sfc3tXWLI3L2iLiBcOmnIzpz1MJrZD60",
+    "path": "Photosession 30. 04. 26/027A6089.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "player-woman-red",
+   "kind": "network-photo",
+   "alt_ro": "Jucătoare cu cască VR, în mișcare, între benzi de lumină roșie și albastră",
+   "game": null,
+   "aspect": "4:5",
+   "color": "#3d2647",
+   "variants": [
+    {
+     "width": 480,
+     "height": 600
+    },
+    {
+     "width": 960,
+     "height": 1200
+    },
+    {
+     "width": 1600,
+     "height": 2000
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1ozUcZ2iE-gZOGjF0U3MsfvKItS2KzGrS",
+    "path": "Photosession 30. 04. 26/027A6107.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "player-reach",
+   "kind": "network-photo",
+   "alt_ro": "Jucător cu cască VR care întinde mâna spre ceva ce doar el vede",
+   "game": null,
+   "aspect": "4:5",
+   "color": "#241425",
+   "variants": [
+    {
+     "width": 480,
+     "height": 600
+    },
+    {
+     "width": 960,
+     "height": 1200
+    },
+    {
+     "width": 1600,
+     "height": 2000
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1MRR2DOcOBtZsXHH1oL8018ZXnHKPoJkz",
+    "path": "Photosession 30. 04. 26/027A6161.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "players-action",
+   "kind": "network-photo",
+   "alt_ro": "Grup de jucători cu căști VR, concentrați în timpul jocului",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#402840",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1O08sGk04UBTCT28u3sg5MbA5NyFKX5JO",
+    "path": "Photosession 30. 04. 26/027A6194.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "players-team",
+   "kind": "network-photo",
+   "alt_ro": "Echipă de jucători cu controlere VR, sub logo-ul Another World",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#442b46",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1nuQrQAazp-T2ZNViPf1A8T77FnnhGuK4",
+    "path": "Photosession 30. 04. 26/027A6209.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "friends-after-game",
+   "kind": "network-photo",
+   "alt_ro": "Grup de prieteni așezați în arenă, cu căștile VR ridicate pe frunte",
+   "game": null,
+   "aspect": "5:4",
+   "color": "#474153",
+   "variants": [
+    {
+     "width": 480,
+     "height": 384
+    },
+    {
+     "width": 960,
+     "height": 768
+    },
+    {
+     "width": 1600,
+     "height": 1280
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1KmxxZRXoZzD0l6NHX_r9Iw297dLKMkuR",
+    "path": "Photosession 30. 04. 26/027A6414.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "couple-after-game",
+   "kind": "network-photo",
+   "alt_ro": "Doi prieteni zâmbitori după joc",
+   "game": null,
+   "aspect": "4:5",
+   "color": "#5f5158",
+   "variants": [
+    {
+     "width": 480,
+     "height": 600
+    },
+    {
+     "width": 960,
+     "height": 1200
+    },
+    {
+     "width": 1600,
+     "height": 2000
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1a3Q0JmJ0yhEk1Kfs8rtYHn7NafE_Zi1z",
+    "path": "Photosession 30. 04. 26/027A6456.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "group-arena",
+   "kind": "network-photo",
+   "alt_ro": "Grup de tineri cu căști VR care joacă împreună într-o arenă cu pereți în dungi",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#5b5262",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1rgeVmepD3n05YY9Wp76kyAqqPT39aM1E",
+    "path": "Arena Photoshoot (Akadem 2022)/18.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "group-logo",
+   "kind": "network-photo",
+   "alt_ro": "Prieteni cu căști VR în fața logo-ului Another World",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#665861",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1UeFmOMHDzsWo_fwpNFZrXat99rcHKeXp",
+    "path": "Arena Photoshoot (Akadem 2022)/47.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "friends-floor",
+   "kind": "network-photo",
+   "alt_ro": "Trei prieteni așezați pe podeaua arenei, râzând după joc",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#766a70",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "14n2cdOck1m29ogeKYP1EUE5crmosPsPG",
+    "path": "Arena Photoshoot (Akadem 2022)/51.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "player-logo",
+   "kind": "network-photo",
+   "alt_ro": "Jucător cu controlere VR lângă logo-ul Another World",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#302d30",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1_CTu252zxVJwblAw0u-WjprZHE_WKGYP",
+    "path": "Arena Photoshoot (Akadem 2022)/10.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "duo-cosmic",
+   "kind": "network-photo",
+   "alt_ro": "Doi jucători cu căști VR în lumină violet",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#422c53",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1mFEltn5tDD5sI86cbcdAKVk2kac7r7Zl",
+    "path": "Game photoshoots/Photo session for video/H09A7069.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "corporate-duo",
+   "kind": "network-photo",
+   "alt_ro": "Doi colegi zâmbitori în fața logo-ului Another World",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#391d48",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1_XR5l4OFnpTGS6BVOLsBljq11yvi61PL",
+    "path": "Corporate/1/45.jpeg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză."
+  },
+  {
+   "key": "kid-player-red",
+   "kind": "network-photo",
+   "alt_ro": "Copil cu cască VR care joacă într-o arenă luminată în roșu",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#723734",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "196sezpgKEWqITgi8oyCppn6PdLPIpLrK",
+    "path": "Birthday (Children)/Birthday photoshoot (September)/IMG_4478.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză. Imagine cu minori: înainte de publicare, confirmați cu franciza existența acordului părinților pentru utilizare publicitară."
+  },
+  {
+   "key": "kid-player-blue",
+   "kind": "network-photo",
+   "alt_ro": "Copil cu cască VR care explorează lumea virtuală",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#615b64",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "16IVVEgs3UO908ObvvmVx-W4-iAeZohjU",
+    "path": "Birthday (Children)/Birthday photoshoot (September)/IMG_4545.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză. Imagine cu minori: înainte de publicare, confirmați cu franciza existența acordului părinților pentru utilizare publicitară."
+  },
+  {
+   "key": "kids-team",
+   "kind": "network-photo",
+   "alt_ro": "Copii cu căști VR care joacă împreună",
+   "game": null,
+   "aspect": "3:2",
+   "color": "#9f5742",
+   "variants": [
+    {
+     "width": 480,
+     "height": 320
+    },
+    {
+     "width": 960,
+     "height": 640
+    },
+    {
+     "width": 1600,
+     "height": 1067
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1_ZDPny4v1jAU_EtHJThJ8blv7XTRTcr4",
+    "path": "Birthday (Children)/Birthday photoshoot (September)/IMG_4507.jpg"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză. Imagine cu minori: înainte de publicare, confirmați cu franciza existența acordului părinților pentru utilizare publicitară."
+  },
+  {
+   "key": "teen-smile",
+   "kind": "network-photo",
+   "alt_ro": "Adolescentă zâmbitoare cu casca VR ridicată pe frunte",
+   "game": null,
+   "aspect": "4:5",
+   "color": "#78726d",
+   "variants": [
+    {
+     "width": 480,
+     "height": 600
+    },
+    {
+     "width": 960,
+     "height": 1200
+    },
+    {
+     "width": 1600,
+     "height": 2000
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "12WUyny__Ms1TLWRczGw22bkyAjLjjmmE",
+    "path": "teenagers/IMG_8313.JPG"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză. Imagine cu minori: înainte de publicare, confirmați cu franciza existența acordului părinților pentru utilizare publicitară."
+  },
+  {
+   "key": "briefing-headset",
+   "kind": "network-photo",
+   "alt_ro": "Un membru al echipei ajută o jucătoare să-și potrivească casca VR",
+   "game": null,
+   "aspect": "4:5",
+   "color": "#4e4641",
+   "variants": [
+    {
+     "width": 480,
+     "height": 600
+    },
+    {
+     "width": 960,
+     "height": 1200
+    },
+    {
+     "width": 1600,
+     "height": 2000
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1_QgAhGLIRUrxT3xCX4czsHcXBZUCKK-F",
+    "path": "teenagers/IMG_8336.JPG"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză. Imagine cu minori: înainte de publicare, confirmați cu franciza existența acordului părinților pentru utilizare publicitară."
+  },
+  {
+   "key": "teens-duo",
+   "kind": "network-photo",
+   "alt_ro": "Doi adolescenți cu căști VR, în fața logo-ului Another World",
+   "game": null,
+   "aspect": "4:5",
+   "color": "#7c7873",
+   "variants": [
+    {
+     "width": 480,
+     "height": 600
+    },
+    {
+     "width": 960,
+     "height": 1200
+    },
+    {
+     "width": 1600,
+     "height": 2000
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1nMo0-iwN7gu_qzptWtH-rRInpVkShtUY",
+    "path": "teenagers/IMG_8352.JPG"
+   },
+   "rights": "Material de marketing furnizat de franciza Another World partenerilor rețelei (folder „Photoshoots”). Fotografie dintr-o altă locație a rețelei — nu este arena din Cluj. Termenii exacți de utilizare se confirmă din contractul de franciză. Imagine cu minori: înainte de publicare, confirmați cu franciza existența acordului părinților pentru utilizare publicitară."
+  },
+  {
+   "key": "game-kernel-bunker-1",
+   "kind": "game-art",
+   "alt_ro": "Interior de buncăr abandonat, cu butoaie și echipament vechi",
+   "game": "kernel-bunker",
+   "aspect": "16:9",
+   "color": "#3e3932",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1N6CWDguK-YZd37An8IhsrqO6vrpEBpT3",
+    "path": "Kernel: Bunker/Copy of image (1).png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-kernel-bunker-2",
+   "kind": "game-art",
+   "alt_ro": "Butelii și cutii într-un depozit subteran din Kernel: Bunker",
+   "game": "kernel-bunker",
+   "aspect": "16:9",
+   "color": "#513935",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1p28SpKjsjMmUey6q3FAF8UpEZaVA3sYq",
+    "path": "Kernel: Bunker/Copy of image (3).png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-kernel-bunker-3",
+   "kind": "game-art",
+   "alt_ro": "Coridor de buncăr cu panouri electrice",
+   "game": "kernel-bunker",
+   "aspect": "16:9",
+   "color": "#3c3b38",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1p7IHyl0zxIK8v_snuHeS5NxJZTzCc7ws",
+    "path": "Kernel: Bunker/Copy of image (11).png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-kernel-raven-1",
+   "kind": "game-art",
+   "alt_ro": "Echipă de luptători pe un șantier de zgârie-nori, la apus",
+   "game": "kernel-raven",
+   "aspect": "16:9",
+   "color": "#5e4d61",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1injrfsLSSS5ekwZoj5y5xlVgyikHFiMC",
+    "path": "Kernel: Raven/Promo.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-kernel-raven-2",
+   "kind": "game-art",
+   "alt_ro": "Schele și structuri metalice pe acoperișul unui zgârie-nori",
+   "game": "kernel-raven",
+   "aspect": "16:9",
+   "color": "#6b4648",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1DXxHV6Rivb1kd9MsyLgwSnPyox-sxMzC",
+    "path": "Kernel: Raven/Kernel: Raven _screenshot (13).PNG"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-kernel-raven-3",
+   "kind": "game-art",
+   "alt_ro": "Platformă de construcție la mare înălțime, cu orașul în fundal",
+   "game": "kernel-raven",
+   "aspect": "16:9",
+   "color": "#463b55",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1K5HZ8wOg2IFjVuy_whit4qiurMkGFukd",
+    "path": "Kernel: Raven/Kernel: Raven _screenshot (3).PNG"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-kernel-survival-protocol-1",
+   "kind": "game-art",
+   "alt_ro": "Încăpere industrială întunecată, cu uși metalice",
+   "game": "kernel-survival-protocol",
+   "aspect": "16:9",
+   "color": "#27251c",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "16nkiOgT84FnuQNXeoTR-olKJXfw9g02P",
+    "path": "Kernel: Survival protocol/screenshots/Снимок экрана 2025-09-01 165529.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-kernel-survival-protocol-2",
+   "kind": "game-art",
+   "alt_ro": "Hală abandonată, luminată slab",
+   "game": "kernel-survival-protocol",
+   "aspect": "16:9",
+   "color": "#1b1712",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1uPhl3oFu4PonDNBZEP3EDYi26pQh7Ibs",
+    "path": "Kernel: Survival protocol/screenshots/Снимок экрана 2025-09-01 170012.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-cubes-1",
+   "kind": "game-art",
+   "alt_ro": "Personaje înarmate cu blastere într-o lume construită din cuburi",
+   "game": "shmooter-cubes",
+   "aspect": "16:9",
+   "color": "#636965",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "16o2awC17TmXMhS0-TH3wktGmGzw--mxS",
+    "path": "Shmooter: Cubes/Copy of Cube-01_f.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-cubes-2",
+   "kind": "game-art",
+   "alt_ro": "Duel cu raze laser între personaje din cuburi",
+   "game": "shmooter-cubes",
+   "aspect": "16:9",
+   "color": "#877d68",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1ozg_NLco13s1MHXwbdTD6wD7xkIyvd3N",
+    "path": "Shmooter: Cubes/Copy of Cube-02.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-cubes-3",
+   "kind": "game-art",
+   "alt_ro": "Munți înzăpeziți și dirijabile într-o lume din cuburi",
+   "game": "shmooter-cubes",
+   "aspect": "16:9",
+   "color": "#4e676d",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1vfvLrnaUobJcqLoQEjKOrYL6s0fp68vB",
+    "path": "Shmooter: Cubes/Copy of HighresScreenshot00000.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-forts-1",
+   "kind": "game-art",
+   "alt_ro": "Fortărețe colorate pe platforme suspendate",
+   "game": "shmooter-forts",
+   "aspect": "16:9",
+   "color": "#657685",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "17CJRM5WdBfhfT4ADA_iLK5kyuFy7p9Zw",
+    "path": "Shmooter: Forts/Forts promo 1.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-forts-2",
+   "kind": "game-art",
+   "alt_ro": "Jucători care se adăpostesc după un autobuz în Shmooter: Forts",
+   "game": "shmooter-forts",
+   "aspect": "16:9",
+   "color": "#52757d",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1ir3vuHH8sCEhMQWosG2Fgh4PqVcT9Rx5",
+    "path": "Shmooter: Forts/Forts promo 2.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-forts-3",
+   "kind": "game-art",
+   "alt_ro": "Platforme și clădiri de cucerit în Shmooter: Forts",
+   "game": "shmooter-forts",
+   "aspect": "16:9",
+   "color": "#4d736a",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1dgCg2ZDAOUA7jO1GkgRVI48BqOodBn9t",
+    "path": "Shmooter: Forts/screenshot 2.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-island-assault-1",
+   "kind": "game-art",
+   "alt_ro": "Insulă cu baze și ascunzători în Shmooter: Island Assault",
+   "game": "shmooter-island-assault",
+   "aspect": "16:9",
+   "color": "#7e8084",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1Natwr-qnKBwjG6fjcYugnsdZMHFE1CbS",
+    "path": "Shmooter: Island Assault/Pics/screenshot_2021_3_19_13_47_38_625.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-island-assault-2",
+   "kind": "game-art",
+   "alt_ro": "Punct de apărare pe o insulă tropicală",
+   "game": "shmooter-island-assault",
+   "aspect": "16:9",
+   "color": "#73787f",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "10K5h8jEsPGXQ-Td4sbybXKfdM7UjaHoc",
+    "path": "Shmooter: Island Assault/Pics/screenshot_2021_3_19_13_48_0_105.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-skyscrapers-1",
+   "kind": "game-art",
+   "alt_ro": "Arenă futuristă între zgârie-nori",
+   "game": "shmooter-skyscrapers",
+   "aspect": "16:9",
+   "color": "#2b233f",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1z9yEsCzNu8JKWZ8y2FpL_mMuj0Mwz-vr",
+    "path": "Shmooter: Skyscrapers/Pics/Screen_01.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-skyscrapers-2",
+   "kind": "game-art",
+   "alt_ro": "Jucători în duel pe acoperișul unui zgârie-nori",
+   "game": "shmooter-skyscrapers",
+   "aspect": "16:9",
+   "color": "#472b1e",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1yjNGY7ZQIZ8ynwDJZUXjC76m7eOKy7Kr",
+    "path": "Shmooter: Skyscrapers/Pics/Screen_02.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-skyscrapers-3",
+   "kind": "game-art",
+   "alt_ro": "Platforme cu bonusuri între clădiri înalte",
+   "game": "shmooter-skyscrapers",
+   "aspect": "16:9",
+   "color": "#2b191f",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1R3A_qjNd0oJ1MKfTB6Ig7hvVXQbJYZUi",
+    "path": "Shmooter: Skyscrapers/Pics/Screen_03.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-space-battle-1",
+   "kind": "game-art",
+   "alt_ro": "Stație spațială atacată, cu stele în fundal",
+   "game": "shmooter-space-battle",
+   "aspect": "16:9",
+   "color": "#285753",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1JiwiPoGamPjOtugZ7ZAvCZSqu0jMLNBT",
+    "path": "Shmooter: Space battle/Space_Battle_01.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-space-battle-2",
+   "kind": "game-art",
+   "alt_ro": "Coridor al stației spațiale în timpul bătăliei",
+   "game": "shmooter-space-battle",
+   "aspect": "16:9",
+   "color": "#383e44",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1cuskEGCRuFokiCmMTZUDhKoFLZwVo9NA",
+    "path": "Shmooter: Space battle/Space_Battle_02.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-space-battle-3",
+   "kind": "game-art",
+   "alt_ro": "Luptă cu invadatori extratereștri în Shmooter: Space Battle",
+   "game": "shmooter-space-battle",
+   "aspect": "16:9",
+   "color": "#213430",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1fBe4KQIj3k2VA2mJVej9ImKVlrXI101H",
+    "path": "Shmooter: Space battle/Space_Battle_03.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-space-battle-2-1",
+   "kind": "game-art",
+   "alt_ro": "Echipaj înarmat pe o stație spațială din Space Battle 2",
+   "game": "shmooter-space-battle-2",
+   "aspect": "16:9",
+   "color": "#4e5254",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1EDFvTv3iTbmo3Tim6zP7xwG_L3E4cRkz",
+    "path": "Shmooter: Space battle 2/Promo/Space Battle 2 picture 1.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-space-battle-2-2",
+   "kind": "game-art",
+   "alt_ro": "Personaje cu armură pe fundalul unei nebuloase",
+   "game": "shmooter-space-battle-2",
+   "aspect": "16:9",
+   "color": "#323c3b",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1J5Z-yrbMPv3TZLKHsx0GtB2cCTMVINX5",
+    "path": "Shmooter: Space battle 2/Copy of 01.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-shmooter-space-battle-2-3",
+   "kind": "game-art",
+   "alt_ro": "Teleportor luminos într-o stație spațială",
+   "game": "shmooter-space-battle-2",
+   "aspect": "16:9",
+   "color": "#2f3b35",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1ZCO3ttraieG9itvOkd2KKKDhPzaJBmbO",
+    "path": "Shmooter: Space battle 2/Copy of 02.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-dance-1",
+   "kind": "game-art",
+   "alt_ro": "Petrecere cu fantome prietenoase într-un conac",
+   "game": "ghost-tower-dance",
+   "aspect": "16:9",
+   "color": "#474d44",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1YzUi6RK9gUc6n-7TrtQG3WNJ25TrJHin",
+    "path": "Ghost Tower/Ghost Tower: Dance/Dance promo 1.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-dance-2",
+   "kind": "game-art",
+   "alt_ro": "Ring de dans într-un conac bântuit",
+   "game": "ghost-tower-dance",
+   "aspect": "16:9",
+   "color": "#7f784a",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1lqjjpToPP_ncPKYM3RnfAvZcaj0omzKT",
+    "path": "Ghost Tower/Ghost Tower: Dance/Dance Screenshot 1.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-dance-3",
+   "kind": "game-art",
+   "alt_ro": "Fantome colorate care dansează",
+   "game": "ghost-tower-dance",
+   "aspect": "16:9",
+   "color": "#5a492f",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1ZpXBJMiHTpiLTJYHTuoyoZQYZk4zoDI2",
+    "path": "Ghost Tower/Ghost Tower: Dance/Dance Screenshot 6.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-fishing-1",
+   "kind": "game-art",
+   "alt_ro": "Joc de pescuit cu fantome prietenoase",
+   "game": "ghost-tower-fishing",
+   "aspect": "16:9",
+   "color": "#586460",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1RNNKLL6XRTLEJBVo5t_497W0FgSAwPut",
+    "path": "Ghost Tower/Ghost Tower: Fishing/Fishing promo.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-fishing-2",
+   "kind": "game-art",
+   "alt_ro": "Lac fermecat cu turnuri și fantome",
+   "game": "ghost-tower-fishing",
+   "aspect": "16:9",
+   "color": "#5b606f",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1agQrFveMgtbD9rdTFmnLNArxx3YNJltS",
+    "path": "Ghost Tower/Ghost Tower: Fishing/Fishing Screenshot 1.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-fishing-3",
+   "kind": "game-art",
+   "alt_ro": "Pești colorați de prins în Ghost Tower: Fishing",
+   "game": "ghost-tower-fishing",
+   "aspect": "16:9",
+   "color": "#32342e",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1scHOjeMrsw15E8tOwsqFHzQMnQqsOR7r",
+    "path": "Ghost Tower/Ghost Tower: Fishing/Fishing Screenshot 4.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-ghost-mansion-1",
+   "kind": "game-art",
+   "alt_ro": "Vânători de fantome într-un conac abandonat",
+   "game": "ghost-tower-ghost-mansion",
+   "aspect": "16:9",
+   "color": "#42412f",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1yCbpUdmogAZAEJd0_yYE7NwRXd1nXf3Z",
+    "path": "Ghost Tower/Ghost Tower: Ghost Mansion/Pics/ghost mansion.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-ghost-tower-ghost-mansion-2",
+   "kind": "game-art",
+   "alt_ro": "Fantome viclene în holul unui conac",
+   "game": "ghost-tower-ghost-mansion",
+   "aspect": "16:9",
+   "color": "#594f41",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1Z0sZC4-Z1LUtSw3Spv748urmrUnjDIAy",
+    "path": "Ghost Tower/Ghost Tower: Ghost Mansion/Pics/ghost mansion (2).png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-safe-night-1",
+   "kind": "game-art",
+   "alt_ro": "Trei supraviețuitori înarmați, gata de apărare",
+   "game": "safe-night",
+   "aspect": "16:9",
+   "color": "#362c28",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1cU9d_6olG0o1EKRjqA-Ath6yO6kgYf5k",
+    "path": "Safe Night/General/3 players.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-safe-night-2",
+   "kind": "game-art",
+   "alt_ro": "Oraș pustiu după o catastrofă, în Safe Night",
+   "game": "safe-night",
+   "aspect": "16:9",
+   "color": "#372f2a",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1nchfNcw_s9ljWhrnwYw9cHrWcP3ljTtR",
+    "path": "Safe Night/General/Art2.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-starbase-survival-1",
+   "kind": "game-art",
+   "alt_ro": "Platformă izolată pe o planetă ostilă",
+   "game": "starbase-survival",
+   "aspect": "16:9",
+   "color": "#695840",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1OHK5XkiZ-HDMqHYBHLa3Zp3zGw80UkG9",
+    "path": "Starbase: survival/promo pictures/1.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-starbase-survival-2",
+   "kind": "game-art",
+   "alt_ro": "Echipaj care apără o bază de forme de viață necunoscute",
+   "game": "starbase-survival",
+   "aspect": "16:9",
+   "color": "#664f32",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1Ef6_BXHGUQOfqtE-fqUho7IfcwOYOaDC",
+    "path": "Starbase: survival/promo pictures/2.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-starbase-survival-3",
+   "kind": "game-art",
+   "alt_ro": "Interior al unei baze spațiale în Starbase: Survival",
+   "game": "starbase-survival",
+   "aspect": "16:9",
+   "color": "#724939",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "14WFqo_jWMzJJACAewF6scGRb9IgCisrP",
+    "path": "Starbase: survival/Screenshots/Copy of 1.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-tavern-1",
+   "kind": "game-art",
+   "alt_ro": "Taverna fantastică văzută din exterior",
+   "game": "tavern",
+   "aspect": "16:9",
+   "color": "#83531a",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1wKD-qPDYqCXCodacdYkw7ZmuYRyi00qr",
+    "path": "Tavern/screenshots/Снимок экрана 2025-09-08 080002.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-tavern-2",
+   "kind": "game-art",
+   "alt_ro": "Bucătăria tavernei, cu ingrediente pe tejghea",
+   "game": "tavern",
+   "aspect": "16:9",
+   "color": "#6a4a28",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "11I5IFQQdcr2jXhXdnSK-C92oT8bS3t2O",
+    "path": "Tavern/screenshots/Снимок экрана 2025-09-08 080136.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-tavern-3",
+   "kind": "game-art",
+   "alt_ro": "Personaje fantastice care așteaptă să fie servite",
+   "game": "tavern",
+   "aspect": "16:9",
+   "color": "#302435",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    }
+   ],
+   "fallback_width": 480,
+   "source": {
+    "drive_id": "1m2r-r9MxWEEp6kvS60yTkNnbG7F5OmhZ",
+    "path": "Tavern/social media post/IMG_4060.JPG"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-colony-code-red-1",
+   "kind": "game-art",
+   "alt_ro": "Echipaj al navei Vega pe planeta Alekta",
+   "game": "colony-code-red",
+   "aspect": "16:9",
+   "color": "#4c626e",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1TH7oD1NndrRuMIpKTFe1Ugp11nKQMCtl",
+    "path": "Colony: Code Red/Backgrounds/Promo.png"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-colony-code-red-2",
+   "kind": "game-art",
+   "alt_ro": "Ușă luminată în roșu într-o stație spațială",
+   "game": "colony-code-red",
+   "aspect": "16:9",
+   "color": "#3d2730",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "15brUz_EGK8rzj8UPZdHORv9QJsboHNTR",
+    "path": "Colony: Code Red/Backgrounds/final.jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  },
+  {
+   "key": "game-colony-code-red-3",
+   "kind": "game-art",
+   "alt_ro": "Creatură extraterestră în fața echipajului",
+   "game": "colony-code-red",
+   "aspect": "16:9",
+   "color": "#232237",
+   "variants": [
+    {
+     "width": 480,
+     "height": 270
+    },
+    {
+     "width": 960,
+     "height": 540
+    },
+    {
+     "width": 1600,
+     "height": 900
+    }
+   ],
+   "fallback_width": 960,
+   "source": {
+    "drive_id": "1QvvEbAy_bi0KBeR9tnXZ-ioegKU58_Hz",
+    "path": "Colony: Code Red/Backgrounds/Another world (Исходник).jpg"
+   },
+   "rights": "Material oficial al jocului furnizat de franciza Another World („Game materials”). Imagine din joc / randare, nu fotografie reală."
+  }
+ ]
+}
