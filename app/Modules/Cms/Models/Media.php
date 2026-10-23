@@ -46,6 +46,7 @@ class Media extends Model
             'focal_x' => 'float',
             'focal_y' => 'float',
             'depicts_minors' => 'boolean',
+            'guardian_consent_confirmed' => 'boolean',
         ];
     }
 
@@ -64,9 +65,11 @@ class Media extends Model
         return $this->kind === 'image';
     }
 
+    /** Pe site apar doar fișierele cu drepturi cunoscute și, dacă apar minori, cu acordul confirmat. */
     public function isPublishable(): bool
     {
-        return $this->rights_status !== 'unknown';
+        return $this->rights_status !== 'unknown'
+            && (! $this->depicts_minors || $this->guardian_consent_confirmed);
     }
 
     public function originalUrl(): string

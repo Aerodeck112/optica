@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Modules\Core\Settings\SettingsRepository;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Vite;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -19,7 +20,7 @@ class SecurityHeaders
     {
         $nonce = base64_encode(random_bytes(18));
         app()->instance('csp-nonce', $nonce);
-        \Illuminate\Support\Facades\Vite::useCspNonce($nonce);
+        Vite::useCspNonce($nonce);
 
         $response = $next($request);
 
@@ -39,7 +40,7 @@ class SecurityHeaders
         }
 
         if ($this->isAdmin($request)) {
-            $headers->set('Content-Security-Policy', "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'");
+            $headers->set('Content-Security-Policy', "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none'");
             $headers->set('X-Robots-Tag', 'noindex, nofollow');
 
             return $response;

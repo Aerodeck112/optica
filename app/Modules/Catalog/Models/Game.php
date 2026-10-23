@@ -27,6 +27,8 @@ class Game extends Model
         'retired' => 'Retras',
     ];
 
+    public const AUDIENCES = ['all' => 'Toate vârstele (în limita vârstei minime)', 'kids' => 'Potrivit pentru copii', 'teens_adults' => 'Adolescenți și adulți'];
+
     public const INTENSITY = [1 => 'Calm', 2 => 'Dinamic', 3 => 'Intens'];
 
     protected $table = 'games';

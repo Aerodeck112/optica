@@ -1,0 +1,81 @@
+/* Panoul de administrare Another World Cluj — font local și ajustări pentru recepție (tabletă). */
+@font-face { font-family: "Onest"; src: url("/fonts/aw/onest-aw.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+
+.fi-sidebar-header .fi-logo { height: 2rem; }
+.aw-cal { --aw-slot: 3.25rem; }
+.aw-cal-grid { display: grid; gap: 1px; background: var(--gray-200); border: 1px solid var(--gray-200); border-radius: .75rem; overflow: hidden; }
+.dark .aw-cal-grid { background: var(--gray-800); border-color: var(--gray-800); }
+.aw-cal-cell { background: var(--color-white, #fff); min-height: var(--aw-slot); padding: .25rem .375rem; position: relative; }
+.dark .aw-cal-cell { background: var(--gray-900); }
+.aw-cal-head { font-weight: 600; font-size: .8125rem; padding: .5rem; background: var(--gray-50); }
+.dark .aw-cal-head { background: var(--gray-950); }
+.aw-cal-time { font-size: .75rem; color: var(--gray-500); }
+.aw-cal-closed { background: repeating-linear-gradient(135deg, transparent 0 6px, rgb(0 0 0 / .04) 6px 12px), var(--gray-50); }
+.dark .aw-cal-closed { background: repeating-linear-gradient(135deg, transparent 0 6px, rgb(255 255 255 / .03) 6px 12px), var(--gray-950); }
+.aw-ev { display: block; border-radius: .5rem; padding: .375rem .5rem; margin-bottom: .25rem; font-size: .8125rem; line-height: 1.3; border-left: 4px solid currentColor; background: color-mix(in oklab, currentColor 10%, transparent); text-decoration: none; }
+.aw-ev:focus-visible { outline: 2px solid var(--primary-500); outline-offset: 2px; }
+.aw-ev strong { display: block; color: var(--gray-950); }
+.dark .aw-ev strong { color: #fff; }
+.aw-ev span { color: var(--gray-600); }
+.dark .aw-ev span { color: var(--gray-300); }
+.aw-ev--pending { color: #b45309; }
+.aw-ev--confirmed { color: #2563eb; }
+.aw-ev--checked_in, .aw-ev--in_progress { color: #7c3aed; }
+.aw-ev--completed { color: #059669; }
+.aw-ev--request { color: #db2777; border-left-style: dashed; }
+.aw-ev--block { color: #64748b; }
+.aw-ev--hold { color: #94a3b8; border-left-style: dotted; }
+.aw-kanban { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(16rem, 1fr); gap: 1rem; overflow-x: auto; padding-bottom: .5rem; }
+.aw-kanban-col { background: var(--gray-50); border-radius: .75rem; padding: .75rem; min-height: 12rem; }
+.dark .aw-kanban-col { background: var(--gray-900); }
+.aw-kanban-card { background: #fff; border: 1px solid var(--gray-200); border-radius: .625rem; padding: .625rem .75rem; margin-top: .5rem; display: block; }
+.dark .aw-kanban-card { background: var(--gray-800); border-color: var(--gray-700); }
+.aw-preview { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr) 24rem; align-items: start; }
+.aw-preview iframe { width: 100%; border: 1px solid var(--gray-200); border-radius: .75rem; background: #05040f; }
+.aw-preview .aw-frame-desktop { height: 70vh; }
+.aw-preview .aw-frame-mobile { width: 390px; height: 70vh; justify-self: center; }
+@media (max-width: 80rem) { .aw-preview { grid-template-columns: 1fr; } }
+.aw-missing { color: #b45309; font-weight: 600; }
+.aw-sim-badge { display: inline-block; padding: .125rem .5rem; border-radius: .375rem; background: #fef3c7; color: #92400e; font-weight: 700; font-size: .75rem; }
+
+/* Mod recepție (tabletă): ținte de atingere mai mari. */
+@media (pointer: coarse) {
+  .fi-btn, .fi-icon-btn, .fi-ta-actions .fi-link { min-height: 2.75rem; }
+  .fi-ta-row td { padding-block: .75rem; }
+}
+
+/* Utilitare proprii pentru vizualizările personalizate (Filament compilează doar clasele proprii). */
+.aw-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-bottom: .75rem; }
+.aw-seg { display: inline-flex; border: 1px solid var(--gray-300); border-radius: .5rem; overflow: hidden; }
+.aw-seg button { padding: .375rem .875rem; font-size: .875rem; font-weight: 500; background: transparent; }
+.aw-seg button + button { border-left: 1px solid var(--gray-300); }
+.aw-seg button[aria-pressed="true"] { background: var(--primary-600); color: #fff; }
+.aw-inline-label { display: inline-flex; align-items: center; gap: .5rem; font-size: .875rem; }
+.aw-inline-label select, .aw-select { border: 1px solid var(--gray-300); border-radius: .5rem; padding: .3rem 2rem .3rem .6rem; font-size: .875rem; background-color: transparent; }
+.aw-muted { color: var(--gray-500); font-size: .875rem; }
+.aw-stack > * + * { margin-top: 1rem; }
+.aw-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+.aw-between { justify-content: space-between; }
+.aw-grow { flex: 1 1 auto; }
+.aw-card { border: 1px solid var(--gray-200); border-radius: .75rem; padding: 1rem; background: #fff; }
+.dark .aw-card { background: var(--gray-900); border-color: var(--gray-800); }
+.aw-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.aw-table th, .aw-table td { text-align: left; padding: .5rem .625rem; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+.dark .aw-table th, .dark .aw-table td { border-color: var(--gray-800); }
+.aw-table th { font-weight: 600; color: var(--gray-600); }
+.aw-badge { display: inline-block; padding: .125rem .5rem; border-radius: 999px; font-size: .75rem; font-weight: 600; background: var(--gray-100); color: var(--gray-700); }
+.aw-badge--ok { background: #dcfce7; color: #166534; }
+.aw-badge--warn { background: #fef3c7; color: #92400e; }
+.aw-badge--bad { background: #fee2e2; color: #991b1b; }
+.aw-badge--info { background: #ede9fe; color: #5b21b6; }
+.aw-h { font-size: 1rem; font-weight: 600; margin: 0 0 .5rem; }
+.aw-focal { display: grid; gap: 1rem; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; }
+.aw-focal > p { grid-column: 1 / -1; margin: 0; }
+.aw-focal__stage { position: relative; cursor: crosshair; border-radius: .5rem; overflow: hidden; }
+.aw-focal__stage:focus-visible { outline: 3px solid var(--primary-500); outline-offset: 2px; }
+.aw-focal__stage img { display: block; width: 100%; height: auto; }
+.aw-focal__dot { position: absolute; width: 1.5rem; height: 1.5rem; margin: -.75rem 0 0 -.75rem; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px #e61c4a, 0 2px 8px rgb(0 0 0 / .5); pointer-events: none; }
+.aw-focal__crops { display: grid; gap: .75rem; }
+.aw-focal__crop { overflow: hidden; border-radius: .5rem; background: #0a1033; }
+.aw-focal__crop img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 64rem) { .aw-focal { grid-template-columns: 1fr; } }
