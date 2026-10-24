@@ -9,7 +9,7 @@
         <div class="paths">
             @foreach ($b['items'] as $item)
                 @php $tag = $item['url'] ? 'a' : 'div'; @endphp
-                <{{ $tag }} class="path" @if ($item['url']) href="{{ $item['url'] }}" @endif>
+                <{{ $tag }} class="path @unless ($item['image']) path--no-image @endunless" @if ($item['url']) href="{{ $item['url'] }}" @endif>
                     @if ($item['image'])<x-picture :media="$item['image']" :sizes="$loop->first ? '(max-width: 42rem) 100vw, 58vw' : '(max-width: 42rem) 100vw, 42vw'" alt=""/>@endif
                     <h3>{{ $item['title'] }}</h3>
                     @if ($item['text'])<p>{{ $item['text'] }}</p>@endif

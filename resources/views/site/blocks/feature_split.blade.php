@@ -1,5 +1,5 @@
 <section class="section" @if ($b['anchor']) id="{{ $b['anchor'] }}" @endif>
-    <div class="wrap split split--tone-{{ $b['tone'] }} @if ($b['image_side'] === 'right') split--reverse @endif">
+    <div class="wrap split split--tone-{{ $b['tone'] }} @if ($b['image_side'] === 'right') split--reverse @endif @unless ($b['image']) split--text-only @endunless">
         @if ($b['image'])
             <div class="split__media @if ($b['image_shape'] === 'wide') split__media--wide @endif">
                 <div class="split__accent" aria-hidden="true"></div>
