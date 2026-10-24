@@ -126,6 +126,7 @@ class InvoiceService
             'net_total_minor' => $result['net_minor'],
             'vat_total_minor' => $result['vat_minor'],
             'gross_total_minor' => $result['gross_minor'],
+            'rounding_minor' => $result['rounding_minor'],
             'vat_breakdown' => $result['breakdown'],
         ])->save();
     }
@@ -145,7 +146,7 @@ class InvoiceService
             'reg_no' => $this->settings->filled('company.reg_no'),
             'address' => $this->settings->filled('company.registered_office'),
             'county_code' => $this->settings->filled('company.county_code'),
-            'city' => $this->settings->filled('venue.address_city') ?? 'Cluj-Napoca',
+            'city' => $this->settings->filled('company.registered_city') ?? $this->settings->filled('venue.address_city'),
             'country' => 'RO',
             'vat_payer' => $this->settings->get('company.vat_payer') === 'yes',
             'vat_on_collection' => $this->settings->get('company.vat_on_collection') === 'yes',

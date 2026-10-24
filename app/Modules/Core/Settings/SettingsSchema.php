@@ -17,6 +17,7 @@ final class SettingsSchema
             'company.tax_id' => ['group' => 'company', 'label' => 'CUI / CIF', 'type' => 'string', 'launch' => true, 'help' => 'Cu prefix RO doar dacă firma este plătitoare de TVA.'],
             'company.reg_no' => ['group' => 'company', 'label' => 'Nr. Registrul Comerțului', 'type' => 'string', 'launch' => true],
             'company.registered_office' => ['group' => 'company', 'label' => 'Sediu social', 'type' => 'text', 'launch' => true],
+            'company.registered_city' => ['group' => 'company', 'label' => 'Localitatea sediului social', 'type' => 'string', 'launch' => true, 'help' => 'Pentru București: SECTOR1–SECTOR6 (cerință e-Factura).'],
             'company.share_capital' => ['group' => 'company', 'label' => 'Capital social', 'type' => 'string'],
             'company.vat_payer' => ['group' => 'company', 'label' => 'Plătitor de TVA', 'type' => 'select', 'options' => ['' => 'De completat', 'yes' => 'Da', 'no' => 'Nu'], 'launch' => true],
             'company.vat_on_collection' => ['group' => 'company', 'label' => 'TVA la încasare', 'type' => 'select', 'options' => ['' => 'De completat', 'yes' => 'Da', 'no' => 'Nu']],

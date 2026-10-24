@@ -37,7 +37,7 @@ class VatCalculator
 
     /**
      * @param  array<int, array{description:string, quantity:string|int|float, unit_gross_minor?:int, unit_net?:string, vat_rate:string, vat_category:string, vat_exemption_reason?:?string, item_code?:?string, unit_code?:?string, advance_invoice_id?:?int}>  $lines
-     * @return array{lines: array<int, array>, breakdown: array<int, array>, net_minor:int, vat_minor:int, gross_minor:int}
+     * @return array{lines: array<int, array>, breakdown: array<int, array>, net_minor:int, vat_minor:int, rounding_minor:int, gross_minor:int} gross = de plată
      */
     public function calculate(array $lines, bool $pricesIncludeVat): array
     {
@@ -63,6 +63,7 @@ class VatCalculator
         }
 
         $breakdown = [];
+        $targetTotal = 0;
         foreach ($groups as $key => $indexes) {
             [$category, $rateString] = explode('|', $key);
             $rate = BigDecimal::of($rateString);
@@ -70,6 +71,7 @@ class VatCalculator
 
             if ($pricesIncludeVat) {
                 $targetGross = array_sum(array_map(fn ($i) => $out[$i]['line_gross_target'], $indexes));
+                $targetTotal += $targetGross;
                 $taxable = $this->taxableForGross($targetGross, $rate);
                 $this->distribute($out, $indexes, $taxable);
             }
@@ -96,8 +98,11 @@ class VatCalculator
 
         $net = array_sum(array_column($breakdown, 'taxable_minor'));
         $vat = array_sum(array_column($breakdown, 'tax_minor'));
+        // când nu există o bază întreagă exactă (ex. 840 lei la 21%), diferența de 1–2 bani devine ajustare de rotunjire,
+        // ca totalul de plată să fie exact suma prețurilor afișate clientului
+        $rounding = $pricesIncludeVat ? $targetTotal - ($net + $vat) : 0;
 
-        return ['lines' => array_values($out), 'breakdown' => $breakdown, 'net_minor' => $net, 'vat_minor' => $vat, 'gross_minor' => $net + $vat];
+        return ['lines' => array_values($out), 'breakdown' => $breakdown, 'net_minor' => $net, 'vat_minor' => $vat, 'rounding_minor' => $rounding, 'gross_minor' => $net + $vat + $rounding];
     }
 
     private function tax(int $taxableMinor, BigDecimal $rate): int

@@ -78,6 +78,7 @@
     @endforeach
     <tr><td>Total fără TVA</td><td class="num">{{ $m($invoice->net_total_minor) }}</td></tr>
     <tr><td>Total TVA</td><td class="num">{{ $m($invoice->vat_total_minor) }}</td></tr>
+    @if ((int) $invoice->rounding_minor !== 0)<tr><td>Rotunjire</td><td class="num">{{ $m($invoice->rounding_minor) }}</td></tr>@endif
     <tr class="grand"><td>Total de plată</td><td class="num">{{ $m($invoice->gross_total_minor) }} {{ $invoice->currency }}</td></tr>
 </table>
 

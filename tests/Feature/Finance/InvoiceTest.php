@@ -26,7 +26,7 @@ class InvoiceTest extends TestCase
         parent::setUp();
         Storage::fake('local');
         $this->seed(BaseDataSeeder::class);
-        foreach (['company.legal_name' => 'Firma Test SRL', 'company.tax_id' => 'RO12345678', 'company.reg_no' => 'J12/1/2026', 'company.registered_office' => 'Str. Test 1, Cluj-Napoca', 'company.vat_payer' => 'yes', 'company.county_code' => 'RO-CJ'] as $k => $v) {
+        foreach (['company.legal_name' => 'Firma Test SRL', 'company.tax_id' => 'RO12345674', 'company.reg_no' => 'J12/1/2026', 'company.registered_office' => 'Str. Test 1, Cluj-Napoca', 'company.vat_payer' => 'yes', 'company.county_code' => 'RO-CJ'] as $k => $v) {
             $this->setting($k, $v);
         }
         DocumentSeries::query()->create(['document_type' => 'invoice', 'prefix' => 'AWT', 'next_number' => 1, 'padding' => 5, 'is_default' => true, 'is_active' => true]);
@@ -52,6 +52,15 @@ class InvoiceTest extends TestCase
             $this->assertSame((int) round($row['taxable_minor'] * (float) $row['rate'] / 100), $row['tax_minor'], 'TVA = bază × cotă, rotunjit.');
         }
         $this->assertSame(array_sum(array_column($result['lines'], 'line_net_minor')), $result['net_minor'], 'Suma liniilor = total fără TVA.');
+    }
+
+    public function test_rounding_adjustment_keeps_payable_equal_to_displayed_prices(): void
+    {
+        $result = app(VatCalculator::class)->calculate([['description' => 'X', 'quantity' => 12, 'unit_gross_minor' => 7000, 'vat_rate' => '21.00', 'vat_category' => 'S']], true);
+
+        $this->assertSame(84000, $result['gross_minor']);
+        $this->assertSame(84000, $result['net_minor'] + $result['vat_minor'] + $result['rounding_minor']);
+        $this->assertLessThanOrEqual(2, abs($result['rounding_minor']));
     }
 
     public function test_issue_allocates_consecutive_numbers_and_freezes_the_document(): void

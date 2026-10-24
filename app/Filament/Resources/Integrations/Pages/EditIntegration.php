@@ -117,6 +117,10 @@ class EditIntegration extends EditRecord
                     Notification::make()->{$result['ok'] ? 'success' : 'danger'}()->title($result['message'])->persistent()->send();
                     $this->redirect(IntegrationResource::getUrl('edit', ['record' => $this->getRecord()]));
                 }),
+            Action::make('anaf_authorize')->label('Autorizează la ANAF')->icon('heroicon-o-key')->color('gray')
+                ->visible(fn () => $this->getRecord()->key === 'efactura' && $this->getRecord()->driver === 'anaf')
+                ->url(fn () => route('admin.anaf.authorize'))
+                ->tooltip('Se deschide pagina ANAF; este nevoie de certificatul digital al reprezentantului firmei.'),
             Action::make('verify')->label('Marchează verificat în producție')->icon('heroicon-o-shield-check')->color('success')
                 ->visible(fn () => auth()->user()?->hasRole('super_admin') && $this->getRecord()->status === 'configured' && $this->getRecord()->mode === 'live')
                 ->requiresConfirmation()

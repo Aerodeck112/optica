@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnafOAuthController;
 use App\Http\Controllers\Admin\VoucherPrintController;
 use App\Http\Controllers\Site\AccountController;
 use App\Http\Controllers\Site\BookingApiController;
@@ -64,6 +65,8 @@ Route::middleware('auth:customer')->group(function () {
     Route::post('/account/bookings/{booking}/manage-link', [AccountController::class, 'resendManageLink'])->middleware('throttle:public-forms')->name('account.manage-link');
 });
 
+Route::get('/admin-anaf/authorize', [AnafOAuthController::class, 'authorize'])->middleware('auth')->name('admin.anaf.authorize');
+Route::get('/admin-anaf/callback', [AnafOAuthController::class, 'callback'])->middleware('auth')->name('admin.anaf.callback');
 Route::get('/admin-print/vouchers/{voucher}', VoucherPrintController::class)->middleware('auth')->name('admin.vouchers.print');
 Route::get('/cms-preview/{type}/{id}', PreviewController::class)->middleware(['auth', 'signed'])->name('cms.preview');
 
@@ -92,7 +95,7 @@ foreach (Locales::enabled() as $locale) {
             Route::get($segment('legal').'/{slug}', [LegalController::class, 'show'])->name('legal.show');
 
             Route::get('/{slug?}', PageController::class)
-                ->where('slug', '(?!(u|admin-print|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent)$)[a-z0-9\-]+')
+                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent)$)[a-z0-9\-]+')
                 ->name('page');
         });
 }
