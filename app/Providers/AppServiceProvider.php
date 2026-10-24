@@ -18,6 +18,7 @@ use App\Modules\Cms\Models\Media;
 use App\Modules\Cms\Models\Menu;
 use App\Modules\Cms\Models\Page;
 use App\Modules\Cms\Models\Post;
+use App\Modules\Core\Models\AppUpdate;
 use App\Modules\Core\Models\DataRequest;
 use App\Modules\Core\Models\Integration;
 use App\Modules\Core\Models\Setting;
@@ -130,6 +131,7 @@ class AppServiceProvider extends ServiceProvider
             'fiscal_receipt' => FiscalReceipt::class,
             'resource' => \App\Modules\Booking\Models\Resource::class,
             'banner' => Banner::class,
+            'app_update' => AppUpdate::class,
         ]);
     }
 

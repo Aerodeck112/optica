@@ -44,6 +44,16 @@ return [
         ],
     ],
 
+    // versiunea instalată (fișierul VERSION, actualizat de pachetele de actualizare)
+    'version' => trim((string) @file_get_contents(base_path('VERSION'))) ?: 'necunoscută',
+
+    'updates' => [
+        // destinațiile pachetelor de actualizare; în teste se înlocuiesc cu foldere temporare
+        'app_root' => null,
+        'public_root' => null,
+        'max_upload_mb' => 45,
+    ],
+
     'backup' => [
         'path' => storage_path('app/private/backups'),
         'keep_daily' => 14,
