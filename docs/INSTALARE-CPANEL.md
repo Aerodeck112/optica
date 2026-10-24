@@ -139,7 +139,20 @@ comerciale și nu încarcă datele demonstrative (acestea există doar în mediu
 
 **Fără `symlink`** (dacă `storage:link` dă eroare): folosiți varianta fără Terminal de mai jos (creează legătura cu `ln -s`).
 
-### Fără Terminal (instalare din Cron Jobs)
+### Fără Terminal — instalare din browser (recomandat)
+
+1. Completați `.env` (secțiunea 5), fără `APP_KEY` — pagina o generează.
+2. Deschideți `https://anotherworldcluj.ro/instalare.php`.
+3. Pagina verifică serverul (versiune PHP, extensii, drepturi, conexiunea la baza de date). Rezolvați punctele marcate cu ✗.
+4. Introduceți parola bazei de date (valoarea `DB_PASSWORD` din `.env` — confirmă că aveți acces la server) și datele
+   administratorului (nume, e-mail, parolă de minim 12 caractere cu litere mari, mici și cifre) → **Instalează**.
+5. La final, pagina afișează comanda pentru cron-ul permanent (secțiunea 7), se dezactivează și se șterge singură.
+   Dacă nu a reușit să se șteargă, ștergeți manual `public/instalare.php`.
+
+Dacă instalarea se oprește la un pas, corectați cauza și apăsați din nou **Instalează**: pașii deja făcuți nu se repetă.
+După 10 parole greșite pagina se blochează (se deblochează ștergând `storage/framework/instalare-incercari`).
+
+### Fără Terminal — alternativă din Cron Jobs
 
 Dacă cPanel nu are Terminal și nici acces SSH, pașii de mai sus (inclusiv cheia aplicației și contul de administrator)
 se rulează o singură dată prin scriptul `tools/cpanel/instalare.sh`:
