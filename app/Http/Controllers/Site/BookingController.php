@@ -16,10 +16,11 @@ use App\Modules\Core\Models\Integration;
 use App\Modules\Core\Models\OpeningHour;
 use App\Modules\Core\Models\ScheduleException;
 use App\Modules\Core\Settings\SettingsRepository;
-use App\Support\LocalTime;
+use App\Modules\Finance\Services\Payments\PaymentException;
+use App\Modules\Finance\Services\Payments\PaymentService;
 use App\Support\Locales;
+use App\Support\LocalTime;
 use App\Support\Money;
-use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -27,6 +28,7 @@ class BookingController extends Controller
     public function __construct(
         private readonly SettingsRepository $settings,
         private readonly BookingService $bookings,
+        private readonly PaymentService $payments,
     ) {}
 
     public function show(Request $request)
@@ -132,8 +134,20 @@ class BookingController extends Controller
             return back()->withInput()->withErrors([$field => $e->getMessage()]);
         }
 
-        return redirect()->to(lroute('booking.confirmation', ['code' => $result['booking']->code], $locale).'?t='.$result['manage_token'])
-            ->with('booking_just_created', true);
+        $confirmationUrl = lroute('booking.confirmation', ['code' => $result['booking']->code], $locale).'?t='.$result['manage_token'];
+        $booking = $result['booking'];
+        if ($booking->payment_method === 'online' && $booking->status === 'pending' && $this->payments->amountDueOnline($booking) > 0) {
+            try {
+                $payment = $this->payments->startOnline($booking, $confirmationUrl.'&paid=1', lroute('booking.manage', ['token' => $result['manage_token']], $locale));
+
+                return redirect()->away($payment->checkout_url)->with('booking_just_created', true);
+            } catch (PaymentException $e) {
+                // rezervarea rămâne în așteptare; clientul poate relua plata din pagina rezervării
+                session()->flash('payment_error', $e->getMessage());
+            }
+        }
+
+        return redirect()->to($confirmationUrl)->with('booking_just_created', true);
     }
 
     public function confirmation(Request $request, string $code)
@@ -147,6 +161,7 @@ class BookingController extends Controller
             'booking' => $booking,
             'token' => (string) $request->query('t'),
             'justCreated' => (bool) $request->session()->get('booking_just_created'),
+            'paymentReturned' => $request->boolean('paid'),
             'seo' => $seo,
             'showMobileBook' => false,
         ])->header('Referrer-Policy', 'no-referrer');

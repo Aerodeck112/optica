@@ -15,6 +15,7 @@ use App\Modules\Cms\Models\Media;
 use App\Modules\Core\Models\OpeningHour;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Services\LeadService;
+use App\Modules\Finance\Models\DocumentSeries;
 use App\Support\LocalTime;
 use Illuminate\Database\Seeder;
 use RuntimeException;
@@ -46,8 +47,16 @@ class DemoSeeder extends Seeder
             'contact.email_privacy' => 'gdpr@example.test',
             'contact.notifications_staff' => 'echipa@example.test',
             'company.legal_name' => 'DEMO SRL (date fictive)',
+            // CUI fictiv cu cifră de control validă, doar pentru demonstrație (nu aparține unei firme reale cunoscute)
+            'company.tax_id' => 'RO12345674',
+            'company.reg_no' => 'J12/0000/2026',
+            'company.registered_office' => 'Str. Exemplu nr. 1',
+            'company.registered_city' => 'Cluj-Napoca',
+            'company.county_code' => 'RO-CJ',
+            'company.vat_payer' => 'yes',
             'loyalty.enabled' => true,
         ]);
+        DocumentSeries::query()->firstOrCreate(['document_type' => 'invoice', 'prefix' => 'DEMO'], ['next_number' => 1, 'padding' => 5, 'is_default' => true, 'is_active' => true]);
 
         foreach (range(1, 7) as $day) {
             OpeningHour::query()->updateOrCreate(['weekday' => $day], ['opens_at' => '10:00', 'closes_at' => '22:00', 'is_closed' => $day === 1]);

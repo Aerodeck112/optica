@@ -204,13 +204,18 @@ class BookingResource extends Resource
 
     public static function eventLabel(?string $type, $event): string
     {
-        $labels = ['created' => 'Creată', 'status_changed' => 'Stare schimbată', 'rescheduled' => 'Reprogramată', 'details_updated' => 'Detalii modificate', 'payment' => 'Plată', 'cancelled' => 'Anulată'];
+        $labels = ['created' => 'Creată', 'status_changed' => 'Stare schimbată', 'rescheduled' => 'Reprogramată', 'details_updated' => 'Detalii modificate', 'payment' => 'Plată', 'cancelled' => 'Anulată', 'payment_recorded' => 'Încasare înregistrată', 'payment_after_close' => 'Plată sosită după închidere — de verificat', 'refund_requested' => 'Rambursare cerută', 'refund_succeeded' => 'Rambursare efectuată'];
         $label = $labels[$type] ?? $type;
         if ($event?->to_status) {
             $label .= ': '.(Booking::STATUSES[$event->from_status] ?? '—').' → '.(Booking::STATUSES[$event->to_status] ?? $event->to_status);
         }
 
         return $label;
+    }
+
+    public static function getRelations(): array
+    {
+        return [RelationManagers\PaymentsRelationManager::class];
     }
 
     public static function getPages(): array

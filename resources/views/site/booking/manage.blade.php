@@ -31,8 +31,11 @@
                 @if ($booking->starts_at && $booking->occupiesArena())
                     <a class="btn btn--ghost" href="{{ route('booking.ics', ['code' => $booking->code]) }}?t={{ $token }}">{{ __('site.booking.add_to_calendar') }}</a>
                 @endif
-                @if ($payment)
-                    <a class="btn btn--primary" href="{{ $payment->checkout_url }}" rel="noopener">{{ __('site.booking.pay_deposit') }}</a>
+                @if ($amountDue > 0)
+                    <form method="post" action="{{ route('booking.manage.pay', ['token' => $token]) }}">
+                        @csrf
+                        <button type="submit" class="btn btn--primary">{{ __($booking->paid_minor > 0 ? 'site.booking.pay_balance' : 'site.booking.pay_deposit') }} · {{ money($amountDue) }}</button>
+                    </form>
                 @endif
             </div>
         </div>

@@ -83,4 +83,20 @@ class AdminAccessTest extends TestCase
     {
         $this->actingAs($this->user('reception'))->get('/admin')->assertOk();
     }
+
+    public function test_finance_screens_follow_role_permissions(): void
+    {
+        $accountant = $this->user('accountant', withMfa: true);
+        foreach (['/admin/invoices', '/admin/payments', '/admin/refunds', '/admin/document-series'] as $url) {
+            $this->actingAs($accountant)->get($url)->assertOk();
+        }
+        $this->actingAs($accountant)->get('/admin/invoices/create')->assertForbidden(); // contabilul nu emite, doar vede și transmite
+
+        $reception = $this->user('reception');
+        $this->actingAs($reception)->get('/admin/invoices/create')->assertOk();
+        $this->actingAs($reception)->get('/admin/payments')->assertOk(); // recepția vede încasările (are finance.view)
+
+        $editor = $this->user('editor');
+        $this->actingAs($editor)->get('/admin/invoices')->assertForbidden();
+    }
 }

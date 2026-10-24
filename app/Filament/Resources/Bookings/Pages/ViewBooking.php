@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Bookings\Pages;
 
 use App\Filament\Resources\Bookings\BookingActions;
 use App\Filament\Resources\Bookings\BookingResource;
+use App\Filament\Resources\Invoices\InvoiceActions;
+use App\Filament\Resources\Payments\PaymentActions;
 use Filament\Actions\ActionGroup;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -23,8 +25,9 @@ class ViewBooking extends ViewRecord
         $actions = array_map(fn ($action) => $action->after($refresh), BookingActions::all());
 
         return [
+            PaymentActions::record()->after($refresh),
             ...array_slice($actions, 0, 4),
-            ActionGroup::make(array_slice($actions, 4))->label('Mai multe')->button()->color('gray')->icon('heroicon-o-ellipsis-vertical'),
+            ActionGroup::make([...array_slice($actions, 4), InvoiceActions::fromBooking()])->label('Mai multe')->button()->color('gray')->icon('heroicon-o-ellipsis-vertical'),
         ];
     }
 

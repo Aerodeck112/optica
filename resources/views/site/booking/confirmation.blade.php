@@ -4,6 +4,7 @@
     $status = $booking->status;
     $titleKey = match ($status) { 'confirmed' => 'confirmed_title', 'request' => 'request_title', default => 'pending_title' };
     $textKey = match (true) {
+        $status === 'pending' && $paymentReturned => 'payment_processing_text',
         $status === 'confirmed' => 'confirmed_text',
         $status === 'request' => 'request_text',
         $booking->expires_at !== null && $booking->deposit_minor > 0 => 'pending_payment_text',
@@ -19,6 +20,7 @@
         <h1>{{ __('site.booking.'.$titleKey) }}</h1>
         <p class="hero__lede" style="margin-inline:auto">{{ __('site.booking.'.$textKey, ['until' => $booking->expires_at ? \App\Support\LocalTime::format($booking->expires_at, 'j F, H:i') : '']) }}</p>
         <p class="result__code" aria-label="{{ __('site.booking.code') }}">{{ $booking->code }}</p>
+        @if (session('payment_error'))<div class="alert alert--error" role="alert">{{ session('payment_error') }} {{ __('site.booking.payment_retry_hint') }}</div>@endif
 
         <dl class="details-list">
             <dt>{{ __('site.booking.summary_experience') }}</dt><dd>{{ $booking->package?->name }}</dd>

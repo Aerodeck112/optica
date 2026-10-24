@@ -39,6 +39,7 @@ class Payment extends Model
     {
         return [
             'expires_at' => 'immutable_datetime',
+            'provider_data' => 'array',
             'succeeded_at' => 'immutable_datetime',
         ];
     }

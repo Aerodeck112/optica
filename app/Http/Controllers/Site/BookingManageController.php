@@ -9,6 +9,9 @@ use App\Modules\Booking\Services\BookingService;
 use App\Modules\Booking\Services\IcsBuilder;
 use App\Modules\Cms\Seo\Seo;
 use App\Modules\Core\Settings\SettingsRepository;
+use App\Modules\Finance\Services\Payments\PaymentException;
+use App\Modules\Finance\Services\Payments\PaymentGatewayFactory;
+use App\Modules\Finance\Services\Payments\PaymentService;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 
@@ -21,6 +24,8 @@ class BookingManageController extends Controller
     public function __construct(
         private readonly BookingService $bookings,
         private readonly SettingsRepository $settings,
+        private readonly PaymentService $payments,
+        private readonly PaymentGatewayFactory $gateways,
     ) {}
 
     public function show(string $token)
@@ -32,11 +37,40 @@ class BookingManageController extends Controller
             'token' => $token,
             'canCancel' => $this->canCancel($booking),
             'canReschedule' => $this->canReschedule($booking),
-            'payment' => $booking->payments()->where('status', 'pending')->whereNotNull('checkout_url')->latest()->first(),
+            'amountDue' => $this->canPayOnline($booking) ? $this->payments->amountDueOnline($booking) : 0,
             'excludeRef' => BookingApiController::excludeRef($booking),
             'seo' => Seo::make(__('site.booking.manage_title'))->noindex(),
             'showMobileBook' => false,
         ])->header('Referrer-Policy', 'no-referrer');
+    }
+
+    public function pay(string $token)
+    {
+        $booking = $this->resolve($token);
+        if (! $this->canPayOnline($booking)) {
+            return back()->withErrors(['pay' => __('site.booking.payment_unavailable')]);
+        }
+
+        try {
+            $payment = $this->payments->startOnline(
+                $booking,
+                lroute('booking.confirmation', ['code' => $booking->code], $booking->locale).'?t='.$token.'&paid=1',
+                lroute('booking.manage', ['token' => $token], $booking->locale),
+            );
+        } catch (PaymentException $e) {
+            return back()->withErrors(['pay' => $e->getMessage()]);
+        }
+
+        return redirect()->away($payment->checkout_url);
+    }
+
+    /** Plata online e oferită doar dacă procesatorul e configurat și clientul a ales-o sau rezervarea are de achitat avans. */
+    private function canPayOnline(Booking $booking): bool
+    {
+        return $this->gateways->active() !== null
+            && in_array($booking->status, ['pending', 'confirmed'], true)
+            && ($booking->payment_method === 'online' || ($booking->status === 'pending' && $booking->deposit_minor > 0))
+            && $this->payments->amountDueOnline($booking) > 0;
     }
 
     public function cancel(Request $request, string $token)

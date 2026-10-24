@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnafOAuthController;
+use App\Http\Controllers\Admin\FinanceDocumentController;
 use App\Http\Controllers\Admin\VoucherPrintController;
 use App\Http\Controllers\Site\AccountController;
 use App\Http\Controllers\Site\BookingApiController;
@@ -45,6 +46,7 @@ Route::post('/api/chat', [ChatController::class, 'message'])->middleware('thrott
 Route::post('/api/chat/confirm', [ChatController::class, 'confirm'])->middleware('throttle:ai-chat')->name('api.chat.confirm');
 
 Route::get('/booking/{code}/calendar.ics', [BookingManageController::class, 'ics'])->name('booking.ics');
+Route::post('/booking/manage/{token}/pay', [BookingManageController::class, 'pay'])->middleware('throttle:public-forms')->name('booking.manage.pay');
 Route::post('/booking/manage/{token}/cancel', [BookingManageController::class, 'cancel'])->middleware('throttle:public-forms')->name('booking.manage.cancel');
 Route::post('/booking/manage/{token}/reschedule', [BookingManageController::class, 'reschedule'])->middleware('throttle:public-forms')->name('booking.manage.reschedule');
 
@@ -68,6 +70,8 @@ Route::middleware('auth:customer')->group(function () {
 Route::get('/admin-anaf/authorize', [AnafOAuthController::class, 'authorize'])->middleware('auth')->name('admin.anaf.authorize');
 Route::get('/admin-anaf/callback', [AnafOAuthController::class, 'callback'])->middleware('auth')->name('admin.anaf.callback');
 Route::get('/admin-print/vouchers/{voucher}', VoucherPrintController::class)->middleware('auth')->name('admin.vouchers.print');
+Route::get('/admin-print/invoices/{invoice}/pdf', [FinanceDocumentController::class, 'invoicePdf'])->middleware('auth')->name('admin.invoices.pdf');
+Route::get('/admin-print/efactura/{submission}/{kind}', [FinanceDocumentController::class, 'efacturaFile'])->whereIn('kind', ['xml', 'response'])->middleware('auth')->name('admin.efactura.file');
 Route::get('/cms-preview/{type}/{id}', PreviewController::class)->middleware(['auth', 'signed'])->name('cms.preview');
 
 /*
