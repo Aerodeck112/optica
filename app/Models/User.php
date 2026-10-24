@@ -6,6 +6,8 @@ use Database\Factories\UserFactory;
 use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
 use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
 use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
+use Filament\Auth\Notifications\ResetPassword;
+use Filament\Facades\Filament;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,6 +50,14 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_active && $this->hasAnyRole(self::STAFF_ROLES);
+    }
+
+    /** Linkul de resetare duce în pagina de resetare a panoului (URL semnat, cu expirare). */
+    public function sendPasswordResetNotification($token): void
+    {
+        $notification = new ResetPassword($token);
+        $notification->url = Filament::getPanel('admin')->getResetPasswordUrl($token, $this);
+        $this->notify($notification);
     }
 
     public function requiresMfa(): bool
