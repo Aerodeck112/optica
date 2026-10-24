@@ -38,9 +38,11 @@ return [
             'report' => false,
         ],
 
+        // Fișierele încărcate din panou. Dacă găzduirea nu permite legătura public/storage (symlink dezactivat),
+        // public/storage este un folder obișnuit și fișierele se salvează direct acolo.
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => is_dir(public_path('storage')) && ! is_link(public_path('storage')) ? public_path('storage') : storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,

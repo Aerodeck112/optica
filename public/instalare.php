@@ -180,8 +180,12 @@ if (! $installed && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 $log[] = ['ok', 'Legătura public/storage există deja.'];
             } elseif (function_exists('symlink') && @symlink($root.'/storage/app/public', __DIR__.'/storage')) {
                 $log[] = ['ok', 'Legătura pentru imagini (public/storage) a fost creată.'];
+            } elseif (@mkdir(__DIR__.'/storage', 0755)) {
+                // fără symlink: imaginile încărcate se salvează direct în acest folder (config/filesystems.php)
+                @file_put_contents(__DIR__.'/storage/.htaccess', "Options -Indexes\n<FilesMatch \"\\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)$\">\n    Require all denied\n</FilesMatch>\n");
+                $log[] = ['ok', 'Folderul pentru imaginile încărcate (storage) a fost creat (găzduirea nu permite legături, deci imaginile se salvează direct aici).'];
             } else {
-                $log[] = ['warn', 'Legătura public/storage nu a putut fi creată (funcția symlink este dezactivată). Imaginile încărcate din panou nu vor apărea pe site până nu o creează firma de găzduire: public/storage → ../storage/app/public.'];
+                $log[] = ['warn', 'Folderul pentru imagini nu a putut fi creat. Creați manual folderul „storage” în folderul public al site-ului.'];
             }
 
             // 6. optimizare

@@ -49,7 +49,7 @@ class BackupService
         };
         $add($sqlPath, self::SQL_FILE);
         if ($type === 'full') {
-            foreach ([storage_path('app/private') => 'files/private', storage_path('app/public') => 'files/public'] as $root => $prefix) {
+            foreach ([storage_path('app/private') => 'files/private', (string) config('filesystems.disks.public.root') => 'files/public'] as $root => $prefix) {
                 if (! is_dir($root)) {
                     continue;
                 }
