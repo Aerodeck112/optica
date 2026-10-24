@@ -75,6 +75,11 @@ class Invoice extends Model
         });
     }
 
+    public function relatedInvoice(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'related_invoice_id');
+    }
+
     public function lines(): HasMany
     {
         return $this->hasMany(InvoiceLine::class)->orderBy('position');

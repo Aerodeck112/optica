@@ -12,12 +12,15 @@ use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Crm\Models\Customer;
+use App\Modules\Finance\Models\Invoice;
+use App\Modules\Finance\Services\InvoiceService;
 use App\Modules\Loyalty\Models\Voucher;
 use App\Modules\Loyalty\Services\LoyaltyException;
 use App\Modules\Loyalty\Services\LoyaltyService;
 use App\Modules\Loyalty\Services\VoucherService;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Storage;
 
 require __DIR__.'/../../vendor/autoload.php';
 $app = require __DIR__.'/../../bootstrap/app.php';
@@ -35,6 +38,12 @@ try {
         $voucher = Voucher::query()->findOrFail((int) $packageId);
         $tx = app(VoucherService::class)->redeem($voucher->code, (int) $startsAt, 'test-'.$label, null);
         echo json_encode(['ok' => true, 'amount' => $tx->amount_minor]);
+        exit(0);
+    }
+    if ($operation === 'invoice') {
+        Storage::fake('local');
+        $invoice = app(InvoiceService::class)->issue(Invoice::query()->findOrFail((int) $packageId));
+        echo json_encode(['ok' => true, 'number' => $invoice->full_number]);
         exit(0);
     }
     if ($operation === 'points') {
