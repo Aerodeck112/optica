@@ -12,8 +12,14 @@
 
 declare(strict_types=1);
 
-[$script, $from, $version, $description] = $argv + [null, null, null, ''];
-$options = getopt('', ['output::']);
+$positional = array_values(array_filter(array_slice($argv, 1), fn ($arg) => ! str_starts_with($arg, '--')));
+[$from, $version, $description] = $positional + [null, null, ''];
+$options = [];
+foreach ($argv as $arg) {
+    if (str_starts_with($arg, '--output=')) {
+        $options['output'] = substr($arg, 9);
+    }
+}
 if (! $from || ! preg_match('/^\d+\.\d+\.\d+$/', (string) $version)) {
     fwrite(STDERR, "Utilizare: php tools/make-update.php <commit> <versiune x.y.z> \"descriere\" [--output=fisier.zip]\n");
     exit(1);
