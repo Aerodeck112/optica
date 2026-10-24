@@ -14,7 +14,7 @@ class AiConversation extends Model
     protected function casts(): array
     {
         return [
-            'state' => 'array',
+            'state' => 'encrypted:array',
             'verified_until' => 'immutable_datetime',
             'last_activity_at' => 'immutable_datetime',
         ];

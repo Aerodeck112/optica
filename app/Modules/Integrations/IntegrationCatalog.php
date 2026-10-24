@@ -59,7 +59,7 @@ final class IntegrationCatalog
                 'help' => 'Cheia API rămâne pe server. Bugetul zilnic și limitele se setează în Setări → Asistent AI.',
                 'drivers' => [
                     'anthropic' => ['label' => 'Anthropic Claude API', 'credentials' => ['api_key' => ['label' => 'Cheie API', 'secret' => true]],
-                        'options' => ['model' => ['label' => 'Model', 'default' => 'claude-sonnet-5-5']]],
+                        'options' => ['model' => ['label' => 'Model (implicit claude-opus-5-5)', 'default' => 'claude-opus-5-5'], 'effort' => ['label' => 'Efort raționament (low / medium / high)', 'default' => 'medium']]],
                 ],
             ],
             'efactura' => [
