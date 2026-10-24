@@ -289,7 +289,7 @@ return [
 
     'errors' => [
         '404_title' => 'Lumea aceasta nu există (încă)',
-        '404_text' => 'Pagina căutată nu a fost găsită. Poate fost mutată sau adresa conține o greșeală.',
+        '404_text' => 'Pagina căutată nu a fost găsită. Poate a fost mutată sau adresa conține o greșeală.',
         '410_title' => 'Pagina a fost retrasă',
         '410_text' => 'Conținutul nu mai este disponibil.',
         '419_title' => 'Sesiunea a expirat',

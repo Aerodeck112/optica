@@ -197,6 +197,21 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'name',
+        'contact_name' => 'full name',
+        'email' => 'email',
+        'contact_email' => 'email',
+        'phone' => 'phone',
+        'contact_phone' => 'phone',
+        'participants' => 'number of participants',
+        'date' => 'date',
+        'starts_at' => 'start time',
+        'package' => 'experience',
+        'message' => 'message',
+        'company_name' => 'company',
+        'preferred_date' => 'preferred date',
+        'code' => 'code',
+    ],
 
 ];
