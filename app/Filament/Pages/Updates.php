@@ -128,10 +128,9 @@ class Updates extends Page
                     Notification::make()->danger()->title($e->getMessage())->persistent()->send();
                 } finally {
                     Storage::disk('local')->delete((string) $this->packagePath);
-                    $this->package = null;
-                    $this->packagePath = null;
-                    $this->form->fill();
                 }
+                // cache-urile tocmai au fost reconstruite: pagina se reîncarcă integral, nu se re-randează în aceeași cerere
+                $this->redirect(static::getUrl());
             });
     }
 
@@ -147,6 +146,7 @@ class Updates extends Page
                 } catch (RuntimeException $e) {
                     Notification::make()->danger()->title($e->getMessage())->persistent()->send();
                 }
+                $this->redirect(static::getUrl());
             });
     }
 }

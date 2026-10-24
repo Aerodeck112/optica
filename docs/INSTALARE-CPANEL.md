@@ -241,6 +241,24 @@ remindere și expirări vor întârzia corespunzător — cereți intervalul de 
 
 ## 9. Actualizări
 
+### Din panou (recomandat, fără Terminal)
+
+Panou → **Sistem → Actualizări** (doar super administrator):
+
+1. Încărcați pachetul `actualizare-x.y.z.zip` primit de la dezvoltator → **Verifică pachetul**: apar versiunea nouă,
+   descrierea, numărul de fișiere și amprenta SHA-256.
+2. **Aplică actualizarea** → confirmați cu parola contului. Se face automat o copie a bazei de date și a fișierelor
+   înlocuite, apoi se copiază fișierele, se actualizează baza de date și se reconstruiesc cache-urile.
+3. Dacă ceva nu funcționează: **Revino la versiunea anterioară** (readuce fișierele; baza de date rămâne, iar copia ei
+   poate fi restaurată cu `aw:backup-restore`).
+
+Un pachet nu poate modifica `.env`, fișierele încărcate (`storage`), `index.php`/`.htaccess` din folderul public sau
+copiile de siguranță. Pagina **Sistem → Jurnal erori** afișează ultimele erori ale aplicației.
+
+Pachetele se construiesc cu `php tools/make-update.php <commit-de-la> <versiune> "descriere"`.
+
+### Din Terminal
+
 ```bash
 cd ~/anotherworldcluj
 php artisan aw:backup                       # copie verificată înainte de actualizare

@@ -124,6 +124,8 @@ class UpdateTest extends TestCase
 
         $this->actingAs($admin)->get('/admin/updates')->assertOk()->assertSee('Versiunea instalată');
         $this->actingAs($reception)->get('/admin/updates')->assertForbidden();
+        $this->actingAs($admin)->get('/admin/error-log')->assertOk()->assertSee('Jurnal erori');
+        $this->actingAs($reception)->get('/admin/error-log')->assertForbidden();
         $this->assertSame(0, AppUpdate::query()->count());
     }
 }
