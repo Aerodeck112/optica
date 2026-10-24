@@ -19,8 +19,6 @@ return [
     'close' => 'Close',
     'loading' => 'Loading…',
     'location' => 'Cluj-Napoca',
-    'network_photo_note' => 'Photos from the Another World network',
-    'game_art_note' => 'In-game images',
     'pause_video' => 'Pause animation',
     'play_video' => 'Play animation',
     'play_trailer' => 'Watch the trailer',

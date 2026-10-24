@@ -57,7 +57,6 @@
                             </button>
                         @endforeach
                     </div>
-                    <p class="source-note">{{ __('site.game_art_note') }}</p>
                 @endif
 
                 @if ($game->rules)

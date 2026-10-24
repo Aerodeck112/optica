@@ -92,7 +92,7 @@ class GameResource extends Resource
                     ->getSearchResultsUsing(fn (string $search) => Media::query()->where('kind', 'image')->where(fn ($q) => $q->where('static_key', 'like', "%{$search}%")->orWhere('original_name', 'like', "%{$search}%"))->limit(30)->get()->mapWithKeys(fn ($m) => [$m->id => Fields::mediaLabel($m)])->all())
                     ->getOptionLabelsUsing(fn (array $values) => Media::query()->whereIn('id', $values)->get()->mapWithKeys(fn ($m) => [$m->id => Fields::mediaLabel($m)])->all()),
                 Fields::media('trailer_id', 'Trailer video', 'video'),
-                Text::make('Imaginile din jocuri sunt randări, nu fotografii din arenă — pe site sunt etichetate ca atare.'),
+                Text::make('Imaginile din jocuri sunt randări, nu fotografii din arenă.'),
             ])->columns(1),
             Section::make('Publicare')->schema([Fields::publishedLocales()]),
         ])->columns(1);

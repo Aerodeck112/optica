@@ -66,7 +66,6 @@ final class BlockForms
                         TextInput::make('src')->label('Cale')->required()->regex('/^\/media\/video\/[a-z0-9\-_.\/]+\.(mp4|webm)$/i')->placeholder('/media/video/portal-loop.mp4'),
                         TextInput::make('type')->label('Tip MIME')->default('video/mp4')->maxLength(80),
                     ])->columns(2)->defaultItems(0)->reorderable(),
-                Fields::text('media_note', 'Notă despre imagini (sursă / drepturi)', 200),
             ]),
             $make('statement', [
                 Textarea::make('text')->label('Mesaj')->required()->rows(2)->maxLength(240),
@@ -81,7 +80,6 @@ final class BlockForms
                     Fields::link('link'),
                     Fields::text('link_label', 'Text link', 40),
                 ])->columns(2)->collapsible()->itemLabel(fn (array $state) => $state['title'] ?? null)->maxItems(6),
-                Fields::text('media_note', 'Notă despre imagini', 200),
             ]),
             $make('game_rail', [
                 ...self::headingIntro(),
@@ -103,7 +101,6 @@ final class BlockForms
                 ]),
                 self::cta('primary', 'Buton principal'),
                 self::cta('secondary', 'Buton secundar'),
-                Fields::text('media_note', 'Notă despre imagine', 200),
             ]),
             $make('steps', [
                 ...self::headingIntro(),
@@ -115,7 +112,6 @@ final class BlockForms
             $make('image_band', [
                 Fields::media('image', 'Imagine')->required(),
                 Fields::text('text', 'Text peste imagine', 160),
-                Fields::text('media_note', 'Notă despre imagine', 200),
             ]),
             $make('gallery_mosaic', [
                 ...self::headingIntro(),
@@ -126,7 +122,6 @@ final class BlockForms
                 Select::make('images')->label('Sau alege imagini anume (opțional)')->multiple()->searchable()
                     ->getSearchResultsUsing(fn (string $search) => Media::query()->where('kind', 'image')->where(fn ($q) => $q->where('static_key', 'like', "%{$search}%")->orWhere('original_name', 'like', "%{$search}%"))->limit(30)->get()->mapWithKeys(fn ($m) => [$m->id => Fields::mediaLabel($m)])->all())
                     ->getOptionLabelsUsing(fn (array $values) => Media::query()->whereIn('id', $values)->get()->mapWithKeys(fn ($m) => [$m->id => Fields::mediaLabel($m)])->all()),
-                Fields::text('media_note', 'Notă despre imagini', 200),
             ]),
             $make('testimonials', [
                 Fields::text('heading', 'Titlu', 120),

@@ -44,6 +44,8 @@ class MediaLibrarySeeder extends Seeder
                 'rights_status' => 'licensed_franchise',
                 'rights_notes' => $image['rights'],
                 'depicts_minors' => str_contains($image['rights'], 'minori'),
+                // acordul părinților pentru imaginile francizei a fost confirmat de proprietar (24.10.2026)
+                'guardian_consent_confirmed' => str_contains($image['rights'], 'minori'),
                 'variants' => $variants,
             ]);
         }

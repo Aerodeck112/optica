@@ -58,7 +58,6 @@ class CmsSeeder extends Seeder
 
     private function pages(): array
     {
-        $network = 'Fotografii din rețeaua Another World (alte locații).';
 
         return [
             [
@@ -80,7 +79,6 @@ class CmsSeeder extends Seeder
                             ['src' => '/media/video/portal-loop-av1.mp4', 'type' => 'video/mp4; codecs="av01.0.05M.08"'],
                             ['src' => '/media/video/portal-loop.mp4', 'type' => 'video/mp4'],
                         ],
-                        'media_note' => 'Imagini din filmul de prezentare Another World',
                     ]),
                     $this->b('statement', [
                         'text' => 'Nu te uiți la o poveste. Ești în ea.',
@@ -94,7 +92,6 @@ class CmsSeeder extends Seeder
                             ['title' => 'Familii', 'text' => 'Părinți și copii în aceeași misiune, fiecare cu rolul lui.', 'image' => $this->m('players-duo-red'), 'link' => 'route:games', 'link_label' => 'Alege jocul'],
                             ['title' => 'Companii și evenimente private', 'text' => 'Team building în care colegii chiar colaborează: strategie, comunicare și multă energie.', 'image' => $this->m('corporate-duo'), 'link' => 'page:corporate', 'link_label' => 'Cere o propunere'],
                         ],
-                        'media_note' => $network,
                     ]),
                     $this->b('game_rail', ['heading' => 'Lumi în care poți intra', 'intro' => 'Jocuri multiplayer, de la aventuri pentru cei mici la misiuni intense pentru adolescenți și adulți.', 'source' => 'featured', 'limit' => 8]),
                     $this->b('feature_split', [
@@ -103,16 +100,14 @@ class CmsSeeder extends Seeder
                         'bullets' => [['text' => 'Jocuri alese după vârsta invitaților'], ['text' => 'Ofertă clară, trimisă înainte de confirmare'], ['text' => 'Rezervarea confirmată de echipa noastră']],
                         'image' => $this->m('kids-team'), 'image_side' => 'left', 'image_shape' => 'wide', 'tone' => 'birthday',
                         'primary_label' => 'Cere ofertă', 'primary_link' => 'page:birthdays',
-                        'media_note' => $network,
                     ]),
-                    $this->b('image_band', ['image' => $this->m('cosmos-cliffs'), 'text' => 'Aici, realitatea e doar punctul de plecare.', 'media_note' => 'Artă de brand Another World']),
+                    $this->b('image_band', ['image' => $this->m('cosmos-cliffs'), 'text' => 'Aici, realitatea e doar punctul de plecare.']),
                     $this->b('feature_split', [
                         'heading' => 'Seara în care toată lumea joacă',
                         'body' => 'Strânge-ți prietenii, alegeți misiunea și vedeți cine rezistă până la final. Cooperare sau competiție — voi decideți.',
                         'bullets' => [['text' => 'Rezervare online, în câteva minute'], ['text' => 'Aventură, SF, acțiune sau jocuri de cooperare'], ['text' => 'Nu ai mai jucat VR? Nu e nevoie de experiență.']],
                         'image' => $this->m('friends-after-game'), 'image_side' => 'right', 'image_shape' => 'portrait', 'tone' => 'default',
                         'primary_label' => 'Rezervă pentru grup', 'primary_link' => 'route:booking',
-                        'media_note' => $network,
                     ]),
                     $this->b('feature_split', [
                         'heading' => 'Team building care chiar unește echipa',
@@ -120,7 +115,6 @@ class CmsSeeder extends Seeder
                         'bullets' => [['text' => 'Propunere adaptată grupului vostru'], ['text' => 'Factură pe numele companiei'], ['text' => 'Detaliile se stabilesc împreună cu echipa noastră']],
                         'image' => $this->m('players-team'), 'image_side' => 'left', 'image_shape' => 'wide', 'tone' => 'corporate',
                         'primary_label' => 'Cere o propunere', 'primary_link' => 'page:corporate',
-                        'media_note' => $network,
                     ]),
                     $this->b('steps', [
                         'heading' => 'Cum funcționează',
@@ -134,7 +128,6 @@ class CmsSeeder extends Seeder
                     $this->b('gallery_mosaic', [
                         'heading' => 'Momente din universul Another World',
                         'images' => array_values(array_filter(array_map(fn ($k) => $this->m($k), ['player-woman-red', 'group-logo', 'headsets-row', 'duo-cosmic', 'friends-floor', 'player-reach', 'logo-wall', 'teen-smile', 'players-action']))),
-                        'media_note' => 'Fotografii din alte locații ale rețelei Another World. Galeria arenei din Cluj se completează după deschidere.',
                     ]),
                     $this->b('testimonials', ['heading' => 'Ce spun jucătorii', 'limit' => 6]),
                     $this->b('faq_list', ['heading' => 'Întrebări frecvente', 'category' => 'all', 'limit' => 6]),
@@ -153,7 +146,6 @@ class CmsSeeder extends Seeder
                         'bullets' => [['text' => 'Jocuri potrivite vârstei invitaților'], ['text' => 'Ofertă trimisă pe e-mail, cu toate detaliile'], ['text' => 'Confirmare de la echipa noastră înainte de eveniment']],
                         'image' => $this->m('kid-player-red'), 'image_side' => 'left', 'image_shape' => 'wide', 'tone' => 'birthday',
                         'primary_label' => 'Cere ofertă', 'primary_link' => '#cerere',
-                        'media_note' => $network,
                     ]),
                     $this->b('steps', [
                         'heading' => 'Cum organizăm aniversarea',
@@ -173,7 +165,6 @@ class CmsSeeder extends Seeder
                     $this->b('gallery_mosaic', [
                         'heading' => 'Aniversări în rețeaua Another World',
                         'images' => array_values(array_filter(array_map(fn ($k) => $this->m($k), ['kid-player-blue', 'kids-team', 'teen-smile', 'teens-duo', 'briefing-headset']))),
-                        'media_note' => $network,
                     ]),
                     $this->b('faq_list', ['heading' => 'Întrebări despre aniversări', 'category' => 'birthdays']),
                     $this->b('lead_form', ['type' => 'birthday', 'heading' => 'Cere ofertă pentru aniversare', 'intro' => 'Completează câteva detalii și îți trimitem oferta pe e-mail. Cererea nu ocupă încă arena; rezervarea se confirmă după acceptarea ofertei.', 'anchor' => 'cerere']),
@@ -191,10 +182,9 @@ class CmsSeeder extends Seeder
                         'bullets' => [['text' => 'Rezervare online, cu ore reale disponibile'], ['text' => 'Jocuri de cooperare sau competiție'], ['text' => 'Instructaj înainte de joc — nu e nevoie de experiență']],
                         'image' => $this->m('friends-floor'), 'image_side' => 'right', 'image_shape' => 'wide',
                         'primary_label' => 'Rezervă aventura', 'primary_link' => 'route:booking',
-                        'media_note' => $network,
                     ]),
                     $this->b('game_rail', ['heading' => 'Alege misiunea', 'source' => 'featured', 'limit' => 10]),
-                    $this->b('image_band', ['image' => $this->m('cosmos-red-planet'), 'text' => 'Echipa voastră, o lume nouă.', 'media_note' => 'Artă de brand Another World']),
+                    $this->b('image_band', ['image' => $this->m('cosmos-red-planet'), 'text' => 'Echipa voastră, o lume nouă.']),
                     $this->b('lead_form', ['type' => 'group', 'heading' => 'Sunteți un grup mare?', 'intro' => 'Pentru grupuri numeroase sau cereri speciale, trimite-ne detaliile și revenim cu o propunere.', 'anchor' => 'cerere']),
                     $this->b('cta_portal', ['heading' => 'Cine intră primul?', 'primary_label' => 'Rezervă aventura', 'primary_link' => 'route:booking']),
                 ],
@@ -211,7 +201,6 @@ class CmsSeeder extends Seeder
                         'bullets' => [['text' => 'Propunere adaptată numărului de participanți'], ['text' => 'Factură pe numele companiei'], ['text' => 'Un singur interlocutor pentru organizare']],
                         'image' => $this->m('players-team'), 'image_side' => 'left', 'image_shape' => 'wide', 'tone' => 'corporate',
                         'primary_label' => 'Cere o propunere', 'primary_link' => '#cerere',
-                        'media_note' => $network,
                     ]),
                     $this->b('steps', [
                         'heading' => 'Cum lucrăm cu echipele',
@@ -248,7 +237,6 @@ class CmsSeeder extends Seeder
                         'bullets' => [['text' => 'Disponibile la recepția arenei'], ['text' => 'Condițiile de utilizare și valabilitatea sunt trecute pe voucher'], ['text' => 'Pot fi folosite la rezervare, conform condițiilor']],
                         'image' => $this->m('headset-product'), 'image_side' => 'left', 'image_shape' => 'portrait', 'tone' => 'birthday',
                         'primary_label' => 'Scrie-ne pentru un voucher', 'primary_link' => 'page:contact',
-                        'media_note' => 'Fotografie din rețeaua Another World',
                     ]),
                     $this->b('faq_list', ['heading' => 'Întrebări despre vouchere', 'category' => 'vouchers']),
                 ],
@@ -258,8 +246,8 @@ class CmsSeeder extends Seeder
                 'seo_title' => 'Galerie foto — Another World Cluj',
                 'seo_description' => 'Imagini din universul Another World: jucători în acțiune și lumile din jocurile de realitate virtuală.',
                 'blocks' => [
-                    $this->b('gallery_mosaic', ['heading' => 'Jucători în acțiune', 'album' => 'general', 'limit' => 24, 'media_note' => 'Fotografii din alte locații ale rețelei Another World. Galeria arenei din Cluj se completează după deschidere.']),
-                    $this->b('gallery_mosaic', ['heading' => 'Lumile din jocuri', 'album' => 'games', 'limit' => 24, 'media_note' => 'Imagini din jocuri (randări), nu fotografii reale.']),
+                    $this->b('gallery_mosaic', ['heading' => 'Jucători în acțiune', 'album' => 'general', 'limit' => 24]),
+                    $this->b('gallery_mosaic', ['heading' => 'Lumile din jocuri', 'album' => 'games', 'limit' => 24]),
                 ],
             ],
             [
@@ -273,9 +261,8 @@ class CmsSeeder extends Seeder
                         'body' => 'Să transformăm o ieșire obișnuită într-o amintire comună. Fiecare grup primește instructaj, însoțire pe durata jocului și ajutor în alegerea experienței potrivite.',
                         'bullets' => [['text' => 'Experiențe pentru grupuri, nu pentru spectatori'], ['text' => 'Jocuri alese după vârstă și preferințe'], ['text' => 'Siguranța jucătorilor pe primul loc']],
                         'image' => $this->m('logo-wall'), 'image_side' => 'right', 'image_shape' => 'wide',
-                        'media_note' => 'Fotografie dintr-o altă locație a rețelei Another World.',
                     ]),
-                    $this->b('image_band', ['image' => $this->m('cosmos-city'), 'text' => 'O rețea internațională. O arenă în Cluj.', 'media_note' => 'Artă de brand Another World']),
+                    $this->b('image_band', ['image' => $this->m('cosmos-city'), 'text' => 'O rețea internațională. O arenă în Cluj.']),
                     $this->b('cta_portal', ['heading' => 'Vino să vezi cu ochii tăi', 'primary_label' => 'Rezervă aventura', 'primary_link' => 'route:booking', 'secondary_label' => 'Contact', 'secondary_link' => 'page:contact']),
                 ],
             ],

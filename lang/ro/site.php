@@ -18,8 +18,6 @@ return [
     'close' => 'Închide',
     'loading' => 'Se încarcă…',
     'location' => 'Cluj-Napoca',
-    'network_photo_note' => 'Fotografii din rețeaua Another World',
-    'game_art_note' => 'Imagini din jocuri',
     'pause_video' => 'Oprește animația',
     'play_video' => 'Pornește animația',
     'play_trailer' => 'Vezi trailerul',

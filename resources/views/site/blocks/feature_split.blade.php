@@ -4,7 +4,6 @@
             <div class="split__media @if ($b['image_shape'] === 'wide') split__media--wide @endif">
                 <div class="split__accent" aria-hidden="true"></div>
                 <x-picture :media="$b['image']" sizes="(max-width: 64rem) 100vw, 46vw"/>
-                @if ($b['media_note'])<p class="source-note">{{ $b['media_note'] }}</p>@endif
             </div>
         @endif
         <div class="split__content">

@@ -17,6 +17,5 @@
                 </{{ $tag }}>
             @endforeach
         </div>
-        @if ($b['note'])<p class="source-note">{{ $b['note'] }}</p>@endif
     </div>
 </section>

@@ -74,7 +74,6 @@ class BlockRenderer
             'aside' => $this->cta($d['aside_label'] ?? null, $d['aside_link'] ?? null, $locale),
             'poster' => $this->media->find($d['poster_image'] ?? null),
             'video' => $video,
-            'media_note' => $d['media_note'] ?? null,
             'eager' => $i === 0,
         ];
     }
@@ -101,7 +100,7 @@ class BlockRenderer
             ];
         }
 
-        return $items ? ['heading' => $d['heading'] ?? null, 'intro' => $d['intro'] ?? null, 'items' => $items, 'note' => $d['media_note'] ?? null] : null;
+        return $items ? ['heading' => $d['heading'] ?? null, 'intro' => $d['intro'] ?? null, 'items' => $items] : null;
     }
 
     private function prepareGameRail(array $d, string $locale): ?array
@@ -140,7 +139,6 @@ class BlockRenderer
             'tone' => $d['tone'] ?? 'default',
             'primary' => $this->cta($d['primary_label'] ?? null, $d['primary_link'] ?? null, $locale),
             'secondary' => $this->cta($d['secondary_label'] ?? null, $d['secondary_link'] ?? null, $locale),
-            'media_note' => $d['media_note'] ?? null,
         ];
     }
 
@@ -155,7 +153,7 @@ class BlockRenderer
     {
         $image = $this->media->find($d['image'] ?? null);
 
-        return $image ? ['image' => $image, 'text' => $d['text'] ?? null, 'note' => $d['media_note'] ?? null] : null;
+        return $image ? ['image' => $image, 'text' => $d['text'] ?? null] : null;
     }
 
     private function prepareGalleryMosaic(array $d, string $locale): ?array
@@ -175,7 +173,7 @@ class BlockRenderer
                 ->filter(fn ($m) => $m && $m->isPublishable());
         }
 
-        return $images->isNotEmpty() ? ['heading' => $d['heading'] ?? null, 'intro' => $d['intro'] ?? null, 'images' => $images->values(), 'note' => $d['media_note'] ?? null] : null;
+        return $images->isNotEmpty() ? ['heading' => $d['heading'] ?? null, 'intro' => $d['intro'] ?? null, 'images' => $images->values()] : null;
     }
 
     private function prepareTestimonials(array $d, string $locale): ?array

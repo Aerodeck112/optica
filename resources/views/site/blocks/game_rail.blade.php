@@ -12,6 +12,5 @@
                 <div role="listitem" style="display:contents">@include('site.games.card', ['game' => $game])</div>
             @endforeach
         </div>
-        <p class="source-note">{{ __('site.game_art_note') }}</p>
     </div>
 </section>

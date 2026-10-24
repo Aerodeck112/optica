@@ -66,7 +66,7 @@
                         @include('site.games.card', ['game' => $game])
                     @endforeach
                 </div>
-                <p class="source-note">{{ __('site.game_art_note') }}. {{ __('site.games.duration_note') }}</p>
+                <p class="source-note">{{ __('site.games.duration_note') }}</p>
             @endif
         @endif
     </div>

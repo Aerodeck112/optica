@@ -42,7 +42,6 @@
                     <x-aw-icon name="pause" data-icon="pause"/><x-aw-icon name="play" data-icon="play" hidden/>
                 </button>
             @endif
-            @if ($b['media_note'])<p class="portal__note source-note">{{ $b['media_note'] }}</p>@endif
         </div>
     </div>
 </section>

@@ -22,7 +22,7 @@ class VariableBuilder
     {
         $vars = [
             'site.url' => url('/'),
-            'venue.address' => trim(implode(', ', array_filter([$this->settings->filled('venue.address_street'), $this->settings->filled('venue.address_city') ?? 'Cluj-Napoca']))),
+            'venue.address' => trim(implode(', ', array_filter([$this->settings->filled('venue.address_street'), trim(($this->settings->filled('venue.address_postal_code') ?? '').' '.($this->settings->filled('venue.address_city') ?? 'Cluj-Napoca'))]))),
             'venue.maps_url' => $this->settings->filled('venue.maps_url') ?? '',
             'contact.phone' => $this->settings->filled('contact.phone_bookings') ?? $this->settings->filled('contact.phone_main') ?? '',
             'contact.email' => $this->settings->filled('contact.email_bookings') ?? $this->settings->filled('contact.email_general') ?? '',

@@ -85,7 +85,7 @@ class SiteComposer
                 'email' => $f('contact.email_general'),
                 'email_bookings' => $f('contact.email_bookings'),
                 'address' => $f('venue.address_street'),
-                'city' => $f('venue.address_city') ?? 'Cluj-Napoca',
+                'city' => trim(($f('venue.address_postal_code') ?? '').' '.($f('venue.address_city') ?? 'Cluj-Napoca')),
                 'maps_url' => $f('venue.maps_url'),
             ]),
             'company' => array_filter([

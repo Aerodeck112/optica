@@ -19,8 +19,6 @@ return [
     'close' => 'Bezárás',
     'loading' => 'Betöltés…',
     'location' => 'Kolozsvár',
-    'network_photo_note' => 'Fotók az Another World hálózatból',
-    'game_art_note' => 'Képek a játékokból',
     'pause_video' => 'Animáció leállítása',
     'play_video' => 'Animáció indítása',
     'play_trailer' => 'Előzetes megtekintése',
