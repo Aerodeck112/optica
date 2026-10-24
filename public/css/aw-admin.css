@@ -26,7 +26,7 @@
 .aw-ev--block { color: #64748b; }
 .aw-ev--hold { color: #94a3b8; border-left-style: dotted; }
 .aw-kanban { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(16rem, 1fr); gap: 1rem; overflow-x: auto; padding-bottom: .5rem; }
-.aw-kanban-col { background: var(--gray-50); border-radius: .75rem; padding: .75rem; min-height: 12rem; }
+.aw-kanban-col { background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: .75rem; padding: .75rem; min-height: 12rem; }
 .dark .aw-kanban-col { background: var(--gray-900); }
 .aw-kanban-card { background: #fff; border: 1px solid var(--gray-200); border-radius: .625rem; padding: .625rem .75rem; margin-top: .5rem; display: block; }
 .dark .aw-kanban-card { background: var(--gray-800); border-color: var(--gray-700); }
