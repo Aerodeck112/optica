@@ -914,6 +914,10 @@
   .result { text-align: center; max-width: 40rem; margin-inline: auto; }
   .result__icon { width: 4.5rem; height: 4.5rem; margin: 0 auto var(--space-5); border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, rgb(123 77 255 / 0.45), transparent 70%); box-shadow: 0 0 0 2px var(--violet), 0 0 40px rgb(123 77 255 / 0.6); }
   .result__icon svg { width: 2rem; height: 2rem; color: #fff; }
+  .checkin-qr { display: flex; gap: var(--space-5); align-items: center; flex-wrap: wrap; }
+  .checkin-qr__code { background: #fff; padding: var(--space-2); border-radius: var(--radius-s); line-height: 0; }
+  .checkin-qr__code svg { width: 9rem; height: 9rem; }
+  .checkin-qr p { flex: 1 1 14rem; margin: 0; }
   .result__code { display: inline-block; margin-top: var(--space-5); padding: var(--space-3) var(--space-5); border-radius: var(--radius-m); border: 1px dashed var(--line-strong); font-family: var(--font-display); letter-spacing: 0.08em; font-size: var(--fs-lg); }
   .details-list { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-3) var(--space-5); text-align: left; margin-top: var(--space-6); }
   .details-list dt { color: var(--mist); }

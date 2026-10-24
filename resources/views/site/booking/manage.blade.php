@@ -8,6 +8,13 @@
             <p class="result__code">{{ $booking->code }}</p>
         </div>
 
+        @if (in_array($booking->status, ['confirmed', 'pending'], true) && $booking->starts_at)
+            <div class="panel checkin-qr">
+                <div class="checkin-qr__code" role="img" aria-label="{{ __('site.booking.checkin_qr_alt', ['code' => $booking->code]) }}">{!! \App\Modules\Booking\Services\CheckinCode::svg($booking) !!}</div>
+                <p>{{ __('site.booking.checkin_qr_help') }}</p>
+            </div>
+        @endif
+
         @if (session('status'))<div class="alert alert--ok" role="status">{{ session('status') }}</div>@endif
         @if ($errors->any())<div class="alert alert--error" role="alert">{{ $errors->first() }}</div>@endif
 

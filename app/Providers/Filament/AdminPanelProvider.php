@@ -50,7 +50,10 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.svg'))
             ->colors([
-                'primary' => Color::hex('#E61C4A'),
+                'primary' => array_map(fn (string $hex) => Color::convertToOklch($hex), [
+                    50 => '#fff1f3', 100 => '#ffe0e5', 200 => '#ffc6d0', 300 => '#ff9cad', 400 => '#fb5f7c', 500 => '#f0325a',
+                    600 => '#e61c4a', 700 => '#c01039', 800 => '#a01136', 900 => '#881334', 950 => '#4c0418',
+                ]),
                 'gray' => Color::Slate,
                 'info' => Color::Violet,
             ])

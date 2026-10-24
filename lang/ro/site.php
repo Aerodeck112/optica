@@ -74,6 +74,8 @@ return [
     ],
 
     'booking' => [
+        'checkin_qr_alt' => 'Cod QR pentru check-in, rezervarea :code',
+        'checkin_qr_help' => 'La sosire, arată acest cod QR la recepție sau spune codul rezervării. Codul nu conține date personale.',
         'title' => 'Rezervă aventura',
         'intro' => 'Alege experiența, ziua și ora. Durează câteva minute.',
         'step_experience' => 'Experiența',
