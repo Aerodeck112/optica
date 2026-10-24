@@ -137,8 +137,25 @@ chmod -R ug+rwX storage bootstrap/cache
 `db:seed` instalează **numai** date sigure pentru producție: nu creează conturi, nu completează prețuri, capacități sau date
 comerciale și nu încarcă datele demonstrative (acestea există doar în mediul local, cu `AW_SEED_DEMO=true`).
 
-**Fără `symlink`** (dacă `storage:link` dă eroare): cereți furnizorului să creeze legătura
-`public/storage → ../storage/app/public`, sau din File Manager nu se poate — este necesar Terminal/SSH.
+**Fără `symlink`** (dacă `storage:link` dă eroare): folosiți varianta fără Terminal de mai jos (creează legătura cu `ln -s`).
+
+### Fără Terminal (instalare din Cron Jobs)
+
+Dacă cPanel nu are Terminal și nici acces SSH, pașii de mai sus (inclusiv cheia aplicației și contul de administrator)
+se rulează o singură dată prin scriptul `tools/cpanel/instalare.sh`:
+
+1. Completați `.env` (secțiunea 5), fără `APP_KEY` — scriptul o generează.
+2. cPanel → **Cron Jobs** → *Once Per Minute* → comanda:
+   ```
+   bash $HOME/anotherworldcluj/tools/cpanel/instalare.sh adresa@anotherworldcluj.ro "Nume Prenume"
+   ```
+3. După 2–3 minute, în File Manager, în folderul principal, deschideți `aw-instalare.log`. Trebuie să se termine cu
+   `=== GATA` și să conțină linkul de setare a parolei pentru administrator.
+4. **Ștergeți Cron Job-ul de instalare** și apoi fișierul `aw-instalare.log` (conține linkul de setare a parolei).
+
+Scriptul găsește singur PHP 8.3+, verifică extensiile, rulează o singură dată (fișierul `aw-instalare.gata`) și scrie
+calea PHP găsită în `aw-php-cale.txt` — folosită apoi la cron-ul permanent. Dacă jurnalul arată o eroare, corectați
+cauza (de regulă datele bazei de date din `.env`), ștergeți `aw-instalare.gata` și scriptul rulează din nou la minutul următor.
 
 ### Primul cont de administrator
 
