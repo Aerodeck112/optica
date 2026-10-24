@@ -4,9 +4,9 @@ namespace App\Modules\Notifications\Jobs;
 
 use App\Modules\Crm\Services\ConsentService;
 use App\Modules\Notifications\Models\MessageLog;
+use App\Modules\Notifications\Providers\SandboxProvider;
 use App\Modules\Notifications\Services\OutgoingMessage;
 use App\Modules\Notifications\Services\ProviderFactory;
-use App\Modules\Notifications\Providers\SandboxProvider;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;

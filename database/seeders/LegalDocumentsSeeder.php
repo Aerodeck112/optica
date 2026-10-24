@@ -35,7 +35,7 @@ class LegalDocumentsSeeder extends Seeder
 
     private function documents(): array
     {
-        $company = "{{ company.legal_name }}, cu sediul în {{ company.registered_office }}, înregistrată la Registrul Comerțului sub nr. {{ company.reg_no }}, CUI {{ company.tax_id }}";
+        $company = '{{ company.legal_name }}, cu sediul în {{ company.registered_office }}, înregistrată la Registrul Comerțului sub nr. {{ company.reg_no }}, CUI {{ company.tax_id }}';
 
         return [
             'terms' => [
@@ -123,7 +123,7 @@ MD,
             'cookies' => [
                 'title' => 'Politica de cookies', 'slug' => 'politica-cookies',
                 'flags' => ['Actualizarea listei de cookie-uri după configurarea GA4 / Google Ads / Meta Pixel.', 'Validare de către jurist.'],
-                'body' => <<<MD
+                'body' => <<<'MD'
 ## Ce sunt cookie-urile
 Fișiere mici salvate de browser, care permit funcționarea site-ului și, cu acordul tău, analiza traficului și măsurarea campaniilor.
 
@@ -147,7 +147,7 @@ MD,
             'booking_policy' => [
                 'title' => 'Politica de rezervare, anulare, reprogramare și rambursare', 'slug' => 'politica-rezervare',
                 'flags' => ['Stabilirea termenelor efective de anulare/reprogramare (Setări → Rezervări).', 'Validarea de către jurist a aplicării excepției de la dreptul de retragere (art. 16 lit. l din OUG 34/2014) pentru serviciile de agrement la dată fixă.', 'Stabilirea regulilor pentru avans, neprezentare și întârzieri.'],
-                'body' => <<<MD
+                'body' => <<<'MD'
 ## 1. Rezervare și confirmare
 O rezervare blochează intervalul ales pentru grupul tău. Rezervarea este confirmată când primești confirmarea pe e-mail. Dacă se cere avans, rezervarea rămâne „în așteptare” până la plata acestuia, în termenul afișat; după expirarea termenului, intervalul se eliberează automat.
 
@@ -177,7 +177,7 @@ MD,
             'voucher_terms' => [
                 'title' => 'Condiții pentru vouchere', 'slug' => 'conditii-vouchere',
                 'flags' => ['Stabilirea valabilității standard a voucherelor.', 'Validarea de către jurist a dreptului de retragere pentru voucherele vândute la distanță (fără dată de prestare).', 'Validarea de către contabil a tratamentului fiscal (voucher cu scop unic / multiplu).'],
-                'body' => <<<MD
+                'body' => <<<'MD'
 ## 1. Tipuri de vouchere
 - **Voucher valoric** — o sumă care poate fi folosită pentru rezervări;
 - **Voucher pentru o experiență** — o experiență anume, pentru numărul de participanți indicat.
@@ -200,7 +200,7 @@ MD,
             'arena_rules' => [
                 'title' => 'Regulamentul arenei', 'slug' => 'regulament-arena',
                 'flags' => ['Completarea cu instrucțiunile reale ale operatorului și ale francizei (echipament, spațiu, număr de jucători).', 'Validare de către operator și jurist.'],
-                'body' => <<<MD
+                'body' => <<<'MD'
 1. Respectă instrucțiunile echipei pe toată durata vizitei.
 2. Folosește echipamentul doar așa cum ți s-a arătat la instructaj.
 3. Nu alerga, nu sări și nu împinge alți jucători; în realitatea virtuală nu îi vezi pe ceilalți așa cum îi vezi în realitate.
@@ -214,7 +214,7 @@ MD,
             'minors' => [
                 'title' => 'Reguli pentru participarea minorilor', 'slug' => 'participarea-minorilor',
                 'flags' => ['Confirmarea vârstelor minime pentru fiecare joc la Cluj.', 'Stabilirea vârstei de la care minorii pot participa fără însoțitor în sală.', 'Validare de către jurist.'],
-                'body' => <<<MD
+                'body' => <<<'MD'
 1. Rezervarea pentru un grup cu minori se face de un adult (părinte, tutore sau organizator împuternicit), care își asumă responsabilitatea pentru participarea acestora.
 2. Fiecare joc are o vârstă minimă recomandată, confirmată la rezervare. Echipa poate recomanda alt joc dacă cel ales nu este potrivit vârstei.
 3. Adultul responsabil se asigură că minorii au citit, împreună cu el, informarea de siguranță și regulamentul arenei.
@@ -225,7 +225,7 @@ MD,
             'safety' => [
                 'title' => 'Informare de siguranță', 'slug' => 'informare-siguranta',
                 'flags' => ['Înlocuirea / completarea cu avertismentele producătorului echipamentului folosit efectiv și cu instrucțiunile francizei.', 'Validare de către operator.'],
-                'body' => <<<MD
+                'body' => <<<'MD'
 Realitatea virtuală este sigură când este folosită corect. Citește aceste informații înainte de vizită.
 
 **Spune echipei înainte de joc dacă** ai avut crize de epilepsie sau pierderi de conștiență, ești însărcinată, ai probleme de echilibru, afecțiuni cardiace sau alte probleme de sănătate care ar putea fi agravate de efort sau de stimuli vizuali. Nu îți cerem și nu păstrăm date medicale; decizia de a juca îți aparține, iar la nevoie consultă un medic.
@@ -240,7 +240,7 @@ MD,
             'media_consent' => [
                 'title' => 'Acord pentru fotografii și video', 'slug' => 'acord-foto-video',
                 'flags' => ['Confirmarea modului de colectare (formular din QR-ul de pe table tent).', 'Validare de către jurist.'],
-                'body' => <<<MD
+                'body' => <<<'MD'
 Uneori fotografiem sau filmăm jocurile pentru a le arăta pe site și pe rețelele sociale.
 
 1. Facem acest lucru **doar cu acordul tău** (sau al adultului responsabil, pentru minori), dat separat de rezervare.

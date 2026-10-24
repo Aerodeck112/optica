@@ -2,6 +2,7 @@
 
 namespace App\Modules\Loyalty\Models;
 
+use App\Modules\Catalog\Models\Package;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
@@ -25,6 +26,6 @@ class Reward extends Model
 
     public function package(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Catalog\Models\Package::class);
+        return $this->belongsTo(Package::class);
     }
 }

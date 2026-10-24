@@ -3,6 +3,7 @@
 namespace App\Modules\Booking\Events;
 
 use App\Modules\Booking\Models\Booking;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Events\Dispatchable;
 
 class BookingRescheduled
@@ -11,7 +12,7 @@ class BookingRescheduled
 
     public function __construct(
         public readonly Booking $booking,
-        public readonly ?\Carbon\CarbonImmutable $previousStart,
+        public readonly ?CarbonImmutable $previousStart,
         public readonly bool $notifyCustomer = true,
     ) {}
 }

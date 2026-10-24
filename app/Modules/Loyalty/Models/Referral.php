@@ -2,6 +2,7 @@
 
 namespace App\Modules\Loyalty\Models;
 
+use App\Modules\Crm\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,11 +21,11 @@ class Referral extends Model
 
     public function referrer(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Crm\Models\Customer::class, 'referrer_id');
+        return $this->belongsTo(Customer::class, 'referrer_id');
     }
 
     public function referred(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Crm\Models\Customer::class, 'referred_id');
+        return $this->belongsTo(Customer::class, 'referred_id');
     }
 }

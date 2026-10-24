@@ -15,7 +15,7 @@ class ScheduleService
     private ?array $weekly = null;
 
     /**
-     * @return array{open: CarbonImmutable, close: CarbonImmutable, note: ?string}|null  momente UTC; null = închis / neconfigurat
+     * @return array{open: CarbonImmutable, close: CarbonImmutable, note: ?string}|null momente UTC; null = închis / neconfigurat
      */
     public function windowFor(string $localDate): ?array
     {

@@ -8,6 +8,7 @@ use App\Modules\Notifications\Services\OutgoingMessage;
 use App\Modules\Notifications\Services\ProviderResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 /**
  * SMTP generic (ex: serverul de e-mail din cPanel). Confirmă doar acceptarea de către server, nu și livrarea.
@@ -36,7 +37,7 @@ class SmtpEmailProvider implements MessageProvider
             $sent = $mailer->to($message->to)->send(new RenderedMail($message, $this->options['from_email'] ?? config('mail.from.address'), $this->options['from_name'] ?? config('mail.from.name')));
 
             return ProviderResult::accepted($sent?->getMessageId());
-        } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
+        } catch (TransportExceptionInterface $e) {
             return ProviderResult::failed(mb_substr($e->getMessage(), 0, 300), true);
         } catch (\Throwable $e) {
             return ProviderResult::failed(mb_substr($e->getMessage(), 0, 300), false);

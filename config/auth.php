@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Modules\Crm\Models\Customer;
 
 return [
 
@@ -75,7 +76,7 @@ return [
 
         'customers' => [
             'driver' => 'eloquent',
-            'model' => App\Modules\Crm\Models\Customer::class,
+            'model' => Customer::class,
         ],
 
         // 'users' => [

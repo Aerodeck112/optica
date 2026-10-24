@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Cms\Seo\Seo;
 use App\Modules\Cms\Services\SafeMarkdown;
+use App\Modules\Core\Settings\SettingsRepository;
+use App\Modules\Core\Settings\SettingsSchema;
 
 class LegalController extends Controller
 {
@@ -35,12 +37,12 @@ class LegalController extends Controller
     /** Completează {{ cheie.setare }} cu valorile din setări; câmpurile lipsă apar marcate „[de completat]”. */
     public static function fillPlaceholders(string $body): string
     {
-        $settings = app(\App\Modules\Core\Settings\SettingsRepository::class);
+        $settings = app(SettingsRepository::class);
 
         return preg_replace_callback('/\{\{\s*([a-z_]+\.[a-z_]+)\s*\}\}/', function ($m) use ($settings) {
             $value = $settings->get($m[1]);
             if ($value === null || $value === '') {
-                $label = \App\Modules\Core\Settings\SettingsSchema::get($m[1])['label'] ?? $m[1];
+                $label = SettingsSchema::get($m[1])['label'] ?? $m[1];
 
                 return '[de completat: '.$label.']';
             }

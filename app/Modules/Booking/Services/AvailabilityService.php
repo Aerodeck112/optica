@@ -22,7 +22,7 @@ class AvailabilityService
 
     /**
      * @return array{status: string, slots: array<int, array{starts_at: string, local_time: string, available: bool, resource_id: ?int, reason: ?string}>, message: ?string}
-     *  status: ok | closed | not_schedulable | out_of_range
+     *                                                                                                                                                                       status: ok | closed | not_schedulable | out_of_range
      */
     public function slotsFor(Package $package, string $localDate, int $participants, int $extraMinutes = 0, ?int $ignoreBookingId = null, bool $staff = false): array
     {
@@ -100,7 +100,7 @@ class AvailabilityService
         return null;
     }
 
-    /** @return array<int, Resource> */
+    /** @return array<int, resource> */
     public function eligibleResources(Package $package, bool $staff = false): array
     {
         $ids = array_map('intval', (array) $package->resource_ids);

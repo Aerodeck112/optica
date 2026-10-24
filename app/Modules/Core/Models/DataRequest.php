@@ -2,6 +2,8 @@
 
 namespace App\Modules\Core\Models;
 
+use App\Models\User;
+use App\Modules\Crm\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -21,11 +23,11 @@ class DataRequest extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Crm\Models\Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function handler(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class, 'handled_by');
+        return $this->belongsTo(User::class, 'handled_by');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Cms\Models;
 
+use App\Models\User;
 use App\Modules\Core\Concerns\PublishedInLocales;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,7 +33,7 @@ class Post extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class, 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function scopePublished($query)

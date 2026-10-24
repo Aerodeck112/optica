@@ -2,6 +2,7 @@
 
 namespace App\Modules\Crm\Services;
 
+use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingData;
 use App\Modules\Booking\Services\BookingService;
 use App\Modules\Catalog\Models\Package;
@@ -91,7 +92,7 @@ class LeadService
      * Transformă o oportunitate confirmată în rezervare folosind același motor (verifică disponibilitatea).
      * Datele de contact nu se dublează: rezervarea se leagă de clientul și de cererea existente.
      */
-    public function convertToBooking(Lead $lead, Package $package, CarbonImmutable $startsAt, int $participants, ?int $userId, ?int $resourceId = null): \App\Modules\Booking\Models\Booking
+    public function convertToBooking(Lead $lead, Package $package, CarbonImmutable $startsAt, int $participants, ?int $userId, ?int $resourceId = null): Booking
     {
         if ($lead->booking_id) {
             throw new \LogicException('Cererea are deja o rezervare asociată.');

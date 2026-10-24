@@ -16,7 +16,7 @@ class Menu extends Model
         return $this->hasMany(MenuItem::class);
     }
 
-    public function rootItems(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function rootItems(): HasMany
     {
         return $this->items()->whereNull('parent_id')->where('is_visible', true)->orderBy('sort');
     }

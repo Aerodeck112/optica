@@ -2,6 +2,7 @@
 
 namespace App\Modules\Loyalty\Models;
 
+use App\Modules\Crm\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -24,7 +25,7 @@ class LoyaltyLedgerEntry extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Crm\Models\Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function reference(): MorphTo

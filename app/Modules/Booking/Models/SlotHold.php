@@ -2,6 +2,7 @@
 
 namespace App\Modules\Booking\Models;
 
+use App\Modules\Catalog\Models\Package;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -28,7 +29,7 @@ class SlotHold extends Model
 
     public function package(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Catalog\Models\Package::class);
+        return $this->belongsTo(Package::class);
     }
 
     public function isActive(): bool

@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\DB;
  */
 class StockService
 {
+    /** Tranzacțiile întrerupte de un deadlock detectat de baza de date se reiau automat. */
+    private const DEADLOCK_ATTEMPTS = 3;
+
     public function __construct(private readonly AuditLogger $audit) {}
 
     /** Recepția (NIR): numerotare din serie, intrări în stoc, cantități recepționate pe factura furnizorului. */
@@ -59,7 +62,7 @@ class StockService
             $this->audit->log('stock.receipt_confirmed', $receipt, ['number' => $receipt->number, 'lines' => $lines->count()]);
 
             return $receipt;
-        });
+        }, self::DEADLOCK_ATTEMPTS);
     }
 
     /** Anularea unei recepții confirmate: mișcări inverse, doar dacă stocul permite. */
@@ -85,7 +88,7 @@ class StockService
             $this->audit->log('stock.receipt_cancelled', $receipt, ['reason' => $reason]);
 
             return $receipt;
-        });
+        }, self::DEADLOCK_ATTEMPTS);
     }
 
     /** Consum, casare sau ajustare manuală. Cantitatea e pozitivă; semnul rezultă din tip. */
@@ -101,7 +104,7 @@ class StockService
         $signed = in_array($type, ['adjustment_in'], true) ? $qty : $qty->negated();
         $stored = str_starts_with($type, 'adjustment') ? 'adjustment' : $type;
 
-        return DB::transaction(fn () => $this->apply($item, $warehouseId, (string) $signed, $stored, null, $note, $userId));
+        return DB::transaction(fn () => $this->apply($item, $warehouseId, (string) $signed, $stored, null, $note, $userId), self::DEADLOCK_ATTEMPTS);
     }
 
     /** Pornește un inventar: cantitățile scriptice actuale, pentru toate articolele urmărite. */
@@ -143,7 +146,7 @@ class StockService
             $this->audit->log('stock.count_confirmed', $count, ['differences' => $differences]);
 
             return $count;
-        });
+        }, self::DEADLOCK_ATTEMPTS);
     }
 
     public function level(int $itemId, int $warehouseId): string
@@ -206,11 +209,21 @@ class StockService
         $line?->forceFill(['received_quantity' => (string) BigDecimal::of((string) $line->received_quantity)->plus($quantity)])->save();
     }
 
+    /**
+     * Blochează soldul (articol, gestiune). Rândul existent se blochează direct; inserarea (INSERT IGNORE ia o
+     * blocare partajată pe rândul existent și ar produce deadlock între tranzacții concurente) se face doar
+     * când soldul nu există încă.
+     */
     private function lockLevel(int $itemId, int $warehouseId): StockLevel
     {
+        $query = fn () => StockLevel::query()->where('item_id', $itemId)->where('warehouse_id', $warehouseId)->lockForUpdate()->first();
+        $level = $query();
+        if ($level) {
+            return $level;
+        }
         DB::table('stock_levels')->insertOrIgnore(['item_id' => $itemId, 'warehouse_id' => $warehouseId, 'quantity' => 0, 'created_at' => now(), 'updated_at' => now()]);
 
-        return StockLevel::query()->where('item_id', $itemId)->where('warehouse_id', $warehouseId)->lockForUpdate()->firstOrFail();
+        return $query() ?? throw new InventoryException('Soldul de stoc nu a putut fi blocat.');
     }
 
     private function refreshPurchaseStatus(PurchaseInvoice $invoice): void

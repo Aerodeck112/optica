@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 class Booking extends Model
 {
@@ -79,7 +81,7 @@ class Booking extends Model
             return null;
         }
         try {
-            $token = \Illuminate\Support\Facades\Crypt::decryptString($this->manage_token_encrypted);
+            $token = Crypt::decryptString($this->manage_token_encrypted);
         } catch (\Throwable) {
             return null;
         }
@@ -89,10 +91,10 @@ class Booking extends Model
 
     public function rotateManageToken(): string
     {
-        $token = \Illuminate\Support\Str::random(48);
+        $token = Str::random(48);
         $this->forceFill([
             'manage_token_hash' => hash('sha256', $token),
-            'manage_token_encrypted' => \Illuminate\Support\Facades\Crypt::encryptString($token),
+            'manage_token_encrypted' => Crypt::encryptString($token),
         ])->save();
 
         return $token;

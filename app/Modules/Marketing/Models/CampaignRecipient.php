@@ -2,6 +2,7 @@
 
 namespace App\Modules\Marketing\Models;
 
+use App\Modules\Crm\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -25,6 +26,6 @@ class CampaignRecipient extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Crm\Models\Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 }

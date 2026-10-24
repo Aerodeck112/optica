@@ -21,6 +21,7 @@ use App\Modules\Crm\Services\ConsentService;
 use App\Modules\Crm\Services\CustomerResolver;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -237,7 +238,7 @@ class BookingService
                     'price_snapshot' => $quote->toArray() + ['package' => ['id' => $package->id, 'name' => $package->getTranslation('name', 'ro'), 'slot_minutes' => $package->slot_minutes, 'play_minutes' => $package->play_minutes]],
                     'accepted_policies' => $this->policyRecords($data),
                     'manage_token_hash' => hash('sha256', $manageToken),
-                    'manage_token_encrypted' => \Illuminate\Support\Facades\Crypt::encryptString($manageToken),
+                    'manage_token_encrypted' => Crypt::encryptString($manageToken),
                     'checkin_token_hash' => hash('sha256', $checkinToken),
                     'expires_at' => $expiresAt,
                     'confirmed_at' => $status === 'confirmed' ? now() : null,

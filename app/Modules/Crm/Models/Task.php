@@ -2,6 +2,7 @@
 
 namespace App\Modules\Crm\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -22,12 +23,12 @@ class Task extends Model
 
     public function assignee(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class, 'assigned_to');
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class, 'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function related(): MorphTo

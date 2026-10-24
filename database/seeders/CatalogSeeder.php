@@ -196,7 +196,7 @@ class CatalogSeeder extends Seeder
             [
                 'slug' => 'starbase-survival', 'title' => 'Starbase: Survival', 'genre' => 'sf', 'audience' => 'teens_adults', 'intensity' => 3,
                 'tagline' => 'Blocați pe o platformă, înconjurați de forme de viață necunoscute.',
-                'description' => "Echipa rămâne blocată pe o platformă înconjurată de forme de viață periculoase, care au evoluat în moduri neașteptate. Supraviețuirea depinde de cât de bine vă coordonați.",
+                'description' => 'Echipa rămâne blocată pe o platformă înconjurată de forme de viață periculoase, care au evoluat în moduri neașteptate. Supraviețuirea depinde de cât de bine vă coordonați.',
                 'cover' => 'game-starbase-survival-1', 'gallery' => $shots('starbase-survival', 3),
                 'ref_site' => ['players' => '2–20', 'age' => '12+', 'minutes' => 60],
                 'ref_franchise' => ['players' => '1–4', 'age' => '12+', 'minutes' => 60],

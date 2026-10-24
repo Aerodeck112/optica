@@ -22,7 +22,7 @@ interface MessageProvider
 
     /**
      * @return array<int, array{event_id:string, message_id:string, status:string, reason:?string, address:?string}>
-     *  status: delivered | bounced | soft_bounced | complained | failed | unsubscribed | opened | clicked
+     *                                                                                                               status: delivered | bounced | soft_bounced | complained | failed | unsubscribed | opened | clicked
      */
     public function parseWebhook(Request $request): array;
 

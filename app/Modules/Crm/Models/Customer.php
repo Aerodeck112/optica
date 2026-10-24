@@ -9,6 +9,7 @@ use App\Modules\Loyalty\Models\LoyaltyLedgerEntry;
 use App\Modules\Loyalty\Models\LoyaltyTier;
 use App\Modules\Loyalty\Models\Voucher;
 use App\Modules\Notifications\Models\MessageLog;
+use Database\Factories\CustomerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -45,7 +46,7 @@ class Customer extends Authenticatable
 
     protected static function newFactory()
     {
-        return \Database\Factories\CustomerFactory::new();
+        return CustomerFactory::new();
     }
 
     public function getAuthPassword(): string
