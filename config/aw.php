@@ -47,6 +47,9 @@ return [
     'backup' => [
         'path' => storage_path('app/private/backups'),
         'keep_daily' => 14,
+        'keep_full' => 4,
+        // parolă pentru criptarea arhivelor (AES-256). Fără ea, arhivele rămân necriptate pe server.
+        'password' => env('AW_BACKUP_PASSWORD'),
         'remote_disk' => env('AW_BACKUP_REMOTE_DISK'), // disc Flysystem configurat în filesystems.php (s3/sftp/ftp)
     ],
 

@@ -133,9 +133,9 @@ class FiscalReceiptService
     }
 
     /** Comenzile preluate de agent fără rezultat în intervalul dat devin incerte (rulat din cron). */
-    public function markTimeouts(int $minutes = 3): int
+    public function markTimeouts(?int $seconds = null): int
     {
-        return FiscalReceipt::query()->where('status', 'dispatched')->where('dispatched_at', '<', now()->subMinutes($minutes))
+        return FiscalReceipt::query()->where('status', 'dispatched')->where('dispatched_at', '<', now()->subSeconds($seconds ?? (int) config('aw.fiscal_agent.dispatch_timeout_seconds', 90)))
             ->update(['status' => 'uncertain', 'last_error' => 'Fără răspuns de la agent după preluare. Verificați jurnalul casei de marcat înainte de orice reemitere.', 'updated_at' => now()]);
     }
 

@@ -53,8 +53,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -67,6 +69,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimits();
+
+        // Parole personal (inclusiv resetare și profil în panou): minim 12 caractere, litere mari/mici, cifre,
+        // verificate față de listele de parole compromise (fără a trimite parola: k-anonymity).
+        Password::defaults(fn () => $this->app->isProduction()
+            ? Password::min(12)->mixedCase()->numbers()->uncompromised()
+            : Password::min(12)->mixedCase()->numbers());
+
+        if ($this->app->isProduction()) {
+            URL::forceScheme('https');
+        }
 
         Event::subscribe(NotificationSubscriber::class);
         Event::subscribe(AuthenticationAuditSubscriber::class);
