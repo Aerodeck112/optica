@@ -4,8 +4,11 @@ namespace App\Filament\Resources\Payments;
 
 use App\Filament\Support\Fields;
 use App\Modules\Booking\Models\Booking;
+use App\Modules\Finance\Models\FiscalReceipt;
 use App\Modules\Finance\Models\Payment;
 use App\Modules\Finance\Models\Refund;
+use App\Modules\Finance\Services\Fiscal\FiscalException;
+use App\Modules\Finance\Services\Fiscal\FiscalReceiptService;
 use App\Modules\Finance\Services\Payments\PaymentException;
 use App\Modules\Finance\Services\Payments\PaymentService;
 use App\Modules\Finance\Services\Payments\RefundService;
@@ -15,6 +18,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Str;
 
@@ -38,15 +42,27 @@ final class PaymentActions
             ->modalDescription(fn (Booking $record) => $record->balanceMinor() !== null ? 'Rest de plată: '.Money::format($record->balanceMinor()).'.' : 'Prețul rezervării nu este stabilit; înregistrați suma încasată.')
             ->schema(fn (Booking $record) => [
                 Hidden::make('idempotency_key')->default(fn () => (string) Str::uuid()),
-                Select::make('method')->label('Metodă')->required()->native()
+                Select::make('method')->label('Metodă')->required()->native()->live()
                     ->options(array_intersect_key(Payment::METHODS, array_flip(PaymentService::MANUAL_METHODS)))->default('card_pos'),
                 Fields::money('amount', 'Sumă')->required()->default(self::suggested($record)),
                 TextInput::make('note')->label('Notă')->maxLength(255)->placeholder('ex. nr. chitanță, referință transfer'),
+                Toggle::make('fiscal_receipt')->label(fn () => 'Emite bon fiscal'.(app(FiscalReceiptService::class)->defaultDevice()?->driver === 'simulator' ? ' (SIMULARE — casa de marcat nu este conectată)' : ''))
+                    ->default(true)
+                    ->visible(fn ($get) => in_array($get('method'), ['cash', 'card_pos'], true) && app(FiscalReceiptService::class)->defaultDevice() !== null && auth()->user()?->can('fiscal.operate')),
             ])
-            ->action(fn (Booking $record, array $data) => self::run(
-                fn () => app(PaymentService::class)->recordManual($record, $data['method'], (int) $data['amount'], auth()->user(), $data['note'] ?? null, $data['idempotency_key'] ?? null),
-                'Încasarea a fost înregistrată.'
-            ));
+            ->action(function (Booking $record, array $data) {
+                self::run(function () use ($record, $data) {
+                    $payment = app(PaymentService::class)->recordManual($record, $data['method'], (int) $data['amount'], auth()->user(), $data['note'] ?? null, $data['idempotency_key'] ?? null);
+                    if (($data['fiscal_receipt'] ?? false) && in_array($payment->method, ['cash', 'card_pos'], true)) {
+                        try {
+                            $receipt = app(FiscalReceiptService::class)->forPayment($payment, null, auth()->id());
+                            Notification::make()->info()->title($receipt->is_simulated ? 'Bon înregistrat în SIMULARE — nu este bon fiscal.' : 'Bonul a fost trimis la casa de marcat.')->send();
+                        } catch (FiscalException $e) {
+                            Notification::make()->warning()->title('Încasarea e înregistrată, dar bonul nu: '.$e->getMessage())->persistent()->send();
+                        }
+                    }
+                }, 'Încasarea a fost înregistrată.');
+            });
     }
 
     private static function suggested(Booking $booking): ?int
@@ -57,6 +73,24 @@ final class PaymentActions
         return $booking->deposit_minor > 0 && $paid < $booking->deposit_minor && $booking->status === 'pending'
             ? $booking->deposit_minor - $paid
             : $balance;
+    }
+
+    /** Bon fiscal pentru o încasare existentă (dacă nu s-a emis la înregistrare). */
+    public static function fiscalReceipt(): Action
+    {
+        return Action::make('fiscal_receipt')->label('Bon fiscal')->icon('heroicon-o-receipt-percent')->color('gray')
+            ->visible(fn (Payment $record) => auth()->user()?->can('fiscal.operate') && $record->status === 'succeeded' && in_array($record->method, ['cash', 'card_pos'], true)
+                && ! FiscalReceipt::query()->where('payment_id', $record->id)->whereIn('status', FiscalReceiptService::OPEN_STATUSES)->exists())
+            ->requiresConfirmation()
+            ->modalDescription(fn () => app(FiscalReceiptService::class)->defaultDevice()?->driver === 'simulator' ? 'Casa de marcat activă este SIMULATORUL: se creează o înregistrare de test, NU un bon fiscal.' : 'Bonul se trimite la casa de marcat activă.')
+            ->action(function (Payment $record) {
+                try {
+                    app(FiscalReceiptService::class)->forPayment($record, null, auth()->id());
+                    Notification::make()->success()->title('Bonul a fost pus în coadă.')->send();
+                } catch (FiscalException $e) {
+                    Notification::make()->danger()->title($e->getMessage())->persistent()->send();
+                }
+            });
     }
 
     public static function requestRefund(): Action

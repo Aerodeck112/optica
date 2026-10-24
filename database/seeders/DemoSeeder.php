@@ -16,6 +16,9 @@ use App\Modules\Core\Models\OpeningHour;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Services\LeadService;
 use App\Modules\Finance\Models\DocumentSeries;
+use App\Modules\Inventory\Models\Item;
+use App\Modules\Inventory\Models\Supplier;
+use App\Modules\Inventory\Models\Unit;
 use App\Support\LocalTime;
 use Illuminate\Database\Seeder;
 use RuntimeException;
@@ -170,5 +173,12 @@ class DemoSeeder extends Seeder
                 'message' => 'Cerere demonstrativă.',
             ], 'web');
         }
+
+        // stocuri demonstrative (articole și furnizor fictive)
+        $unit = Unit::query()->where('code', 'H87')->value('id');
+        foreach ([['DEMO-MASTI', 'Măști igienice de unică folosință (demo)', 'consumable', 200], ['DEMO-SERV', 'Șervețele dezinfectante (demo)', 'consumable', 20], ['DEMO-BAT', 'Acumulatori controlere (demo)', 'equipment', 8]] as [$sku, $name, $type, $min]) {
+            Item::query()->firstOrCreate(['sku' => $sku], ['name' => $name, 'type' => $type, 'unit_id' => $unit, 'track_stock' => true, 'min_stock' => $min, 'is_active' => true]);
+        }
+        Supplier::query()->firstOrCreate(['tax_id' => 'RO76543210'], ['name' => 'Furnizor Demo SRL (fictiv)', 'city' => 'Cluj-Napoca', 'is_vat_payer' => true]);
     }
 }

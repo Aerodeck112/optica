@@ -14,6 +14,9 @@ use App\Modules\Catalog\Models\Package;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Finance\Models\Invoice;
 use App\Modules\Finance\Services\InvoiceService;
+use App\Modules\Inventory\Models\Item;
+use App\Modules\Inventory\Services\InventoryException;
+use App\Modules\Inventory\Services\StockService;
 use App\Modules\Loyalty\Models\Voucher;
 use App\Modules\Loyalty\Services\LoyaltyException;
 use App\Modules\Loyalty\Services\LoyaltyService;
@@ -46,6 +49,12 @@ try {
         echo json_encode(['ok' => true, 'number' => $invoice->full_number]);
         exit(0);
     }
+    if ($operation === 'stock') {
+        // consum de 1 bucată din articolul dat, în gestiunea dată (argumentul)
+        $movement = app(StockService::class)->record(Item::query()->findOrFail((int) $packageId), (int) $startsAt, '1', 'consumption', 1, 'test-'.$label);
+        echo json_encode(['ok' => true, 'movement' => $movement->id]);
+        exit(0);
+    }
     if ($operation === 'points') {
         $customer = Customer::query()->findOrFail((int) $packageId);
         $entry = app(LoyaltyService::class)->redeemPoints($customer, (int) $startsAt, 'test-'.$label);
@@ -73,6 +82,8 @@ try {
         ageGroups: ['adults' => 4],
     ));
     echo json_encode(['ok' => true, 'booking' => $result['booking']->code]);
+} catch (InventoryException $e) {
+    echo json_encode(['ok' => false, 'reason' => 'stock']);
 } catch (BookingException|LoyaltyException $e) {
     echo json_encode(['ok' => false, 'reason' => $e->reason]);
 } catch (Throwable $e) {

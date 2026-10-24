@@ -77,7 +77,7 @@ class PaymentResource extends Resource
                 SelectFilter::make('method')->label('Metodă')->options(Payment::METHODS)->multiple(),
                 Filter::make('today')->label('Doar azi')->query(fn (Builder $query) => $query->where('created_at', '>=', now(config('aw.timezone'))->startOfDay()->utc())),
             ])
-            ->recordActions([ViewAction::make(), PaymentActions::requestRefund()]);
+            ->recordActions([ViewAction::make(), PaymentActions::fiscalReceipt(), PaymentActions::requestRefund()]);
     }
 
     public static function infolist(Schema $schema): Schema

@@ -28,4 +28,9 @@ class GoodsReceiptLine extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function purchaseInvoiceLine(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseInvoiceLine::class);
+    }
 }

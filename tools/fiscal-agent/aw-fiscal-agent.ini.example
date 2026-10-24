@@ -1,0 +1,9 @@
+; Copiați ca aw-fiscal-agent.ini și completați. Nu trimiteți acest fișier nimănui (conține secretul agentului).
+AW_SERVER=https://anotherworldcluj.ro
+AW_AGENT_KEY=
+AW_AGENT_SECRET=
+DRIVER=dry-run
+FILE_OUT_DIR=
+FILE_IN_DIR=
+RESULT_TIMEOUT=60
+POLL_SECONDS=3

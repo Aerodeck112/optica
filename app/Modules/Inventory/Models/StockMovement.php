@@ -2,6 +2,7 @@
 
 namespace App\Modules\Inventory\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -34,5 +35,10 @@ class StockMovement extends Model
     public function reference(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

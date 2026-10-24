@@ -8,6 +8,8 @@ use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Core\Models\Integration;
 use App\Modules\Core\Settings\SettingsRepository;
+use App\Modules\Finance\Models\DocumentSeries;
+use App\Modules\Finance\Models\FiscalDevice;
 use App\Modules\Integrations\IntegrationCatalog;
 use Filament\Widgets\Widget;
 
@@ -39,6 +41,10 @@ class LaunchReadiness extends Widget
         $items[] = ['ok' => $games > 0, 'label' => $games ? "{$games} jocuri confirmate pentru Cluj" : 'Niciun joc confirmat pentru Cluj', 'url' => route('filament.admin.resources.games.index')];
         $flags = LegalDocument::query()->where('status', 'published')->get()->filter->hasOpenReviewFlags()->count();
         $items[] = ['ok' => $flags === 0, 'label' => $flags ? "{$flags} documente juridice cu puncte nevalidate" : 'Documentele juridice sunt validate', 'url' => route('filament.admin.resources.legal-documents.index')];
+        $series = DocumentSeries::query()->where('document_type', 'invoice')->where('is_active', true)->exists();
+        $items[] = ['ok' => $series, 'label' => $series ? 'Serie de facturare definită' : 'Nicio serie de facturare (stabiliți-o cu contabilul)', 'url' => route('filament.admin.resources.document-series.index')];
+        $realDevice = FiscalDevice::query()->where('is_active', true)->where('driver', 'agent')->where('last_seen_at', '>', now()->subDay())->exists();
+        $items[] = ['ok' => $realDevice, 'label' => $realDevice ? 'Casa de marcat comunică prin agent' : 'Casa de marcat nu este conectată (bonurile nu se pot emite din aplicație)', 'url' => route('filament.admin.resources.fiscal-devices.index')];
         foreach (Integration::query()->orderBy('id')->get() as $integration) {
             $items[] = [
                 'ok' => in_array($integration->status, ['configured', 'production_verified'], true),

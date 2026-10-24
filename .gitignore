@@ -28,3 +28,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# agentul casei de marcat (conține secrete / jurnal local)
+tools/fiscal-agent/aw-fiscal-agent.ini
+tools/fiscal-agent/journal.json

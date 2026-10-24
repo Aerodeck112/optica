@@ -19,7 +19,7 @@ class InventoryCountLine extends Model
         ];
     }
 
-    public function count(): BelongsTo
+    public function inventoryCount(): BelongsTo
     {
         return $this->belongsTo(InventoryCount::class, 'inventory_count_id');
     }

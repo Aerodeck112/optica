@@ -35,7 +35,7 @@ class PaymentsRelationManager extends RelationManager
                 TextColumn::make('recorder.name')->label('Înregistrat de')->placeholder('Online'),
                 TextColumn::make('note')->label('Notă')->limit(40)->placeholder('—'),
             ])
-            ->recordActions([PaymentActions::requestRefund()])
+            ->recordActions([PaymentActions::fiscalReceipt(), PaymentActions::requestRefund()])
             ->emptyStateHeading('Nicio încasare')
             ->emptyStateDescription('Încasările se înregistrează din butonul „Încasează” al rezervării sau sosesc automat de la plata online.');
     }

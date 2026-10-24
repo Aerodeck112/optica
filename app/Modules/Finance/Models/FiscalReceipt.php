@@ -2,8 +2,10 @@
 
 namespace App\Modules\Finance\Models;
 
+use App\Modules\Booking\Models\Booking;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FiscalReceipt extends Model
 {
@@ -29,11 +31,16 @@ class FiscalReceipt extends Model
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Booking\Models\Booking::class);
+        return $this->belongsTo(Booking::class);
     }
 
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    public function retries(): HasMany
+    {
+        return $this->hasMany(self::class, 'retry_of_id');
     }
 }

@@ -71,6 +71,7 @@ Route::get('/admin-anaf/authorize', [AnafOAuthController::class, 'authorize'])->
 Route::get('/admin-anaf/callback', [AnafOAuthController::class, 'callback'])->middleware('auth')->name('admin.anaf.callback');
 Route::get('/admin-print/vouchers/{voucher}', VoucherPrintController::class)->middleware('auth')->name('admin.vouchers.print');
 Route::get('/admin-print/invoices/{invoice}/pdf', [FinanceDocumentController::class, 'invoicePdf'])->middleware('auth')->name('admin.invoices.pdf');
+Route::get('/admin-print/goods-receipts/{receipt}', [FinanceDocumentController::class, 'goodsReceipt'])->middleware('auth')->name('admin.goods-receipts.print');
 Route::get('/admin-print/efactura/{submission}/{kind}', [FinanceDocumentController::class, 'efacturaFile'])->whereIn('kind', ['xml', 'response'])->middleware('auth')->name('admin.efactura.file');
 Route::get('/cms-preview/{type}/{id}', PreviewController::class)->middleware(['auth', 'signed'])->name('cms.preview');
 

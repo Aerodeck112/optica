@@ -221,11 +221,10 @@ class PaymentService
     private function purposeFor(Booking $booking, int $amount): string
     {
         $paidNet = (int) $booking->paid_minor - (int) $booking->refunded_minor;
-        $due = $booking->balanceMinor();
-        if ($due !== null && $amount >= $due && $paidNet === 0) {
-            return 'booking';
+        if ($paidNet > 0) {
+            return 'balance';
         }
 
-        return $paidNet === 0 && (int) $booking->deposit_minor > 0 ? 'deposit' : 'balance';
+        return (int) $booking->deposit_minor > 0 && $amount <= (int) $booking->deposit_minor && $amount < (int) ($booking->balanceMinor() ?? PHP_INT_MAX) ? 'deposit' : 'booking';
     }
 }

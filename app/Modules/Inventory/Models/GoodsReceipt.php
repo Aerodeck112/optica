@@ -2,6 +2,7 @@
 
 namespace App\Modules\Inventory\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,5 +39,10 @@ class GoodsReceipt extends Model
     public function lines(): HasMany
     {
         return $this->hasMany(GoodsReceiptLine::class);
+    }
+
+    public function receiver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'received_by');
     }
 }

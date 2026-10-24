@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Audit\AuditLogger;
+use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Finance\Models\EfacturaSubmission;
 use App\Modules\Finance\Models\Invoice;
 use App\Modules\Finance\Services\InvoiceService;
+use App\Modules\Inventory\Models\GoodsReceipt;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -24,6 +27,17 @@ class FinanceDocumentController extends Controller
         app(AuditLogger::class)->log('invoice.downloaded', $invoice);
 
         return Storage::disk('local')->download($invoice->pdf_path, basename($invoice->pdf_path), ['Cache-Control' => 'no-store']);
+    }
+
+    public function goodsReceipt(Request $request, GoodsReceipt $receipt, SettingsRepository $settings): Response
+    {
+        abort_unless($request->user()?->can('inventory.manage'), 403);
+        abort_if($receipt->status === 'draft', 404);
+
+        return response()->view('admin.goods-receipt-print', [
+            'receipt' => $receipt->load(['lines.item.unit', 'lines.purchaseInvoiceLine', 'warehouse', 'supplier', 'purchaseInvoice', 'receiver']),
+            'company' => ['name' => $settings->filled('company.legal_name'), 'tax_id' => $settings->filled('company.tax_id')],
+        ])->header('X-Robots-Tag', 'noindex');
     }
 
     public function efacturaFile(Request $request, EfacturaSubmission $submission, string $kind): StreamedResponse

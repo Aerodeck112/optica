@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\FiscalAgentController;
 use App\Http\Controllers\Api\WebhookController;
+use App\Http\Middleware\AuthenticateFiscalAgent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,7 @@ Route::post('/webhooks/{provider}', [WebhookController::class, 'handle'])
     ->middleware('throttle:webhooks')
     ->name('webhooks.handle');
 
-Route::prefix('fiscal-agent')->middleware('throttle:fiscal-agent')->group(function () {
+Route::prefix('fiscal-agent')->middleware(['throttle:fiscal-agent', AuthenticateFiscalAgent::class])->group(function () {
     Route::get('/commands', [FiscalAgentController::class, 'commands'])->name('fiscal-agent.commands');
     Route::post('/commands/{commandId}/result', [FiscalAgentController::class, 'result'])->name('fiscal-agent.result');
     Route::post('/heartbeat', [FiscalAgentController::class, 'heartbeat'])->name('fiscal-agent.heartbeat');
