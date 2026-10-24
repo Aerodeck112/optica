@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-$root = dirname(__DIR__);
+// aplicația este fie în folderul părinte (domeniu îndreptat spre public/), fie în ~/anotherworldcluj (pagina în public_html)
+$root = is_file(dirname(__DIR__).'/artisan') ? dirname(__DIR__) : dirname(__DIR__).'/anotherworldcluj';
 $lock = $root.'/storage/app/instalare.lock';
 $attemptsFile = $root.'/storage/framework/instalare-incercari';
 
@@ -55,7 +56,11 @@ function requirements(string $root, array $env): array
     foreach (['pdo_mysql', 'mbstring', 'intl', 'gd', 'zip', 'fileinfo', 'openssl', 'curl', 'exif', 'sodium'] as $ext) {
         $checks[] = [extension_loaded($ext), "Extensia PHP „{$ext}”", 'activați-o din Select PHP Version'];
     }
+    $checks[] = [is_file($root.'/artisan'), 'Aplicația găsită în '.$root, 'dezarhivați aplicația în folderul anotherworldcluj, alături de public_html'];
     $checks[] = [is_file($root.'/vendor/autoload.php'), 'Bibliotecile aplicației (folderul vendor)', 'arhiva nu a fost dezarhivată complet'];
+    if (! is_file(dirname(__DIR__).'/artisan')) {
+        $checks[] = [is_file(__DIR__.'/.aw-public') && is_file(__DIR__.'/build/manifest.json'), 'Fișierele publice în '.__DIR__, 'dezarhivați aici arhiva pentru public_html (cu fișierul .aw-public)'];
+    }
     $checks[] = [is_file($root.'/.env'), 'Fișierul .env', 'copiați .env.example ca .env și completați-l'];
     $checks[] = [is_file($root.'/.env') && is_writable($root.'/.env'), 'Fișierul .env poate fi scris (pentru cheia aplicației)', 'drepturi 644 pe .env'];
     foreach (['storage', 'storage/framework', 'storage/logs', 'bootstrap/cache'] as $dir) {
@@ -171,9 +176,9 @@ if (! $installed && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $log[] = ['ok', "Contul de administrator {$email} a fost creat."];
 
             // 5. imaginile încărcate (public/storage)
-            if (is_link($root.'/public/storage') || is_dir($root.'/public/storage')) {
+            if (is_link(__DIR__.'/storage') || is_dir(__DIR__.'/storage')) {
                 $log[] = ['ok', 'Legătura public/storage există deja.'];
-            } elseif (function_exists('symlink') && @symlink('../storage/app/public', $root.'/public/storage')) {
+            } elseif (function_exists('symlink') && @symlink($root.'/storage/app/public', __DIR__.'/storage')) {
                 $log[] = ['ok', 'Legătura pentru imagini (public/storage) a fost creată.'];
             } else {
                 $log[] = ['warn', 'Legătura public/storage nu a putut fi creată (funcția symlink este dezactivată). Imaginile încărcate din panou nu vor apărea pe site până nu o creează firma de găzduire: public/storage → ../storage/app/public.'];
@@ -227,7 +232,7 @@ $cli = cliPhpPath();
 <?php if ($installed && ! $done) { ?>
     <div class="card">
         <p><strong>Aplicația este deja instalată.</strong> Din motive de siguranță, această pagină nu mai face nimic.</p>
-        <p>Ștergeți fișierul <code>public/instalare.php</code> din File Manager.</p>
+        <p>Ștergeți fișierul <code>instalare.php</code> din File Manager (folderul public_html sau anotherworldcluj/public).</p>
         <a class="btn" href="/admin">Mergi la panoul de administrare</a>
     </div>
 <?php } elseif ($done) { ?>
@@ -239,7 +244,7 @@ $cli = cliPhpPath();
             <?php } ?>
         </ul>
         <?php if (empty($selfDeleted)) { ?>
-            <p class="warn"><strong>Ștergeți acum fișierul <code>public/instalare.php</code> din File Manager.</strong> (Pagina este deja dezactivată, dar fișierul nu a putut fi șters automat.)</p>
+            <p class="warn"><strong>Ștergeți acum fișierul <code>instalare.php</code> din File Manager (folderul public_html sau anotherworldcluj/public).</strong> (Pagina este deja dezactivată, dar fișierul nu a putut fi șters automat.)</p>
         <?php } else { ?>
             <p class="muted">Pagina de instalare s-a șters singură.</p>
         <?php } ?>

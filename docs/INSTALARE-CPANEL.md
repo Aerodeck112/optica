@@ -72,16 +72,25 @@ Aplicația se instalează **în afara** `public_html`; doar folderul `public/` t
 **Varianta 1 (preferată):** cPanel → **Domains** → `anotherworldcluj.ro` → **Manage** → *Document Root* =
 `anotherworldcluj/public`. Salvați.
 
-**Varianta 2 (dacă documentul rădăcină al domeniului principal nu poate fi schimbat):** din Terminal,
-după ce ați salvat conținutul existent din `public_html`:
+**Varianta 2 (domeniul principal, Document Root fixat pe `public_html`, fără Terminal):**
+
+1. Aplicația rămâne în `~/anotherworldcluj` (pasul de mai sus).
+2. Salvați/ștergeți conținutul vechi din `public_html` (păstrați `.well-known` și `cgi-bin`).
+3. Încărcați în `public_html` arhiva `public_html-anotherworldcluj.zip` și dezarhivați-o acolo. Conține fișierele publice,
+   un `index.php` care încarcă aplicația din `../anotherworldcluj` și marcajul `.aw-public`.
+4. Aplicația (site și cron) detectează marcajul și folosește automat `public_html` ca folder public
+   (`bootstrap/app.php`).
+
+La actualizări se înlocuiesc atât `~/anotherworldcluj`, cât și conținutul lui `public_html` (păstrând `index.php` și `.aw-public`
+din această variantă).
+
+**Varianta 3 (cu Terminal):** după ce ați salvat conținutul existent din `public_html`:
 
 ```bash
 cd ~
 mv public_html public_html.vechi
 ln -s ~/anotherworldcluj/public ~/public_html
 ```
-
-Nu copiați conținutul lui `public/` în `public_html` separat de aplicație: actualizările ulterioare s-ar desincroniza.
 
 ---
 
