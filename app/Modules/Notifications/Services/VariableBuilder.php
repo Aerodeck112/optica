@@ -6,6 +6,7 @@ use App\Modules\Booking\Models\Booking;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Crm\Models\Lead;
+use App\Modules\Marketing\Services\ShortUnsubscribeLink;
 use App\Support\LocalTime;
 use App\Support\Money;
 use Illuminate\Support\Facades\URL;
@@ -46,6 +47,7 @@ class VariableBuilder
             $vars['customer.name'] = $customer->fullName();
             if (($context['category'] ?? null) === 'marketing') {
                 $vars['unsubscribe_url'] = URL::signedRoute('unsubscribe.show', ['customer' => $customer->id, 'channel' => $context['channel'] ?? 'email']);
+                $vars['unsubscribe_short_url'] = ShortUnsubscribeLink::url($customer, $context['channel'] ?? 'email');
             }
         }
 

@@ -6,29 +6,45 @@ use App\Http\View\SiteComposer;
 use App\Models\User;
 use App\Modules\Audit\AuditLogger;
 use App\Modules\Audit\Listeners\AuthenticationAuditSubscriber;
+use App\Modules\Booking\Events\BookingStatusChanged;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Catalog\Models\Game;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\Banner;
+use App\Modules\Cms\Models\Faq;
 use App\Modules\Cms\Models\GalleryItem;
 use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Cms\Models\Media;
+use App\Modules\Cms\Models\Menu;
 use App\Modules\Cms\Models\Page;
 use App\Modules\Cms\Models\Post;
+use App\Modules\Core\Models\DataRequest;
 use App\Modules\Core\Models\Integration;
 use App\Modules\Core\Models\Setting;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Crm\Models\Lead;
+use App\Modules\Crm\Models\Task;
+use App\Modules\Finance\Models\EfacturaSubmission;
+use App\Modules\Finance\Models\FiscalDevice;
 use App\Modules\Finance\Models\FiscalReceipt;
 use App\Modules\Finance\Models\Invoice;
 use App\Modules\Finance\Models\Payment;
+use App\Modules\Finance\Models\Refund;
 use App\Modules\Inventory\Models\GoodsReceipt;
 use App\Modules\Inventory\Models\InventoryCount;
+use App\Modules\Inventory\Models\Item;
 use App\Modules\Inventory\Models\PurchaseInvoice;
+use App\Modules\Inventory\Models\Supplier;
+use App\Modules\Loyalty\Listeners\AwardPointsOnCompletion;
+use App\Modules\Loyalty\Models\LoyaltyLedgerEntry;
+use App\Modules\Loyalty\Models\LoyaltyTier;
 use App\Modules\Loyalty\Models\Referral;
+use App\Modules\Loyalty\Models\Reward;
 use App\Modules\Loyalty\Models\Voucher;
 use App\Modules\Marketing\Models\Campaign;
+use App\Modules\Marketing\Models\ContactImport;
+use App\Modules\Marketing\Models\Segment;
 use App\Modules\Notifications\Listeners\NotificationSubscriber;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
 
         Event::subscribe(NotificationSubscriber::class);
         Event::subscribe(AuthenticationAuditSubscriber::class);
+        Event::listen(BookingStatusChanged::class, AwardPointsOnCompletion::class);
 
         View::composer(['site.*'], SiteComposer::class);
         Blade::componentNamespace('App\\View\\Components', 'aw');
@@ -84,6 +101,20 @@ class AppServiceProvider extends ServiceProvider
             'integration' => Integration::class,
             'legal_document' => LegalDocument::class,
             'campaign' => Campaign::class,
+            'segment' => Segment::class,
+            'contact_import' => ContactImport::class,
+            'menu' => Menu::class,
+            'faq' => Faq::class,
+            'loyalty_tier' => LoyaltyTier::class,
+            'reward' => Reward::class,
+            'loyalty_entry' => LoyaltyLedgerEntry::class,
+            'data_request' => DataRequest::class,
+            'fiscal_device' => FiscalDevice::class,
+            'supplier' => Supplier::class,
+            'item' => Item::class,
+            'refund' => Refund::class,
+            'efactura_submission' => EfacturaSubmission::class,
+            'task' => Task::class,
             'fiscal_receipt' => FiscalReceipt::class,
             'resource' => \App\Modules\Booking\Models\Resource::class,
             'banner' => Banner::class,

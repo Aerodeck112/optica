@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Customers\RelationManagers;
 
+use App\Modules\Loyalty\Models\Reward;
 use App\Modules\Loyalty\Services\LoyaltyException;
 use App\Modules\Loyalty\Services\LoyaltyService;
+use App\Modules\Loyalty\Services\RewardService;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -37,6 +40,18 @@ class LoyaltyRelationManager extends RelationManager
                 TextColumn::make('expires_at')->label('Expiră')->date('d.m.Y')->placeholder('—'),
             ])
             ->headerActions([
+                Action::make('reward')->label('Schimbă puncte pe recompensă')->icon('heroicon-o-gift')
+                    ->visible(fn () => auth()->user()?->can('vouchers.manage'))
+                    ->schema([Select::make('reward_id')->label('Recompensă')->required()
+                        ->options(fn () => Reward::query()->where('is_active', true)->get()->mapWithKeys(fn ($r) => [$r->id => $r->getTranslation('name', 'ro').' — '.$r->points_cost.' puncte']))])
+                    ->action(function (array $data) {
+                        try {
+                            $voucher = app(RewardService::class)->redeem($this->getOwnerRecord(), Reward::query()->findOrFail($data['reward_id']), 'staff:'.$this->getOwnerRecord()->id.':'.now()->format('YmdHisv'), auth()->id());
+                            Notification::make()->success()->title("Voucher emis: {$voucher->code}")->persistent()->send();
+                        } catch (LoyaltyException $e) {
+                            Notification::make()->danger()->title($e->getMessage())->send();
+                        }
+                    }),
                 Action::make('adjust')->label('Corecție puncte')->icon('heroicon-o-adjustments-horizontal')
                     ->visible(fn () => auth()->user()?->can('loyalty.manage'))
                     ->schema([

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\VoucherPrintController;
 use App\Http\Controllers\Site\AccountController;
 use App\Http\Controllers\Site\BookingApiController;
 use App\Http\Controllers\Site\BookingController;
@@ -14,8 +15,10 @@ use App\Http\Controllers\Site\PageController;
 use App\Http\Controllers\Site\PreviewController;
 use App\Http\Controllers\Site\SeoController;
 use App\Http\Controllers\Site\UnsubscribeController;
+use App\Modules\Marketing\Services\ShortUnsubscribeLink;
 use App\Support\Locales;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 | Rute fără limbă: API-ul public al motorului de rezervări, formulare, fișiere tehnice SEO.
@@ -44,6 +47,12 @@ Route::get('/booking/{code}/calendar.ics', [BookingManageController::class, 'ics
 Route::post('/booking/manage/{token}/cancel', [BookingManageController::class, 'cancel'])->middleware('throttle:public-forms')->name('booking.manage.cancel');
 Route::post('/booking/manage/{token}/reschedule', [BookingManageController::class, 'reschedule'])->middleware('throttle:public-forms')->name('booking.manage.reschedule');
 
+Route::get('/u/{token}', function (string $token) {
+    $resolved = ShortUnsubscribeLink::resolve($token);
+    abort_unless($resolved, 404);
+
+    return redirect(URL::signedRoute('unsubscribe.show', ['customer' => $resolved[0], 'channel' => $resolved[1]]));
+})->where('token', '[0-9a-z]{10,20}')->middleware('throttle:public-forms')->name('unsubscribe.short');
 Route::get('/unsubscribe/{customer}/{channel}', [UnsubscribeController::class, 'show'])->middleware('signed')->name('unsubscribe.show');
 Route::post('/unsubscribe/{customer}/{channel}', [UnsubscribeController::class, 'confirm'])->middleware('signed')->name('unsubscribe.confirm');
 
@@ -55,6 +64,7 @@ Route::middleware('auth:customer')->group(function () {
     Route::post('/account/bookings/{booking}/manage-link', [AccountController::class, 'resendManageLink'])->middleware('throttle:public-forms')->name('account.manage-link');
 });
 
+Route::get('/admin-print/vouchers/{voucher}', VoucherPrintController::class)->middleware('auth')->name('admin.vouchers.print');
 Route::get('/cms-preview/{type}/{id}', PreviewController::class)->middleware(['auth', 'signed'])->name('cms.preview');
 
 /*
@@ -82,7 +92,7 @@ foreach (Locales::enabled() as $locale) {
             Route::get($segment('legal').'/{slug}', [LegalController::class, 'show'])->name('legal.show');
 
             Route::get('/{slug?}', PageController::class)
-                ->where('slug', '(?!(admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent)$)[a-z0-9\-]+')
+                ->where('slug', '(?!(u|admin-print|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent)$)[a-z0-9\-]+')
                 ->name('page');
         });
 }

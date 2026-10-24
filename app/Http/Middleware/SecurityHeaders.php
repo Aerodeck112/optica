@@ -110,6 +110,6 @@ class SecurityHeaders
 
     private function isAdmin(Request $request): bool
     {
-        return $request->is('admin', 'admin/*', 'livewire/*', 'livewire-*/*', 'filament/*');
+        return $request->is('admin', 'admin/*', 'admin-print/*', 'livewire/*', 'livewire-*/*', 'filament/*');
     }
 }

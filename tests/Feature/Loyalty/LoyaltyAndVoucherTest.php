@@ -2,13 +2,17 @@
 
 namespace Tests\Feature\Loyalty;
 
+use App\Models\User;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Loyalty\Models\LoyaltyLedgerEntry;
+use App\Modules\Loyalty\Models\Reward;
 use App\Modules\Loyalty\Services\LoyaltyException;
 use App\Modules\Loyalty\Services\LoyaltyService;
+use App\Modules\Loyalty\Services\RewardService;
 use App\Modules\Loyalty\Services\VoucherService;
 use Carbon\CarbonImmutable;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use Tests\Support\BookingFixtures;
@@ -146,6 +150,35 @@ class LoyaltyAndVoucherTest extends TestCase
         $this->assertCount(3, array_filter($results, fn ($r) => $r['ok'] ?? false), json_encode($results));
         $this->assertSame(10, $this->loyalty()->balance($customer));
         $this->assertSame(10, (int) LoyaltyLedgerEntry::query()->where('customer_id', $customer->id)->sum('delta'));
+    }
+
+    public function test_reward_redemption_debits_points_and_issues_voucher_once(): void
+    {
+        $customer = Customer::factory()->create();
+        $this->loyalty()->post($customer, 500, 'adjust', 'seed');
+        $reward = Reward::query()->create(['name' => ['ro' => '50 lei'], 'points_cost' => 300, 'reward_type' => 'voucher_value', 'value_minor' => 5000, 'voucher_valid_days' => 90, 'is_active' => true]);
+        $service = app(RewardService::class);
+
+        $voucher = $service->redeem($customer, $reward, 'k1');
+        $again = $service->redeem($customer, $reward, 'k1');
+
+        $this->assertSame($voucher->id, $again->id);
+        $this->assertSame(200, $this->loyalty()->balance($customer));
+        $this->assertSame(5000, (int) $voucher->balance_minor);
+        $this->expectException(LoyaltyException::class);
+        $service->redeem($customer, $reward, 'k2');
+    }
+
+    public function test_voucher_print_requires_voucher_permission(): void
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+        $voucher = $this->vouchers()->issue(['type' => 'value', 'initial_value_minor' => 10000, 'recipient_name' => 'Ana']);
+        $operator = tap(User::factory()->create(), fn ($u) => $u->assignRole('operator'));
+        $reception = tap(User::factory()->create(), fn ($u) => $u->assignRole('reception'));
+
+        $this->get(route('admin.vouchers.print', $voucher))->assertRedirect();
+        $this->actingAs($operator)->get(route('admin.vouchers.print', $voucher))->assertForbidden();
+        $this->actingAs($reception)->get(route('admin.vouchers.print', $voucher))->assertOk()->assertSee($voucher->code)->assertSee('Ana');
     }
 
     private function requiresRowLocks(): void
