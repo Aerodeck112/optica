@@ -588,9 +588,19 @@
     inset: 0;
     border-radius: 50%;
     padding: 3px;
-    background: conic-gradient(from var(--portal-angle, 0deg), var(--violet), var(--cyan), var(--magenta), var(--crimson), var(--violet));
+    overflow: hidden;
+    isolation: isolate;
     box-shadow: 0 0 60px rgb(123 77 255 / 0.55), 0 0 140px rgb(62 230 255 / 0.18), inset 0 0 30px rgb(0 0 0 / 0.6);
+  }
+  /* inelul colorat se rotește prin transform (pe compozitor), nu prin repictarea gradientului la fiecare cadru */
+  .portal__frame::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    z-index: -1;
+    background: conic-gradient(var(--violet), var(--cyan), var(--magenta), var(--crimson), var(--violet));
     animation: portal-spin 18s linear infinite;
+    will-change: transform;
   }
   .portal__window {
     position: relative;
@@ -630,13 +640,8 @@
   .portal__control svg { width: 1rem; height: 1rem; }
   .portal__note { position: absolute; left: 0; right: 0; bottom: -2.2rem; text-align: center; margin: 0; }
 
-  @property --portal-angle {
-    syntax: "<angle>";
-    initial-value: 0deg;
-    inherits: false;
-  }
-  @keyframes portal-spin { to { --portal-angle: 360deg; } }
-  .is-paused .portal__frame { animation-play-state: paused; }
+  @keyframes portal-spin { to { transform: rotate(360deg); } }
+  .is-paused .portal__frame::before { animation-play-state: paused; }
 
   /* ——— Mesaj mare ——— */
   .statement { position: relative; }
@@ -1005,7 +1010,7 @@
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .portal__frame { animation: none; }
+  .portal__frame::before { animation: none; }
 }
 
 @media (forced-colors: active) {

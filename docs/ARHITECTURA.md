@@ -44,7 +44,7 @@ Codul de domeniu stă în `app/Modules/<Modul>`; panoul în `app/Filament`; site
 | `Finance` | facturi, proforme, storno, avansuri, încasări, rambursări, TVA, serii, export contabil |
 | `Integrations` | e-Factura ANAF, procesatori plăți, agent casă de marcat |
 | `Inventory` | furnizori, facturi primite, articole, gestiuni, recepții (NIR), stocuri, inventar |
-| `Audit` | jurnal de audit, backup/restaurare, retenție date |
+| `Audit` | jurnal de audit; backup/restaurare în `Core/Backup`, retenția datelor în comanda `aw:retention` |
 
 Regula de dependență: modulele comunică prin servicii publice (`*Service`, `Actions`), nu prin modificarea directă a tabelelor altui modul. Toate canalele de rezervare (site, AI, recepție, admin) apelează `Booking\BookingService`.
 
@@ -96,10 +96,10 @@ Câmpurile traductibile sunt JSON (`{"ro": …, "en": …, "hu": …}`); fiecare
 | Mediu | Scop | Particularități |
 |---|---|---|
 | development | local | `MAIL/SMS` în sandbox (jurnal), date demonstrative fictive (`DemoSeeder`) |
-| staging | verificare înainte de producție | `noindex` global, autentificare HTTP opțională, integrări în mod test, destinatari de test |
+| staging | verificare înainte de producție | `noindex` global și banner „Mediu de test” (`AW_STAGING`), integrări în mod test, destinatari de test; protecția cu parolă a subdomeniului se face din cPanel (*Directory Privacy*) |
 | production | live | integrări reale după configurare; seed doar date de bază (`ProductionSeeder`) |
 
 Seed-urile demonstrative nu pot rula în producție (comanda refuză).
 
 ## 6. Securitate pe scurt
-Permisiuni server-side prin politici (`app/Policies`) pentru fiecare model; MFA obligatoriu pentru rolurile administrative; CSP cu nonce; secrete criptate în baza de date; audit pentru modificări sensibile. Detalii în `docs/SECURITATE.md`.
+Permisiuni verificate pe server pentru fiecare ecran, acțiune și descărcare (`ChecksPermissions` + verificări explicite în acțiuni și controlere); MFA obligatoriu pentru rolurile administrative; CSP cu nonce; secrete criptate în baza de date; audit pentru modificări sensibile. Detalii în `docs/SECURITATE.md`.
