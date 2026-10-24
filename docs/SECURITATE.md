@@ -1,7 +1,7 @@
 # Securitate și protecția datelor
 
 Ce măsuri sunt implementate, unde se află în cod și ce rămâne în responsabilitatea operatorului.
-Verificările automate (114 teste) rulează la fiecare modificare în GitHub Actions, împreună cu auditul dependențelor
+Verificările automate (125 de teste) rulează la fiecare modificare în GitHub Actions, împreună cu auditul dependențelor
 (`composer audit`, `npm audit`). La ultima rulare nu existau vulnerabilități cunoscute în dependențe.
 
 ## 1. Acces în panou
