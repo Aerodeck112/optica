@@ -16,7 +16,7 @@ class SeoController extends Controller
 {
     public function sitemap(SettingsRepository $settings): Response
     {
-        $xml = Cache::remember('aw.sitemap.v1', 600, function () use ($settings) {
+        $xml = Cache::remember('aw.sitemap.v2', 600, function () use ($settings) {
             $entries = [];
             $add = function (array $urls, ?string $lastmod = null) use (&$entries) {
                 // $urls: locale => url (doar limbile publicate) — generează hreflang reciproc
@@ -51,7 +51,8 @@ class SeoController extends Controller
             $booking = collect(Locales::enabled())->mapWithKeys(fn ($l) => [$l => lroute('booking.show', [], $l)])->all();
             $add($booking);
 
-            return view('site.sitemap', ['entries' => $entries])->render();
+            // declarația XML nu stă în șablon: cu short_open_tag activ în PHP, „<?xml” ar fi interpretat drept cod
+            return '<?xml version="1.0" encoding="UTF-8"?>'."\n".view('site.sitemap', ['entries' => $entries])->render();
         });
 
         return response($xml, 200, ['Content-Type' => 'application/xml; charset=utf-8']);

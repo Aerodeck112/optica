@@ -13,7 +13,6 @@ use Filament\Schemas\Schema;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema as DbSchema;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
@@ -46,9 +45,10 @@ class Updates extends Page
 
     public function mount(): void
     {
-        // prima deschidere după o actualizare manuală: tabela istoricului se creează aici (fără Terminal)
-        if (! DbSchema::hasTable('app_updates')) {
-            Artisan::call('migrate', ['--force' => true]);
+        // după o actualizare pusă manual (File Manager), modificările bazei de date se aplică la deschiderea paginii
+        Artisan::call('migrate', ['--force' => true]);
+        if (str_contains(Artisan::output(), 'DONE')) {
+            Notification::make()->success()->title('Baza de date a fost actualizată.')->send();
         }
         $this->form->fill();
     }
