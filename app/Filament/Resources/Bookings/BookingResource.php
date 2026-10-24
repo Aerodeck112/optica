@@ -99,7 +99,7 @@ class BookingResource extends Resource
             ->columns([
                 TextColumn::make('starts_at')->label('Data și ora')->dateTime('D, d.m.Y H:i', config('aw.timezone'))->sortable()->placeholder('Fără dată (cerere)')
                     ->description(fn (Booking $record) => $record->package?->getTranslation('name', 'ro')),
-                TextColumn::make('code')->label('Cod')->searchable()->copyable()->fontFamily('mono'),
+                TextColumn::make('code')->label('Cod')->searchable()->copyable()->fontFamily('mono')->visibleFrom('xl'),
                 TextColumn::make('contact_name')->label('Client')->searchable(['contact_name', 'contact_email', 'contact_phone', 'company_name'])
                     ->description(fn (Booking $record) => $record->company_name ?: $record->contact_phone),
                 TextColumn::make('participants')->label('Pers.')->alignCenter(),

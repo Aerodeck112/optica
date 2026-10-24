@@ -1017,3 +1017,8 @@
   .site-header, .site-footer, .cookie, .chat-launch, .mobile-book, .hero__sky, .hero__stars { display: none !important; }
   body { background: #fff; color: #000; }
 }
+
+@layer components {
+  .promo-banner--promo { background: linear-gradient(90deg, color-mix(in oklab, var(--magenta, #e0218a) 35%, transparent), color-mix(in oklab, var(--violet, #7c3aed) 35%, transparent)); }
+  .promo-banner--info { background: color-mix(in oklab, var(--cyan, #22d3ee) 18%, transparent); }
+}

@@ -28,6 +28,18 @@ class VariableBuilder
             'review_url' => $this->settings->bool('booking.review_request_enabled') ? ($this->settings->filled('venue.google_review_url') ?? '') : '',
         ];
 
+        if (! empty($context['__sample'])) {
+            // valori de exemplu pentru mesajele de test din panou (marcate clar ca exemplu)
+            return $vars + [
+                'customer.first_name' => 'Ana', 'customer.name' => 'Ana Exemplu', 'booking.code' => 'AWEXEMPLU',
+                'booking.package' => 'Sesiune VR (exemplu)', 'booking.date' => LocalTime::format(now()->addDays(3), 'd.m.Y'),
+                'booking.time' => '18:00', 'booking.participants' => '4', 'booking.total' => '[sumă exemplu]', 'booking.deposit' => '[avans exemplu]',
+                'booking.status' => 'Confirmată', 'booking.expires_at' => '', 'booking.manage_url' => url('/'), 'booking.previous_date' => '',
+                'lead.reference' => 'CR-EXEMPLU', 'lead.type' => 'Aniversare', 'lead.date' => LocalTime::format(now()->addDays(10), 'd.m.Y'),
+                'payment.amount' => '[sumă exemplu]', 'login_url' => url('/'), 'unsubscribe_url' => url('/'), 'staff.admin_url' => url('/admin'),
+            ];
+        }
+
         $customer = $context['customer'] ?? null;
         if ($customer instanceof Customer) {
             $vars['customer.first_name'] = $customer->first_name ?: '';

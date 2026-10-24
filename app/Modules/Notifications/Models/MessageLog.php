@@ -2,6 +2,8 @@
 
 namespace App\Modules\Notifications\Models;
 
+use App\Modules\Booking\Models\Booking;
+use App\Modules\Crm\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -25,6 +27,11 @@ class MessageLog extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(\App\Modules\Crm\Models\Customer::class);
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class);
     }
 }

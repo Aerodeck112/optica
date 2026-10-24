@@ -3,6 +3,7 @@
 namespace App\Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 
 class Integration extends Model
 {
@@ -28,7 +29,7 @@ class Integration extends Model
             return [];
         }
         try {
-            return json_decode(\Illuminate\Support\Facades\Crypt::decryptString($this->credentials), true) ?: [];
+            return json_decode(Crypt::decryptString($this->credentials), true) ?: [];
         } catch (\Throwable) {
             return [];
         }
@@ -37,7 +38,7 @@ class Integration extends Model
     public function storeCredentials(array $credentials): void
     {
         $credentials = array_filter($credentials, fn ($value) => $value !== null && $value !== '');
-        $this->credentials = $credentials ? \Illuminate\Support\Facades\Crypt::encryptString(json_encode($credentials)) : null;
+        $this->credentials = $credentials ? Crypt::encryptString(json_encode($credentials)) : null;
     }
 
     public function credential(string $key): ?string
@@ -47,11 +48,11 @@ class Integration extends Model
 
     public function isLive(): bool
     {
-        return $this->mode === 'live' && $this->status === 'configured';
+        return $this->mode === 'live' && in_array($this->status, ['configured', 'production_verified'], true);
     }
 
     public function isUsable(): bool
     {
-        return in_array($this->mode, ['live', 'sandbox'], true) && in_array($this->status, ['configured', 'sandbox_tested'], true);
+        return in_array($this->mode, ['live', 'sandbox'], true) && in_array($this->status, ['configured', 'sandbox_tested', 'production_verified'], true);
     }
 }

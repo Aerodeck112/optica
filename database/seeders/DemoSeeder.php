@@ -5,13 +5,13 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Modules\Booking\Models\Resource;
 use App\Modules\Booking\Services\BookingData;
+use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
 use App\Modules\Catalog\Models\Addon;
 use App\Modules\Catalog\Models\Game;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Cms\Models\Media;
-use App\Modules\Core\Models\Integration;
 use App\Modules\Core\Models\OpeningHour;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Services\LeadService;
@@ -112,7 +112,7 @@ class DemoSeeder extends Seeder
         $session->addons()->sync([$addon->id]);
 
         LegalDocument::query()->update(['status' => 'published', 'effective_at' => now()->subDay()]);
-        Integration::query()->where('key', 'email')->update(['mode' => 'sandbox', 'status' => 'sandbox_tested', 'driver' => 'smtp']);
+        // e-mailul rămâne neconfigurat în demo: mesajele ajung în jurnal prin furnizorul sandbox, fără trimitere reală
 
         foreach (['super_admin', 'manager', 'reception', 'operator', 'marketing', 'accountant', 'editor'] as $role) {
             $user = User::query()->updateOrCreate(['email' => "{$role}@example.test"], [
@@ -142,7 +142,7 @@ class DemoSeeder extends Seeder
                     marketingConsent: ['email' => $i % 2 === 0],
                     consentContext: ['form' => 'demo'],
                 ));
-            } catch (\App\Modules\Booking\Services\BookingException $e) {
+            } catch (BookingException $e) {
                 $this->command?->warn("Rezervare demo omisă ({$date} {$time}): {$e->getMessage()}");
             }
         }

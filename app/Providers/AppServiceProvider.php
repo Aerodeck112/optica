@@ -2,13 +2,42 @@
 
 namespace App\Providers;
 
+use App\Http\View\SiteComposer;
+use App\Models\User;
 use App\Modules\Audit\AuditLogger;
+use App\Modules\Audit\Listeners\AuthenticationAuditSubscriber;
+use App\Modules\Booking\Models\Booking;
+use App\Modules\Catalog\Models\Game;
+use App\Modules\Catalog\Models\Package;
+use App\Modules\Cms\Models\Banner;
+use App\Modules\Cms\Models\GalleryItem;
+use App\Modules\Cms\Models\LegalDocument;
+use App\Modules\Cms\Models\Media;
+use App\Modules\Cms\Models\Page;
+use App\Modules\Cms\Models\Post;
+use App\Modules\Core\Models\Integration;
+use App\Modules\Core\Models\Setting;
 use App\Modules\Core\Settings\SettingsRepository;
+use App\Modules\Crm\Models\Customer;
+use App\Modules\Crm\Models\Lead;
+use App\Modules\Finance\Models\FiscalReceipt;
+use App\Modules\Finance\Models\Invoice;
+use App\Modules\Finance\Models\Payment;
+use App\Modules\Inventory\Models\GoodsReceipt;
+use App\Modules\Inventory\Models\InventoryCount;
+use App\Modules\Inventory\Models\PurchaseInvoice;
+use App\Modules\Loyalty\Models\Referral;
+use App\Modules\Loyalty\Models\Voucher;
+use App\Modules\Marketing\Models\Campaign;
+use App\Modules\Notifications\Listeners\NotificationSubscriber;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,40 +52,41 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureRateLimits();
 
-        \Illuminate\Support\Facades\Event::subscribe(\App\Modules\Notifications\Listeners\NotificationSubscriber::class);
+        Event::subscribe(NotificationSubscriber::class);
+        Event::subscribe(AuthenticationAuditSubscriber::class);
 
-        \Illuminate\Support\Facades\View::composer(['site.*'], \App\Http\View\SiteComposer::class);
-        \Illuminate\Support\Facades\Blade::componentNamespace('App\\View\\Components', 'aw');
+        View::composer(['site.*'], SiteComposer::class);
+        Blade::componentNamespace('App\\View\\Components', 'aw');
 
         // În dezvoltare semnalăm atributele ignorate la mass-assignment (greșeli de nume de coloană).
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 
         // Nume stabile pentru relațiile polimorfice (nu depind de namespace-ul clasei).
         Relation::enforceMorphMap([
-            'user' => \App\Models\User::class,
-            'customer' => \App\Modules\Crm\Models\Customer::class,
-            'booking' => \App\Modules\Booking\Models\Booking::class,
-            'lead' => \App\Modules\Crm\Models\Lead::class,
-            'page' => \App\Modules\Cms\Models\Page::class,
-            'post' => \App\Modules\Cms\Models\Post::class,
-            'game' => \App\Modules\Catalog\Models\Game::class,
-            'package' => \App\Modules\Catalog\Models\Package::class,
-            'media' => \App\Modules\Cms\Models\Media::class,
-            'gallery_item' => \App\Modules\Cms\Models\GalleryItem::class,
-            'invoice' => \App\Modules\Finance\Models\Invoice::class,
-            'payment' => \App\Modules\Finance\Models\Payment::class,
-            'voucher' => \App\Modules\Loyalty\Models\Voucher::class,
-            'referral' => \App\Modules\Loyalty\Models\Referral::class,
-            'goods_receipt' => \App\Modules\Inventory\Models\GoodsReceipt::class,
-            'inventory_count' => \App\Modules\Inventory\Models\InventoryCount::class,
-            'purchase_invoice' => \App\Modules\Inventory\Models\PurchaseInvoice::class,
-            'setting' => \App\Modules\Core\Models\Setting::class,
-            'integration' => \App\Modules\Core\Models\Integration::class,
-            'legal_document' => \App\Modules\Cms\Models\LegalDocument::class,
-            'campaign' => \App\Modules\Marketing\Models\Campaign::class,
-            'fiscal_receipt' => \App\Modules\Finance\Models\FiscalReceipt::class,
+            'user' => User::class,
+            'customer' => Customer::class,
+            'booking' => Booking::class,
+            'lead' => Lead::class,
+            'page' => Page::class,
+            'post' => Post::class,
+            'game' => Game::class,
+            'package' => Package::class,
+            'media' => Media::class,
+            'gallery_item' => GalleryItem::class,
+            'invoice' => Invoice::class,
+            'payment' => Payment::class,
+            'voucher' => Voucher::class,
+            'referral' => Referral::class,
+            'goods_receipt' => GoodsReceipt::class,
+            'inventory_count' => InventoryCount::class,
+            'purchase_invoice' => PurchaseInvoice::class,
+            'setting' => Setting::class,
+            'integration' => Integration::class,
+            'legal_document' => LegalDocument::class,
+            'campaign' => Campaign::class,
+            'fiscal_receipt' => FiscalReceipt::class,
             'resource' => \App\Modules\Booking\Models\Resource::class,
-            'banner' => \App\Modules\Cms\Models\Banner::class,
+            'banner' => Banner::class,
         ]);
     }
 
