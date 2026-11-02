@@ -19,16 +19,20 @@ function initNav() {
     header.dataset.open = 'false';
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', toggle.dataset.labelOpen);
-    doc.body.style.overflow = '';
+    doc.documentElement.style.overflow = '';
   };
   toggle.addEventListener('click', () => {
     const open = header.dataset.open !== 'true';
+    // panoul începe imediat sub antet (antetul poate fi mai jos când bannerul de sus e afișat)
+    if (open) header.style.setProperty('--menu-top', `${Math.max(0, header.getBoundingClientRect().bottom)}px`);
     header.dataset.open = String(open);
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? toggle.dataset.labelClose : toggle.dataset.labelOpen);
-    doc.body.style.overflow = open ? 'hidden' : '';
+    doc.documentElement.style.overflow = open ? 'hidden' : '';
     if (open) header.querySelector('.site-nav a')?.focus();
   });
+  // un link către aceeași pagină (ancoră) nu reîncarcă pagina: închidem meniul explicit
+  header.querySelectorAll('.site-nav a').forEach((link) => link.addEventListener('click', close));
   doc.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && header.dataset.open === 'true') {
       close();

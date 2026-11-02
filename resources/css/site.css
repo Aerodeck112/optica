@@ -1057,10 +1057,13 @@
 @media (max-width: 64rem) {
   .site-nav, .site-header__cta, .site-header .lang-switch { display: none; }
   .nav-toggle { display: grid; }
+  /* backdrop-filter ar face din antet blocul de referință pentru panoul fix al meniului (panou de doar un rând) */
+  .site-header[data-open="true"] { backdrop-filter: none; background: var(--abyss); }
   .site-header[data-open="true"] .site-nav {
     display: block;
     position: fixed;
-    inset: var(--header-h) 0 0 0;
+    inset: var(--menu-top, var(--header-h)) 0 0 0;
+    z-index: 60;
     background: var(--abyss);
     padding: var(--space-6) var(--gutter);
     overflow-y: auto;
