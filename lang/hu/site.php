@@ -231,6 +231,7 @@ return [
         'participants' => ':min–:max résztvevő',
         'participants_max' => 'legfeljebb :max résztvevő',
         'slot' => ':minutes perces foglalás',
+        'duration_hours' => '{1} Időtartam: 1 óra|[2,*] Időtartam: :count óra',
         'play' => ':minutes perc játék',
         'included' => 'Tartalmazza',
         'conditions' => 'Feltételek',

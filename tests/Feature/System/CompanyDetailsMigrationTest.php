@@ -2,9 +2,12 @@
 
 namespace Tests\Feature\System;
 
+use App\Modules\Catalog\Models\Addon;
+use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\Media;
 use App\Modules\Cms\Models\Page;
 use App\Modules\Core\Settings\SettingsRepository;
+use Database\Seeders\BaseDataSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -55,5 +58,25 @@ class CompanyDetailsMigrationTest extends TestCase
         $page->refresh();
         $this->assertSame(['heading' => 'Galerie'], $page->blocks['ro'][0]['data']);
         $this->assertSame(['heading' => 'Galerie'], $page->draft_blocks['ro'][0]['data']);
+    }
+
+    public function test_offer_migration_creates_packages_extras_and_voucher_page_once(): void
+    {
+        $this->seed(BaseDataSeeder::class);
+        $vouchers = Page::query()->create(['key' => 'vouchers', 'template' => 'blocks', 'slug' => ['ro' => 'vouchere-cadou'], 'title' => ['ro' => 'Vouchere'],
+            'blocks' => ['ro' => [['type' => 'rich_text', 'data' => ['body' => 'Vechi']]]], 'published_locales' => ['ro'], 'status' => 'published']);
+        Page::query()->create(['key' => 'home', 'template' => 'blocks', 'slug' => ['ro' => ''], 'title' => ['ro' => 'Acasă'], 'blocks' => ['ro' => []], 'published_locales' => ['ro'], 'status' => 'published']);
+        $migration = require database_path('migrations/2026_11_02_075835_load_packages_extras_and_vouchers.php');
+
+        $migration->up();
+        $migration->up();
+
+        $silver = Package::query()->where('slug->ro', 'aniversare-silver')->sole();
+        $this->assertSame(249000, (int) $silver->price_minor);
+        $this->assertSame('request', $silver->booking_mode);
+        $this->assertCount(8, $silver->addons);
+        $this->assertSame(5, Package::query()->where('is_active', true)->count());
+        $this->assertSame(8, Addon::query()->count());
+        $this->assertStringContainsString('Voucher Squad — 440 lei', json_encode($vouchers->refresh()->blocks, JSON_UNESCAPED_UNICODE));
     }
 }

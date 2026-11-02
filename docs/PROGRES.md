@@ -54,6 +54,7 @@ Legendă: **T** = acoperit de teste automate · **B** = parcurs în browser (cap
 | SEO tehnic: HTML randat pe server, `hreflang`, sitemap, date structurate, redirecturi 301 la schimbarea adresei | funcționează | T B |
 | Pagini de eroare proprii (404, 410, 419, 429, 500, 503) | funcționează | T B |
 | Deschiderea oficială: numărătoare inversă pe prima pagină, banner, rezervări online doar din ziua deschiderii | funcționează | T B |
+| Oferta confirmată: pachete aniversare (Standard, Silver, Gold), companii (Corporate Team, Corporate Challenge), opțiuni suplimentare, vouchere cadou (110 / 220 / 440 / 880 lei) | publicată (rezervare prin cerere, confirmată de echipă) | T B |
 | Limbi: română publică; engleză și maghiară traduse (texte de interfață), **nepublicate** până la verificare | parțial | T (chei și variabile identice), E (verificare de vorbitori nativi, traducerea conținutului din CMS) |
 
 ### Recepție și rezervări

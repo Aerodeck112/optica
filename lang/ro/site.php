@@ -230,6 +230,7 @@ return [
         'participants' => ':min–:max participanți',
         'participants_max' => 'până la :max participanți',
         'slot' => 'Rezervare de :minutes min',
+        'duration_hours' => '{1} Durată: 1 oră|[2,*] Durată: :count ore',
         'play' => ':minutes min de joc',
         'included' => 'Inclus',
         'conditions' => 'Condiții',

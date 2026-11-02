@@ -34,7 +34,7 @@ class KnowledgeBase
             'Deschidere oficială' => $this->opening->isUpcomingOrToday() ? $this->opening->formatted().' (rezervările online încep din această zi)' : null,
         ]);
         $sections[] = "## Locația\n".collect($facts)->map(fn ($v, $k) => "- {$k}: {$v}")->implode("\n")
-            ."\n- Experiențe: doar realitate virtuală (VR). Nu există LED floor / pixel floor sau alte atracții.";
+            ."\n- Experiențe: realitate virtuală (VR) multiplayer și 2 stații PlayStation (incluse în pachetele pentru aniversări și companii și în voucherele cadou). Nu există LED floor / pixel floor sau alte atracții.";
 
         $hours = $this->schedule->weeklyForDisplay();
         if ($this->schedule->isConfigured()) {

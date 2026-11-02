@@ -231,6 +231,7 @@ return [
         'participants' => ':min–:max participants',
         'participants_max' => 'up to :max participants',
         'slot' => ':minutes-minute booking',
+        'duration_hours' => '{1} Duration: 1 hour|[2,*] Duration: :count hours',
         'play' => ':minutes min of play',
         'included' => 'Included',
         'conditions' => 'Conditions',

@@ -26,7 +26,11 @@
         @elseif ($package->max_participants)
             <li>{{ __('site.packages.participants_max', ['max' => $package->max_participants]) }}</li>
         @endif
-        @if ($package->slot_minutes)<li>{{ __('site.packages.slot', ['minutes' => $package->slot_minutes]) }}</li>@endif
+        @if ($package->slot_minutes && $package->slot_minutes % 60 === 0)
+            <li>{{ trans_choice('site.packages.duration_hours', intdiv($package->slot_minutes, 60)) }}</li>
+        @elseif ($package->slot_minutes)
+            <li>{{ __('site.packages.slot', ['minutes' => $package->slot_minutes]) }}</li>
+        @endif
         @if ($package->play_minutes)<li>{{ __('site.packages.play', ['minutes' => $package->play_minutes]) }}</li>@endif
         @if ($package->hasPrice() && $package->deposit_type !== 'none')
             <li>{{ __('site.packages.deposit', ['amount' => $package->deposit_type === 'percent' ? ($package->deposit_value / 100).'%' : money((int) $package->deposit_value)]) }}</li>
