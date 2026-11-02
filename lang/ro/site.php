@@ -18,6 +18,11 @@ return [
     'close' => 'Închide',
     'loading' => 'Se încarcă…',
     'location' => 'Cluj-Napoca',
+    'opening' => [
+        'when' => 'Deschidere oficială: :date',
+        'countdown' => 'Timp rămas până la deschidere',
+        'units' => ['days' => 'zile', 'hours' => 'ore', 'minutes' => 'minute', 'seconds' => 'secunde'],
+    ],
     'pause_video' => 'Oprește animația',
     'play_video' => 'Pornește animația',
     'play_trailer' => 'Vezi trailerul',

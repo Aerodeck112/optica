@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AnafOAuthController;
 use App\Http\Controllers\Admin\FinanceDocumentController;
+use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\VoucherPrintController;
 use App\Http\Controllers\Site\AccountController;
 use App\Http\Controllers\Site\BookingApiController;
@@ -72,6 +73,8 @@ Route::get('/admin-anaf/callback', [AnafOAuthController::class, 'callback'])->mi
 Route::get('/admin-print/vouchers/{voucher}', VoucherPrintController::class)->middleware('auth')->name('admin.vouchers.print');
 Route::get('/admin-print/invoices/{invoice}/pdf', [FinanceDocumentController::class, 'invoicePdf'])->middleware('auth')->name('admin.invoices.pdf');
 Route::get('/admin-print/goods-receipts/{receipt}', [FinanceDocumentController::class, 'goodsReceipt'])->middleware('auth')->name('admin.goods-receipts.print');
+Route::get('/admin-print/social/media/{media}/{format}', [SocialMediaController::class, 'image'])->whereIn('format', ['portrait', 'square', 'story', 'original'])->middleware('auth')->name('admin.social.image');
+Route::get('/admin-print/social/posts/{post}/bundle', [SocialMediaController::class, 'bundle'])->middleware('auth')->name('admin.social.bundle');
 Route::get('/admin-print/efactura/{submission}/{kind}', [FinanceDocumentController::class, 'efacturaFile'])->whereIn('kind', ['xml', 'response'])->middleware('auth')->name('admin.efactura.file');
 Route::get('/cms-preview/{type}/{id}', PreviewController::class)->middleware(['auth', 'signed'])->name('cms.preview');
 

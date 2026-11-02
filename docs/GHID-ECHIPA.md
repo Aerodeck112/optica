@@ -94,6 +94,24 @@ Diferențele devin mișcări de stoc „Inventar”.
 * **Importuri contacte**: doar liste cu dovada consimțământului (sursă, dată); rândurile fără consimțământ explicit se importă
   fără permisiune de marketing.
 * **Fidelizare**: niveluri, recompense, puncte (acordate automat la rezervările finalizate și achitate).
+* **Deschiderea oficială**: data se setează în **Setări locație → Data deschiderii oficiale**. Până atunci, prima pagină afișează
+  numărătoarea inversă (blocul „Deschidere oficială”), iar rezervările online încep din ziua deschiderii; recepția poate
+  rezerva oricând. Blocul dispare singur după ziua deschiderii.
+
+## Social media
+
+* **Social media → Planul săptămânii**: pentru fiecare zi, postarea planificată cu imaginile gata de descărcat
+  (Instagram 4:5, pătrat 1:1, story 9:16 sau original) și textul complet, cu hashtag-uri.
+* Fluxul zilnic: **Descarcă tot** (imaginile + `text.txt`) sau descărcați imaginea în formatul dorit → **Copiază textul** →
+  publicați din aplicația Instagram / Facebook / Meta Business Suite → **Am publicat**. Aplicația nu publică singură pe rețele.
+* **Propune postări pentru zilele libere**: completează zilele fără postare din săptămâna afișată, cu o temă pe zi
+  (jocul săptămânii, prieteni, întrebarea săptămânii, aniversări/familie, weekend, companii, din culise), imagini nefolosite
+  în ultimele 28 de zile și texte construite doar din informațiile din panou. Verificați și ajustați textul înainte de publicare.
+* **Toate postările**: listă, filtre, editare (data, ora, canale, text, imagini în ordinea din carusel), note interne.
+* Imaginile cu minori apar doar dacă acordul este confirmat în **Media**; fotografiile din pachetul francizei sunt din alte
+  arene ale rețelei, deci textele nu spun că sunt din Cluj. După deschidere, înlocuiți-le treptat cu fotografii proprii
+  (cu acordul persoanelor din poze).
+* Planul pentru 2–29 noiembrie 2026 (campania de deschidere, cu grafice de numărătoare inversă) este deja încărcat.
 
 ## Asistent AI
 

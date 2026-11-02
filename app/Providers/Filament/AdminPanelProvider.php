@@ -72,6 +72,7 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make('Conținut site'),
                 NavigationGroup::make('Catalog'),
                 NavigationGroup::make('Marketing'),
+                NavigationGroup::make('Social media'),
                 NavigationGroup::make('Fidelizare'),
                 NavigationGroup::make('Financiar'),
                 NavigationGroup::make('Stocuri'),

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Cms\Blocks;
 
+use App\Modules\Booking\Services\VenueOpening;
 use App\Modules\Catalog\Models\Game;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\Faq;
@@ -12,6 +13,7 @@ use App\Modules\Cms\Services\LinkResolver;
 use App\Modules\Cms\Services\MediaRepository;
 use App\Modules\Cms\Services\SafeMarkdown;
 use App\Modules\Core\Settings\SettingsRepository;
+use App\Support\LocalTime;
 
 /**
  * Transformă datele brute ale blocurilor în date gata de afișare: imagini rezolvate, linkuri validate,
@@ -53,6 +55,32 @@ class BlockRenderer
         $url = $this->links->url($link, $locale);
 
         return $label && $url ? ['label' => $label, 'url' => $url, 'external' => LinkResolver::isExternal($url)] : null;
+    }
+
+    private function prepareOpeningCountdown(array $d, string $locale): ?array
+    {
+        $opening = app(VenueOpening::class);
+        $moment = $opening->moment();
+        if (! $moment || ! $opening->isUpcomingOrToday()) {
+            return null;
+        }
+        $local = LocalTime::toLocal($moment);
+
+        return [
+            'title_1' => $d['title_1'] ?? '',
+            'title_2' => $d['title_2'] ?? null,
+            'body' => $d['body'] ?? null,
+            'today_title' => $d['today_title'] ?? null,
+            'primary' => $this->cta($d['primary_label'] ?? null, $d['primary_link'] ?? null, $locale),
+            'secondary' => $this->cta($d['secondary_label'] ?? null, $d['secondary_link'] ?? null, $locale),
+            'target' => $moment->toIso8601ZuluString(),
+            'remaining' => max(0, $moment->getTimestamp() - LocalTime::now()->getTimestamp()),
+            'is_today' => LocalTime::now()->toDateString() === $opening->date(),
+            'day' => $local->day,
+            'weekday' => $local->locale($locale)->isoFormat('dddd'),
+            'month' => $local->locale($locale)->isoFormat('MMMM'),
+            'date_label' => $local->locale($locale)->isoFormat('dddd, D MMMM YYYY'),
+        ];
     }
 
     private function prepareHeroPortal(array $d, string $locale, int $i): array

@@ -145,7 +145,9 @@ export function initBooking(root) {
   /* ——— Calendar ——— */
   function renderCalendar() {
     const today = new Date(data.today + 'T12:00:00');
-    if (!state.month) state.month = new Date(today.getFullYear(), today.getMonth(), 1);
+    // înainte de deschiderea oficială, prima zi rezervabilă este ziua deschiderii
+    const minDate = new Date((data.min_date || data.today) + 'T12:00:00');
+    if (!state.month) state.month = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
     const max = new Date(data.max_date + 'T12:00:00');
     const month = state.month;
     const first = new Date(month.getFullYear(), month.getMonth(), 1);
@@ -160,7 +162,7 @@ export function initBooking(root) {
       const date = new Date(month.getFullYear(), month.getMonth(), day, 12);
       const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const closed = data.closed_weekdays.includes(((date.getDay() + 6) % 7) + 1) || data.closed_dates.includes(iso);
-      const disabled = date < today || date > max || closed;
+      const disabled = date < minDate || date > max || closed;
       const btn = el('button', {
         type: 'button',
         class: 'calendar__day' + (iso === data.today ? ' is-today' : ''),
@@ -173,7 +175,7 @@ export function initBooking(root) {
       grid.append(el('div', { role: 'gridcell' }, btn));
     }
 
-    const prevDisabled = month <= new Date(today.getFullYear(), today.getMonth(), 1);
+    const prevDisabled = month <= new Date(minDate.getFullYear(), minDate.getMonth(), 1);
     const nextDisabled = new Date(month.getFullYear(), month.getMonth() + 1, 1) > max;
     els.calendar.replaceChildren(
       el('div', { class: 'calendar__head' }, [

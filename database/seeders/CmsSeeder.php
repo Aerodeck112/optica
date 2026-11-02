@@ -80,6 +80,14 @@ class CmsSeeder extends Seeder
                             ['src' => '/media/video/portal-loop.mp4', 'type' => 'video/mp4'],
                         ],
                     ]),
+                    $this->b('opening_countdown', [
+                        'title_1' => 'O altă lume se deschide.',
+                        'title_2' => 'Chiar vineri, 13.',
+                        'body' => 'Deschidem arena Another World pe Str. Teodor Mihali nr. 31-35, în Cluj-Napoca. Adu-ți prietenii, familia sau colegii și intrați împreună în jocuri de realitate virtuală multiplayer.',
+                        'today_title' => 'Azi deschidem. Te așteptăm în altă lume.',
+                        'primary_label' => 'Rezervă pentru deschidere', 'primary_link' => 'route:booking',
+                        'secondary_label' => 'Vezi jocurile', 'secondary_link' => 'route:games',
+                    ]),
                     $this->b('statement', [
                         'text' => 'Nu te uiți la o poveste. Ești în ea.',
                         'body' => 'Pui casca, asculți instructajul și, în câteva momente, tu și echipa ta intrați într-o lume nouă. Colaborați, vă provocați, râdeți — iar echipa noastră vă ghidează de la primul pas.',

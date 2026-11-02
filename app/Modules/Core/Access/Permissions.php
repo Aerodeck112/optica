@@ -28,6 +28,7 @@ final class Permissions
         'prices.manage' => 'Modifică prețuri',
         'marketing.manage' => 'Creează campanii și segmente',
         'marketing.send' => 'Programează/trimite campanii',
+        'social.manage' => 'Planifică postările pe rețelele sociale',
         'templates.manage' => 'Editează șabloane de mesaje',
         'messages.view' => 'Vede jurnalul de mesaje',
         'loyalty.manage' => 'Administrează fidelizarea',
@@ -53,7 +54,7 @@ final class Permissions
         'super_admin' => ['label' => 'Super administrator', 'permissions' => ['*']],
         'manager' => ['label' => 'Manager', 'permissions' => [
             'dashboard.view', 'bookings.*', 'resources.manage', 'customers.*', 'leads.manage', 'tasks.manage',
-            'cms.manage', 'cms.publish', 'legal.manage', 'catalog.manage', 'prices.manage', 'marketing.*', 'templates.manage',
+            'cms.manage', 'cms.publish', 'legal.manage', 'catalog.manage', 'prices.manage', 'marketing.*', 'social.manage', 'templates.manage',
             'messages.view', 'loyalty.manage', 'vouchers.manage', 'finance.view', 'finance.issue', 'finance.refund',
             'inventory.manage', 'fiscal.*', 'reports.view', 'ai.manage', 'audit.view',
         ]],
@@ -62,7 +63,7 @@ final class Permissions
             'customers.view', 'customers.manage', 'leads.manage', 'tasks.manage', 'vouchers.manage', 'finance.view', 'finance.issue', 'fiscal.operate',
         ]],
         'operator' => ['label' => 'Operator arenă', 'permissions' => ['dashboard.view', 'bookings.view', 'bookings.checkin', 'tasks.manage']],
-        'marketing' => ['label' => 'Marketing', 'permissions' => ['dashboard.view', 'customers.view', 'marketing.*', 'templates.manage', 'messages.view', 'cms.manage', 'cms.publish', 'reports.view', 'loyalty.manage']],
+        'marketing' => ['label' => 'Marketing', 'permissions' => ['dashboard.view', 'customers.view', 'marketing.*', 'social.manage', 'templates.manage', 'messages.view', 'cms.manage', 'cms.publish', 'reports.view', 'loyalty.manage']],
         'accountant' => ['label' => 'Contabil', 'permissions' => ['finance.view', 'finance.export', 'efactura.manage', 'inventory.manage', 'reports.view', 'fiscal.reconcile']],
         'editor' => ['label' => 'Editor conținut', 'permissions' => ['cms.manage', 'catalog.manage']],
     ];

@@ -10,6 +10,7 @@ final class BlockRegistry
 {
     public const BLOCKS = [
         'hero_portal' => ['label' => 'Hero cu portal', 'icon' => 'heroicon-o-sparkles'],
+        'opening_countdown' => ['label' => 'Deschidere oficială (numărătoare inversă)', 'icon' => 'heroicon-o-clock'],
         'statement' => ['label' => 'Mesaj mare', 'icon' => 'heroicon-o-megaphone'],
         'audience_paths' => ['label' => 'Pentru cine este (categorii)', 'icon' => 'heroicon-o-user-group'],
         'game_rail' => ['label' => 'Jocuri (bandă orizontală)', 'icon' => 'heroicon-o-puzzle-piece'],

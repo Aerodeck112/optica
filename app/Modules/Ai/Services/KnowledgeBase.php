@@ -4,6 +4,7 @@ namespace App\Modules\Ai\Services;
 
 use App\Modules\Ai\Models\AiKnowledgeEntry;
 use App\Modules\Booking\Services\ScheduleService;
+use App\Modules\Booking\Services\VenueOpening;
 use App\Modules\Cms\Models\Faq;
 use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Core\Settings\SettingsRepository;
@@ -15,7 +16,7 @@ use App\Modules\Core\Settings\SettingsRepository;
  */
 class KnowledgeBase
 {
-    public function __construct(private readonly SettingsRepository $settings, private readonly ScheduleService $schedule) {}
+    public function __construct(private readonly SettingsRepository $settings, private readonly ScheduleService $schedule, private readonly VenueOpening $opening) {}
 
     public function render(string $locale = 'ro'): string
     {
@@ -30,6 +31,7 @@ class KnowledgeBase
             'E-mail' => $this->settings->filled('contact.email_bookings') ?? $this->settings->filled('contact.email_general'),
             'Hartă' => $this->settings->filled('venue.maps_url'),
             'Site' => rtrim((string) config('app.url'), '/'),
+            'Deschidere oficială' => $this->opening->isUpcomingOrToday() ? $this->opening->formatted().' (rezervările online încep din această zi)' : null,
         ]);
         $sections[] = "## Locația\n".collect($facts)->map(fn ($v, $k) => "- {$k}: {$v}")->implode("\n")
             ."\n- Experiențe: doar realitate virtuală (VR). Nu există LED floor / pixel floor sau alte atracții.";

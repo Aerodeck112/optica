@@ -325,6 +325,37 @@ function initBooking() {
   if (manage) import('./booking.js').then((m) => m.initReschedule(manage));
 }
 
+/* ——— Numărătoarea inversă până la deschidere ——— */
+function initCountdown() {
+  doc.querySelectorAll('[data-countdown]').forEach((box) => {
+    const target = Date.parse(box.dataset.countdown);
+    if (Number.isNaN(target)) return;
+    const cells = Object.fromEntries([...box.querySelectorAll('[data-unit]')].map((n) => [n.dataset.unit, n]));
+    const section = box.closest('.opening');
+    let timer = null;
+    const pad = (n) => String(n).padStart(2, '0');
+    const tick = () => {
+      const left = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      cells.days.textContent = String(Math.floor(left / 86400));
+      cells.hours.textContent = pad(Math.floor((left % 86400) / 3600));
+      cells.minutes.textContent = pad(Math.floor((left % 3600) / 60));
+      cells.seconds.textContent = pad(left % 60);
+      if (left === 0) {
+        clearInterval(timer);
+        box.hidden = true;
+        section?.classList.add('is-today');
+        const today = section?.querySelector('[data-opening-today]');
+        if (today) {
+          today.hidden = false;
+          section.querySelector('[data-opening-before]')?.setAttribute('hidden', '');
+        }
+      }
+    };
+    tick();
+    timer = setInterval(tick, 1000);
+  });
+}
+
 initNav();
 initBanners();
 initConsent();
@@ -335,3 +366,4 @@ initPageEvents();
 initChatLauncher();
 initForms();
 initBooking();
+initCountdown();

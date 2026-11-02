@@ -47,6 +47,7 @@ class Media extends Model
             'focal_y' => 'float',
             'depicts_minors' => 'boolean',
             'guardian_consent_confirmed' => 'boolean',
+            'tags' => 'array',
         ];
     }
 

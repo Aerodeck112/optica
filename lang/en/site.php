@@ -19,6 +19,11 @@ return [
     'close' => 'Close',
     'loading' => 'Loading…',
     'location' => 'Cluj-Napoca',
+    'opening' => [
+        'when' => 'Grand opening: :date',
+        'countdown' => 'Time left until the opening',
+        'units' => ['days' => 'days', 'hours' => 'hours', 'minutes' => 'minutes', 'seconds' => 'seconds'],
+    ],
     'pause_video' => 'Pause animation',
     'play_video' => 'Play animation',
     'play_trailer' => 'Watch the trailer',

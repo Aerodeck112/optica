@@ -20,6 +20,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Text;
 
 /**
  * Formularele blocurilor din editorul de pagini. Lista de blocuri este închisă (BlockRegistry);
@@ -66,6 +67,17 @@ final class BlockForms
                         TextInput::make('src')->label('Cale')->required()->regex('/^\/media\/video\/[a-z0-9\-_.\/]+\.(mp4|webm)$/i')->placeholder('/media/video/portal-loop.mp4'),
                         TextInput::make('type')->label('Tip MIME')->default('video/mp4')->maxLength(80),
                     ])->columns(2)->defaultItems(0)->reorderable(),
+            ]),
+            $make('opening_countdown', [
+                Text::make('Data se setează o singură dată, în Setări locație → „Data deschiderii oficiale”. Blocul dispare singur după ziua deschiderii.'),
+                Grid::make(2)->schema([
+                    Fields::text('title_1', 'Titlu — rândul 1', 60)->required(),
+                    Fields::text('title_2', 'Titlu — rândul 2', 60),
+                    Textarea::make('body')->label('Text')->rows(2)->maxLength(300),
+                    Fields::text('today_title', 'Titlu în ziua deschiderii', 80),
+                ]),
+                self::cta('primary', 'Buton principal'),
+                self::cta('secondary', 'Buton secundar'),
             ]),
             $make('statement', [
                 Textarea::make('text')->label('Mesaj')->required()->rows(2)->maxLength(240),

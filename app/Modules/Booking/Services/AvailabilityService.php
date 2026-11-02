@@ -18,6 +18,7 @@ class AvailabilityService
         private readonly ScheduleService $schedule,
         private readonly ConflictChecker $conflicts,
         private readonly SettingsRepository $settings,
+        private readonly VenueOpening $opening,
     ) {}
 
     /**
@@ -34,6 +35,9 @@ class AvailabilityService
         $maxDays = (int) $this->settings->int('booking.max_advance_days', 90);
         if (! $staff && ($localDate < $today || $localDate > LocalTime::now()->addDays($maxDays)->toDateString())) {
             return ['status' => 'out_of_range', 'slots' => [], 'message' => null];
+        }
+        if (! $staff && $localDate < $this->opening->firstBookableDate()) {
+            return ['status' => 'out_of_range', 'slots' => [], 'message' => 'Rezervările online încep din ziua deschiderii: '.$this->opening->formatted().'.'];
         }
 
         $window = $this->schedule->windowFor($localDate);

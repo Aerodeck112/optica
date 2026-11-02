@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Core\Settings\SettingsSchema;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -134,6 +135,7 @@ class Settings extends Page
             'email' => TextInput::make($name)->email()->maxLength(190)->placeholder($placeholder),
             'url' => TextInput::make($name)->url()->maxLength(500)->placeholder($placeholder),
             'phone' => TextInput::make($name)->tel()->maxLength(30)->placeholder($placeholder),
+            'date' => DatePicker::make($name)->format('Y-m-d')->displayFormat('d.m.Y')->native(false)->placeholder($placeholder),
             default => TextInput::make($name)->maxLength(500)->placeholder($placeholder),
         };
         if (! empty($def['secret'])) {

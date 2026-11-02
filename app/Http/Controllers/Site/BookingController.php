@@ -8,6 +8,7 @@ use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingData;
 use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
+use App\Modules\Booking\Services\VenueOpening;
 use App\Modules\Catalog\Models\Game;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\LegalDocument;
@@ -182,6 +183,7 @@ class BookingController extends Controller
         return [
             'locale' => $locale,
             'today' => $today->toDateString(),
+            'min_date' => app(VenueOpening::class)->firstBookableDate(),
             'max_date' => $today->addDays($maxDays)->toDateString(),
             'closed_weekdays' => $closedWeekdays,
             'closed_dates' => $closedDates,

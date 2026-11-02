@@ -28,6 +28,7 @@ final class SettingsSchema
             'venue.address_street' => ['group' => 'venue', 'label' => 'Adresa locației (stradă, număr, etaj)', 'type' => 'string', 'launch' => true],
             'venue.address_city' => ['group' => 'venue', 'label' => 'Localitate', 'type' => 'string', 'default' => 'Cluj-Napoca'],
             'venue.address_postal_code' => ['group' => 'venue', 'label' => 'Cod poștal', 'type' => 'string'],
+            'venue.opening_date' => ['group' => 'venue', 'label' => 'Data deschiderii oficiale', 'type' => 'date', 'help' => 'Până în această zi, prima pagină afișează numărătoarea inversă, iar rezervările online încep din ziua deschiderii. Recepția poate rezerva oricând.'],
             'venue.access_notes' => ['group' => 'venue', 'label' => 'Indicații de acces / parcare', 'type' => 'text'],
             'venue.lat' => ['group' => 'venue', 'label' => 'Latitudine', 'type' => 'string', 'launch' => true],
             'venue.lng' => ['group' => 'venue', 'label' => 'Longitudine', 'type' => 'string', 'launch' => true],

@@ -195,7 +195,7 @@ class AssistantTools
         return match ($result['status']) {
             'ok' => ['date' => $date, 'available_times' => array_values(array_map(fn ($s) => $s['local_time'], array_filter($result['slots'], fn ($s) => $s['available']))), 'note' => $result['message']],
             'closed' => ['date' => $date, 'available_times' => [], 'note' => 'Arena este închisă în această zi.'],
-            'out_of_range' => ['date' => $date, 'available_times' => [], 'note' => 'Data este în afara perioadei în care se poate rezerva online.'],
+            'out_of_range' => ['date' => $date, 'available_times' => [], 'note' => $result['message'] ?? 'Data este în afara perioadei în care se poate rezerva online.'],
             default => ['date' => $date, 'available_times' => [], 'note' => 'Pentru acest pachet disponibilitatea se confirmă de echipă: pregătește o cerere (prepare_booking trimite o cerere, nu o rezervare instant).'],
         };
     }

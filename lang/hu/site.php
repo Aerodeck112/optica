@@ -19,6 +19,11 @@ return [
     'close' => 'Bezárás',
     'loading' => 'Betöltés…',
     'location' => 'Kolozsvár',
+    'opening' => [
+        'when' => 'Hivatalos megnyitó: :date',
+        'countdown' => 'Hátralévő idő a megnyitóig',
+        'units' => ['days' => 'nap', 'hours' => 'óra', 'minutes' => 'perc', 'seconds' => 'másodperc'],
+    ],
     'pause_video' => 'Animáció leállítása',
     'play_video' => 'Animáció indítása',
     'play_trailer' => 'Előzetes megtekintése',

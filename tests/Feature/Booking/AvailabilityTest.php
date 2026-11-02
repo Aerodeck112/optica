@@ -130,4 +130,17 @@ class AvailabilityTest extends TestCase
 
         $this->assertSame('not_schedulable', app(AvailabilityService::class)->slotsFor($package, '2026-10-22', 2)['status']);
     }
+
+    public function test_online_booking_starts_on_the_opening_day_but_reception_can_book_earlier(): void
+    {
+        $package = $this->package($this->arena());
+        $this->setting('venue.opening_date', '2026-10-25');
+        $availability = app(AvailabilityService::class);
+
+        $before = $availability->slotsFor($package, '2026-10-22', 4);
+        $this->assertSame('out_of_range', $before['status']);
+        $this->assertStringContainsString('25 octombrie 2026', (string) $before['message']);
+        $this->assertSame('ok', $availability->slotsFor($package, '2026-10-22', 4, staff: true)['status']);
+        $this->assertSame('ok', $availability->slotsFor($package, '2026-10-25', 4)['status']);
+    }
 }

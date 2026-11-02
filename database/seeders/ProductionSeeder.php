@@ -17,6 +17,7 @@ class ProductionSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             BaseDataSeeder::class,
             MediaLibrarySeeder::class,
+            SocialMediaPackSeeder::class,
             CatalogSeeder::class,
             CmsSeeder::class,
             LegalDocumentsSeeder::class,

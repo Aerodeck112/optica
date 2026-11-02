@@ -643,6 +643,75 @@
   @keyframes portal-spin { to { transform: rotate(360deg); } }
   .is-paused .portal__frame::before { animation-play-state: paused; }
 
+  /* ——— Deschidere oficială: data mare, cu inelul portalului pe orbită ——— */
+  .opening { position: relative; isolation: isolate; overflow: clip; }
+  .opening::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 70% at 18% 50%, rgb(123 77 255 / 0.28), transparent 70%),
+      radial-gradient(40% 50% at 85% 20%, rgb(230 28 74 / 0.16), transparent 70%);
+  }
+  .opening__grid { display: grid; gap: var(--space-7); align-items: center; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+  .opening__date {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    aspect-ratio: 1;
+    width: min(100%, 30rem);
+    justify-self: center;
+    font-family: var(--font-display);
+    line-height: 1;
+    text-align: center;
+  }
+  .opening__orbit {
+    position: absolute;
+    inset: 4%;
+    z-index: -1;
+    border-radius: 50%;
+    overflow: hidden;
+    /* inelul subțire: un gradient conic rotit prin transform, decupat la un cerc gol */
+    mask: radial-gradient(closest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    box-shadow: 0 0 80px rgb(123 77 255 / 0.35);
+  }
+  .opening__orbit::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    background: conic-gradient(var(--violet), var(--cyan), var(--magenta), var(--crimson), var(--violet));
+    animation: portal-spin 14s linear infinite;
+    will-change: transform;
+  }
+  .opening__weekday, .opening__month { font-size: clamp(1.1rem, 0.8rem + 1.2vw, 1.75rem); font-weight: 600; color: var(--mist); letter-spacing: 0.02em; }
+  .opening__day {
+    font-size: clamp(8rem, 5rem + 16vw, 17rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    margin-block: 0.02em 0.06em;
+    background: linear-gradient(160deg, #fff 8%, var(--violet-soft) 38%, var(--crimson-hi) 78%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 10px 40px rgb(230 28 74 / 0.35));
+  }
+  .opening__title { font-size: var(--fs-2xl); max-width: 16ch; }
+  .opening__title-2 { display: block; color: var(--violet-soft); }
+  .opening__when { display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-5); color: var(--star); font-weight: 600; }
+  .opening__when svg { width: 1.25rem; height: 1.25rem; color: var(--crimson-hi); flex: none; }
+  .opening__body { margin-top: var(--space-3); color: var(--mist); font-size: var(--fs-md); max-width: 38rem; }
+  .countdown { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 32rem; margin-top: var(--space-6); border-block: 1px solid var(--line-strong); }
+  .countdown__cell { display: grid; gap: var(--space-1); padding: var(--space-4) var(--space-2); text-align: center; }
+  .countdown__cell + .countdown__cell { border-left: 1px solid var(--line); }
+  .countdown__value { font-family: var(--font-display); font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+  .countdown__label { font-size: var(--fs-xs); color: var(--dim); }
+  .opening__actions { margin-top: var(--space-6); }
+  .opening.is-today .opening__day { animation: opening-glow 2.4s var(--ease-out) infinite alternate; }
+  @keyframes opening-glow { to { filter: drop-shadow(0 10px 70px rgb(230 28 74 / 0.7)); } }
+
   /* ——— Mesaj mare ——— */
   .statement { position: relative; }
   .statement__text {
@@ -1036,18 +1105,23 @@
   .details-list dd { margin-bottom: var(--space-3); }
   .rail-head { flex-direction: column; align-items: start; }
   .statement__body { margin-left: 0; }
+  .opening__grid { grid-template-columns: 1fr; gap: var(--space-5); }
+  .opening__date { width: min(100%, 20rem); }
+  .countdown__cell { padding-inline: var(--space-1); }
 }
 
 /* ——— Mișcare redusă: fără rotații, fără tranziții decorative ——— */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .portal__frame::before { animation: none; }
+  .portal__frame::before, .opening__orbit::before { animation: none; }
 }
 
 @media (forced-colors: active) {
   .btn { border: 2px solid ButtonText; }
   .portal__frame { background: CanvasText; }
+  .opening__day { color: CanvasText; background: none; }
+  .opening__orbit { background: CanvasText; }
 }
 
 @media print {

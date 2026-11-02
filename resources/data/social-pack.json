@@ -1,0 +1,2350 @@
+{
+ "version": 1,
+ "images": [
+  {
+   "key": "social-jucatoare-neon-rosu",
+   "file": "jucatoare-neon-rosu",
+   "drive_id": "1EGR5kfV1d6M74kJuzbosc1nr6UTQzLBu",
+   "source": "Photosession 30. 04. 26/027A6105.jpg",
+   "alt_ro": "Jucătoare cu cască VR și controlere, în lumina neonului roșu și albastru",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#4e1f39"
+  },
+  {
+   "key": "social-jucatoare-intinde-mana",
+   "file": "jucatoare-intinde-mana",
+   "drive_id": "17lypqzI2cCvFTxCqfPPcfHkO3djVjiOa",
+   "source": "Photosession 30. 04. 26/027A6148.jpg",
+   "alt_ro": "Jucătoare care întinde controlerul spre o țintă pe care doar ea o vede",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#292746"
+  },
+  {
+   "key": "social-jucator-arata-tinta",
+   "file": "jucator-arata-tinta",
+   "drive_id": "10ankurXrQWOCVSoIVMJl-1TwuRyhT_Hd",
+   "source": "Photosession 30. 04. 26/027A6205.jpg",
+   "alt_ro": "Jucător cu cască VR care arată spre o țintă, cu un coechipier în spate",
+   "tags": [
+    "friends",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1334
+   ],
+   "color": "#2a1c2e"
+  },
+  {
+   "key": "social-jucator-ochire-albastru",
+   "file": "jucator-ochire-albastru",
+   "drive_id": "1PCtNkL5FO0MfuY8skKBW8g32iHyNvL4W",
+   "source": "Photosession 30. 04. 26/027A6259.jpg",
+   "alt_ro": "Jucător cu cască VR care ochește, între benzi de lumină albastră",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#23233d"
+  },
+  {
+   "key": "social-jucator-tricou-alb",
+   "file": "jucator-tricou-alb",
+   "drive_id": "1GKNr7lh3KVzEYUOtQRmljVe1t5rmKATb",
+   "source": "Photosession 30. 04. 26/027A6302.jpg",
+   "alt_ro": "Jucător în tricou alb, cu cască VR, în lumină roșie",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#4b2224"
+  },
+  {
+   "key": "social-jucatoare-ridica-controlerul",
+   "file": "jucatoare-ridica-controlerul",
+   "drive_id": "1nNAJZVR7lNV1FACtNRlRUoaCAKGJ8aYz",
+   "source": "Photosession 30. 04. 26/027A6320.jpg",
+   "alt_ro": "Jucătoare care ridică controlerul în timpul jocului",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#2a192e"
+  },
+  {
+   "key": "social-doi-prieteni-in-joc",
+   "file": "doi-prieteni-in-joc",
+   "drive_id": "14SxN9_l177z7ZsiETHMXBDhMKCcysBt4",
+   "source": "Photosession 30. 04. 26/027A6364.jpg",
+   "alt_ro": "Doi prieteni cu căști VR, umăr la umăr în timpul jocului",
+   "tags": [
+    "friends",
+    "action"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#482538"
+  },
+  {
+   "key": "social-grup-sub-logo",
+   "file": "grup-sub-logo",
+   "drive_id": "1p15LyCHfpbHC4kROgTKJwMSTft6Wf6gX",
+   "source": "Photosession 30. 04. 26/027A6428.jpg",
+   "alt_ro": "Grup de prieteni așezați sub logo-ul Another World, cu căștile VR pe cap",
+   "tags": [
+    "group",
+    "friends",
+    "logo"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#504c63"
+  },
+  {
+   "key": "social-grup-cerc-de-sus",
+   "file": "grup-cerc-de-sus",
+   "drive_id": "1tYEu672kRljDggo2RjyWg5XEQ7gbQ19J",
+   "source": "Photosession 30. 04. 26/027A6484.jpg",
+   "alt_ro": "Grup de prieteni întinși în cerc pe podeaua arenei, fotografiați de sus",
+   "tags": [
+    "group",
+    "friends",
+    "fun"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#3b3437"
+  },
+  {
+   "key": "social-prieteni-dupa-joc-albastru",
+   "file": "prieteni-dupa-joc-albastru",
+   "drive_id": "19W6zM2mI1F3WNilwcx5XQNzqVP8nusos",
+   "source": "Photosession 30. 04. 26/027A6498.jpg",
+   "alt_ro": "Doi prieteni zâmbitori după joc, în lumină albastră",
+   "tags": [
+    "friends",
+    "after"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#20325e"
+  },
+  {
+   "key": "social-jucator-logo-albastru-lat",
+   "file": "jucator-logo-albastru-lat",
+   "drive_id": "1iBKbbmvofirWfgCWQyZNFcbB1POxR6Bp",
+   "source": "Photosession 30. 04. 26/027A6544.jpg",
+   "alt_ro": "Jucător cu cască VR care ochește în fața logo-ului luminat",
+   "tags": [
+    "solo",
+    "logo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1334
+   ],
+   "color": "#3369a0"
+  },
+  {
+   "key": "social-jucator-logo-albastru",
+   "file": "jucator-logo-albastru",
+   "drive_id": "18lQW70nqBI8Qg86HXherxF5kWws0qDcm",
+   "source": "Photosession 30. 04. 26/027A6551.jpg",
+   "alt_ro": "Jucător cu controlere VR în fața logo-ului Another World, în lumină albastră",
+   "tags": [
+    "solo",
+    "logo"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#456da6"
+  },
+  {
+   "key": "social-trei-prieteni-casti-ridicate",
+   "file": "trei-prieteni-casti-ridicate",
+   "drive_id": "1nSX0L15rBnmKYkGCD62bTr-zjwvhwMUK",
+   "source": "Photosession 30. 04. 26/027A6593.jpg",
+   "alt_ro": "Trei prieteni zâmbitori, cu căștile VR ridicate pe frunte",
+   "tags": [
+    "friends",
+    "after"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#453c59"
+  },
+  {
+   "key": "social-trei-prieteni-zambesc",
+   "file": "trei-prieteni-zambesc",
+   "drive_id": "17BxzXYpKicamGHAfQrH9IFR9Tf4EnJjW",
+   "source": "Photosession 30. 04. 26/027A6604.jpg",
+   "alt_ro": "Trei prieteni care râd împreună după joc",
+   "tags": [
+    "friends",
+    "after"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#715559"
+  },
+  {
+   "key": "social-grup-sarbatoreste-de-sus",
+   "file": "grup-sarbatoreste-de-sus",
+   "drive_id": "1CMud4665pT00qK5nxVAz2jhuk9Wpgxdb",
+   "source": "Photosession 30. 04. 26/027A6622.jpg",
+   "alt_ro": "Grup de prieteni care sărbătoresc în arenă, fotografiați de sus",
+   "tags": [
+    "group",
+    "friends",
+    "fun"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#413f49"
+  },
+  {
+   "key": "social-grup-poza-de-grup",
+   "file": "grup-poza-de-grup",
+   "drive_id": "1jNkgv28tmXhGFVhzZv-nCfgrq4JRryJ-",
+   "source": "Photosession 30. 04. 26/027A6740.jpg",
+   "alt_ro": "Grup de prieteni care pozează împreună după joc",
+   "tags": [
+    "group",
+    "friends",
+    "after"
+   ],
+   "minors": false,
+   "width": 1152,
+   "height": 1440,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2500
+   ],
+   "color": "#544446"
+  },
+  {
+   "key": "social-casca-01-pe-masa",
+   "file": "casca-01-pe-masa",
+   "drive_id": "1bTsKo-a6J9hd7FSGp31uaYprqvX7j3RR",
+   "source": "Photosession AW Promo/Edited photos/For the designer/DSC08070.jpg",
+   "alt_ro": "Cască VR cu numărul 01, pe o masă, în lumină caldă",
+   "tags": [
+    "product"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#3f3733"
+  },
+  {
+   "key": "social-casca-albastra-pe-masa",
+   "file": "casca-albastra-pe-masa",
+   "drive_id": "1lrAeKjefkK-WD-oMR56ECMbuWrULU4yz",
+   "source": "Photosession AW Promo/Edited photos/For the designer/DSC08099.jpg",
+   "alt_ro": "Cască VR cu accente albastre, pe o masă întunecată",
+   "tags": [
+    "product"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#6a5e55"
+  },
+  {
+   "key": "social-jucatoare-isi-potriveste-casca",
+   "file": "jucatoare-isi-potriveste-casca",
+   "drive_id": "14EnjDX00hdHjdsv6MGEkSmOT58XneVZb",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07500.jpg",
+   "alt_ro": "Tânără care își potrivește casca VR",
+   "tags": [
+    "solo",
+    "briefing"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#656366"
+  },
+  {
+   "key": "social-jucatoare-sub-logo",
+   "file": "jucatoare-sub-logo",
+   "drive_id": "1NwhyJ2l9Hhs6Vp7f-NJBy3ZQuFDeKGoR",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07526.jpg",
+   "alt_ro": "Jucătoare cu cască VR și controlere, sub logo-ul Another World",
+   "tags": [
+    "solo",
+    "logo"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#856959"
+  },
+  {
+   "key": "social-jucatoare-neon-albastru",
+   "file": "jucatoare-neon-albastru",
+   "drive_id": "1y1XfzbMAJ_zJFnPL7huF3YUm_b0ufJ3x",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07569.jpg",
+   "alt_ro": "Jucătoare cu cască VR, luminată de neon albastru",
+   "tags": [
+    "solo"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#253c3e"
+  },
+  {
+   "key": "social-jucatoare-lumini-rosu-albastru",
+   "file": "jucatoare-lumini-rosu-albastru",
+   "drive_id": "1CuEEJNvisbgWRjZ4ztqgE29ML2jXI5Gp",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07599.jpg",
+   "alt_ro": "Jucătoare cu controlere VR între lumini roșii și albastre",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#483b4b"
+  },
+  {
+   "key": "social-tanar-isi-potriveste-casca",
+   "file": "tanar-isi-potriveste-casca",
+   "drive_id": "1Qw-xC45TpzlYHG0yo3rqVfBu45Ls3lCj",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07623.jpg",
+   "alt_ro": "Tânăr care își potrivește casca VR înainte de joc",
+   "tags": [
+    "solo",
+    "briefing"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#6a5454"
+  },
+  {
+   "key": "social-jucator-violet-lat",
+   "file": "jucator-violet-lat",
+   "drive_id": "1uG3DqrzyHcB6oB2h5IFxA9H1iMkDwy3Q",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07685.jpg",
+   "alt_ro": "Jucător cu cască VR în lumină violet, cu alți jucători în spate",
+   "tags": [
+    "action",
+    "group"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 1112,
+   "thumb_width": 480,
+   "thumb_height": 371,
+   "orig": [
+    2000,
+    1545
+   ],
+   "color": "#544356"
+  },
+  {
+   "key": "social-jucatoare-lumina-albastra",
+   "file": "jucatoare-lumina-albastra",
+   "drive_id": "1DG-CRFUKjrmZCHSdx9WZFqT_x__EybBu",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07764.jpg",
+   "alt_ro": "Jucătoare cu cască VR în lumină albastră intensă",
+   "tags": [
+    "solo"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#1d3457"
+  },
+  {
+   "key": "social-jucatoare-logo-alb",
+   "file": "jucatoare-logo-alb",
+   "drive_id": "13Wb64234I6FLvWeAB1TGiqq7_SzSqpd5",
+   "source": "Photosession AW Promo/Edited photos/Play ground/DSC07792.jpg",
+   "alt_ro": "Jucătoare cu cască VR, cu logo-ul Another World luminat în spate",
+   "tags": [
+    "solo",
+    "logo"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#2e313b"
+  },
+  {
+   "key": "social-casti-numerotate-podea",
+   "file": "casti-numerotate-podea",
+   "drive_id": "1zCyANDXIBBCWD_ddj32ODoPdWa12H-k6",
+   "source": "arena photoshoot (surgut 2024)/JR7A8296.jpg",
+   "alt_ro": "Căști VR numerotate, aliniate pe podeaua arenei",
+   "tags": [
+    "product"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#3e3445"
+  },
+  {
+   "key": "social-neon-happy-birthday",
+   "file": "neon-happy-birthday",
+   "drive_id": "1VTdgYWcl3KPklnaS15opHgYWiuSz-thu",
+   "source": "arena photoshoot (surgut 2024)/JR7A8701.jpg",
+   "alt_ro": "Inscripție luminoasă „Happy birthday” din neon",
+   "tags": [
+    "birthday"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#521756"
+  },
+  {
+   "key": "social-logo-neon-rosu",
+   "file": "logo-neon-rosu",
+   "drive_id": "1GMLAu_3hUotwnsd0Pqcze13Za_x5Lp67",
+   "source": "arena photoshoot (surgut 2024)/JR7A9374.jpg",
+   "alt_ro": "Logo-ul Another World luminat, între benzi de neon roșu",
+   "tags": [
+    "logo"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#441e56"
+  },
+  {
+   "key": "social-logo-alb-luminat",
+   "file": "logo-alb-luminat",
+   "drive_id": "1jOYUFpzB9j0_PHDOxVtkIfiYhEemWjJ3",
+   "source": "arena photoshoot (surgut 2024)/JR7A9922.jpg",
+   "alt_ro": "Logo-ul Another World, luminat alb pe un perete cu dungi",
+   "tags": [
+    "logo"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#4d464a"
+  },
+  {
+   "key": "social-adolescente-pe-podea",
+   "file": "adolescente-pe-podea",
+   "drive_id": "1B1VCAiTRJKdzAwscGlHPb6zByl1787Hi",
+   "source": "teenagers/IMG_8305.JPG",
+   "alt_ro": "Grup de adolescente așezate pe podeaua arenei, cu căști VR",
+   "tags": [
+    "teens",
+    "group"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#5d5a58"
+  },
+  {
+   "key": "social-adolescent-casca-detaliu",
+   "file": "adolescent-casca-detaliu",
+   "drive_id": "1rRl8hBxDNpMjbB8-maQdE9itVoZONTyV",
+   "source": "teenagers/IMG_8311.JPG",
+   "alt_ro": "Adolescent cu cască VR, în lumină caldă",
+   "tags": [
+    "teens",
+    "solo"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#7c6c60"
+  },
+  {
+   "key": "social-adolescente-zambesc",
+   "file": "adolescente-zambesc",
+   "drive_id": "1cHlWFiXYvNwyrLZh7Rdi0j8B5ps7Vwww",
+   "source": "teenagers/IMG_8322.JPG",
+   "alt_ro": "Adolescente care zâmbesc, cu căștile VR pe frunte",
+   "tags": [
+    "teens",
+    "friends",
+    "after"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#777371"
+  },
+  {
+   "key": "social-adolescenta-sub-logo",
+   "file": "adolescenta-sub-logo",
+   "drive_id": "1yYLwcp0Imt882n2M19XXOUJozslTUKiC",
+   "source": "teenagers/IMG_8329.JPG",
+   "alt_ro": "Adolescentă zâmbitoare sub logo-ul Another World",
+   "tags": [
+    "teens",
+    "solo",
+    "logo"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#5c5b59"
+  },
+  {
+   "key": "social-adolescente-dupa-joc",
+   "file": "adolescente-dupa-joc",
+   "drive_id": "17K2rg3vRepqIBUFReQg3ZvvRPZaSLqW1",
+   "source": "teenagers/IMG_8364.JPG",
+   "alt_ro": "Două adolescente care povestesc după joc, așezate pe podea",
+   "tags": [
+    "teens",
+    "friends",
+    "after"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#726e6d"
+  },
+  {
+   "key": "social-adolescenta-casca-pe-frunte",
+   "file": "adolescenta-casca-pe-frunte",
+   "drive_id": "1M2GWoCsZ9c_szrhKN8g94pnW7LVIu10i",
+   "source": "teenagers/IMG_8381.JPG",
+   "alt_ro": "Adolescentă cu casca VR ridicată pe frunte, în fața logo-ului",
+   "tags": [
+    "teens",
+    "solo",
+    "logo"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#696562"
+  },
+  {
+   "key": "social-adolescenta-in-joc",
+   "file": "adolescenta-in-joc",
+   "drive_id": "1-jqGwWoJxTrD6eldMa7ZMldme73PI7li",
+   "source": "teenagers/IMG_8383.JPG",
+   "alt_ro": "Adolescentă concentrată în timpul jocului VR",
+   "tags": [
+    "teens",
+    "solo",
+    "action"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#8a7e77"
+  },
+  {
+   "key": "social-adolescente-grup-lat",
+   "file": "adolescente-grup-lat",
+   "drive_id": "1HXCOyLFaWkoEa7XqJvFG0pzW5ofqtWeF",
+   "source": "teenagers/IMG_8395.JPG",
+   "alt_ro": "Grup de adolescente așezate pe podeaua arenei, sub logo",
+   "tags": [
+    "teens",
+    "group",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1334
+   ],
+   "color": "#636160"
+  },
+  {
+   "key": "social-adolescenta-roz-in-joc",
+   "file": "adolescenta-roz-in-joc",
+   "drive_id": "1dWHIWQYf5p4x22W4UuSQwpQslZG__QvM",
+   "source": "teenagers/IMG_8414.JPG",
+   "alt_ro": "Adolescentă în hanorac roz, cu cască VR și controlere",
+   "tags": [
+    "teens",
+    "solo",
+    "action"
+   ],
+   "minors": true,
+   "width": 961,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2998
+   ],
+   "color": "#887c77"
+  },
+  {
+   "key": "social-adolescenta-alb-sub-logo",
+   "file": "adolescenta-alb-sub-logo",
+   "drive_id": "1DXDtSffQlW5GiiMfp2ymp15lum6gADEa",
+   "source": "teenagers/IMG_8441.JPG",
+   "alt_ro": "Adolescentă cu cască VR și controlere, sub logo-ul luminat",
+   "tags": [
+    "teens",
+    "solo",
+    "logo"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#6e6965"
+  },
+  {
+   "key": "social-adolescenta-rade",
+   "file": "adolescenta-rade",
+   "drive_id": "1ztGN66vupz5LuQAM_n7Ea158jDj501x0",
+   "source": "teenagers/IMG_8454.JPG",
+   "alt_ro": "Adolescentă care râde cu casca VR pe cap",
+   "tags": [
+    "teens",
+    "solo",
+    "fun"
+   ],
+   "minors": true,
+   "width": 961,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2998
+   ],
+   "color": "#6c6a69"
+  },
+  {
+   "key": "social-copii-joaca-impreuna",
+   "file": "copii-joaca-impreuna",
+   "drive_id": "1QqRx5Ks_d9g6DKGPEtqukT2lYhbp2cM-",
+   "source": "Birthday (Children)/2/522A3109.jpg",
+   "alt_ro": "Doi copii cu căști VR care joacă împreună în arenă",
+   "tags": [
+    "kids",
+    "birthday",
+    "friends"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#474862"
+  },
+  {
+   "key": "social-copil-si-instructor",
+   "file": "copil-si-instructor",
+   "drive_id": "1h49dVDhj08uGn9FLCSq7duQCA1UZCoRS",
+   "source": "Birthday (Children)/2/522A3152.jpg",
+   "alt_ro": "Doi jucători cu căști VR în fața logo-ului Another World",
+   "tags": [
+    "friends",
+    "action",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#442f3f"
+  },
+  {
+   "key": "social-copil-si-adult-in-joc",
+   "file": "copil-si-adult-in-joc",
+   "drive_id": "1zK3OnjSBH3QfLPy77StvrfIuuNugyetg",
+   "source": "Birthday (Children)/2/522A3163.jpg",
+   "alt_ro": "Doi jucători cu căști VR care joacă împreună, sub logo-ul luminat",
+   "tags": [
+    "friends",
+    "family",
+    "action",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#41344a"
+  },
+  {
+   "key": "social-copil-casca-03",
+   "file": "copil-casca-03",
+   "drive_id": "1e1ivseA8l-lVi7RVcmGwdiHkbBF9zGHn",
+   "source": "Birthday (Children)/2/522A3173.jpg",
+   "alt_ro": "Copil cu cască VR numărul 03, în fața logo-ului Another World",
+   "tags": [
+    "kids",
+    "birthday",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#55517b"
+  },
+  {
+   "key": "social-copil-casca-04",
+   "file": "copil-casca-04",
+   "drive_id": "1c3-DxIJRioIv1e6qBx6kEMr_d-aiWqfR",
+   "source": "Birthday (Children)/2/522A3180.jpg",
+   "alt_ro": "Copil cu cască VR numărul 04, între lumini colorate",
+   "tags": [
+    "kids",
+    "birthday"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#403a69"
+  },
+  {
+   "key": "social-copil-casca-12",
+   "file": "copil-casca-12",
+   "drive_id": "1ex-Xb7bEI_7xuUwqsXpGu32YiVeQMLFb",
+   "source": "Birthday (Children)/2/522A3187.jpg",
+   "alt_ro": "Copil cu cască VR și controlere, în lumină albastră",
+   "tags": [
+    "kids",
+    "birthday"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#2a3b66"
+  },
+  {
+   "key": "social-copil-casca-10",
+   "file": "copil-casca-10",
+   "drive_id": "19o83R_h0XFIXSq2M1yaXjZkSrhjht7Z9",
+   "source": "Birthday (Children)/2/522A3205.jpg",
+   "alt_ro": "Copil cu cască VR care se uită în sus, în lumini roșii și albastre",
+   "tags": [
+    "kids",
+    "birthday",
+    "action"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#6d608f"
+  },
+  {
+   "key": "social-copil-controlere-ridicate",
+   "file": "copil-controlere-ridicate",
+   "drive_id": "1Y9FWaTrLrI7B7u5C8Izpxds8ofEzG2bk",
+   "source": "Birthday (Children)/2/522A3221.jpg",
+   "alt_ro": "Copil cu cască VR care ține controlerele ridicate",
+   "tags": [
+    "kids",
+    "birthday",
+    "action"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#594763"
+  },
+  {
+   "key": "social-adult-ghideaza-copil",
+   "file": "adult-ghideaza-copil",
+   "drive_id": "14UH8fsYnzeNwDzVn4BjwXFqqt-6ROhqU",
+   "source": "Birthday (Children)/2/522A3280.jpg",
+   "alt_ro": "Jucător în tricou portocaliu, îngenuncheat în timpul jocului VR",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#3f3652"
+  },
+  {
+   "key": "social-copil-casca-01-aproape",
+   "file": "copil-casca-01-aproape",
+   "drive_id": "10CN3kp3ZW17qNlZS0QQSiqI2YlKttAGU",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/20230810-DSC08034.jpg",
+   "alt_ro": "Copil cu cască VR numărul 01, cu controlerul întins spre cameră",
+   "tags": [
+    "kids",
+    "action"
+   ],
+   "minors": true,
+   "width": 962,
+   "height": 1440,
+   "thumb_width": 321,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2994
+   ],
+   "color": "#4f5665"
+  },
+  {
+   "key": "social-casca-02-detaliu",
+   "file": "casca-02-detaliu",
+   "drive_id": "1OW-vviP6fUoJL-vaypTZLb4ohKi8ekUv",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/20230810-DSC08050.jpg",
+   "alt_ro": "Cască VR Another World cu numărul 02, în prim-plan",
+   "tags": [
+    "product"
+   ],
+   "minors": false,
+   "width": 962,
+   "height": 1440,
+   "thumb_width": 321,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2994
+   ],
+   "color": "#8e7e81"
+  },
+  {
+   "key": "social-casti-raft-colorat",
+   "file": "casti-raft-colorat",
+   "drive_id": "181JMldbdbgwUqP9_wDoLMwooB9vgeZ9o",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/20230810-DSC08059.jpg",
+   "alt_ro": "Căști VR numerotate pe un raft luminat verde și galben",
+   "tags": [
+    "product"
+   ],
+   "minors": false,
+   "width": 962,
+   "height": 1440,
+   "thumb_width": 321,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2994
+   ],
+   "color": "#a1b235"
+  },
+  {
+   "key": "social-adolescenta-casca-13",
+   "file": "adolescenta-casca-13",
+   "drive_id": "13OfM9uYyZP2lxWVV2Q3XFRHx4ZZcy4UB",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_4531.jpg",
+   "alt_ro": "Adolescentă cu cască VR numărul 13, în lumină roșie",
+   "tags": [
+    "teens",
+    "solo",
+    "action"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#a84c57"
+  },
+  {
+   "key": "social-adolescenta-mov-logo",
+   "file": "adolescenta-mov-logo",
+   "drive_id": "10vV-_dQWK1hbLRKyeKhNmps1i_4TtKoJ",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_4582.jpg",
+   "alt_ro": "Adolescentă cu cască VR în fața logo-ului Another World",
+   "tags": [
+    "teens",
+    "solo",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#574b51"
+  },
+  {
+   "key": "social-adolescenta-in-actiune",
+   "file": "adolescenta-in-actiune",
+   "drive_id": "1fIeldU29dUtP1GtTLv4hVt4oDme-RbE5",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_4610.jpg",
+   "alt_ro": "Adolescentă în plin joc VR, aplecată să evite ceva",
+   "tags": [
+    "teens",
+    "action"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#696275"
+  },
+  {
+   "key": "social-grup-adolescenti-logo",
+   "file": "grup-adolescenti-logo",
+   "drive_id": "1vTQzqRaxvE7ZEcItbieNeZfF-zXtHQa6",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_4662.jpg",
+   "alt_ro": "Grup de adolescenți cu căști VR în fața logo-ului Another World",
+   "tags": [
+    "teens",
+    "group",
+    "birthday",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#806962"
+  },
+  {
+   "key": "social-doi-tineri-logo",
+   "file": "doi-tineri-logo",
+   "drive_id": "1EQ8MfMFHCFFJniY0YD4wz4n1aviz0Vpn",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_4733.jpg",
+   "alt_ro": "Doi tineri cu căști VR în mână, în fața logo-ului Another World",
+   "tags": [
+    "teens",
+    "friends",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#5a4f4b"
+  },
+  {
+   "key": "social-tanara-casca-10",
+   "file": "tanara-casca-10",
+   "drive_id": "1X3t1bF9Lg6LQF5bXFpJzyRcxRFg_eBLe",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_4965.jpg",
+   "alt_ro": "Tânără cu cască VR numărul 10 și controlere, în fața logo-ului",
+   "tags": [
+    "teens",
+    "solo",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#725852"
+  },
+  {
+   "key": "social-tanara-brate-incrucisate",
+   "file": "tanara-brate-incrucisate",
+   "drive_id": "1VZzdRe2Rxg0fXIps3cqiwHmA89AEvmiB",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_5024.jpg",
+   "alt_ro": "Tânără cu cască VR și brațele încrucișate, în fața logo-ului",
+   "tags": [
+    "teens",
+    "solo",
+    "logo"
+   ],
+   "minors": true,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#54403b"
+  },
+  {
+   "key": "social-casti-raft-fum",
+   "file": "casti-raft-fum",
+   "drive_id": "178teAeesPzcGsf5ieQFk8m4T72YxEyON",
+   "source": "Birthday (Children)/Birthday photoshoot (September)/IMG_5344.jpg",
+   "alt_ro": "Raft cu căști VR numerotate, luminat roșu și violet, cu fum",
+   "tags": [
+    "product"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#44306f"
+  },
+  {
+   "key": "social-colegi-pe-canapea",
+   "file": "colegi-pe-canapea",
+   "drive_id": "1cDdQdcY79q-dghKWxRLL552lI3rasr-l",
+   "source": "New year Corporate event/KIRT3161.jpg",
+   "alt_ro": "Colegi care se distrează pe o canapea sub logo-ul Another World",
+   "tags": [
+    "corporate",
+    "group",
+    "fun"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#423c3a"
+  },
+  {
+   "key": "social-colege-dupa-joc",
+   "file": "colege-dupa-joc",
+   "drive_id": "1bsSWQUs_6GMshe6bnkZIKWbwaqq_6LC1",
+   "source": "New year Corporate event/KIRT3178.jpg",
+   "alt_ro": "Colege elegante cu căștile VR ridicate, după joc",
+   "tags": [
+    "corporate",
+    "friends",
+    "after"
+   ],
+   "minors": false,
+   "width": 961,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2998
+   ],
+   "color": "#443933"
+  },
+  {
+   "key": "social-colega-rade-in-joc",
+   "file": "colega-rade-in-joc",
+   "drive_id": "1PnN1dnwGgPG_Bia3ByE661YS9sYLjKxN",
+   "source": "New year Corporate event/KIRT3186.jpg",
+   "alt_ro": "Colegă care râde în timpul jocului VR",
+   "tags": [
+    "corporate",
+    "fun"
+   ],
+   "minors": false,
+   "width": 961,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2998
+   ],
+   "color": "#6b5547"
+  },
+  {
+   "key": "social-colegi-in-actiune",
+   "file": "colegi-in-actiune",
+   "drive_id": "17uOgrZdgFLEu--ppdpbI2s9F40gxtX9A",
+   "source": "New year Corporate event/KIRT3194.jpg",
+   "alt_ro": "Colegi în ținută elegantă, în plin joc VR",
+   "tags": [
+    "corporate",
+    "group",
+    "action"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#54433a"
+  },
+  {
+   "key": "social-colega-in-joc",
+   "file": "colega-in-joc",
+   "drive_id": "174jBx1vjVq8kn2Fwm2Juwiu_F3zbxcp6",
+   "source": "New year Corporate event/KIRT3223.jpg",
+   "alt_ro": "Colegă cu cască VR și controlere, în timpul unui eveniment de firmă",
+   "tags": [
+    "corporate",
+    "solo"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#322923"
+  },
+  {
+   "key": "social-colega-sacou-alb",
+   "file": "colega-sacou-alb",
+   "drive_id": "155I3Rr3vuSanslASLhh0f-fek9ZcO_tC",
+   "source": "New year Corporate event/KIRT3268.jpg",
+   "alt_ro": "Colegă în sacou alb, cu cască VR și controlere",
+   "tags": [
+    "corporate",
+    "solo"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2999
+   ],
+   "color": "#6e6967"
+  },
+  {
+   "key": "social-echipa-mare-logo",
+   "file": "echipa-mare-logo",
+   "drive_id": "1l9gLUUiPtNjWzJ0mAYT85WNN10BTggar",
+   "source": "Corporate/1/02.jpeg",
+   "alt_ro": "Echipă numeroasă care pozează veselă în fața logo-ului Another World",
+   "tags": [
+    "corporate",
+    "group",
+    "logo"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#764e4f"
+  },
+  {
+   "key": "social-jucatoare-logo-alb-negru",
+   "file": "jucatoare-logo-alb-negru",
+   "drive_id": "1dI8Jlh2RksxVkulI1Hwqb1zsPviqel1i",
+   "source": "Corporate/1/03.jpeg",
+   "alt_ro": "Jucătoare cu cască VR în fața logo-ului luminat",
+   "tags": [
+    "solo",
+    "logo"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 953,
+   "thumb_width": 480,
+   "thumb_height": 318,
+   "orig": [
+    2000,
+    1324
+   ],
+   "color": "#5d4751"
+  },
+  {
+   "key": "social-cuplu-logo",
+   "file": "cuplu-logo",
+   "drive_id": "1ts9cXSUwmwFI2voQVyt6Ilnv_5lReflZ",
+   "source": "Corporate/1/53.jpeg",
+   "alt_ro": "Doi tineri zâmbitori în fața logo-ului Another World",
+   "tags": [
+    "couple",
+    "friends",
+    "logo"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#7b473c"
+  },
+  {
+   "key": "social-casca-controlere-podea",
+   "file": "casca-controlere-podea",
+   "drive_id": "1TQZiwD9hixszAnmKblKTCaA4E0APg45W",
+   "source": "Corporate/1/63.jpeg",
+   "alt_ro": "Cască VR și controlere pe podeaua arenei",
+   "tags": [
+    "product"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#664838"
+  },
+  {
+   "key": "social-jucator-in-arena",
+   "file": "jucator-in-arena",
+   "drive_id": "1pE175w4PvRSwmjPxSamWO-gnsOJvuyWf",
+   "source": "Corporate/1/photo_2021-12-29 10.43.00.jpeg",
+   "alt_ro": "Jucător cu cască VR și controlere în arena luminată",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1280,
+   "thumb_width": 360,
+   "thumb_height": 480,
+   "orig": [
+    960,
+    1280
+   ],
+   "color": "#7b5877"
+  },
+  {
+   "key": "social-doi-jucatori-actiune",
+   "file": "doi-jucatori-actiune",
+   "drive_id": "1gryuW7qwmI48xIujHxRLs8WUbixMsyPx",
+   "source": "Arena Photoshoot (Akadem 2022)/1.jpg",
+   "alt_ro": "Doi jucători cu căști VR în plin joc",
+   "tags": [
+    "friends",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#5c5459"
+  },
+  {
+   "key": "social-echipa-in-linie",
+   "file": "echipa-in-linie",
+   "drive_id": "1GowS4tCd4UZJCK2KFhapo2AMAMYpu19O",
+   "source": "Arena Photoshoot (Akadem 2022)/19.jpg",
+   "alt_ro": "Echipă de cinci jucători cu căști VR, aliniați ca înaintea misiunii",
+   "tags": [
+    "group",
+    "friends",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#695d6c"
+  },
+  {
+   "key": "social-jucator-logo-portret",
+   "file": "jucator-logo-portret",
+   "drive_id": "1bU9VqcjI-XUKIIKTeLImmKlGdRuDxT5L",
+   "source": "Arena Photoshoot (Akadem 2022)/2.jpg",
+   "alt_ro": "Jucător cu cască VR și controlere, în fața logo-ului luminat",
+   "tags": [
+    "solo",
+    "logo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#3b3333"
+  },
+  {
+   "key": "social-echipa-ocheste",
+   "file": "echipa-ocheste",
+   "drive_id": "15wipUP1J3hP_NdXSebV71hO6wvXUzri4",
+   "source": "Arena Photoshoot (Akadem 2022)/22.jpg",
+   "alt_ro": "Echipă de jucători cu căști VR care ochesc în aceeași direcție",
+   "tags": [
+    "group",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#6b5a62"
+  },
+  {
+   "key": "social-echipa-lumina-rosie",
+   "file": "echipa-lumina-rosie",
+   "drive_id": "1zr_BntmCwrcTdWaToZc3NFHUczoYcfOk",
+   "source": "Arena Photoshoot (Akadem 2022)/23.jpg",
+   "alt_ro": "Echipă cu căști VR în lumină roșie",
+   "tags": [
+    "group",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#6f1727"
+  },
+  {
+   "key": "social-jucatoare-casca-10",
+   "file": "jucatoare-casca-10",
+   "drive_id": "1PKGDLX6wSo-ksQruvdFD4ouAUlzhC4Sz",
+   "source": "Arena Photoshoot (Akadem 2022)/28.jpg",
+   "alt_ro": "Jucătoare care își așază casca VR numărul 10",
+   "tags": [
+    "solo",
+    "briefing"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#85706f"
+  },
+  {
+   "key": "social-trei-jucatori-actiune",
+   "file": "trei-jucatori-actiune",
+   "drive_id": "1vTSRwSGjhFNcKF1McU6kHgjMiRxJo77z",
+   "source": "Arena Photoshoot (Akadem 2022)/34.jpg",
+   "alt_ro": "Trei jucători cu căști VR în mișcare, în timpul unei misiuni",
+   "tags": [
+    "friends",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#564c57"
+  },
+  {
+   "key": "social-echipa-in-misiune",
+   "file": "echipa-in-misiune",
+   "drive_id": "1Ay5aZUiPK9MAaxHo5k_KF8oBAjKNtSee",
+   "source": "Arena Photoshoot (Akadem 2022)/36.jpg",
+   "alt_ro": "Echipă de jucători cu căști VR în plin joc",
+   "tags": [
+    "group",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#69575e"
+  },
+  {
+   "key": "social-jucator-ochire-dungi",
+   "file": "jucator-ochire-dungi",
+   "drive_id": "1dXi39slpBpLlvndZvFnbY_VocMdqeGwk",
+   "source": "Arena Photoshoot (Akadem 2022)/44.jpg",
+   "alt_ro": "Jucător cu cască VR care ochește, între dungi alb-negru",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#504a50"
+  },
+  {
+   "key": "social-jucator-arena-intunecata",
+   "file": "jucator-arena-intunecata",
+   "drive_id": "1fhq65uASIMKSXl_WcmakDeiEcYwChEpu",
+   "source": "Arena Photoshoot (Akadem 2022)/46.jpg",
+   "alt_ro": "Jucător cu cască VR care întinde controlerul în arena întunecată",
+   "tags": [
+    "solo",
+    "action"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#343236"
+  },
+  {
+   "key": "social-prieteni-pe-podea-dupa-joc",
+   "file": "prieteni-pe-podea-dupa-joc",
+   "drive_id": "1UXdZAlmmwjHkDIMhhImL9l7ZjthuWvSf",
+   "source": "Arena Photoshoot (Akadem 2022)/52.jpg",
+   "alt_ro": "Trei prieteni care râd pe podeaua arenei, după joc",
+   "tags": [
+    "friends",
+    "after",
+    "fun"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#7a6e76"
+  },
+  {
+   "key": "social-jucatoare-lumina-rosie",
+   "file": "jucatoare-lumina-rosie",
+   "drive_id": "1IdajR3869uu2qFxPULRhRZ92hFtveccp",
+   "source": "Arena Photoshoot (Akadem 2022)/8.jpg",
+   "alt_ro": "Jucătoare cu cască VR în lumină roșie",
+   "tags": [
+    "solo"
+   ],
+   "minors": false,
+   "width": 1440,
+   "height": 960,
+   "thumb_width": 480,
+   "thumb_height": 320,
+   "orig": [
+    2000,
+    1333
+   ],
+   "color": "#493938"
+  },
+  {
+   "key": "social-copil-casca-13",
+   "file": "copil-casca-13",
+   "drive_id": "1_A9TslwNPRMc7buRMWqENaoR4OGosyVv",
+   "source": "2023.11.18 Another World/IMG_5286.JPG",
+   "alt_ro": "Copil cu cască VR numărul 13, cu controlerele în mâini",
+   "tags": [
+    "kids",
+    "action"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#7d79a5"
+  },
+  {
+   "key": "social-copil-casca-20",
+   "file": "copil-casca-20",
+   "drive_id": "1ZPeFUx9QFuuWFNhtQHN2YldUUYRrfedZ",
+   "source": "2023.11.18 Another World/IMG_5314.JPG",
+   "alt_ro": "Copil cu cască VR numărul 20, cu brațele ridicate",
+   "tags": [
+    "kids",
+    "action",
+    "fun"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#9092b9"
+  },
+  {
+   "key": "social-jucatoare-casca-23",
+   "file": "jucatoare-casca-23",
+   "drive_id": "12c45m3d-A36UDcIMkAq1TZ9nL0F7sWrJ",
+   "source": "2023.11.18 Another World/IMG_5661.JPG",
+   "alt_ro": "Jucătoare cu cască VR numărul 23, în fața logo-ului",
+   "tags": [
+    "solo",
+    "logo",
+    "action"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#78759c"
+  },
+  {
+   "key": "social-copil-ingenunchiat-in-joc",
+   "file": "copil-ingenunchiat-in-joc",
+   "drive_id": "1N2x4efc3MO-Kj8VO_Kuve1BrEHXAQbzI",
+   "source": "2023.11.18 Another World/IMG_5750.JPG",
+   "alt_ro": "Copil îngenuncheat în timpul jocului VR",
+   "tags": [
+    "kids",
+    "action"
+   ],
+   "minors": true,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    3000
+   ],
+   "color": "#78749d"
+  },
+  {
+   "key": "social-doua-prietene-pe-podea",
+   "file": "doua-prietene-pe-podea",
+   "drive_id": "1givSGgtAocF_sfcrgXbzPR-HGDz3rxB5",
+   "source": "2026/Foto/IMG_4580.PNG",
+   "alt_ro": "Două prietene care râd, așezate pe podeaua arenei",
+   "tags": [
+    "friends",
+    "after",
+    "fun"
+   ],
+   "minors": false,
+   "width": 768,
+   "height": 1376,
+   "thumb_width": 268,
+   "thumb_height": 480,
+   "orig": [
+    768,
+    1376
+   ],
+   "color": "#2e2a26"
+  },
+  {
+   "key": "social-instructaj-casca",
+   "file": "instructaj-casca",
+   "drive_id": "1PNOMdbGcQNPOS8X8pE8ayvJ8kKdsaS9G",
+   "source": "2026/Foto/IMG_4624.JPG",
+   "alt_ro": "Membru al echipei care ajută o jucătoare să-și așeze casca VR",
+   "tags": [
+    "briefing"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    1024,
+    1536
+   ],
+   "color": "#4f4c54"
+  },
+  {
+   "key": "social-prieteni-sarbatoresc-canapea",
+   "file": "prieteni-sarbatoresc-canapea",
+   "drive_id": "1tSRrnwn3aa9uiRjLCsi6Ue0Hi54ElLCy",
+   "source": "2026/Foto/IMG_4629.PNG",
+   "alt_ro": "Grup de prieteni care sărbătoresc pe o canapea în arenă",
+   "tags": [
+    "friends",
+    "group",
+    "fun"
+   ],
+   "minors": false,
+   "width": 960,
+   "height": 1440,
+   "thumb_width": 320,
+   "thumb_height": 480,
+   "orig": [
+    1024,
+    1536
+   ],
+   "color": "#3a3230"
+  },
+  {
+   "key": "social-ochi-lumi-virtuale",
+   "file": "ochi-lumi-virtuale",
+   "drive_id": "1mUP0G5yxIuEDdqMr2VKeI3pfKAILaEKq",
+   "source": "2025/september 2025/29-30/Post/IMG_2897.JPEG",
+   "alt_ro": "Colaj: un ochi în care se reflectă lumi virtuale din jocuri",
+   "tags": [
+    "games"
+   ],
+   "minors": false,
+   "width": 1080,
+   "height": 1440,
+   "thumb_width": 360,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2666
+   ],
+   "color": "#3f392d"
+  },
+  {
+   "key": "social-ochi-lume-din-cuburi",
+   "file": "ochi-lume-din-cuburi",
+   "drive_id": "1thpCs-0sVEQolvPS0qrzld2_OJUBKmtm",
+   "source": "2025/september 2025/29-30/Post/IMG_3468.JPEG",
+   "alt_ro": "Colaj: un ochi între scene dintr-o lume construită din cuburi",
+   "tags": [
+    "games"
+   ],
+   "minors": false,
+   "width": 1080,
+   "height": 1440,
+   "thumb_width": 360,
+   "thumb_height": 480,
+   "orig": [
+    2000,
+    2666
+   ],
+   "color": "#695b4c"
+  },
+  {
+   "key": "social-deschidere-teaser-ro",
+   "file": "deschidere/deschidere-teaser-ro",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „O altă lume se deschide. Chiar vineri, 13.” — 13 noiembrie, Another World Cluj",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-teaser-ro-story",
+   "file": "deschidere/deschidere-teaser-ro-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „O altă lume se deschide. Chiar vineri, 13.” — 13 noiembrie, Another World Cluj (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-teaser-en",
+   "file": "deschidere/deschidere-teaser-en",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „Another World opens. Friday the 13th. Reality takes a strange turn.”",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-teaser-en-story",
+   "file": "deschidere/deschidere-teaser-en-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „Another World opens. Friday the 13th. Reality takes a strange turn.” (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-10-zile",
+   "file": "deschidere/deschidere-10-zile",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 10 zile până se deschide o altă lume",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-10-zile-story",
+   "file": "deschidere/deschidere-10-zile-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 10 zile până se deschide o altă lume (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-7-zile",
+   "file": "deschidere/deschidere-7-zile",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 7 zile, o săptămână până la vineri, 13",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-7-zile-story",
+   "file": "deschidere/deschidere-7-zile-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 7 zile, o săptămână până la vineri, 13 (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-5-zile",
+   "file": "deschidere/deschidere-5-zile",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 5 zile — „Friday the 13th. Reality takes a strange turn.”",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-5-zile-story",
+   "file": "deschidere/deschidere-5-zile-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 5 zile — „Friday the 13th. Reality takes a strange turn.” (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-3-zile",
+   "file": "deschidere/deschidere-3-zile",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 3 zile — „Căștile sunt pregătite. Voi?”",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-3-zile-story",
+   "file": "deschidere/deschidere-3-zile-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic numărătoare inversă: 3 zile — „Căștile sunt pregătite. Voi?” (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-maine",
+   "file": "deschidere/deschidere-maine",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „Mâine. O altă lume se deschide. Chiar vineri, 13.”",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-maine-story",
+   "file": "deschidere/deschidere-maine-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „Mâine. O altă lume se deschide. Chiar vineri, 13.” (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-azi",
+   "file": "deschidere/deschidere-azi",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „Azi. O altă lume se deschide. Te așteptăm.”",
+   "tags": [
+    "opening",
+    "post"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1350,
+   "thumb_width": 384,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1350
+   ],
+   "color": "#0a1033"
+  },
+  {
+   "key": "social-deschidere-azi-story",
+   "file": "deschidere/deschidere-azi-story",
+   "drive_id": null,
+   "source": "Grafic realizat pentru deschidere (fundal: artă de brand Another World)",
+   "alt_ro": "Grafic: „Azi. O altă lume se deschide. Te așteptăm.” (story)",
+   "tags": [
+    "opening",
+    "story"
+   ],
+   "minors": false,
+   "category": "brand_art",
+   "rights_notes": "Grafic realizat pentru campania de deschidere, pe fundal de artă de brand furnizată de franciza Another World. Randare, nu fotografie din arenă.",
+   "width": 1080,
+   "height": 1920,
+   "thumb_width": 270,
+   "thumb_height": 480,
+   "orig": [
+    1080,
+    1920
+   ],
+   "color": "#0a1033"
+  }
+ ]
+}
