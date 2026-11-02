@@ -1055,8 +1055,13 @@
 
 /* ——— Ecrane medii ——— */
 @media (max-width: 64rem) {
-  .site-nav, .site-header__cta, .site-header .lang-switch { display: none; }
+  .site-nav, .site-header__cta { display: none; }
   .nav-toggle { display: grid; }
+  /* pe ecrane mici, alegerea limbii rămâne vizibilă în antet, lângă butonul de meniu */
+  .site-header__inner > .lang-switch { margin-left: auto; }
+  .site-header__inner > .lang-switch a { padding: 0.45rem 0.6rem; font-size: var(--fs-sm); }
+  .mobile-menu-extra .lang-switch a { padding: 0.6rem 0.9rem; font-size: var(--fs-md); }
+  .site-header__inner { gap: var(--space-3); }
   /* backdrop-filter ar face din antet blocul de referință pentru panoul fix al meniului (panou de doar un rând) */
   .site-header[data-open="true"] { backdrop-filter: none; background: var(--abyss); }
   .site-header[data-open="true"] .site-nav {
@@ -1111,6 +1116,13 @@
   .opening__grid { grid-template-columns: 1fr; gap: var(--space-5); }
   .opening__date { width: min(100%, 20rem); }
   .countdown__cell { padding-inline: var(--space-1); }
+}
+
+/* ——— Telefoane foarte înguste (ex. 320 px): logo, limbă și meniu încap pe un rând ——— */
+@media (max-width: 24rem) {
+  .site-logo img { height: 1.6rem; }
+  .site-header__inner > .lang-switch a { padding: 0.4rem 0.45rem; font-size: var(--fs-xs); }
+  .site-header__inner { gap: var(--space-2); }
 }
 
 /* ——— Mișcare redusă: fără rotații, fără tranziții decorative ——— */
