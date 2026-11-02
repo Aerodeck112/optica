@@ -18,6 +18,7 @@ use App\Http\Controllers\Site\PageController;
 use App\Http\Controllers\Site\PreviewController;
 use App\Http\Controllers\Site\SeoController;
 use App\Http\Controllers\Site\UnsubscribeController;
+use App\Http\Controllers\Site\VoucherOrderController;
 use App\Modules\Marketing\Services\ShortUnsubscribeLink;
 use App\Support\Locales;
 use Illuminate\Support\Facades\Route;
@@ -41,10 +42,15 @@ Route::middleware('throttle:public-forms')->group(function () {
     Route::post('/forms/lead', [LeadController::class, 'store'])->name('forms.lead');
     Route::post('/forms/contact', [ContactController::class, 'store'])->name('forms.contact');
     Route::post('/forms/account-login', [AccountController::class, 'sendLink'])->name('forms.account-login');
+    Route::post('/forms/voucher', [VoucherOrderController::class, 'store'])->name('forms.voucher');
 });
 
 Route::post('/api/chat', [ChatController::class, 'message'])->middleware('throttle:ai-chat')->name('api.chat');
 Route::post('/api/chat/confirm', [ChatController::class, 'confirm'])->middleware('throttle:ai-chat')->name('api.chat.confirm');
+
+Route::get('/voucher/comanda', [VoucherOrderController::class, 'create'])->name('voucher.order.create');
+Route::get('/voucher/comanda/{order}', [VoucherOrderController::class, 'show'])->middleware('signed')->name('voucher.order.show');
+Route::get('/voucher/comanda/{order}/voucher', [VoucherOrderController::class, 'download'])->middleware('signed')->name('voucher.order.download');
 
 Route::get('/booking/{code}/calendar.ics', [BookingManageController::class, 'ics'])->name('booking.ics');
 Route::post('/booking/manage/{token}/pay', [BookingManageController::class, 'pay'])->middleware('throttle:public-forms')->name('booking.manage.pay');
@@ -103,7 +109,7 @@ foreach (Locales::enabled() as $locale) {
             Route::get($segment('legal').'/{slug}', [LegalController::class, 'show'])->name('legal.show');
 
             Route::get('/{slug?}', PageController::class)
-                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent)$)[a-z0-9\-]+')
+                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent|voucher)$)[a-z0-9\-]+')
                 ->name('page');
         });
 }

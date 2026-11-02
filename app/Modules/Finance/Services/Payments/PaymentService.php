@@ -8,6 +8,7 @@ use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingService;
 use App\Modules\Finance\Models\Payment;
 use App\Modules\Loyalty\Services\LoyaltyService;
+use App\Modules\Loyalty\Services\VoucherOrderService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -157,6 +158,9 @@ class PaymentService
 
         if ($applied && $payment->booking_id) {
             $this->afterPaymentChange($payment->booking()->first());
+        }
+        if ($applied && $payment->purpose === 'voucher_sale') {
+            app(VoucherOrderService::class)->fulfil($payment->fresh());
         }
 
         return $applied;

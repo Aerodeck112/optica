@@ -71,7 +71,7 @@
         </div>
 
         <div class="site-footer__bottom">
-            <p>© {{ now()->year }} {{ $company['name'] ?? __('site.brand') }}. {{ __('site.footer.rights') }}
+            <p>© {{ now()->year }} {{ rtrim($company['name'] ?? __('site.brand'), '.') }}. {{ __('site.footer.rights') }}
                 @if (! empty($company['tax_id'])) CUI {{ $company['tax_id'] }}@endif
                 @if (! empty($company['reg_no'])), {{ $company['reg_no'] }}@endif
             </p>

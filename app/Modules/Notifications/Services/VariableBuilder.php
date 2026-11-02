@@ -6,6 +6,8 @@ use App\Modules\Booking\Models\Booking;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Crm\Models\Lead;
+use App\Modules\Loyalty\Models\VoucherOrder;
+use App\Modules\Loyalty\Services\VoucherOrderService;
 use App\Modules\Marketing\Services\ShortUnsubscribeLink;
 use App\Support\LocalTime;
 use App\Support\Money;
@@ -37,7 +39,8 @@ class VariableBuilder
                 'booking.time' => '18:00', 'booking.participants' => '4', 'booking.total' => '[sumă exemplu]', 'booking.deposit' => '[avans exemplu]',
                 'booking.status' => 'Confirmată', 'booking.expires_at' => '', 'booking.manage_url' => url('/'), 'booking.previous_date' => '',
                 'lead.reference' => 'CR-EXEMPLU', 'lead.type' => 'Aniversare', 'lead.date' => LocalTime::format(now()->addDays(10), 'd.m.Y'),
-                'payment.amount' => '[sumă exemplu]', 'login_url' => url('/'), 'unsubscribe_url' => url('/'), 'staff.admin_url' => url('/admin'),
+                'payment.amount' => '[sumă exemplu]', 'voucher.name' => 'Voucher VR (exemplu)', 'voucher.code' => 'AW-EXEMPLU', 'voucher.recipient' => 'Andrei',
+                'voucher.valid_until' => LocalTime::format(now()->addMonths(6), 'd.m.Y'), 'voucher.url' => url('/'), 'login_url' => url('/'), 'unsubscribe_url' => url('/'), 'staff.admin_url' => url('/admin'),
             ];
         }
 
@@ -67,6 +70,21 @@ class VariableBuilder
                 'booking.manage_url' => $context['manage_url'] ?? ($booking->manageUrl() ?? ''),
                 'booking.previous_date' => isset($context['previous_start']) && $context['previous_start'] ? LocalTime::format($context['previous_start'], 'l, j F Y, H:i') : '',
                 'staff.admin_url' => url('/admin/bookings/'.$booking->id),
+            ];
+        }
+
+        $order = $context['voucher_order'] ?? null;
+        if ($order instanceof VoucherOrder) {
+            $orders = app(VoucherOrderService::class);
+            $vars += [
+                'customer.first_name' => trim((string) strtok($order->buyer_name, ' ')),
+                'customer.name' => $order->buyer_name,
+                'voucher.name' => $orders->label($order),
+                'voucher.code' => (string) $order->voucher?->code,
+                'voucher.recipient' => $order->recipient_name ?: '—',
+                'voucher.valid_until' => $order->voucher?->valid_until?->format('d.m.Y') ?? '',
+                'voucher.url' => $orders->downloadUrl($order),
+                'payment.amount' => Money::format($order->amount_minor),
             ];
         }
 

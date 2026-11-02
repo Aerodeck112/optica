@@ -71,6 +71,9 @@ verificat în producție*. Abia apoi setați `AW_MESSAGING_SANDBOX=false`.
     `checkout.session.async_payment_failed`, `checkout.session.expired`
   * secretul de semnare (`whsec_…`) se introduce în panou.
 * Datele cardului se introduc exclusiv pe pagina Stripe; aplicația nu le vede și nu le stochează.
+* Aceeași conexiune servește și **vânzarea online a voucherelor** (`/voucher/comanda`): după confirmarea plății,
+  voucherul se emite automat (cod unic, valabil 6 luni) și se trimite pe e-mail cumpărătorului. Fără Stripe,
+  pagina de comandă trimite vizitatorul la formularul de contact.
 * Stare: **adaptor pregătit**; semnătura webhook-urilor, idempotența și rambursările sunt verificate în teste automate
   cu răspunsuri simulate, **nu** cu un cont Stripe real. Recomandare: o rezervare de test în modul *test* Stripe,
   apoi o plată reală de valoare mică și rambursarea ei, înainte de lansare.

@@ -39,6 +39,8 @@ Pe încasare: **Rambursare** → sumă și motiv. Cererea ajunge la manager pent
 Plățile online se returnează automat pe card; cele în numerar se returnează manual, iar aplicația doar le consemnează.
 
 ### Vouchere
+* Voucherele cumpărate online apar automat în **Fidelizare → Vouchere cadou** (origine „vânzare”), cu cod, pachet,
+  număr de persoane și valabilitate de 6 luni; echipa primește un e-mail la fiecare vânzare (adresa pentru alerte interne).
 **Fidelizare → Vouchere cadou**: emitere, tipărire (format A5 cu cod QR), utilizare la plată, anulare.
 
 ---
