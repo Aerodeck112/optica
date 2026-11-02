@@ -8,7 +8,8 @@ return [
     'timezone' => 'Europe/Bucharest',
 
     // Limbile vizibile public. O limbă se adaugă doar după ce traducerile sunt complete și verificate.
-    'public_locales' => array_filter(explode(',', (string) env('AW_PUBLIC_LOCALES', 'ro'))),
+    // engleza este publicată din 02.11.2026 (conținut tradus); alte limbi se adaugă prin AW_PUBLIC_LOCALES
+    'public_locales' => array_values(array_unique(['ro', 'en', ...array_filter(explode(',', (string) env('AW_PUBLIC_LOCALES', 'ro,en')))])),
 
     // staging: noindex global + banner „Mediu de test”
     'is_staging' => (bool) env('AW_STAGING', false),

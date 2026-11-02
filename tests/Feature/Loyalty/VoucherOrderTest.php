@@ -64,7 +64,7 @@ class VoucherOrderTest extends TestCase
     public function test_paid_order_issues_one_voucher_and_emails_the_buyer(): void
     {
         $this->enableStripe();
-        $this->get(route('voucher.order.create', ['tip' => 'doi']))->assertOk()->assertSee('Voucher pentru doi — 220 lei', false);
+        $this->get(lroute('voucher.order.create').'?tip=doi')->assertOk()->assertSee('Voucher pentru doi — 220 lei', false);
 
         $this->order()->assertRedirect('https://checkout.stripe.com/c/pay/cs_test_v1');
         $order = VoucherOrder::query()->sole();
@@ -83,14 +83,14 @@ class VoucherOrderTest extends TestCase
         $this->assertSame('issued', $order->fresh()->status);
         $this->assertSame(1, MessageLog::query()->where('template_key', 'voucher.purchased')->where('recipient_hash', hash('sha256', 'email|ana@example.test'))->count());
 
-        $this->get(route('voucher.order.show', ['order' => $order->uuid]))->assertForbidden();
-        $this->get(URL::signedRoute('voucher.order.show', ['order' => $order->uuid]))->assertOk()->assertSee($voucher->code);
-        $this->get(URL::signedRoute('voucher.order.download', ['order' => $order->uuid]))->assertOk()->assertSee($voucher->code);
+        $this->get(lroute('voucher.order.show', ['order' => $order->uuid]))->assertForbidden();
+        $this->get(URL::signedRoute('ro.voucher.order.show', ['order' => $order->uuid]))->assertOk()->assertSee($voucher->code);
+        $this->get(URL::signedRoute('ro.voucher.order.download', ['order' => $order->uuid]))->assertOk()->assertSee($voucher->code);
     }
 
     public function test_without_online_payments_the_order_page_points_to_contact(): void
     {
-        $this->get(route('voucher.order.create'))->assertOk()->assertSee('Plata online pentru vouchere va fi disponibilă în curând');
+        $this->get(lroute('voucher.order.create'))->assertOk()->assertSee('Plata online pentru vouchere va fi disponibilă în curând');
         $this->order()->assertSessionHasErrors('product');
         $this->assertSame(0, VoucherOrder::query()->count());
     }

@@ -16,6 +16,7 @@ class LinkResolver
         'games' => 'Jocuri VR',
         'news' => 'Noutăți',
         'account' => 'Cont client',
+        'voucher_order' => 'Comandă voucher cadou',
     ];
 
     private array $pageCache = [];
@@ -60,6 +61,7 @@ class LinkResolver
                 'games' => 'games.index',
                 'news' => 'news.index',
                 'account' => 'account.show',
+                'voucher_order' => 'voucher.order.create',
                 default => null,
             };
             if (! $routeName) {

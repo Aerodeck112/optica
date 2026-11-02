@@ -4,7 +4,7 @@
         <div class="reviews">
             @foreach ($b['reviews'] as $review)
                 <figure class="review">
-                    @if ($review->rating)<p class="stars" aria-label="{{ $review->rating }} din 5">{{ str_repeat('★', $review->rating) }}</p>@endif
+                    @if ($review->rating)<p class="stars" aria-label="{{ __('site.rating', ['rating' => $review->rating]) }}">{{ str_repeat('★', $review->rating) }}</p>@endif
                     <blockquote><p>{{ $review->body }}</p></blockquote>
                     <figcaption>
                         <footer>{{ $review->author_name }} —

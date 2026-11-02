@@ -9,6 +9,7 @@ use App\Modules\Cms\Seo\Seo;
 use App\Modules\Finance\Services\Payments\PaymentException;
 use App\Modules\Loyalty\Models\VoucherOrder;
 use App\Modules\Loyalty\Services\VoucherOrderService;
+use App\Support\Locales;
 use Illuminate\Http\Request;
 
 /** Comanda online a unui voucher cadou: formular → plată → pagina comenzii cu voucherul de descărcat. */
@@ -25,7 +26,8 @@ class VoucherOrderController extends Controller
             'products' => $products,
             'selected' => old('product', $selected),
             'online' => $this->orders->onlineAvailable(),
-            'seo' => Seo::make('Comandă un voucher cadou', 'Voucher cadou Another World Cluj, plătit online și primit pe e-mail, gata de trimis sau de printat.'),
+            'seo' => Seo::make(__('site.voucher_order.title'), __('site.voucher_order.seo_description'))
+                ->alternates(collect(Locales::enabled())->mapWithKeys(fn ($l) => [$l => lroute('voucher.order.create', [], $l)])->all()),
         ]);
     }
 
@@ -36,7 +38,7 @@ class VoucherOrderController extends Controller
         }
 
         try {
-            $order = $this->orders->start($request->only(['product', 'buyer_name', 'buyer_email', 'buyer_phone', 'recipient_name', 'message']));
+            $order = $this->orders->start($request->only(['product', 'buyer_name', 'buyer_email', 'buyer_phone', 'recipient_name', 'message', 'locale']));
         } catch (PaymentException $e) {
             return back()->withInput()->withErrors(['product' => $e->getMessage()]);
         }
@@ -51,7 +53,7 @@ class VoucherOrderController extends Controller
             'label' => $this->orders->label($order),
             'downloadUrl' => $order->voucher ? $this->orders->downloadUrl($order) : null,
             'paymentReturned' => $request->boolean('paid'),
-            'seo' => Seo::make('Comanda ta de voucher')->noindex(),
+            'seo' => Seo::make(__('site.voucher_order.status_title'))->noindex(),
         ])->header('Referrer-Policy', 'no-referrer');
     }
 

@@ -37,9 +37,9 @@ class Notifier
         return $this->send($channel, $address, $templateKey, $context + ['customer' => $customer, 'booking' => $booking ?? ($context['booking'] ?? null)], $category, $idempotencyKey, $customer, $booking, $campaignId);
     }
 
-    public function sendToAddress(string $channel, string $address, string $templateKey, array $context = [], string $category = 'service', ?string $idempotencyKey = null): ?MessageLog
+    public function sendToAddress(string $channel, string $address, string $templateKey, array $context = [], string $category = 'service', ?string $idempotencyKey = null, ?string $locale = null): ?MessageLog
     {
-        return $this->send($channel, $address, $templateKey, $context, $category, $idempotencyKey);
+        return $this->send($channel, $address, $templateKey, $context, $category, $idempotencyKey, locale: $locale);
     }
 
     /** Mesaj cu conținut deja definit (campanii, mesaje manuale). */
@@ -48,9 +48,9 @@ class Notifier
         return $this->dispatch($channel, $address, null, $subject, $body, $context + ['customer' => $customer], $category, $idempotencyKey, $customer, null, $campaignId);
     }
 
-    private function send(string $channel, string $address, string $templateKey, array $context, string $category, ?string $idempotencyKey, ?Customer $customer = null, ?Booking $booking = null, ?int $campaignId = null): ?MessageLog
+    private function send(string $channel, string $address, string $templateKey, array $context, string $category, ?string $idempotencyKey, ?Customer $customer = null, ?Booking $booking = null, ?int $campaignId = null, ?string $locale = null): ?MessageLog
     {
-        $locale = $customer?->locale ?: ($booking?->locale ?: 'ro');
+        $locale ??= $customer?->locale ?: ($booking?->locale ?: 'ro');
         $template = NotificationTemplate::query()
             ->where('key', $templateKey)->where('channel', $channel)->where('is_active', true)
             ->whereIn('locale', [$locale, 'ro'])
@@ -61,7 +61,14 @@ class Notifier
             return null;
         }
 
-        return $this->dispatch($channel, $address, $templateKey, $template->subject, $template->body, $context, $category, $idempotencyKey, $customer, $booking, $campaignId);
+        // datele (luni, zile) din variabile se formatează în limba mesajului
+        $previous = app()->getLocale();
+        app()->setLocale($template->locale);
+        try {
+            return $this->dispatch($channel, $address, $templateKey, $template->subject, $template->body, $context, $category, $idempotencyKey, $customer, $booking, $campaignId);
+        } finally {
+            app()->setLocale($previous);
+        }
     }
 
     private function dispatch(string $channel, string $address, ?string $templateKey, ?string $subject, string $body, array $context, string $category, ?string $idempotencyKey, ?Customer $customer, ?Booking $booking, ?int $campaignId): ?MessageLog

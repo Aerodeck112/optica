@@ -1,6 +1,6 @@
 {{-- Protecție anti-spam accesibilă: câmp ascuns pentru roboți + timp minim de completare. Fără CAPTCHA vizual. --}}
 <div class="hp-field" aria-hidden="true">
-    <label for="website-{{ $id ?? 'f' }}">Lăsați acest câmp gol</label>
+    <label for="website-{{ $id ?? 'f' }}">{{ __('site.leave_empty') }}</label>
     <input type="text" id="website-{{ $id ?? 'f' }}" name="website" tabindex="-1" autocomplete="off">
 </div>
 <input type="hidden" name="_started" value="{{ now()->timestamp }}">

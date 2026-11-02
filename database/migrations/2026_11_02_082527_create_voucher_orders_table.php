@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('buyer_phone', 40)->nullable();
             $table->string('recipient_name', 120)->nullable();
             $table->string('message', 300)->nullable();
+            $table->string('locale', 5)->default('ro');
             $table->string('status', 12)->default('pending'); // pending | issued | cancelled
             $table->foreignId('payment_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('voucher_id')->nullable()->constrained()->nullOnDelete();
@@ -57,13 +58,13 @@ return new class extends Migration
                     $data = (array) ($block['data'] ?? []);
                     foreach (['primary_link'] as $field) {
                         if (($data[$field] ?? null) === 'page:contact') {
-                            $blocks['ro'][$i]['data'][$field] = '/voucher/comanda';
+                            $blocks['ro'][$i]['data'][$field] = 'route:voucher_order';
                         }
                     }
                     foreach ((array) ($data['items'] ?? []) as $j => $item) {
                         foreach ($products as $prefix => $key) {
                             if (str_starts_with((string) ($item['title'] ?? ''), $prefix) && ($item['link'] ?? null) === 'page:contact') {
-                                $blocks['ro'][$i]['data']['items'][$j]['link'] = '/voucher/comanda?tip='.$key;
+                                $blocks['ro'][$i]['data']['items'][$j]['link'] = 'route:voucher_order?tip='.$key;
                             }
                         }
                     }

@@ -57,7 +57,7 @@ Legendă: **T** = acoperit de teste automate · **B** = parcurs în browser (cap
 | Sesiuni rezervabile online: Sesiune VR 110 lei / persoană (arenă comună, max. 8), Arena privată 880 lei (max. 8) | funcționează | T B, E (program, Stripe pentru plata online) |
 | Vânzare online vouchere (110 / 220 / 440 / 880 lei): plată Stripe, emitere automată, e-mail cu voucherul de printat | funcționează | T, E (Stripe) |
 | Oferta confirmată: pachete aniversare (Standard, Silver, Gold), companii (Corporate Team, Corporate Challenge), opțiuni suplimentare, vouchere cadou (110 / 220 / 440 / 880 lei) | publicată (rezervare prin cerere, confirmată de echipă) | T B |
-| Limbi: română publică; engleză și maghiară traduse (texte de interfață), **nepublicate** până la verificare | parțial | T (chei și variabile identice), E (verificare de vorbitori nativi, traducerea conținutului din CMS) |
+| Limbi: română și **engleză publice** (pagini, pachete, jocuri, întrebări frecvente, meniuri, comanda de voucher, e-mailurile către clienți); documentele juridice se afișează în română și în versiunea engleză; maghiara: doar textele de interfață, nepublicată | funcționează (EN) / parțial (HU) | T, E (traducerea juridică a documentelor; verificarea textelor EN de un vorbitor nativ) |
 
 ### Recepție și rezervări
 | Funcționalitate | Stare | |

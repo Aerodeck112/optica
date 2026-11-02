@@ -8,5 +8,6 @@ return [
     'booking_manage' => 'gestionare',
     'news' => 'noutati',
     'account' => 'cont',
+    'voucher_order' => 'voucher/comanda',
     'legal' => 'legal',
 ];

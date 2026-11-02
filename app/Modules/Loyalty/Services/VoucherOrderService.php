@@ -11,6 +11,7 @@ use App\Modules\Finance\Services\Payments\PaymentException;
 use App\Modules\Finance\Services\Payments\PaymentGatewayFactory;
 use App\Modules\Loyalty\Models\VoucherOrder;
 use App\Modules\Notifications\Services\Notifier;
+use App\Support\Locales;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -93,6 +94,7 @@ class VoucherOrderService
                 'buyer_phone' => filled($data['buyer_phone'] ?? null) ? trim($data['buyer_phone']) : null,
                 'recipient_name' => filled($data['recipient_name'] ?? null) ? trim($data['recipient_name']) : null,
                 'message' => filled($data['message'] ?? null) ? trim($data['message']) : null,
+                'locale' => in_array($data['locale'] ?? null, Locales::enabled(), true) ? $data['locale'] : Locales::DEFAULT,
                 'payment_id' => $payment->id,
             ]);
 
@@ -102,9 +104,9 @@ class VoucherOrderService
         try {
             $session = $gateway->createCheckout(
                 $payment,
-                'Another World Cluj — '.$product['label'].' (voucher cadou)',
-                URL::signedRoute('voucher.order.show', ['order' => $order->uuid, 'paid' => 1]),
-                route('voucher.order.create', ['tip' => $order->product]),
+                'Another World Cluj — '.$this->label($order).' (voucher)',
+                URL::signedRoute($order->locale.'.voucher.order.show', ['order' => $order->uuid, 'paid' => 1]),
+                lroute('voucher.order.create', [], $order->locale).'?tip='.$order->product,
             );
         } catch (\Throwable $e) {
             $payment->forceFill(['status' => 'failed', 'note' => 'Sesiunea de plată nu a putut fi creată'])->save();
@@ -153,18 +155,21 @@ class VoucherOrderService
 
     public function downloadUrl(VoucherOrder $order): string
     {
-        return URL::signedRoute('voucher.order.download', ['order' => $order->uuid]);
+        return URL::signedRoute(($order->locale ?: Locales::DEFAULT).'.voucher.order.download', ['order' => $order->uuid]);
     }
 
+    /** Denumirea voucherului în limba comenzii. */
     public function label(VoucherOrder $order): string
     {
-        return self::PRODUCTS[$order->product]['label'] ?? 'Voucher cadou';
+        $key = 'site.voucher_order.products.'.$order->product.'.label';
+
+        return trans()->has($key) ? __($key, [], $order->locale ?: Locales::DEFAULT) : (self::PRODUCTS[$order->product]['label'] ?? 'Voucher');
     }
 
     private function notify(VoucherOrder $order): void
     {
         try {
-            $this->notifier->sendToAddress('email', $order->buyer_email, 'voucher.purchased', ['voucher_order' => $order], 'service', 'voucher-order:'.$order->uuid);
+            $this->notifier->sendToAddress('email', $order->buyer_email, 'voucher.purchased', ['voucher_order' => $order], 'service', 'voucher-order:'.$order->uuid, $order->locale);
             $staff = $this->settings->filled('contact.notifications_staff');
             if ($staff) {
                 $this->notifier->sendRaw('email', $staff, 'Voucher vândut online: '.$this->label($order).' — '.money($order->amount_minor),

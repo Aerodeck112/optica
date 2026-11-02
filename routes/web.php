@@ -48,10 +48,6 @@ Route::middleware('throttle:public-forms')->group(function () {
 Route::post('/api/chat', [ChatController::class, 'message'])->middleware('throttle:ai-chat')->name('api.chat');
 Route::post('/api/chat/confirm', [ChatController::class, 'confirm'])->middleware('throttle:ai-chat')->name('api.chat.confirm');
 
-Route::get('/voucher/comanda', [VoucherOrderController::class, 'create'])->name('voucher.order.create');
-Route::get('/voucher/comanda/{order}', [VoucherOrderController::class, 'show'])->middleware('signed')->name('voucher.order.show');
-Route::get('/voucher/comanda/{order}/voucher', [VoucherOrderController::class, 'download'])->middleware('signed')->name('voucher.order.download');
-
 Route::get('/booking/{code}/calendar.ics', [BookingManageController::class, 'ics'])->name('booking.ics');
 Route::post('/booking/manage/{token}/pay', [BookingManageController::class, 'pay'])->middleware('throttle:public-forms')->name('booking.manage.pay');
 Route::post('/booking/manage/{token}/cancel', [BookingManageController::class, 'cancel'])->middleware('throttle:public-forms')->name('booking.manage.cancel');
@@ -108,8 +104,12 @@ foreach (Locales::enabled() as $locale) {
 
             Route::get($segment('legal').'/{slug}', [LegalController::class, 'show'])->name('legal.show');
 
+            Route::get($segment('voucher_order'), [VoucherOrderController::class, 'create'])->name('voucher.order.create');
+            Route::get($segment('voucher_order').'/{order}', [VoucherOrderController::class, 'show'])->middleware('signed')->name('voucher.order.show');
+            Route::get($segment('voucher_order').'/{order}/voucher', [VoucherOrderController::class, 'download'])->middleware('signed')->name('voucher.order.download');
+
             Route::get('/{slug?}', PageController::class)
-                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent|voucher)$)[a-z0-9\-]+')
+                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent|voucher|en|hu)$)[a-z0-9\-]+')
                 ->name('page');
         });
 }

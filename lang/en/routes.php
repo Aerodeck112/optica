@@ -7,5 +7,6 @@ return [
     'booking_manage' => 'manage',
     'news' => 'news',
     'account' => 'account',
+    'voucher_order' => 'voucher/order',
     'legal' => 'legal',
 ];

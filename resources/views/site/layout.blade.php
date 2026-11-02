@@ -97,10 +97,10 @@
     <dialog class="lightbox" id="lightbox" aria-label="{{ __('site.games.gallery') }}">
         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
         <div class="lightbox__bar">
-            <button type="button" class="btn btn--small btn--ghost" data-prev aria-label="Anterioara"><x-aw-icon name="chevron-left" style="width:1rem;height:1rem"/></button>
+            <button type="button" class="btn btn--small btn--ghost" data-prev aria-label="{{ __('site.lightbox_prev') }}"><x-aw-icon name="chevron-left" style="width:1rem;height:1rem"/></button>
             <span data-caption></span>
             <span class="cluster">
-                <button type="button" class="btn btn--small btn--ghost" data-next aria-label="Următoarea"><x-aw-icon name="chevron-right" style="width:1rem;height:1rem"/></button>
+                <button type="button" class="btn btn--small btn--ghost" data-next aria-label="{{ __('site.lightbox_next') }}"><x-aw-icon name="chevron-right" style="width:1rem;height:1rem"/></button>
                 <button type="button" class="btn btn--small btn--ghost" data-close>{{ __('site.close') }}</button>
             </span>
         </div>

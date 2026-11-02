@@ -20,10 +20,12 @@ final class Money
         $abs = abs($minor);
         $units = intdiv($abs, 100);
         $cents = $abs % 100;
-        $formatted = number_format($units, 0, ',', '.').($cents ? ','.str_pad((string) $cents, 2, '0', STR_PAD_LEFT) : '');
+        // în română: 1.990,50 lei; în celelalte limbi ale site-ului: 1,990.50 RON
+        $romanian = app()->getLocale() === 'ro';
+        $formatted = number_format($units, 0, $romanian ? ',' : '.', $romanian ? '.' : ',').($cents ? ($romanian ? ',' : '.').str_pad((string) $cents, 2, '0', STR_PAD_LEFT) : '');
 
         if ($withCurrency) {
-            $formatted .= ' '.($currency === 'RON' ? 'lei' : $currency);
+            $formatted .= ' '.($currency === 'RON' && $romanian ? 'lei' : $currency);
         }
 
         return ($negative ? '−' : '').$formatted;

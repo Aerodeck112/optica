@@ -53,7 +53,8 @@ class ScheduleService
             $row = $this->weekly()[$number] ?? null;
             $out[] = [
                 'weekday' => $number,
-                'label' => __('days.'.$number) !== 'days.'.$number ? __('days.'.$number) : $label,
+                // numele zilei în limba paginii (1 ianuarie 2024 a fost luni)
+                'label' => app()->getLocale() === 'ro' ? $label : mb_convert_case(CarbonImmutable::create(2024, 1, $number)->locale(app()->getLocale())->dayName, MB_CASE_TITLE),
                 'closed' => ! $row || $row['is_closed'] || ! $row['opens_at'],
                 'opens' => $row ? substr((string) $row['opens_at'], 0, 5) : null,
                 'closes' => $row ? substr((string) $row['closes_at'], 0, 5) : null,

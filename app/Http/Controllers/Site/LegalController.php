@@ -8,14 +8,16 @@ use App\Modules\Cms\Seo\Seo;
 use App\Modules\Cms\Services\SafeMarkdown;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Core\Settings\SettingsSchema;
+use App\Support\Locales;
 
 class LegalController extends Controller
 {
     public function show(string $slug)
     {
         $locale = app()->getLocale();
+        // documentele juridice fără traducere se afișează în română (și în paginile în alte limbi)
         $document = LegalDocument::query()
-            ->where("slug->{$locale}", $slug)
+            ->where(fn ($q) => $q->where("slug->{$locale}", $slug)->orWhere('slug->'.Locales::DEFAULT, $slug))
             ->where('status', 'published')
             ->orderByDesc('effective_at')
             ->orderByDesc('id')
@@ -29,6 +31,7 @@ class LegalController extends Controller
 
         return view('site.legal.show', [
             'document' => $document,
+            'untranslated' => $locale !== Locales::DEFAULT && ! $document->getTranslation('body', $locale, false),
             'body' => SafeMarkdown::render(self::fillPlaceholders($document->getTranslation('body', $locale))),
             'seo' => $seo,
         ]);

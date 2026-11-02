@@ -7,5 +7,6 @@ return [
     'booking_manage' => 'kezeles',
     'news' => 'hirek',
     'account' => 'fiok',
+    'voucher_order' => 'utalvany/rendeles',
     'legal' => 'jogi',
 ];

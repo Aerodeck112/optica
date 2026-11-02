@@ -60,7 +60,8 @@ class SiteComposer
             $document = LegalDocument::current($type);
             if ($document) {
                 $legal[$type] = [
-                    'label' => $document->getTranslation('title', $locale, true),
+                    // documentele netraduse apar cu titlul tradus și marcajul limbii (RO)
+                    'label' => $document->getTranslation('title', $locale, false) ?: ($locale === 'ro' ? $document->getTranslation('title', 'ro') : __('site.legal_titles.'.$type)),
                     'url' => lroute('legal.show', ['slug' => $document->getTranslation('slug', $locale, true)], $locale),
                 ];
             }

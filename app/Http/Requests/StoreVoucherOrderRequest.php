@@ -17,6 +17,7 @@ class StoreVoucherOrderRequest extends PublicFormRequest
             'recipient_name' => ['nullable', 'string', 'max:120'],
             'message' => ['nullable', 'string', 'max:300'],
             'accept_terms' => ['accepted'],
+            'locale' => ['nullable', 'string', 'max:5'],
         ];
     }
 
