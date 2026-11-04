@@ -24,6 +24,7 @@ class TemplateRenderer
         'booking.expires_at' => 'Termen de plată/confirmare',
         'booking.manage_url' => 'Link gestionare rezervare',
         'booking.previous_date' => 'Data anterioară (la reprogramare)',
+        'booking.waiver_url' => 'Link declarație de participare',
         'lead.reference' => 'Număr cerere',
         'lead.type' => 'Tip cerere',
         'lead.date' => 'Data dorită',

@@ -8,5 +8,6 @@ return [
     'news' => 'news',
     'account' => 'account',
     'voucher_order' => 'voucher/order',
+    'waiver' => 'player-agreement',
     'legal' => 'legal',
 ];

@@ -15,6 +15,10 @@
             </div>
         @endif
 
+        @if (in_array($booking->status, ['confirmed', 'pending', 'request'], true) && \App\Modules\Cms\Models\LegalDocument::current('player_waiver'))
+            @include('site.partials.waiver-cta')
+        @endif
+
         @if (session('status'))<div class="alert alert--ok" role="status">{{ session('status') }}</div>@endif
         @if ($errors->any())<div class="alert alert--error" role="alert">{{ $errors->first() }}</div>@endif
 

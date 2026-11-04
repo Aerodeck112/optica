@@ -8,5 +8,6 @@ return [
     'news' => 'hirek',
     'account' => 'fiok',
     'voucher_order' => 'utalvany/rendeles',
+    'waiver' => 'nyilatkozat',
     'legal' => 'jogi',
 ];

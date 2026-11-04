@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AnafOAuthController;
 use App\Http\Controllers\Admin\FinanceDocumentController;
 use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\VoucherPrintController;
+use App\Http\Controllers\Admin\WaiverPrintController;
 use App\Http\Controllers\Site\AccountController;
 use App\Http\Controllers\Site\BookingApiController;
 use App\Http\Controllers\Site\BookingController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Site\PreviewController;
 use App\Http\Controllers\Site\SeoController;
 use App\Http\Controllers\Site\UnsubscribeController;
 use App\Http\Controllers\Site\VoucherOrderController;
+use App\Http\Controllers\Site\WaiverController;
 use App\Modules\Marketing\Services\ShortUnsubscribeLink;
 use App\Support\Locales;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +74,8 @@ Route::middleware('auth:customer')->group(function () {
 
 Route::get('/admin-anaf/authorize', [AnafOAuthController::class, 'authorize'])->middleware('auth')->name('admin.anaf.authorize');
 Route::get('/admin-anaf/callback', [AnafOAuthController::class, 'callback'])->middleware('auth')->name('admin.anaf.callback');
+Route::get('/admin-print/waivers/qr', [WaiverPrintController::class, 'qr'])->middleware('auth')->name('admin.waivers.qr');
+Route::get('/admin-print/waivers/{waiver}', [WaiverPrintController::class, 'waiver'])->middleware('auth')->name('admin.waivers.print');
 Route::get('/admin-print/vouchers/{voucher}', VoucherPrintController::class)->middleware('auth')->name('admin.vouchers.print');
 Route::get('/admin-print/invoices/{invoice}/pdf', [FinanceDocumentController::class, 'invoicePdf'])->middleware('auth')->name('admin.invoices.pdf');
 Route::get('/admin-print/goods-receipts/{receipt}', [FinanceDocumentController::class, 'goodsReceipt'])->middleware('auth')->name('admin.goods-receipts.print');
@@ -104,12 +108,17 @@ foreach (Locales::enabled() as $locale) {
 
             Route::get($segment('legal').'/{slug}', [LegalController::class, 'show'])->name('legal.show');
 
+            Route::get($segment('waiver'), [WaiverController::class, 'show'])->name('waiver.show');
+            Route::post($segment('waiver'), [WaiverController::class, 'store'])->middleware('throttle:public-forms')->name('waiver.store');
+            Route::get($segment('waiver').'/{code}', [WaiverController::class, 'show'])->middleware('signed')->where('code', '[A-Z0-9]{6,20}')->name('waiver.booking');
+            Route::post($segment('waiver').'/{code}', [WaiverController::class, 'store'])->middleware(['signed', 'throttle:public-forms'])->where('code', '[A-Z0-9]{6,20}')->name('waiver.booking.store');
+
             Route::get($segment('voucher_order'), [VoucherOrderController::class, 'create'])->name('voucher.order.create');
             Route::get($segment('voucher_order').'/{order}', [VoucherOrderController::class, 'show'])->middleware('signed')->name('voucher.order.show');
             Route::get($segment('voucher_order').'/{order}/voucher', [VoucherOrderController::class, 'download'])->middleware('signed')->name('voucher.order.download');
 
             Route::get('/{slug?}', PageController::class)
-                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent|voucher|en|hu)$)[a-z0-9\-]+')
+                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent|voucher|en|hu|declaratie|player-agreement|nyilatkozat)$)[a-z0-9\-]+')
                 ->name('page');
         });
 }

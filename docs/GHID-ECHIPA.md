@@ -22,6 +22,20 @@ rezervarea este refuzată și alegeți altă oră.
 **Recepție → Check-in**: scanați codul QR din e-mailul/pagina clientului (camera tabletei) sau introduceți codul rezervării.
 Lista „Sosiri azi” permite check-in direct. Check-in-ul este disponibil cu cel mult 2 ore înainte de început.
 
+### Declarații de participare (acceptarea riscurilor)
+Fiecare jucător (sau părintele, pentru un minor) semnează declarația **înainte de joc**, pe telefon:
+* **Din e-mail / pagina rezervării**: clientul primește linkul „Completează declarația” în confirmare și în reminder și îl
+  poate trimite celorlalți participanți. Pagina arată câte declarații s-au completat din numărul de participanți.
+* **La ghișeu**: **Recepție → Declarații de participare → Cod QR pentru recepție** tipărește afișul cu codurile QR (RO și EN).
+  Jucătorul scanează, introduce opțional codul rezervării și semnează pe ecran.
+* Pentru cine are sub 18 ani în ziua jocului, formularul cere automat datele părintelui/tutorelui, care semnează el.
+* La **Check-in** apare „Declarații X/Y”. Deschideți lista, verificați numele (și actul, dacă e cazul) și apăsați
+  **Validează** — declarația devine „Validată”, cu numele dvs. și ora.
+* Declarația se poate tipări (buton **Tipărește**). Textul semnat rămâne cel al versiunii de atunci, chiar dacă documentul se
+  schimbă ulterior. Data nașterii, telefonul, e-mailul și semnătura sunt criptate; declarațiile se șterg automat după
+  perioada din **Setări → Retenție** (implicit 36 de luni).
+* Rolul „operator” vede doar numărul de declarații la check-in, nu și datele lor.
+
 ### Încasare
 Pe pagina rezervării: **Încasează** → metoda (numerar, card POS, transfer) și suma (propusă automat: avansul sau restul).
 * „Emite bon fiscal” apare pentru numerar și card, dacă o casă de marcat este configurată. Dacă scrie

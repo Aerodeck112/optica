@@ -68,6 +68,7 @@ Legendă: **T** = acoperit de teste automate · **B** = parcurs în browser (cap
 | Check-in cu cod QR (camera tabletei) sau cod | funcționează | B |
 | Încasare la recepție (numerar, card POS, transfer), protecție la dublu-clic, stare plată recalculată | funcționează | T B |
 | Remindere automate, recalculate la reprogramare, oprite la anulare | funcționează | T, E (e-mail/SMS) |
+| Declarație de participare RO/EN semnată pe telefon (link din rezervare + QR la recepție), părinte pentru minori, versiune și amprentă a textului, date criptate, validare la check-in, retenție | funcționează | T B, E (validare juridică a textului) |
 
 ### CRM, marketing, fidelizare
 | Funcționalitate | Stare | |
@@ -129,7 +130,8 @@ Legendă: **T** = acoperit de teste automate · **B** = parcurs în browser (cap
 
 1. Instalarea pe cPanel (`docs/INSTALARE-CPANEL.md`) și remăsurarea performanței pe serverul real.
 2. Datele firmei și ale locației, programul, jocurile confirmate, pachetele cu prețuri — **de completat** de operator.
-3. Validarea juridică a documentelor (instalate în ciornă) și a textelor de consimțământ.
+3. Validarea juridică a documentelor (instalate în ciornă) și a textelor de consimțământ, inclusiv a declarației de
+   participare (vârste minime, asigurare, politica de confidențialitate) — verificările marcate în document.
 4. Decizii cu contabilul: seria de facturare, cotele de TVA, raportarea B2C în e-Factura, regimul încasărilor online.
 5. Conturile externe (e-mail, SMS, Stripe, Anthropic, ANAF, casa de marcat, analytics) și testarea fiecăreia până la starea
    „Implementat și testat în producție”.

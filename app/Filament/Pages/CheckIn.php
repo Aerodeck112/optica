@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\Bookings\BookingResource;
+use App\Filament\Resources\PlayerWaivers\PlayerWaiverResource;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
@@ -76,9 +77,11 @@ class CheckIn extends Page
         $today = LocalTime::now()->toDateString();
 
         return [
-            'found' => $this->foundId ? Booking::query()->with('package')->find($this->foundId) : null,
-            'arrivals' => Booking::query()->with('package')->onLocalDate($today)->whereIn('status', ['pending', 'confirmed', 'checked_in'])->orderBy('starts_at')->get(),
+            'found' => $this->foundId ? Booking::query()->with('package')->withCount('waivers')->find($this->foundId) : null,
+            'arrivals' => Booking::query()->with('package')->withCount('waivers')->onLocalDate($today)->whereIn('status', ['pending', 'confirmed', 'checked_in'])->orderBy('starts_at')->get(),
             'bookingUrl' => fn (Booking $b) => BookingResource::getUrl('view', ['record' => $b]),
+            // datele din declarații le vede doar cine are acces; restul echipei vede doar numărul
+            'waiversUrl' => auth()->user()?->can('waivers.view') ? fn (Booking $b) => PlayerWaiverResource::getUrl('index', ['tableSearch' => $b->code]) : null,
         ];
     }
 }

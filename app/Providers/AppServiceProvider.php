@@ -8,6 +8,7 @@ use App\Modules\Audit\AuditLogger;
 use App\Modules\Audit\Listeners\AuthenticationAuditSubscriber;
 use App\Modules\Booking\Events\BookingStatusChanged;
 use App\Modules\Booking\Models\Booking;
+use App\Modules\Booking\Models\PlayerWaiver;
 use App\Modules\Catalog\Models\Game;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\Banner;
@@ -132,6 +133,7 @@ class AppServiceProvider extends ServiceProvider
             'resource' => \App\Modules\Booking\Models\Resource::class,
             'banner' => Banner::class,
             'app_update' => AppUpdate::class,
+            'player_waiver' => PlayerWaiver::class,
         ]);
     }
 

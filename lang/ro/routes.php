@@ -9,5 +9,6 @@ return [
     'news' => 'noutati',
     'account' => 'cont',
     'voucher_order' => 'voucher/comanda',
+    'waiver' => 'declaratie',
     'legal' => 'legal',
 ];

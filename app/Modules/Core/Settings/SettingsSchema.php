@@ -119,6 +119,7 @@ final class SettingsSchema
             'retention.message_logs_days' => ['group' => 'retention', 'label' => 'Jurnal mesaje (zile)', 'type' => 'int', 'default' => 365],
             'retention.lost_leads_days' => ['group' => 'retention', 'label' => 'Cereri pierdute (zile)', 'type' => 'int', 'default' => 365],
             'retention.inactive_customers_months' => ['group' => 'retention', 'label' => 'Anonimizare clienți fără activitate și fără obligații legale (luni)', 'type' => 'int', 'default' => 36],
+            'retention.waivers_months' => ['group' => 'retention', 'label' => 'Declarații de participare (luni de la semnare)', 'type' => 'int', 'default' => 36, 'help' => 'Dovada informării și a acceptării regulilor, pentru eventuale incidente sau reclamații. Stabiliți perioada cu juristul și treceți-o în politica de confidențialitate.'],
             'retention.audit_days' => ['group' => 'retention', 'label' => 'Jurnal de audit (zile)', 'type' => 'int', 'default' => 730],
         ];
     }

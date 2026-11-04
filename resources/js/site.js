@@ -329,6 +329,100 @@ function initBooking() {
   if (manage) import('./booking.js').then((m) => m.initReschedule(manage));
 }
 
+/* ——— Declarația de participare: semnătură desenată, minor/părinte, copierea linkului ——— */
+function initWaiver() {
+  const form = doc.querySelector('form[data-waiver]');
+  if (!form) return;
+
+  const box = form.querySelector('[data-signature]');
+  const canvas = box.querySelector('canvas');
+  const input = box.querySelector('input[name="signature"]');
+  const error = box.querySelector('[data-signature-error]');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let strokes = 0;
+  const reset = () => {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#0a1033';
+    strokes = 0;
+    input.value = '';
+  };
+  const point = (e) => {
+    const r = canvas.getBoundingClientRect();
+    return [(e.clientX - r.left) * (canvas.width / r.width), (e.clientY - r.top) * (canvas.height / r.height)];
+  };
+  reset();
+  canvas.addEventListener('pointerdown', (e) => {
+    drawing = true;
+    canvas.setPointerCapture(e.pointerId);
+    const [x, y] = point(e);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + 0.1, y + 0.1);
+    ctx.stroke();
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!drawing) return;
+    const [x, y] = point(e);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  });
+  const end = () => {
+    if (!drawing) return;
+    drawing = false;
+    strokes++;
+    input.value = canvas.toDataURL('image/png');
+    error.hidden = true;
+  };
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointercancel', end);
+  box.querySelector('[data-signature-clear]').addEventListener('click', reset);
+  form.addEventListener('submit', (e) => {
+    if (!strokes || !input.value) {
+      e.preventDefault();
+      error.hidden = false;
+      canvas.focus();
+    }
+  });
+
+  // sub 18 ani în ziua sesiunii: semnează părintele/reprezentantul legal
+  const birth = form.querySelector('input[name="birth_date"]');
+  const guardian = form.querySelector('[data-guardian]');
+  const photoAdult = form.querySelector('[data-photo-adult]');
+  const photoMinor = form.querySelector('[data-photo-minor]');
+  const toggleMinor = () => {
+    if (!birth.value) return;
+    const born = new Date(birth.value + 'T00:00:00');
+    const adultFrom = new Date(born.getFullYear() + 18, born.getMonth(), born.getDate());
+    const minor = adultFrom > new Date(form.dataset.sessionDate + 'T00:00:00');
+    guardian.hidden = !minor;
+    guardian.querySelector('input[name="guardian_name"]').required = minor;
+    photoAdult.hidden = minor;
+    photoMinor.hidden = !minor;
+    if (minor) photoAdult.querySelector('input').checked = false;
+  };
+  birth.addEventListener('change', toggleMinor);
+  toggleMinor();
+}
+
+function initCopyLinks() {
+  doc.querySelectorAll('[data-copy-url]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyUrl);
+        const status = button.parentElement.querySelector('[data-copy-status]');
+        if (status) status.hidden = false;
+      } catch {
+        window.prompt('', button.dataset.copyUrl);
+      }
+    });
+  });
+}
+
 /* ——— Numărătoarea inversă până la deschidere ——— */
 function initCountdown() {
   doc.querySelectorAll('[data-countdown]').forEach((box) => {
@@ -371,3 +465,5 @@ initChatLauncher();
 initForms();
 initBooking();
 initCountdown();
+initWaiver();
+initCopyLinks();

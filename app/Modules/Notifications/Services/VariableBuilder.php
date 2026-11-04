@@ -37,7 +37,7 @@ class VariableBuilder
                 'customer.first_name' => 'Ana', 'customer.name' => 'Ana Exemplu', 'booking.code' => 'AWEXEMPLU',
                 'booking.package' => 'Sesiune VR (exemplu)', 'booking.date' => LocalTime::format(now()->addDays(3), 'd.m.Y'),
                 'booking.time' => '18:00', 'booking.participants' => '4', 'booking.total' => '[sumă exemplu]', 'booking.deposit' => '[avans exemplu]',
-                'booking.status' => 'Confirmată', 'booking.expires_at' => '', 'booking.manage_url' => url('/'), 'booking.previous_date' => '',
+                'booking.status' => 'Confirmată', 'booking.expires_at' => '', 'booking.manage_url' => url('/'), 'booking.previous_date' => '', 'booking.waiver_url' => url('/'),
                 'lead.reference' => 'CR-EXEMPLU', 'lead.type' => 'Aniversare', 'lead.date' => LocalTime::format(now()->addDays(10), 'd.m.Y'),
                 'payment.amount' => '[sumă exemplu]', 'voucher.name' => 'Voucher VR (exemplu)', 'voucher.code' => 'AW-EXEMPLU', 'voucher.recipient' => 'Andrei',
                 'voucher.valid_until' => LocalTime::format(now()->addMonths(6), 'd.m.Y'), 'voucher.url' => url('/'), 'login_url' => url('/'), 'unsubscribe_url' => url('/'), 'staff.admin_url' => url('/admin'),
@@ -69,6 +69,7 @@ class VariableBuilder
                 'booking.expires_at' => $booking->expires_at ? LocalTime::format($booking->expires_at, 'j F, H:i') : '',
                 'booking.manage_url' => $context['manage_url'] ?? ($booking->manageUrl() ?? ''),
                 'booking.previous_date' => isset($context['previous_start']) && $context['previous_start'] ? LocalTime::format($context['previous_start'], 'l, j F Y, H:i') : '',
+                'booking.waiver_url' => $booking->code ? $booking->waiverUrl() : '',
                 'staff.admin_url' => url('/admin/bookings/'.$booking->id),
             ];
         }

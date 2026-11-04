@@ -34,6 +34,10 @@
             <dt>{{ __('site.booking.status') }}</dt><dd>{{ $booking->statusLabel() }}</dd>
         </dl>
 
+        @if (in_array($status, ['confirmed', 'pending', 'request'], true) && \App\Modules\Cms\Models\LegalDocument::current('player_waiver'))
+            <div class="mt-7" style="text-align:left">@include('site.partials.waiver-cta')</div>
+        @endif
+
         <div class="cluster mt-7" style="justify-content:center">
             @if ($booking->starts_at && $status !== 'request')
                 <a class="btn btn--ghost" href="{{ route('booking.ics', ['code' => $booking->code]) }}?t={{ $token }}"><x-aw-icon name="calendar" style="width:1.1rem;height:1.1rem"/>{{ __('site.booking.add_to_calendar') }}</a>

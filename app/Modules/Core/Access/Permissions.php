@@ -13,6 +13,7 @@ final class Permissions
         'bookings.manage' => 'Creează și modifică rezervări',
         'bookings.cancel' => 'Anulează rezervări',
         'bookings.checkin' => 'Face check-in',
+        'waivers.view' => 'Vede și verifică declarațiile de participare (date personale)',
         'resources.manage' => 'Administrează resurse și blocări',
         'customers.view' => 'Vede clienții',
         'customers.manage' => 'Modifică clienți',
@@ -53,13 +54,13 @@ final class Permissions
     public const ROLES = [
         'super_admin' => ['label' => 'Super administrator', 'permissions' => ['*']],
         'manager' => ['label' => 'Manager', 'permissions' => [
-            'dashboard.view', 'bookings.*', 'resources.manage', 'customers.*', 'leads.manage', 'tasks.manage',
+            'dashboard.view', 'bookings.*', 'waivers.view', 'resources.manage', 'customers.*', 'leads.manage', 'tasks.manage',
             'cms.manage', 'cms.publish', 'legal.manage', 'catalog.manage', 'prices.manage', 'marketing.*', 'social.manage', 'templates.manage',
             'messages.view', 'loyalty.manage', 'vouchers.manage', 'finance.view', 'finance.issue', 'finance.refund',
             'inventory.manage', 'fiscal.*', 'reports.view', 'ai.manage', 'audit.view',
         ]],
         'reception' => ['label' => 'Recepție', 'permissions' => [
-            'dashboard.view', 'bookings.view', 'bookings.manage', 'bookings.cancel', 'bookings.checkin',
+            'dashboard.view', 'bookings.view', 'bookings.manage', 'bookings.cancel', 'bookings.checkin', 'waivers.view',
             'customers.view', 'customers.manage', 'leads.manage', 'tasks.manage', 'vouchers.manage', 'finance.view', 'finance.issue', 'fiscal.operate',
         ]],
         'operator' => ['label' => 'Operator arenă', 'permissions' => ['dashboard.view', 'bookings.view', 'bookings.checkin', 'tasks.manage']],

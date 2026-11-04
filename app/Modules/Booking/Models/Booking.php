@@ -9,12 +9,14 @@ use App\Modules\Crm\Models\Customer;
 use App\Modules\Finance\Models\Invoice;
 use App\Modules\Finance\Models\Payment;
 use App\Modules\Notifications\Models\ScheduledNotification;
+use App\Support\Locales;
 use App\Support\LocalTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class Booking extends Model
@@ -154,6 +156,19 @@ class Booking extends Model
     public function events(): HasMany
     {
         return $this->hasMany(BookingEvent::class)->latest('created_at')->latest('id');
+    }
+
+    public function waivers(): HasMany
+    {
+        return $this->hasMany(PlayerWaiver::class);
+    }
+
+    /** Linkul (semnat) către declarația de participare a acestei rezervări, în limba rezervării. */
+    public function waiverUrl(): string
+    {
+        $locale = in_array($this->locale, Locales::enabled(), true) ? $this->locale : Locales::DEFAULT;
+
+        return URL::signedRoute($locale.'.waiver.booking', ['code' => $this->code]);
     }
 
     public function payments(): HasMany

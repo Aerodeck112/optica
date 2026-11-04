@@ -712,6 +712,11 @@
   .opening.is-today .opening__day { animation: opening-glow 2.4s var(--ease-out) infinite alternate; }
   @keyframes opening-glow { to { filter: drop-shadow(0 10px 70px rgb(230 28 74 / 0.7)); } }
 
+  /* ——— Declarația de participare ——— */
+  .signature-pad { display: block; width: 100%; max-width: 40rem; aspect-ratio: 600 / 220; margin-top: var(--space-3); border-radius: var(--radius-m); border: 1px dashed var(--line-strong); background: #fff; touch-action: none; cursor: crosshair; }
+  .waiver-text { max-height: 28rem; overflow-y: auto; padding-right: var(--space-3); }
+  .waiver-text h2 { font-size: var(--fs-md); margin-top: var(--space-5); }
+
   /* ——— Mesaj mare ——— */
   .statement { position: relative; }
   .statement__text {

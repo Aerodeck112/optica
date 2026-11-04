@@ -23,6 +23,7 @@ class LegalDocument extends Model
         'minors' => 'Reguli pentru participarea minorilor',
         'safety' => 'Informare de siguranță',
         'media_consent' => 'Acord pentru fotografii și video',
+        'player_waiver' => 'Declarație de participare (acceptarea riscurilor)',
     ];
 
     protected $table = 'legal_documents';

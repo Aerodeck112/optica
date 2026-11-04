@@ -20,7 +20,7 @@ class OpeningCountdownTest extends TestCase
             'blocks' => ['ro' => [['type' => 'opening_countdown', 'data' => [
                 'title_1' => 'O altă lume se deschide.', 'title_2' => 'Chiar vineri, 13.', 'today_title' => 'Azi deschidem.',
             ]]]],
-            'published_locales' => ['ro'], 'status' => 'published', 'published_at' => now()->subDay(),
+            'published_locales' => ['ro'], 'status' => 'published', 'published_at' => '2026-10-01 00:00:00',
         ]);
         app(SettingsRepository::class)->set('venue.opening_date', '2026-11-13');
     }
