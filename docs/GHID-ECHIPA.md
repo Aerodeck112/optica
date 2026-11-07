@@ -15,7 +15,8 @@ aplicația de autentificare (2FA).
 
 ### Rezervare la telefon sau la ghișeu
 **Rezervări → Rezervare nouă**: pachet, dată, oră din lista orelor libere, participanți pe categorii de vârstă, datele
-adultului responsabil. Disponibilitatea se verifică în momentul salvării; dacă între timp ora a fost ocupată online,
+adultului responsabil. Dacă clientul are un cod de reducere, completați-l la **Detalii → Cod de reducere**: totalul
+estimat arată imediat reducerea sau motivul pentru care codul nu se aplică. Disponibilitatea se verifică în momentul salvării; dacă între timp ora a fost ocupată online,
 rezervarea este refuzată și alegeți altă oră.
 
 ### Sosirea grupului
@@ -113,6 +114,14 @@ Diferențele devin mișcări de stoc „Inventar”.
 * **Deschiderea oficială**: data se setează în **Setări locație → Data deschiderii oficiale**. Până atunci, prima pagină afișează
   numărătoarea inversă (blocul „Deschidere oficială”), iar rezervările online încep din ziua deschiderii; recepția poate
   rezerva oricând. Blocul dispare singur după ziua deschiderii.
+* **Coduri de reducere** (**Marketing → Coduri de reducere**): tip (persoane gratuite, procent sau sumă fixă), pachetele la
+  care se aplică, perioada în care se poate folosi, perioada sesiunilor și câte folosiri are fiecare client (recunoscut după
+  e-mail sau telefon). Marketingul vede codurile; doar cine are dreptul de a modifica prețuri le creează sau le schimbă.
+  Codul se verifică la rezervare (pe site și la recepție), reducerea apare separat pe rezervare și pe factură, iar o
+  rezervare anulată eliberează codul. Un cod folosit nu se șterge: se dezactivează. Blocul „Cod de reducere” de pe prima
+  pagină și bannerul dispar singure când codul expiră.
+* **WELCOME13** (oferta de deschidere): o persoană gratuită la „Sesiune VR — 60 de minute”, pentru sesiunile din 13–15
+  noiembrie, o singură dată per client, se poate folosi până pe 15 noiembrie.
 
 ## Social media
 

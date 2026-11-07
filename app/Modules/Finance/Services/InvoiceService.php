@@ -69,7 +69,7 @@ class InvoiceService
                 $lines[] = ['description' => $item->description, 'quantity' => (string) $item->quantity, 'unit_gross_minor' => (int) $item->unit_price_minor, 'vat_group' => $item->vat_group ?? 'standard', 'item_code' => $item->type];
             }
             if ((int) $booking->discount_minor > 0) {
-                $lines[] = ['description' => 'Reducere', 'quantity' => 1, 'unit_gross_minor' => -(int) $booking->discount_minor, 'vat_group' => $booking->package?->vat_group ?? 'standard'];
+                $lines[] = ['description' => $booking->promoCode ? 'Reducere cod '.$booking->promoCode->code : 'Reducere', 'quantity' => 1, 'unit_gross_minor' => -(int) $booking->discount_minor, 'vat_group' => $booking->package?->vat_group ?? 'standard'];
             }
             foreach (Invoice::query()->where('booking_id', $booking->id)->where('kind', 'advance')->where('status', 'issued')->get() as $advance) {
                 foreach ($advance->lines as $line) {

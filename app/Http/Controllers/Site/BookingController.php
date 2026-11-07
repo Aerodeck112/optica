@@ -39,7 +39,9 @@ class BookingController extends Controller
 
         $selected = null;
         if ($slug = $request->query('pachet')) {
-            $selected = $packages->first(fn (Package $p) => $p->getTranslation('slug', $locale) === $slug);
+            // slug-ul în limba paginii sau cel românesc (linkurile din bannere și din postări)
+            $selected = $packages->first(fn (Package $p) => $p->getTranslation('slug', $locale) === $slug)
+                ?? $packages->first(fn (Package $p) => $p->getTranslation('slug', 'ro') === $slug);
         }
         $game = null;
         if (! $selected && ($gameSlug = $request->query('joc'))) {
@@ -63,6 +65,7 @@ class BookingController extends Controller
             'paymentMethods' => $this->paymentMethods(),
             'policies' => $this->policyLinks($locale),
             'onlineEnabled' => $this->settings->bool('booking.online_enabled'),
+            'promoCode' => old('promo_code', mb_substr((string) $request->query('cod'), 0, 40)),
             'seo' => $seo,
             'showMobileBook' => false,
         ]);
@@ -128,9 +131,16 @@ class BookingController extends Controller
                 gameId: $request->integer('game_id') ?: null,
                 forceRequest: ! $instant,
                 analyticsClientRef: substr(hash('sha256', $request->session()->getId()), 0, 24),
+                promoCode: $request->filled('promo_code') ? $request->string('promo_code')->trim()->toString() : null,
             ));
         } catch (BookingException $e) {
-            $field = in_array($e->reason, ['slot_unavailable', 'hold_expired'], true) ? 'starts_at' : ($e->reason === 'policies' ? 'accept_terms' : ($e->reason === 'participants' ? 'participants' : 'contact_name'));
+            $field = match (true) {
+                in_array($e->reason, ['slot_unavailable', 'hold_expired'], true) => 'starts_at',
+                $e->reason === 'policies' => 'accept_terms',
+                $e->reason === 'participants' => 'participants',
+                $e->reason === 'promo_code' => 'promo_code',
+                default => 'contact_name',
+            };
 
             return back()->withInput()->withErrors([$field => $e->getMessage()]);
         }

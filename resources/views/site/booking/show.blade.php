@@ -132,6 +132,14 @@
                             <p class="muted">{{ __('site.booking.no_extras') }}</p>
                         @endif
                     </div>
+                    <div class="field promo-field mt-6">
+                        <label class="field__label" for="promo-code">{{ __('site.promo.field') }}</label>
+                        <div class="promo-field__row">
+                            <input class="input" id="promo-code" name="promo_code" value="{{ $promoCode }}" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false" data-promo-input aria-describedby="promo-status" @error('promo_code') aria-invalid="true" @enderror>
+                            <button type="button" class="btn btn--ghost" data-promo-apply>{{ __('site.promo.apply') }}</button>
+                        </div>
+                        <p class="field__hint" id="promo-status" data-promo-status role="status" aria-live="polite">@error('promo_code'){{ $message }}@enderror</p>
+                    </div>
                 </fieldset>
 
                 <fieldset class="booking-step" style="border:0;padding-inline:0;margin:0">

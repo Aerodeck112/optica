@@ -29,7 +29,8 @@
                 <dt>{{ __('site.booking.summary_participants') }}</dt><dd>{{ $booking->participants }}</dd>
                 <dt>{{ __('site.booking.status') }}</dt><dd>{{ $booking->statusLabel() }}</dd>
                 <dt>{{ __('site.booking.payment_status') }}</dt><dd>{{ $booking->paymentStatusLabel() }}</dd>
-                <dt>{{ __('site.booking.summary_total') }}</dt><dd>{{ $booking->total_minor !== null ? money($booking->total_minor) : __('site.booking.summary_price_tbd') }}</dd>
+                @if ($booking->discountLabel())<dt>{{ $booking->discountLabel() }}</dt><dd>−{{ money($booking->discount_minor) }}</dd>@endif
+                <dt>{{ __('site.booking.summary_total') }}</dt><dd>{{ $booking->total_minor !== null ? money($booking->dueMinor()) : __('site.booking.summary_price_tbd') }}</dd>
             </dl>
             <div class="cluster mt-6">
                 @if ($booking->starts_at && $booking->occupiesArena())

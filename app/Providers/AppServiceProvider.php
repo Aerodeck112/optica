@@ -46,6 +46,7 @@ use App\Modules\Loyalty\Models\Reward;
 use App\Modules\Loyalty\Models\Voucher;
 use App\Modules\Marketing\Models\Campaign;
 use App\Modules\Marketing\Models\ContactImport;
+use App\Modules\Marketing\Models\PromoCode;
 use App\Modules\Marketing\Models\Segment;
 use App\Modules\Notifications\Listeners\NotificationSubscriber;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -132,6 +133,7 @@ class AppServiceProvider extends ServiceProvider
             'fiscal_receipt' => FiscalReceipt::class,
             'resource' => \App\Modules\Booking\Models\Resource::class,
             'banner' => Banner::class,
+            'promo_code' => PromoCode::class,
             'app_update' => AppUpdate::class,
             'player_waiver' => PlayerWaiver::class,
         ]);

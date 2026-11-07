@@ -38,6 +38,7 @@ class StoreBookingRequest extends PublicFormRequest
             'hold_token' => ['nullable', 'string', 'max:64'],
             'game_id' => ['nullable', 'integer', 'exists:games,id'],
             'locale' => ['nullable', 'string', 'max:5'],
+            'promo_code' => ['nullable', 'string', 'max:40'],
         ];
     }
 

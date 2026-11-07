@@ -712,6 +712,64 @@
   .opening.is-today .opening__day { animation: opening-glow 2.4s var(--ease-out) infinite alternate; }
   @keyframes opening-glow { to { filter: drop-shadow(0 10px 70px rgb(230 28 74 / 0.7)); } }
 
+  /* ——— Cod de reducere (ofertă) ——— */
+  .promo__grid { display: grid; gap: var(--space-8); align-items: center; }
+  @media (min-width: 900px) { .promo__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); } }
+  .promo__ticket {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    padding: clamp(2rem, 1.4rem + 3vw, 3.5rem) var(--space-5);
+    border-radius: var(--radius-l);
+    background: radial-gradient(120% 90% at 50% 0%, rgb(124 92 255 / 0.28), transparent 60%), rgb(255 255 255 / 0.04);
+    isolation: isolate;
+    overflow: hidden;
+    text-align: center;
+    container-type: inline-size;
+  }
+  .promo__ticket::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    background: conic-gradient(from 210deg, var(--violet), var(--cyan), var(--magenta), var(--crimson), var(--violet));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+  .promo__label { font-size: var(--fs-sm); color: var(--mist); font-weight: 600; }
+  .promo__code {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 11.5cqi, 5.75rem);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+    white-space: nowrap;
+    background: linear-gradient(160deg, #fff 10%, var(--violet-soft) 45%, var(--crimson-hi) 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 8px 30px rgb(230 28 74 / 0.3));
+    user-select: all;
+  }
+  .promo__copy { display: inline-flex; gap: var(--space-2); align-items: center; min-height: 44px; padding: var(--space-2) var(--space-4); border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--star); font: inherit; font-weight: 600; cursor: pointer; }
+  .promo__copy:hover { border-color: var(--violet-soft); }
+  .promo__copy svg { width: 1.1rem; height: 1.1rem; }
+  .promo__copied { color: var(--cyan); }
+  .promo__title { font-size: var(--fs-2xl); max-width: 18ch; }
+  .promo__body { margin-top: var(--space-4); color: var(--mist); font-size: var(--fs-md); max-width: 36rem; }
+  .promo__until { display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-4); font-weight: 600; color: var(--star); }
+  .promo__until svg { width: 1.25rem; height: 1.25rem; color: var(--crimson-hi); flex: none; }
+  .promo__cta { margin-top: var(--space-6); }
+  .promo__terms { margin-top: var(--space-5); color: var(--dim); max-width: 36rem; }
+  .promo-field__row { display: flex; gap: var(--space-3); max-width: 28rem; }
+  .promo-field__row .input { flex: 1; min-width: 0; text-transform: uppercase; letter-spacing: 0.04em; }
+  .booking-summary__discount { display: flex; justify-content: space-between; gap: var(--space-3); color: var(--cyan); }
+
   /* ——— Declarația de participare ——— */
   .signature-pad { display: block; width: 100%; max-width: 40rem; aspect-ratio: 600 / 220; margin-top: var(--space-3); border-radius: var(--radius-m); border: 1px dashed var(--line-strong); background: #fff; touch-action: none; cursor: crosshair; }
   .waiver-text { max-height: 28rem; overflow-y: auto; padding-right: var(--space-3); }

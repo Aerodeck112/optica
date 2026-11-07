@@ -79,6 +79,16 @@ final class BlockForms
                 self::cta('primary', 'Buton principal'),
                 self::cta('secondary', 'Buton secundar'),
             ]),
+            $make('promo_code', [
+                Text::make('Codul se creează în Marketing → Coduri de reducere. Blocul se ascunde singur când codul expiră sau este dezactivat.'),
+                Grid::make(2)->schema([
+                    Fields::text('code', 'Cod', 40)->required(),
+                    Fields::text('title', 'Titlu', 80)->required(),
+                    Textarea::make('body')->label('Text')->rows(2)->maxLength(300),
+                    Textarea::make('terms')->label('Condiții (text mic)')->rows(3)->maxLength(400),
+                ]),
+                self::cta('primary', 'Buton'),
+            ]),
             $make('statement', [
                 Textarea::make('text')->label('Mesaj')->required()->rows(2)->maxLength(240),
                 MarkdownEditor::make('body')->label('Text suplimentar')->toolbarButtons(self::mdToolbar())->maxLength(2000),

@@ -19,6 +19,8 @@ use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Services\ConsentService;
 use App\Modules\Crm\Services\CustomerResolver;
+use App\Modules\Marketing\Models\PromoCode;
+use App\Modules\Marketing\Services\PromoCodeService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Crypt;
@@ -41,6 +43,7 @@ class BookingService
         private readonly CustomerResolver $customers,
         private readonly ConsentService $consents,
         private readonly AuditLogger $audit,
+        private readonly PromoCodeService $promos,
     ) {}
 
     // ——————————————————————————— Blocare temporară ———————————————————————————
@@ -115,14 +118,20 @@ class BookingService
         }
 
         $quote = $this->pricing->quote($package, $data->startsAt, $data->participants, $data->addons);
+        $promo = null;
+        if ($data->promoCode !== null && trim($data->promoCode) !== '') {
+            $evaluated = $this->promos->evaluate($data->promoCode, $package, $data->startsAt, $data->participants, $quote);
+            $promo = $evaluated['promo'];
+            $quote = $quote->withDiscount($evaluated['discount_minor'], $this->promos->label($promo, $evaluated['discount_minor']));
+        }
         $instant = ! $data->forceRequest && $data->startsAt !== null && $this->canBookInstantly($package, $data);
 
         $manageToken = Str::random(48);
         $checkinToken = Str::random(32);
 
         $result = $instant
-            ? $this->createInstant($data, $quote, $manageToken, $checkinToken)
-            : $this->createRequest($data, $quote, $manageToken, $checkinToken);
+            ? $this->createInstant($data, $quote, $manageToken, $checkinToken, $promo)
+            : $this->createRequest($data, $quote, $manageToken, $checkinToken, $promo);
 
         $result = $result->fresh();
         BookingCreated::dispatch($result, $manageToken);
@@ -130,7 +139,7 @@ class BookingService
         return ['booking' => $result, 'manage_token' => $manageToken, 'checkin_token' => $checkinToken];
     }
 
-    private function createInstant(BookingData $data, Quote $quote, string $manageToken, string $checkinToken): Booking
+    private function createInstant(BookingData $data, Quote $quote, string $manageToken, string $checkinToken, ?PromoCode $promo = null): Booking
     {
         $package = $data->package;
         [$occupiedStart, $occupiedEnd] = $this->occupiedWindow($package, $data->startsAt, $quote->extraMinutes);
@@ -154,7 +163,7 @@ class BookingService
             : ($data->resourceId ? [Resource::query()->findOrFail($data->resourceId)] : $this->availability->eligibleResources($package, $data->isStaff()));
 
         foreach ($candidates as $resource) {
-            $booking = $this->locker->run($resource->conflictFamilyIds(), function () use ($data, $quote, $resource, $occupiedStart, $occupiedEnd, $exclusive, $hold, $manageToken, $checkinToken) {
+            $booking = $this->locker->run($resource->conflictFamilyIds(), function () use ($data, $quote, $resource, $occupiedStart, $occupiedEnd, $exclusive, $hold, $manageToken, $checkinToken, $promo) {
                 if (! $data->isStaff() && $data->startsAt->lessThan(now())) {
                     return null;
                 }
@@ -163,7 +172,7 @@ class BookingService
                 }
 
                 [$status, $expiresAt] = $this->initialStatus($data, $quote);
-                $booking = $this->persistBooking($data, $quote, $status, $expiresAt, $manageToken, $checkinToken);
+                $booking = $this->persistBooking($data, $quote, $status, $expiresAt, $manageToken, $checkinToken, $promo);
 
                 BookingResource::query()->create([
                     'booking_id' => $booking->id,
@@ -190,12 +199,12 @@ class BookingService
         throw $hold && $hold->expires_at->isPast() ? BookingException::holdExpired() : BookingException::slotUnavailable();
     }
 
-    private function createRequest(BookingData $data, Quote $quote, string $manageToken, string $checkinToken): Booking
+    private function createRequest(BookingData $data, Quote $quote, string $manageToken, string $checkinToken, ?PromoCode $promo = null): Booking
     {
-        return DB::transaction(fn () => $this->persistBooking($data, $quote, 'request', null, $manageToken, $checkinToken));
+        return DB::transaction(fn () => $this->persistBooking($data, $quote, 'request', null, $manageToken, $checkinToken, $promo));
     }
 
-    private function persistBooking(BookingData $data, Quote $quote, string $status, ?CarbonImmutable $expiresAt, string $manageToken, string $checkinToken): Booking
+    private function persistBooking(BookingData $data, Quote $quote, string $status, ?CarbonImmutable $expiresAt, string $manageToken, string $checkinToken, ?PromoCode $promo = null): Booking
     {
         $package = $data->package;
         $customer = $this->customers->resolve([
@@ -211,41 +220,53 @@ class BookingService
         $booking = null;
         for ($attempt = 0; $attempt < 5 && $booking === null; $attempt++) {
             try {
-                $booking = DB::transaction(fn () => Booking::query()->create([
-                    'code' => $this->generateCode(),
-                    'package_id' => $package->id,
-                    'game_id' => $data->gameId,
-                    'customer_id' => $customer->id,
-                    'starts_at' => $data->startsAt,
-                    'ends_at' => $endsAt,
-                    'participants' => $data->participants,
-                    'age_groups' => $data->ageGroups ?: null,
-                    'status' => $status,
-                    'payment_status' => 'unpaid',
-                    'invoice_status' => 'not_invoiced',
-                    'source' => $data->source,
-                    'payment_method' => $data->paymentMethod,
-                    'contact_name' => $data->contactName,
-                    'contact_email' => $data->contactEmail,
-                    'contact_phone' => $data->contactPhone,
-                    'company_name' => $data->companyName,
-                    'customer_notes' => $data->customerNotes,
-                    'internal_notes' => $data->internalNotes,
-                    'created_by' => $data->createdBy,
-                    'currency' => $package->currency,
-                    'total_minor' => $quote->totalMinor,
-                    'deposit_minor' => $quote->depositMinor ?? 0,
-                    'price_snapshot' => $quote->toArray() + ['package' => ['id' => $package->id, 'name' => $package->getTranslation('name', 'ro'), 'slot_minutes' => $package->slot_minutes, 'play_minutes' => $package->play_minutes]],
-                    'accepted_policies' => $this->policyRecords($data),
-                    'manage_token_hash' => hash('sha256', $manageToken),
-                    'manage_token_encrypted' => Crypt::encryptString($manageToken),
-                    'checkin_token_hash' => hash('sha256', $checkinToken),
-                    'expires_at' => $expiresAt,
-                    'confirmed_at' => $status === 'confirmed' ? now() : null,
-                    'locale' => $data->locale,
-                    'lead_id' => $data->leadId,
-                    'analytics_client_ref' => $data->analyticsClientRef,
-                ]));
+                $booking = DB::transaction(function () use ($data, $quote, $package, $customer, $status, $endsAt, $expiresAt, $manageToken, $checkinToken, $promo) {
+                    if ($promo) {
+                        $this->promos->assertAvailable($promo, $customer->id);
+                    }
+                    $booking = Booking::query()->create([
+                        'code' => $this->generateCode(),
+                        'package_id' => $package->id,
+                        'game_id' => $data->gameId,
+                        'customer_id' => $customer->id,
+                        'starts_at' => $data->startsAt,
+                        'ends_at' => $endsAt,
+                        'participants' => $data->participants,
+                        'age_groups' => $data->ageGroups ?: null,
+                        'status' => $status,
+                        'payment_status' => 'unpaid',
+                        'invoice_status' => 'not_invoiced',
+                        'source' => $data->source,
+                        'payment_method' => $data->paymentMethod,
+                        'contact_name' => $data->contactName,
+                        'contact_email' => $data->contactEmail,
+                        'contact_phone' => $data->contactPhone,
+                        'company_name' => $data->companyName,
+                        'customer_notes' => $data->customerNotes,
+                        'internal_notes' => $data->internalNotes,
+                        'created_by' => $data->createdBy,
+                        'currency' => $package->currency,
+                        'total_minor' => $quote->totalMinor,
+                        'discount_minor' => $quote->discountMinor,
+                        'promo_code_id' => $promo?->id,
+                        'deposit_minor' => $quote->depositMinor ?? 0,
+                        'price_snapshot' => $quote->toArray() + ['package' => ['id' => $package->id, 'name' => $package->getTranslation('name', 'ro'), 'slot_minutes' => $package->slot_minutes, 'play_minutes' => $package->play_minutes]],
+                        'accepted_policies' => $this->policyRecords($data),
+                        'manage_token_hash' => hash('sha256', $manageToken),
+                        'manage_token_encrypted' => Crypt::encryptString($manageToken),
+                        'checkin_token_hash' => hash('sha256', $checkinToken),
+                        'expires_at' => $expiresAt,
+                        'confirmed_at' => $status === 'confirmed' ? now() : null,
+                        'locale' => $data->locale,
+                        'lead_id' => $data->leadId,
+                        'analytics_client_ref' => $data->analyticsClientRef,
+                    ]);
+                    if ($promo) {
+                        $this->promos->record($promo, $booking, $quote->discountMinor);
+                    }
+
+                    return $booking;
+                });
             } catch (QueryException $e) {
                 if (! str_contains($e->getMessage(), 'bookings_code_unique')) {
                     throw $e;

@@ -43,6 +43,7 @@ final class BookingData
         public readonly ?int $leadId = null,
         public readonly ?string $internalNotes = null,
         public readonly ?string $analyticsClientRef = null,
+        public readonly ?string $promoCode = null,     // cod de reducere introdus de client sau de recepție
     ) {}
 
     public function isStaff(): bool

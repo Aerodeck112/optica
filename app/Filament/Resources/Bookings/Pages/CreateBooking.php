@@ -10,6 +10,7 @@ use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
 use App\Modules\Booking\Services\PricingService;
 use App\Modules\Catalog\Models\Package;
+use App\Modules\Marketing\Services\PromoCodeService;
 use App\Support\LocalTime;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
@@ -81,6 +82,8 @@ class CreateBooking extends CreateRecord
                     Select::make('payment_method')->label('Plată')->options(['at_location' => 'La locație', 'bank_transfer' => 'Transfer bancar', 'online' => 'Online (link de plată)', 'voucher' => 'Voucher'])->default('at_location'),
                     Select::make('resource_id')->label('Resursă')->placeholder('Automat')
                         ->options(fn (Get $get) => ArenaResource::query()->whereIn('id', (array) Package::query()->find($get('package_id'))?->resource_ids)->pluck('name', 'id')),
+                    TextInput::make('promo_code')->label('Cod de reducere (opțional)')->maxLength(40)->live(onBlur: true)
+                        ->helperText('Se verifică la fel ca pe site: pachet, perioadă și o singură folosire per client.'),
                 ]),
                 Textarea::make('customer_notes')->label('Mesajul / cerințele clientului')->rows(2)->maxLength(2000),
                 Textarea::make('internal_notes')->label('Note interne')->rows(2)->maxLength(5000),
@@ -96,10 +99,21 @@ class CreateBooking extends CreateRecord
         }
         $start = $get('slot') ? CarbonImmutable::parse(explode('|', $get('slot'))[0]) : null;
         $quote = app(PricingService::class)->quote($package, $start, max(1, (int) $get('participants')), []);
+        $promoNote = '';
+        if (filled($get('promo_code')) && $quote->priced) {
+            try {
+                $promos = app(PromoCodeService::class);
+                $evaluated = $promos->evaluate((string) $get('promo_code'), $package, $start, max(1, (int) $get('participants')), $quote);
+                $quote = $quote->withDiscount($evaluated['discount_minor'], $promos->label($evaluated['promo']));
+                $promoNote = ' · '.$quote->discountLabel.': −'.Money::format($quote->discountMinor);
+            } catch (BookingException $e) {
+                $promoNote = ' · Cod: '.$e->getMessage();
+            }
+        }
 
         return $quote->totalMinor === null
             ? 'Preț: de stabilit (pachet fără preț configurat / ofertă).'
-            : 'Total estimat: '.Money::format($quote->totalMinor).($quote->depositMinor ? ' · avans: '.Money::format($quote->depositMinor) : '').' (cu TVA).';
+            : 'Total estimat: '.Money::format($quote->dueMinor()).$promoNote.($quote->depositMinor ? ' · avans: '.Money::format($quote->depositMinor) : '').' (cu TVA).';
     }
 
     protected function handleRecordCreation(array $data): Model
@@ -134,6 +148,7 @@ class CreateBooking extends CreateRecord
                 staffStatus: $data['staff_status'] ?? 'confirmed',
                 resourceId: $resourceId ? (int) $resourceId : null,
                 internalNotes: $data['internal_notes'] ?? null,
+                promoCode: filled($data['promo_code'] ?? null) ? trim($data['promo_code']) : null,
             ));
         } catch (BookingException $e) {
             Notification::make()->danger()->title($e->getMessage())->persistent()->send();

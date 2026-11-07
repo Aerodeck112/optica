@@ -13,6 +13,7 @@ use App\Modules\Cms\Services\LinkResolver;
 use App\Modules\Cms\Services\MediaRepository;
 use App\Modules\Cms\Services\SafeMarkdown;
 use App\Modules\Core\Settings\SettingsRepository;
+use App\Modules\Marketing\Models\PromoCode;
 use App\Support\LocalTime;
 
 /**
@@ -80,6 +81,25 @@ class BlockRenderer
             'weekday' => $local->locale($locale)->isoFormat('dddd'),
             'month' => $local->locale($locale)->isoFormat('MMMM'),
             'date_label' => $local->locale($locale)->isoFormat('dddd, D MMMM YYYY'),
+        ];
+    }
+
+    /** Blocul apare doar cât timp codul există, este activ și se mai poate folosi. */
+    private function preparePromoCode(array $d, string $locale): ?array
+    {
+        $code = PromoCode::normalize($d['code'] ?? null);
+        $promo = $code !== '' ? PromoCode::query()->where('code', $code)->first() : null;
+        if (! $promo || ! $promo->isRedeemableOn(LocalTime::now()->toDateString())) {
+            return null;
+        }
+
+        return [
+            'code' => $promo->code,
+            'title' => $d['title'] ?? '',
+            'body' => $d['body'] ?? null,
+            'terms' => $d['terms'] ?? null,
+            'primary' => $this->cta($d['primary_label'] ?? null, $d['primary_link'] ?? null, $locale),
+            'until' => $promo->redeem_until?->locale($locale)->isoFormat('D MMMM'),
         ];
     }
 

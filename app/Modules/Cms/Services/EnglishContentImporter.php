@@ -26,7 +26,7 @@ class EnglishContentImporter
     /** Chei din datele blocurilor care nu sunt texte de tradus. */
     private const SKIP_KEYS = ['type', 'image', 'images', 'link', 'anchor', 'tone', 'album', 'poster_image', 'video_sources', 'src',
         'primary_link', 'secondary_link', 'aside_link', 'empty_cta_link', 'image_side', 'image_shape', 'source', 'limit', 'category',
-        'grouped', 'hidden', 'cta_link', 'lead_type', 'width'];
+        'grouped', 'hidden', 'cta_link', 'lead_type', 'width', 'code'];
 
     /** @var array<string, string> */
     private array $strings = [];

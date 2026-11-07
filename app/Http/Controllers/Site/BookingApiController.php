@@ -9,6 +9,7 @@ use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
 use App\Modules\Booking\Services\PricingService;
 use App\Modules\Catalog\Models\Package;
+use App\Modules\Marketing\Services\PromoCodeService;
 use App\Support\LocalTime;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
@@ -25,6 +26,7 @@ class BookingApiController extends Controller
         private readonly AvailabilityService $availability,
         private readonly PricingService $pricing,
         private readonly BookingService $bookings,
+        private readonly PromoCodeService $promos,
     ) {}
 
     public function slots(Request $request): JsonResponse
@@ -65,6 +67,7 @@ class BookingApiController extends Controller
             'starts_at' => ['nullable', 'date'],
             'addons' => ['nullable', 'array'],
             'addons.*' => ['integer', 'min:0', 'max:20'],
+            'promo_code' => ['nullable', 'string', 'max:40'],
         ]);
 
         $package = Package::query()->active()->findOrFail($data['package_id']);
@@ -72,6 +75,15 @@ class BookingApiController extends Controller
         $startsAt = ! empty($data['starts_at']) ? CarbonImmutable::parse($data['starts_at'])->utc() : null;
         $quote = $this->pricing->quote($package, $startsAt, $participants, array_map('intval', $data['addons'] ?? []));
         $locale = app()->getLocale();
+        $promoError = null;
+        if (filled($data['promo_code'] ?? null)) {
+            try {
+                $evaluated = $this->promos->evaluate($data['promo_code'], $package, $startsAt, $participants, $quote);
+                $quote = $quote->withDiscount($evaluated['discount_minor'], $this->promos->label($evaluated['promo'], $evaluated['discount_minor']));
+            } catch (BookingException $e) {
+                $promoError = $e->getMessage();
+            }
+        }
 
         $lines = array_map(fn ($item) => $item['description'].' × '.rtrim(rtrim(number_format((float) $item['quantity'], 2, ',', ''), '0'), ',').' = '.Money::format($item['total_minor']), $quote->items);
 
@@ -81,7 +93,9 @@ class BookingApiController extends Controller
             'slot_minutes' => $package->slot_minutes ? ($package->slot_minutes + $quote->extraMinutes).' min' : null,
             'play_minutes' => $package->play_minutes ? $package->play_minutes.' min' : null,
             'lines' => $quote->priced ? $lines : [],
-            'total' => $quote->priced ? Money::format($quote->totalMinor) : null,
+            'discount' => $quote->discountMinor > 0 ? ['label' => $quote->discountLabel, 'amount' => '−'.Money::format($quote->discountMinor)] : null,
+            'promo_error' => $promoError,
+            'total' => $quote->priced ? Money::format($quote->dueMinor()) : null,
             'deposit' => $quote->priced && $quote->depositMinor ? Money::format($quote->depositMinor) : null,
             'note' => $package->supportsInstantBooking() ? null : __('site.booking.request_mode'),
         ]);

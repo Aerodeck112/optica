@@ -8,6 +8,7 @@ use App\Modules\Catalog\Models\Package;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Finance\Models\Invoice;
 use App\Modules\Finance\Models\Payment;
+use App\Modules\Marketing\Models\PromoCode;
 use App\Modules\Notifications\Models\ScheduledNotification;
 use App\Support\Locales;
 use App\Support\LocalTime;
@@ -116,6 +117,23 @@ class Booking extends Model
             'price_snapshot' => 'array',
             'accepted_policies' => 'array',
         ];
+    }
+
+    public function promoCode(): BelongsTo
+    {
+        return $this->belongsTo(PromoCode::class);
+    }
+
+    /** Suma de plată după reducere (null dacă prețul nu este stabilit). */
+    public function dueMinor(): ?int
+    {
+        return $this->total_minor === null ? null : max(0, $this->total_minor - (int) $this->discount_minor);
+    }
+
+    /** Textul reducerii, așa cum a fost aplicată (din instantaneul de preț). */
+    public function discountLabel(): ?string
+    {
+        return (int) $this->discount_minor > 0 ? ($this->price_snapshot['discount_label'] ?? __('site.promo.discount')) : null;
     }
 
     public function package(): BelongsTo

@@ -38,6 +38,8 @@ export function initBooking(root) {
   const data = JSON.parse(root.querySelector('script[type="application/json"][data-booking-config]').textContent);
   const t = data.i18n;
   const form = root.querySelector('form');
+  const promoInput = form.querySelector('[data-promo-input]');
+  const promoStatus = form.querySelector('[data-promo-status]');
   const state = {
     packageId: Number(form.querySelector('[name="package_id"]:checked')?.value) || null,
     participants: Number(form.querySelector('[name="participants"]')?.value) || null,
@@ -314,11 +316,36 @@ export function initBooking(root) {
     try {
       const res = await api(data.endpoints.quote, {
         method: 'POST',
-        body: JSON.stringify({ package_id: p.id, participants: state.participants, starts_at: state.slot, addons: Object.fromEntries(selectedAddons()) }),
+        body: JSON.stringify({ package_id: p.id, participants: state.participants, starts_at: state.slot, addons: Object.fromEntries(selectedAddons()), promo_code: promoInput?.value.trim() || null }),
       });
       if (seq !== quoteSeq) return;
       renderSummary(res);
+      renderPromo(res);
     } catch (_) {}
+  }
+
+  /* ——— Cod de reducere (verificat pe server la fiecare rezumat și din nou la trimitere) ——— */
+  function renderPromo(q) {
+    if (!promoInput || !promoStatus || !promoInput.value.trim()) {
+      if (promoStatus && promoInput && !promoInput.value.trim()) promoStatus.textContent = '';
+      promoInput?.removeAttribute('aria-invalid');
+      return;
+    }
+    if (q.promo_error) {
+      promoStatus.textContent = q.promo_error;
+      promoStatus.classList.add('field__error');
+      promoInput.setAttribute('aria-invalid', 'true');
+    } else if (q.discount) {
+      promoStatus.textContent = `${q.discount.label}: ${q.discount.amount}`;
+      promoStatus.classList.remove('field__error');
+      promoInput.removeAttribute('aria-invalid');
+    }
+  }
+  if (promoInput) {
+    let promoTimer;
+    promoInput.addEventListener('input', () => { clearTimeout(promoTimer); promoTimer = setTimeout(refreshQuote, 500); });
+    promoInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); refreshQuote(); } });
+    form.querySelector('[data-promo-apply]')?.addEventListener('click', refreshQuote);
   }
 
   function renderSummary(q) {
@@ -333,6 +360,7 @@ export function initBooking(root) {
     const total = el('div', { class: 'booking-summary__total' }, [el('span', { text: t.summary_total }), el('strong', { text: q.total || t.summary_price_tbd })]);
     const extra = [];
     if (q.lines?.length) extra.push(el('ul', { class: 'small muted mt-4', role: 'list' }, q.lines.map((l) => el('li', { text: l }))));
+    if (q.discount) extra.push(el('p', { class: 'booking-summary__discount small mt-4' }, [el('span', { text: q.discount.label }), el('strong', { text: q.discount.amount })]));
     if (q.deposit) extra.push(el('p', { class: 'small mt-4', text: `${t.summary_deposit}: ${q.deposit}` }));
     if (q.note) extra.push(el('p', { class: 'small muted mt-4', text: q.note }));
     els.summary.replaceChildren(el('h2', { class: 'h4', text: t.summary_title }), dl, total, ...extra);

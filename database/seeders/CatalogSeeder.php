@@ -42,8 +42,8 @@ class CatalogSeeder extends Seeder
                 'description' => ['ro' => $g['description']],
                 'genre_id' => $genres[$g['genre']],
                 'audience' => $g['audience'],
-                // necompletate intenționat: se confirmă pentru Cluj din panou
-                'min_age' => null,
+                // vârsta minimă confirmată de proprietar (07.11.2026); restul se confirmă pentru Cluj din panou
+                'min_age' => $this->minAge($g['slug']),
                 'min_players' => null,
                 'max_players' => null,
                 'play_minutes' => null,
@@ -65,6 +65,19 @@ class CatalogSeeder extends Seeder
                 'sort' => $i * 10,
             ])->save();
         }
+    }
+
+    /** Vârsta minimă pe serii de jocuri, confirmată de proprietar. */
+    private function minAge(string $slug): ?int
+    {
+        $ages = ['taverna' => 6, 'safe-night' => 12, 'starbase-' => 12, 'shmooter-' => 6, 'ghost-tower-' => 6, 'kernel-' => 12, 'mysterious-tower-' => 6, 'colony-' => 12];
+        foreach ($ages as $prefix => $age) {
+            if ($slug === $prefix || (str_ends_with($prefix, '-') && str_starts_with($slug, $prefix))) {
+                return $age;
+            }
+        }
+
+        return null;
     }
 
     private function games(): array

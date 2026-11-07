@@ -78,6 +78,7 @@ Legendă: **T** = acoperit de teste automate · **B** = parcurs în browser (cap
 | Segmente (doar cu consimțământ), campanii e-mail/SMS cu test obligatoriu, ore de liniște, plafon de frecvență și de cost | funcționează | T B, E (furnizori) |
 | Importuri de contacte cu dovada consimțământului | funcționează | B |
 | Puncte de fidelitate (registru, expirare FIFO), niveluri, recompense, vouchere cadou tipăribile | funcționează | T B |
+| Coduri de reducere (persoane gratuite, procent, sumă fixă) pe pachete și perioade, o folosire per client, pe site și la recepție, bloc pe prima pagină; WELCOME13 pentru deschidere | funcționează | T B |
 | Social media: plan săptămânal, imagini în formatele rețelelor (4:5, 1:1, 9:16), text de copiat, propuneri automate pentru zilele libere, pachet de 93 de fotografii ale francizei + grafice pentru deschidere, plan 2–29 noiembrie | funcționează (publicarea pe rețele se face manual) | T B |
 
 ### Financiar și stocuri

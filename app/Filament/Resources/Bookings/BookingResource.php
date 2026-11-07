@@ -173,6 +173,8 @@ class BookingResource extends Resource
                 ])->columns(4)->placeholder('Prețul nu este stabilit încă (cerere / ofertă).'),
                 Grid::make(5)->schema([
                     TextEntry::make('total_minor')->label('Total (cu TVA)')->formatStateUsing(fn ($state) => Money::format($state))->placeholder('De stabilit'),
+                    TextEntry::make('discount_minor')->label('Reducere')->formatStateUsing(fn ($state) => '−'.Money::format($state))
+                        ->helperText(fn (Booking $record) => $record->promoCode ? 'Cod '.$record->promoCode->code : null)->visible(fn (Booking $record) => (int) $record->discount_minor > 0),
                     TextEntry::make('deposit_minor')->label('Avans cerut')->formatStateUsing(fn ($state) => Money::format($state)),
                     TextEntry::make('paid_minor')->label('Încasat')->formatStateUsing(fn ($state) => Money::format($state)),
                     TextEntry::make('balance')->label('Rest de plată')->state(fn (Booking $record) => Money::format($record->balanceMinor())),

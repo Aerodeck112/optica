@@ -63,7 +63,7 @@ class VariableBuilder
                 'booking.date' => $booking->starts_at ? LocalTime::format($booking->starts_at, 'l, j F Y') : '',
                 'booking.time' => $booking->starts_at ? LocalTime::format($booking->starts_at, 'H:i') : '',
                 'booking.participants' => (string) $booking->participants,
-                'booking.total' => $booking->total_minor !== null ? Money::format($booking->total_minor) : 'de confirmat',
+                'booking.total' => $booking->total_minor !== null ? Money::format($booking->dueMinor()) : 'de confirmat',
                 'booking.deposit' => $booking->deposit_minor ? Money::format($booking->deposit_minor) : '',
                 'booking.status' => $booking->statusLabel(),
                 'booking.expires_at' => $booking->expires_at ? LocalTime::format($booking->expires_at, 'j F, H:i') : '',
