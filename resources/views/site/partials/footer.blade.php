@@ -76,6 +76,7 @@
                 @if (! empty($company['reg_no'])), {{ $company['reg_no'] }}@endif
             </p>
             <p>{{ __('site.footer.franchise_note') }}</p>
+            <p class="site-footer__credit">Powered by VITIM</p>
         </div>
     </div>
 </footer>

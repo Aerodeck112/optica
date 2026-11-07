@@ -397,6 +397,7 @@
   .site-footer a { color: var(--mist); text-decoration: none; }
   .site-footer a:hover { color: var(--star); text-decoration: underline; }
   .site-footer__bottom { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); justify-content: space-between; color: var(--dim); font-size: var(--fs-xs); }
+  .site-footer__credit { flex-basis: 100%; text-align: center; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; color: var(--mist); }
   .footer-hours { display: grid; grid-template-columns: auto 1fr; gap: 0.15rem var(--space-4); color: var(--mist); }
   .sal-badge { display: inline-flex; align-items: center; gap: var(--space-2); border: 1px solid var(--line-strong); border-radius: var(--radius-s); padding: var(--space-2) var(--space-3); }
   .social { display: flex; gap: var(--space-2); }
