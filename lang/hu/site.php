@@ -137,6 +137,18 @@ return [
     'lightbox_prev' => 'Előző',
     'lightbox_next' => 'Következő',
     'leave_empty' => 'Hagyd üresen ezt a mezőt',
+    'popup' => [
+        'close' => 'Bezárás',
+        'weekday' => 'Péntek',
+        'month' => 'november',
+        'title_1' => 'Megnyílik egy másik világ.',
+        'title_2' => 'Pénteken, 13-án.',
+        'title_open' => 'Kinyitottunk. Várunk egy másik világban.',
+        'offer' => 'Nyitási ajánlat: az első 60 perces VR-játékod ingyenes a nyitóhétvégén, november 13–15.',
+        'cta' => 'Foglalás a kóddal',
+        'later' => 'Később',
+        'terms' => 'Személyenként egy ingyenes játék, e-mail-címenként vagy telefonszámonként egyszer. Érvényes: :date-ig.',
+    ],
     'promo' => [
         'field' => 'Kedvezménykód',
         'apply' => 'Alkalmaz',

@@ -88,6 +88,10 @@
 
     @include('site.partials.cookies')
 
+    @if ($openingPopup ?? null)
+        @include('site.partials.opening-popup', ['pop' => $openingPopup])
+    @endif
+
     @if ($aiEnabled)
         <button type="button" class="chat-launch" data-chat-launch data-endpoint="{{ route('api.chat') }}" data-confirm-endpoint="{{ route('api.chat.confirm') }}" data-i18n='{!! aw_json(__('site.chat')) !!}' data-fallback="{{ app(\App\Modules\Cms\Services\LinkResolver::class)->url('page:contact') }}">
             <x-aw-icon name="chat"/><span>{{ __('site.chat.open') }}</span>

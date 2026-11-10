@@ -3,6 +3,7 @@
 namespace Tests\Feature\Booking;
 
 use App\Filament\Resources\PromoCodes\Pages\ManagePromoCodes;
+use App\Http\View\SiteComposer;
 use App\Models\User;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingData;
@@ -155,5 +156,19 @@ class PromoCodeTest extends TestCase
             ->callAction('create', ['code' => 'craciun 25', 'name' => 'Crăciun', 'discount_type' => 'fixed', 'discount_value' => '25,50', 'max_per_customer' => 1, 'is_active' => true])
             ->assertHasNoActionErrors();
         $this->assertSame(2550, PromoCode::query()->where('code', 'CRACIUN25')->sole()->discount_value);
+    }
+
+    public function test_the_opening_popup_shows_the_code_on_the_site_but_not_on_the_booking_page(): void
+    {
+        Page::query()->create(['key' => 'home', 'template' => 'blocks', 'slug' => ['ro' => ''], 'title' => ['ro' => 'Acasă'], 'blocks' => ['ro' => []],
+            'published_locales' => ['ro'], 'status' => 'published', 'published_at' => '2026-10-01 00:00:00']);
+        $this->setting('venue.opening_date', '2026-11-13');
+
+        $this->get('/')->assertOk()->assertSee('data-opening-popup', false)->assertSee('WELCOME13')->assertSee('Chiar vineri, 13.');
+        $this->get('/rezervare')->assertOk()->assertDontSee('data-opening-popup', false);
+
+        $this->setting('site.opening_popup', false);
+        SiteComposer::flush();
+        $this->get('/')->assertOk()->assertDontSee('data-opening-popup', false);
     }
 }

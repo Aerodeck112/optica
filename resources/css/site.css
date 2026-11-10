@@ -771,6 +771,47 @@
   .promo-field__row .input { flex: 1; min-width: 0; text-transform: uppercase; letter-spacing: 0.04em; }
   .booking-summary__discount { display: flex; justify-content: space-between; gap: var(--space-3); color: var(--cyan); }
 
+  /* ——— Popup oferta de deschidere ——— */
+  .open-pop { position: fixed; inset: 0; margin: auto; height: fit-content; width: min(64rem, calc(100% - 1.5rem)); max-height: calc(100dvh - 1.5rem); overflow: auto; padding: 0; border: 0; border-radius: var(--radius-l); color: var(--star);
+    background: radial-gradient(90% 80% at 15% 20%, rgb(123 77 255 / 0.35), transparent 60%), radial-gradient(70% 70% at 90% 90%, rgb(230 28 74 / 0.28), transparent 65%), var(--abyss);
+    box-shadow: 0 30px 120px rgb(0 0 0 / 0.6), 0 0 0 1px var(--line-strong); }
+  .open-pop::backdrop { background: rgb(5 4 15 / 0.78); backdrop-filter: blur(4px); }
+  .open-pop[open] { animation: pop-in 0.7s var(--ease-out); }
+  @keyframes pop-in { from { opacity: 0; transform: translateY(24px) scale(0.97); } }
+  .open-pop__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 2; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line-strong); background: rgb(5 4 15 / 0.6); color: var(--star); cursor: pointer; }
+  .open-pop__close svg { width: 1.1rem; height: 1.1rem; }
+  .open-pop__grid { position: relative; display: grid; gap: var(--space-6); padding: clamp(1.5rem, 1rem + 3vw, 3.5rem); align-items: center; }
+  @media (min-width: 800px) { .open-pop__grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); } }
+  .open-pop__date { position: relative; display: grid; justify-items: center; align-content: center; aspect-ratio: 1; width: min(100%, 20rem); margin-inline: auto; text-align: center; isolation: isolate; }
+  .open-pop__ring { position: absolute; inset: 0; border-radius: 50%; z-index: -1; padding: 4px; background: conic-gradient(from 200deg, var(--violet), var(--cyan), var(--magenta), var(--crimson), var(--violet));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; box-shadow: 0 0 80px rgb(123 77 255 / 0.45); animation: portal-spin 18s linear infinite; }
+  .open-pop__weekday, .open-pop__month { font-weight: 600; font-size: clamp(1rem, 0.8rem + 1vw, 1.5rem); color: var(--mist); }
+  .open-pop__day { font-family: var(--font-display); font-weight: 800; font-size: clamp(5.5rem, 3rem + 10vw, 10rem); line-height: 0.9; letter-spacing: -0.06em;
+    background: linear-gradient(160deg, #fff 8%, var(--violet-soft) 38%, var(--crimson-hi) 78%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 10px 40px rgb(230 28 74 / 0.4)); }
+  .open-pop__title { font-size: var(--fs-2xl); line-height: 1.04; }
+  .open-pop__title span { display: block; color: var(--violet-soft); }
+  .open-pop__offer { margin-top: var(--space-4); font-size: var(--fs-md); color: var(--mist); max-width: 34rem; }
+  .open-pop__ticket { position: relative; display: grid; justify-items: center; gap: var(--space-2); margin-top: var(--space-5); padding: var(--space-5) var(--space-4); border-radius: var(--radius-l); background: rgb(255 255 255 / 0.04); text-align: center; container-type: inline-size; }
+  .open-pop__ticket::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px; background: conic-gradient(from 210deg, var(--violet), var(--cyan), var(--magenta), var(--crimson), var(--violet));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+  .open-pop__label { font-size: var(--fs-sm); color: var(--mist); font-weight: 600; }
+  .open-pop__code { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.75rem, 12cqi, 4.5rem); line-height: 1.05; white-space: nowrap; letter-spacing: 0.01em;
+    background: linear-gradient(160deg, #fff 10%, var(--violet-soft) 45%, var(--crimson-hi) 85%); -webkit-background-clip: text; background-clip: text; color: transparent; user-select: all; }
+  .open-pop__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+  .open-pop__terms { margin-top: var(--space-4); color: var(--dim); }
+  @media (max-width: 799px) {
+    .open-pop__grid { grid-template-columns: auto 1fr; gap: var(--space-4) var(--space-4); padding: var(--space-6) var(--space-5) var(--space-5); }
+    .open-pop__date { width: 6.5rem; }
+    .open-pop__day { font-size: 2.9rem; }
+    .open-pop__weekday, .open-pop__month { font-size: 0.8rem; }
+    .open-pop__copy { display: contents; }
+    .open-pop__title { font-size: var(--fs-lg); align-self: center; padding-right: var(--space-6); }
+    .open-pop__offer, .open-pop__ticket, .open-pop__actions, .open-pop__terms { grid-column: 1 / -1; margin-top: 0; }
+    .open-pop__offer { font-size: var(--fs-base); }
+    .open-pop__actions .btn { flex: 1 1 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .open-pop[open], .open-pop__ring { animation: none; } }
+
   /* ——— Declarația de participare ——— */
   .signature-pad { display: block; width: 100%; max-width: 40rem; aspect-ratio: 600 / 220; margin-top: var(--space-3); border-radius: var(--radius-m); border: 1px dashed var(--line-strong); background: #fff; touch-action: none; cursor: crosshair; }
   .avatar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(3.5rem, 1fr)); gap: var(--space-2); max-width: 40rem; }

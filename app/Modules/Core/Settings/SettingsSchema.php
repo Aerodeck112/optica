@@ -83,6 +83,8 @@ final class SettingsSchema
                 'help' => 'Câte unul pe rând. Se adaugă la lista de bază; nickname-urile respinse din CRM se blochează automat.'],
 
             // ——— Site ———
+            'site.opening_popup' => ['group' => 'site', 'label' => 'Popup cu oferta de deschidere (codul WELCOME13) la intrarea pe site', 'type' => 'bool', 'default' => true,
+                'help' => 'Apare o dată pe zi pentru fiecare vizitator, cât timp codul se poate folosi.'],
             'site.show_unconfirmed_games' => ['group' => 'site', 'label' => 'Afișează și jocurile din catalogul rețelei neconfirmate pentru Cluj (marcate clar)', 'type' => 'bool', 'default' => false],
             'site.default_og_image' => ['group' => 'site', 'label' => 'Imagine implicită pentru distribuire', 'type' => 'string', 'default' => '/media/brand/og-default.jpg'],
             'site.search_console_verification' => ['group' => 'site', 'label' => 'Cod verificare Google Search Console', 'type' => 'string'],

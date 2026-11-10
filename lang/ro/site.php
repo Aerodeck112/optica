@@ -136,6 +136,18 @@ return [
     'lightbox_prev' => 'Anterioara',
     'lightbox_next' => 'Următoarea',
     'leave_empty' => 'Lăsați acest câmp gol',
+    'popup' => [
+        'close' => 'Închide',
+        'weekday' => 'Vineri',
+        'month' => 'noiembrie',
+        'title_1' => 'O altă lume se deschide.',
+        'title_2' => 'Chiar vineri, 13.',
+        'title_open' => 'Ne-am deschis. Te așteptăm în altă lume.',
+        'offer' => 'Oferta de deschidere: prima ta sesiune VR de 60 de minute e gratuită în weekendul 13–15 noiembrie.',
+        'cta' => 'Rezervă cu codul',
+        'later' => 'Mai târziu',
+        'terms' => 'O sesiune gratuită de persoană, o dată pentru fiecare e-mail sau telefon. Valabil până pe :date.',
+    ],
     'promo' => [
         'field' => 'Cod de reducere',
         'apply' => 'Aplică',

@@ -50,7 +50,8 @@ class SettingsRepository
     {
         $definition = SettingsSchema::get($key);
         $secret = (bool) ($definition['secret'] ?? false);
-        $stored = is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : ($value === null ? null : (string) $value);
+        // valorile da/nu se salvează explicit „1”/„0”: altfel „nu” ar deveni text gol și s-ar reveni la valoarea implicită
+        $stored = is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : (is_bool($value) ? ($value ? '1' : '0') : ($value === null ? null : (string) $value));
 
         $old = $this->all()[$key] ?? null;
 

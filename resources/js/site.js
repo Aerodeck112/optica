@@ -411,6 +411,27 @@ function initWaiver() {
   toggleMinor();
 }
 
+/* ——— Popup oferta de deschidere: o dată pe zi pentru fiecare vizitator ——— */
+function initOpeningPopup() {
+  const dialog = doc.querySelector('[data-opening-popup]');
+  if (!dialog || typeof dialog.showModal !== 'function') return;
+  const key = `aw-pop:${dialog.dataset.key}`;
+  let last = 0;
+  try { last = Number(localStorage.getItem(key)) || 0; } catch { /* stocare blocată */ }
+  if (Date.now() - last < 24 * 3600 * 1000) return;
+  const remember = () => { try { localStorage.setItem(key, String(Date.now())); } catch { /* ignorat */ } };
+  const close = () => { remember(); dialog.close(); };
+  dialog.querySelectorAll('[data-pop-close]').forEach((b) => b.addEventListener('click', close));
+  dialog.addEventListener('cancel', remember);
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+  dialog.querySelector('a[href]')?.addEventListener('click', remember);
+  setTimeout(() => {
+    if (doc.querySelector('dialog[open]')) return;
+    dialog.showModal();
+    track('opening_popup_view');
+  }, 900);
+}
+
 function initCopyLinks() {
   doc.querySelectorAll('[data-copy-url]').forEach((button) => {
     button.addEventListener('click', async () => {
@@ -469,3 +490,4 @@ initBooking();
 initCountdown();
 initWaiver();
 initCopyLinks();
+initOpeningPopup();

@@ -137,6 +137,18 @@ return [
     'lightbox_prev' => 'Previous',
     'lightbox_next' => 'Next',
     'leave_empty' => 'Leave this field empty',
+    'popup' => [
+        'close' => 'Close',
+        'weekday' => 'Friday',
+        'month' => 'November',
+        'title_1' => 'Another World opens.',
+        'title_2' => 'Friday the 13th.',
+        'title_open' => 'We are open. Step into another world.',
+        'offer' => 'Opening offer: your first 60-minute VR session is free over the opening weekend, 13–15 November.',
+        'cta' => 'Book with the code',
+        'later' => 'Maybe later',
+        'terms' => 'One free session per person, once per e-mail address or phone number. Valid until :date.',
+    ],
     'promo' => [
         'field' => 'Discount code',
         'apply' => 'Apply',

@@ -3,6 +3,7 @@
 namespace App\Http\View;
 
 use App\Modules\Booking\Services\ScheduleService;
+use App\Modules\Booking\Services\VenueOpening;
 use App\Modules\Cms\Models\Banner;
 use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Cms\Models\Menu;
@@ -10,6 +11,8 @@ use App\Modules\Cms\Models\MenuItem;
 use App\Modules\Cms\Services\LinkResolver;
 use App\Modules\Core\Models\Integration;
 use App\Modules\Core\Settings\SettingsRepository;
+use App\Modules\Marketing\Models\PromoCode;
+use App\Support\LocalTime;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
@@ -26,6 +29,8 @@ class SiteComposer
     public function compose(View $view): void
     {
         $view->with(self::$shared ??= $this->data());
+        // depinde de pagina curentă: nu intră în datele comune păstrate între afișări
+        $view->with('openingPopup', $this->openingPopup(app()->getLocale()));
     }
 
     public static function flush(): void
@@ -109,6 +114,35 @@ class SiteComposer
             'needsConsent' => $analytics !== [],
             'aiEnabled' => $this->settings->bool('ai.enabled') && $aiIntegration?->isUsable(),
             'bookingOnline' => $this->settings->bool('booking.online_enabled'),
+        ];
+    }
+
+    /**
+     * Popup-ul ofertei de deschidere (codul WELCOME13): cât timp codul se poate folosi și opțiunea e activă.
+     * Nu apare pe paginile unde ar încurca (rezervare, declarație, documente juridice).
+     */
+    private function openingPopup(string $locale): ?array
+    {
+        if (! $this->settings->bool('site.opening_popup')
+            || request()->routeIs('*.booking.*', '*.waiver.*', '*.legal.*', '*.voucher.*', '*.account.*')) {
+            return null;
+        }
+        $promo = PromoCode::query()->where('code', 'WELCOME13')->first();
+        if (! $promo || ! $promo->isRedeemableOn(LocalTime::now()->toDateString())) {
+            return null;
+        }
+        $opening = app(VenueOpening::class);
+        $date = $opening->date();
+        $package = $promo->packages()->first();
+        $query = array_filter(['pachet' => $package?->getTranslation('slug', $locale, false) ?: $package?->getTranslation('slug', 'ro'), 'cod' => $promo->code]);
+
+        return [
+            'code' => $promo->code,
+            'upcoming' => $opening->isUpcomingOrToday(),
+            'day' => $date ? (int) substr($date, 8, 2) : 13,
+            'until' => $promo->redeem_until?->locale($locale)->isoFormat('D MMMM'),
+            'url' => lroute('booking.show', [], $locale).'?'.http_build_query($query),
+            'key' => 'opening-'.$promo->code.'-'.($promo->redeem_until?->format('Ymd') ?? 'x'),
         ];
     }
 
