@@ -77,6 +77,8 @@ final class SettingsSchema
             // ——— Ecrane afișare ———
             'display.legend_levels' => ['group' => 'display', 'label' => 'Niveluri de fidelitate (Hall of Legends)', 'type' => 'text', 'default' => LegendsService::DEFAULT_LEVELS,
                 'help' => 'Câte un nivel pe rând: „număr minim de aventuri finalizate = nume”. Ex.: 1 = Recrut, 5 = Aventurier.'],
+            'display.show_demo' => ['group' => 'display', 'label' => 'Afișează jucătorii de prezentare în Hall of Legends', 'type' => 'bool', 'default' => false,
+                'help' => 'Cei 5 jucători de prezentare umplu ecranul până apar legendele reale. Se pot șterge definitiv din Ecrane afișare → Ecrane.'],
             'display.nickname_blocklist' => ['group' => 'display', 'label' => 'Cuvinte interzise suplimentare în nickname', 'type' => 'text',
                 'help' => 'Câte unul pe rând. Se adaugă la lista de bază; nickname-urile respinse din CRM se blochează automat.'],
 

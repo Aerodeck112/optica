@@ -139,6 +139,8 @@ class LegendsService
             ->join('players as p', 'p.id', '=', 'sp.player_id')
             ->where('gs.status', 'completed')->where('gs.is_test', false)
             ->where('sp.status', 'active')->where('sp.counts', true)
-            ->when($publicOnly, fn ($q) => $q->where('p.nickname_status', 'approved')->whereNotNull('p.nickname')->where('p.display_consent', 'granted'));
+            ->when($publicOnly, fn ($q) => $q->where('p.nickname_status', 'approved')->whereNotNull('p.nickname')->where('p.display_consent', 'granted'))
+            // jucătorii demonstrativi apar doar cât timp este activă opțiunea din Setări → Ecrane afișare
+            ->when(! $this->settings->bool('display.show_demo'), fn ($q) => $q->where('p.is_demo', false)->where('gs.is_demo', false));
     }
 }

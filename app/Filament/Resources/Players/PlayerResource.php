@@ -133,7 +133,7 @@ class PlayerResource extends Resource
             ->columns([
                 ImageColumn::make('avatar')->label('')->state(fn (Player $p) => url(AvatarCatalog::url($p->avatar_key)))->circular()->imageSize(40),
                 TextColumn::make('nickname')->label('Nickname')->searchable()->weight('bold')
-                    ->placeholder('Nickname de completat')->description(fn (Player $p) => $p->nickname_status !== 'approved' ? Player::NICKNAME_STATUSES[$p->nickname_status] : null),
+                    ->placeholder('Nickname de completat')->description(fn (Player $p) => $p->is_demo ? 'Jucător de prezentare' : ($p->nickname_status !== 'approved' ? Player::NICKNAME_STATUSES[$p->nickname_status] : null)),
                 TextColumn::make('nickname_status')->label('Stare')->badge()->formatStateUsing(fn ($state) => Player::NICKNAME_STATUSES[$state] ?? $state)
                     ->color(fn ($state) => match ($state) {
                         'approved' => 'success', 'review' => 'warning', 'blocked' => 'danger', default => 'gray'

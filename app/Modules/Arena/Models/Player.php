@@ -44,6 +44,7 @@ class Player extends Model
             'private_name' => 'encrypted',
             'display_consent_guardian' => 'encrypted',
             'is_minor' => 'boolean',
+            'is_demo' => 'boolean',
             'nickname_reviewed_at' => 'immutable_datetime',
             'display_consent_at' => 'immutable_datetime',
         ];
