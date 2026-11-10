@@ -64,6 +64,7 @@ class WaiverController extends Controller
         try {
             $waiver = $this->waivers->sign($request->only([
                 'participant_name', 'guardian_name', 'guardian_relationship', 'guardian_phone', 'signer_name', 'email', 'signature', 'marketing_email', 'photo_consent',
+                'nickname', 'avatar_key', 'screen_display',
             ]) + ['birth_date' => (string) $request->input('birth_date'), 'locale' => app()->getLocale()], $booking, [
                 'ip' => $request->ip(),
                 'user_agent' => $request->userAgent(),

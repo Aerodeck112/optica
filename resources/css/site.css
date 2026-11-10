@@ -773,6 +773,12 @@
 
   /* ——— Declarația de participare ——— */
   .signature-pad { display: block; width: 100%; max-width: 40rem; aspect-ratio: 600 / 220; margin-top: var(--space-3); border-radius: var(--radius-m); border: 1px dashed var(--line-strong); background: #fff; touch-action: none; cursor: crosshair; }
+  .avatar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(3.5rem, 1fr)); gap: var(--space-2); max-width: 40rem; }
+  .avatar-choice { position: relative; display: block; border-radius: 50%; cursor: pointer; }
+  .avatar-choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .avatar-choice img { display: block; width: 100%; height: auto; border-radius: 50%; border: 3px solid transparent; transition: transform .2s var(--ease-out), border-color .2s; }
+  .avatar-choice input:checked + img { border-color: var(--cyan); transform: scale(1.06); }
+  .avatar-choice input:focus-visible + img { outline: 3px solid var(--violet-soft); outline-offset: 2px; }
   .waiver-text { max-height: 28rem; overflow-y: auto; padding-right: var(--space-3); }
   .waiver-text h2 { font-size: var(--fs-md); margin-top: var(--space-5); }
 

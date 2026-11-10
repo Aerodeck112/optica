@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+<defs>
+<radialGradient id="bg" cx="50%" cy="36%" r="72%"><stop offset="0" stop-color="#0c3b55"/><stop offset="1" stop-color="#06101d"/></radialGradient>
+<linearGradient id="ac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ee6ff"/><stop offset="1" stop-color="#7b4dff"/></linearGradient>
+<linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7b4dff" stop-opacity=".95"/><stop offset=".55" stop-color="#140c33"/><stop offset="1" stop-color="#3ee6ff" stop-opacity=".9"/></linearGradient>
+<linearGradient id="suit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9ecff"/><stop offset="1" stop-color="#9aa3d6"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#c9f8ff" stop-opacity=".9"/><stop offset="1" stop-color="#3ee6ff" stop-opacity="0"/></radialGradient>
+<clipPath id="disc"><circle cx="128" cy="128" r="128"/></clipPath>
+</defs>
+<g clip-path="url(#disc)">
+<rect width="256" height="256" fill="url(#bg)"/>
+<circle cx="40" cy="52" r="2.4" fill="#c9f8ff" opacity="0.8"/><circle cx="210" cy="46" r="1.6" fill="#c9f8ff" opacity="0.55"/><circle cx="62" cy="196" r="1.6" fill="#c9f8ff" opacity="0.8"/><circle cx="200" cy="186" r="2.4" fill="#c9f8ff" opacity="0.55"/><circle cx="222" cy="112" r="1.6" fill="#c9f8ff" opacity="0.8"/><circle cx="30" cy="128" r="1.6" fill="#c9f8ff" opacity="0.55"/><circle cx="96" cy="30" r="2.4" fill="#c9f8ff" opacity="0.8"/><circle cx="170" cy="222" r="1.6" fill="#c9f8ff" opacity="0.55"/>
+<circle cx="128" cy="118" r="92" fill="url(#glow)" opacity=".35"/>
+<path d="M70 230V120c0-44 26-74 58-74s58 30 58 74v110l-20-16-19 16-19-16-19 16-19-16z" fill="#e8e6ff" opacity=".92"/><ellipse cx="106" cy="122" rx="12" ry="18" fill="#0b0920"/><ellipse cx="150" cy="122" rx="12" ry="18" fill="#0b0920"/><circle cx="106" cy="118" r="4" fill="#7b4dff"/><circle cx="150" cy="118" r="4" fill="#7b4dff"/><ellipse cx="128" cy="166" rx="10" ry="12" fill="#0b0920" opacity=".8"/>
+</g>
+<circle cx="128" cy="128" r="126" fill="none" stroke="#3ee6ff" stroke-opacity=".55" stroke-width="4"/>
+</svg>

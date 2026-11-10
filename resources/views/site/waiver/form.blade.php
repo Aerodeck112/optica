@@ -73,6 +73,26 @@
                     </div>
                 </fieldset>
 
+                <h2 class="mt-7" style="font-size: var(--fs-lg)">{{ __('site.waiver.player_title') }}</h2>
+                <p class="small muted mt-3">{{ __('site.waiver.player_note') }}</p>
+                <div class="mt-5">
+                    @include('site.partials.field', ['name' => 'nickname', 'label' => __('site.waiver.nickname'), 'hint' => __('site.waiver.nickname_hint'), 'id' => 'waiver-nickname', 'autocomplete' => 'off', 'max' => 18])
+                </div>
+                <fieldset class="mt-5" style="border:0;padding:0">
+                    <legend class="field__label">{{ __('site.waiver.avatar') }}</legend>
+                    <div class="avatar-grid mt-3">
+                        @foreach (\App\Modules\Arena\Services\AvatarCatalog::AVATARS as $key => [$avatarName, $avatarCategory])
+                            <label class="avatar-choice" title="{{ $avatarName }}">
+                                <input type="radio" name="avatar_key" value="{{ $key }}" @checked(old('avatar_key') === $key)>
+                                <img src="{{ \App\Modules\Arena\Services\AvatarCatalog::url($key) }}" alt="{{ $avatarName }}" width="64" height="64" loading="lazy">
+                            </label>
+                        @endforeach
+                    </div>
+                    <p class="field__hint mt-3">{{ __('site.waiver.avatar_hint') }}</p>
+                    @error('avatar_key')<p class="field__error">{{ $message }}</p>@enderror
+                </fieldset>
+                <label class="check mt-5"><input type="checkbox" name="screen_display" value="1" @checked(old('screen_display'))><span data-screen-adult>{{ __('site.waiver.screen_display') }}</span><span data-screen-minor hidden>{{ __('site.waiver.screen_display_minor') }}</span></label>
+
                 <h2 class="mt-7" style="font-size: var(--fs-lg)">{{ __('site.waiver.signature_title') }}</h2>
                 <label class="check mt-5"><input type="checkbox" name="accept" value="1" required @checked(old('accept'))><span>{{ __('site.waiver.accept') }}</span></label>
                 <div class="mt-5">

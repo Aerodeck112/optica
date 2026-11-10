@@ -3,6 +3,7 @@
 namespace App\Modules\Booking\Models;
 
 use App\Models\User;
+use App\Modules\Arena\Models\Player;
 use App\Modules\Cms\Models\LegalDocument;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,9 +31,15 @@ class PlayerWaiver extends Model
             'is_minor' => 'boolean',
             'marketing_email' => 'boolean',
             'photo_consent' => 'boolean',
+            'screen_display' => 'boolean',
             'signed_at' => 'immutable_datetime',
             'verified_at' => 'immutable_datetime',
         ];
+    }
+
+    public function player(): BelongsTo
+    {
+        return $this->belongsTo(Player::class);
     }
 
     public function booking(): BelongsTo

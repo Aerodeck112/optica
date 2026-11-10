@@ -3,6 +3,7 @@
 namespace Tests\Feature\Booking;
 
 use App\Models\User;
+use App\Modules\Arena\Models\Player;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\PlayerWaiver;
 use App\Modules\Booking\Services\BookingData;
@@ -151,5 +152,23 @@ class PlayerWaiverTest extends TestCase
         $this->artisan('aw:retention')->assertSuccessful();
 
         $this->assertSame(0, PlayerWaiver::query()->count());
+    }
+
+    public function test_the_waiver_creates_one_lasting_player_profile_with_a_separate_screen_consent(): void
+    {
+        $url = $this->booking()->waiverUrl();
+
+        $this->post($url, $this->form(['nickname' => 'Ion<script>', 'screen_display' => '1']))->assertSessionHasErrors('nickname');
+        $this->post($url, $this->form(['nickname' => 'IonVR', 'avatar_key' => 'robot-03', 'screen_display' => '1']))->assertSessionHas('waiver_signed');
+
+        $player = Player::query()->sole();
+        $this->assertSame(['IonVR', 'review', 'robot-03', 'granted'], [$player->nickname, $player->nickname_status, $player->avatar_key, $player->display_consent]);
+        $this->assertFalse($player->isPublic(), 'nickname-ul introdus online se verifică la recepție');
+        $this->assertSame($player->id, PlayerWaiver::query()->sole()->player_id);
+
+        // aceeași persoană revine: același profil, iar acordul urmează ultima declarație
+        $this->post($url, $this->form(['nickname' => 'AltNume']))->assertSessionHas('waiver_signed');
+        $this->assertSame(1, Player::query()->count());
+        $this->assertSame(['IonVR', 'refused'], [$player->refresh()->nickname, $player->display_consent]);
     }
 }

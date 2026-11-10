@@ -68,6 +68,8 @@ Legendă: **T** = acoperit de teste automate · **B** = parcurs în browser (cap
 | Check-in cu cod QR (camera tabletei) sau cod | funcționează | B |
 | Încasare la recepție (numerar, card POS, transfer), protecție la dublu-clic, stare plată recalculată | funcționează | T B |
 | Remindere automate, recalculate la reprogramare, oprite la anulare | funcționează | T, E (e-mail/SMS) |
+| Ecrane afișare: Live Arena (sesiunea pornită de operator, echipa, timp rămas, runda următoare cu cronometru, „Misiune încheiată”, podium doar din rezultate reale) și Hall of Legends (aventuri finalizate, egalități, perioade, niveluri), playlisturi cu reclame, asociere securizată a dispozitivelor, mod offline | funcționează | T B (anduranță: vezi raportul livrării) |
+| Jucători distincți de client: nickname moderat și unic, 36 de avatare originale, acord separat de afișare (minori prin adult), legătură cu declarația online | funcționează | T B |
 | Declarație de participare RO/EN semnată pe telefon (link din rezervare + QR la recepție), părinte pentru minori, versiune și amprentă a textului, date criptate, validare la check-in, retenție | funcționează | T B, E (validare juridică a textului) |
 
 ### CRM, marketing, fidelizare
@@ -168,6 +170,7 @@ Legendă: **T** = acoperit de teste automate · **B** = parcurs în browser (cap
 | `docs/INSTALARE-CPANEL.md` | cine instalează și actualizează aplicația |
 | `docs/CONTURI-EXTERNE.md` | administratorul firmei: ce conturi și date trebuie obținute |
 | `docs/GHID-ECHIPA.md` | recepție, manager, contabil, editor, marketing |
+| `docs/ECRANE-AFISARE.md` | instalarea PC-urilor monitoarelor, recepție și operatori (jucători, sesiuni, clasament, reclame) |
 | `docs/SECURITATE.md` | administrator, auditor |
 | `docs/casa-de-marcat.md` | instalarea agentului casei de marcat |
 | `docs/ARHITECTURA.md` | dezvoltatori |

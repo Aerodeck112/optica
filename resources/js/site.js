@@ -404,6 +404,8 @@ function initWaiver() {
     photoAdult.hidden = minor;
     photoMinor.hidden = !minor;
     if (minor) photoAdult.querySelector('input').checked = false;
+    form.querySelector('[data-screen-adult]')?.toggleAttribute('hidden', minor);
+    form.querySelector('[data-screen-minor]')?.toggleAttribute('hidden', !minor);
   };
   birth.addEventListener('change', toggleMinor);
   toggleMinor();

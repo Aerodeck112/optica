@@ -31,6 +31,17 @@ class RetentionRun extends Command
         $report['login_tokens'] = $this->purge(DB::table('customer_login_tokens')->where('expires_at', '<', now()->subDay()), $dry);
         $report['webhook_events'] = $this->purge(DB::table('webhook_events')->where('created_at', '<', now()->subDays(90))->where('status', 'processed'), $dry);
 
+        // profiluri de jucător fără nicio sesiune în perioada setată: identitatea publică și numele se șterg;
+        // participările (anonime) rămân pentru statisticile agregate
+        $cutoff = now()->subMonths($settings->int('retention.game_sessions_months', 36));
+        $inactivePlayers = DB::table('players')->where('created_at', '<', $cutoff)->where(fn ($q) => $q->whereNotNull('nickname')->orWhereNotNull('private_name')->orWhereNotNull('identity_hash'))
+            ->whereNotExists(fn ($q) => $q->select(DB::raw(1))->from('session_participants as sp')->join('game_sessions as gs', 'gs.id', '=', 'sp.game_session_id')
+                ->whereColumn('sp.player_id', 'players.id')->where(fn ($w) => $w->where('gs.ended_at', '>=', $cutoff)->orWhere('gs.started_at', '>=', $cutoff)->orWhere('gs.created_at', '>=', $cutoff)));
+        $report['players_anonymized'] = $dry ? $inactivePlayers->count() : $inactivePlayers->update([
+            'nickname' => null, 'nickname_normalized' => null, 'nickname_status' => 'missing', 'private_name' => null, 'identity_hash' => null,
+            'display_consent' => 'unknown', 'display_consent_guardian' => null, 'customer_id' => null, 'avatar_key' => 'neutral', 'updated_at' => now(),
+        ]);
+
         $lostLeads = DB::table('leads')->where('stage', 'lost')->where('stage_changed_at', '<', now()->subDays($settings->int('retention.lost_leads_days', 365)))->whereNotNull('contact_email');
         $report['lost_leads_anonymized'] = $dry ? $lostLeads->count() : $lostLeads->update(['contact_name' => 'Cerere anonimizată', 'contact_email' => null, 'contact_phone' => null, 'message' => null]);
 

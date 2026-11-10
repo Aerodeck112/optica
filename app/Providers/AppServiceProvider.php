@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Http\View\SiteComposer;
 use App\Models\User;
+use App\Modules\Arena\Contracts\ResultsProvider;
+use App\Modules\Arena\Models\GameSession;
+use App\Modules\Arena\Models\Player;
+use App\Modules\Arena\Services\NullResultsProvider;
 use App\Modules\Audit\AuditLogger;
 use App\Modules\Audit\Listeners\AuthenticationAuditSubscriber;
 use App\Modules\Booking\Events\BookingStatusChanged;
@@ -27,6 +31,9 @@ use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Crm\Models\Lead;
 use App\Modules\Crm\Models\Task;
+use App\Modules\Display\Models\DisplayAsset;
+use App\Modules\Display\Models\DisplayPlaylist;
+use App\Modules\Display\Models\DisplayScreen;
 use App\Modules\Finance\Models\EfacturaSubmission;
 use App\Modules\Finance\Models\FiscalDevice;
 use App\Modules\Finance\Models\FiscalReceipt;
@@ -67,6 +74,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(SettingsRepository::class);
         $this->app->singleton(AuditLogger::class);
+        // nu există încă o sursă reală de scoruri: rezultatele se introduc manual din CRM
+        $this->app->bind(ResultsProvider::class, NullResultsProvider::class);
     }
 
     public function boot(): void
@@ -134,6 +143,11 @@ class AppServiceProvider extends ServiceProvider
             'resource' => \App\Modules\Booking\Models\Resource::class,
             'banner' => Banner::class,
             'promo_code' => PromoCode::class,
+            'player' => Player::class,
+            'game_session' => GameSession::class,
+            'display_screen' => DisplayScreen::class,
+            'display_playlist' => DisplayPlaylist::class,
+            'display_asset' => DisplayAsset::class,
             'app_update' => AppUpdate::class,
             'player_waiver' => PlayerWaiver::class,
         ]);
@@ -151,6 +165,8 @@ class AppServiceProvider extends ServiceProvider
             Limit::perDay(300)->by('ai-d:'.$request->ip()),
         ]);
         RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(300)->by($request->ip()));
+        RateLimiter::for('display', fn (Request $request) => Limit::perMinute(240)->by('display:'.$request->ip()));
+        RateLimiter::for('display-activate', fn (Request $request) => [Limit::perMinute(10)->by('display-act:'.$request->ip()), Limit::perHour(40)->by('display-act-h:'.$request->ip())]);
         RateLimiter::for('fiscal-agent', fn (Request $request) => Limit::perMinute(120)->by($request->ip()));
     }
 }

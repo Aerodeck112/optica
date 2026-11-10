@@ -37,6 +37,15 @@ Fiecare jucător (sau părintele, pentru un minor) semnează declarația **înai
   perioada din **Setări → Retenție** (implicit 36 de luni).
 * Rolul „operator” vede doar numărul de declarații la check-in, nu și datele lor.
 
+### Jucători, sesiuni de joc și ecranele din arenă
+* Cine rezervă nu este automat jucător. La sosire: **Check-in → Participanți și sesiune de joc** → **Adaugă din declarații**
+  (sau jucători existenți / noi). Fiecare jucător are nevoie de **nickname** înainte de pornire; cei „de verificat” se aprobă.
+* **Pornește sesiunea** când începe efectiv jocul (ecranul Live prezintă echipa), **Finalizează** la final (aventura se trece
+  în Hall of Legends o singură dată). Rezultatele se introduc doar dacă jocul are o regulă confirmată.
+* Fără acord de afișare, jucătorul apare pe ecran ca „Explorator 03”. Acordul pentru minori îl dă adultul responsabil.
+* Comenzi rapide pe ecrane: **Ecrane afișare → Ecrane → Comandă rapidă** (expiră singure).
+* Detalii complete: `docs/ECRANE-AFISARE.md`.
+
 ### Încasare
 Pe pagina rezervării: **Încasează** → metoda (numerar, card POS, transfer) și suma (propusă automat: avansul sau restul).
 * „Emite bon fiscal” apare pentru numerar și card, dacă o casă de marcat este configurată. Dacă scrie

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+<defs>
+<radialGradient id="bg" cx="50%" cy="36%" r="72%"><stop offset="0" stop-color="#3d1670"/><stop offset="1" stop-color="#0e0620"/></radialGradient>
+<linearGradient id="ac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b39cff"/><stop offset="1" stop-color="#f23db3"/></linearGradient>
+<linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f23db3" stop-opacity=".95"/><stop offset=".55" stop-color="#140c33"/><stop offset="1" stop-color="#b39cff" stop-opacity=".9"/></linearGradient>
+<linearGradient id="suit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9ecff"/><stop offset="1" stop-color="#9aa3d6"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#efe6ff" stop-opacity=".9"/><stop offset="1" stop-color="#b39cff" stop-opacity="0"/></radialGradient>
+<clipPath id="disc"><circle cx="128" cy="128" r="128"/></clipPath>
+</defs>
+<g clip-path="url(#disc)">
+<rect width="256" height="256" fill="url(#bg)"/>
+<circle cx="40" cy="52" r="2.4" fill="#efe6ff" opacity="0.8"/><circle cx="210" cy="46" r="1.6" fill="#efe6ff" opacity="0.55"/><circle cx="62" cy="196" r="1.6" fill="#efe6ff" opacity="0.8"/><circle cx="200" cy="186" r="2.4" fill="#efe6ff" opacity="0.55"/><circle cx="222" cy="112" r="1.6" fill="#efe6ff" opacity="0.8"/><circle cx="30" cy="128" r="1.6" fill="#efe6ff" opacity="0.55"/><circle cx="96" cy="30" r="2.4" fill="#efe6ff" opacity="0.8"/><circle cx="170" cy="222" r="1.6" fill="#efe6ff" opacity="0.55"/>
+<circle cx="128" cy="118" r="92" fill="url(#glow)" opacity=".35"/>
+<path d="M40 256c6-48 40-70 88-70s82 22 88 70z" fill="url(#ac)"/><path d="M110 214l18-14 18 14-18 18z" fill="#fff"/><path d="M76 96c0-34 22-52 52-52s52 18 52 52v46c0 24-22 38-52 38s-52-14-52-38z" fill="#f2d98a"/><path d="M128 40v-20" stroke="#b39cff" stroke-width="12" stroke-linecap="round"/><path d="M90 118h76l-8 18h-60z" fill="#0b0920"/><circle cx="110" cy="126" r="4" fill="#f23db3"/><circle cx="146" cy="126" r="4" fill="#f23db3"/><path d="M128 136v40" stroke="#c8ad5a" stroke-width="5"/>
+</g>
+<circle cx="128" cy="128" r="126" fill="none" stroke="#b39cff" stroke-opacity=".55" stroke-width="4"/>
+</svg>

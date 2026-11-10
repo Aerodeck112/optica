@@ -4,8 +4,11 @@ namespace App\Filament\Resources\Bookings\Pages;
 
 use App\Filament\Resources\Bookings\BookingActions;
 use App\Filament\Resources\Bookings\BookingResource;
+use App\Filament\Resources\GameSessions\GameSessionResource;
 use App\Filament\Resources\Invoices\InvoiceActions;
 use App\Filament\Resources\Payments\PaymentActions;
+use App\Modules\Arena\Services\GameSessionService;
+use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +28,9 @@ class ViewBooking extends ViewRecord
         $actions = array_map(fn ($action) => $action->after($refresh), BookingActions::all());
 
         return [
+            Action::make('gameSession')->label('Sesiune de joc')->icon('heroicon-o-play-circle')->color('gray')
+                ->visible(fn () => auth()->user()?->can('sessions.operate') && $this->getRecord()->starts_at && in_array($this->getRecord()->status, ['confirmed', 'checked_in', 'completed'], true))
+                ->action(fn () => redirect(GameSessionResource::getUrl('view', ['record' => app(GameSessionService::class)->forBooking($this->getRecord(), auth()->id())]))),
             PaymentActions::record()->after($refresh),
             ...array_slice($actions, 0, 4),
             ActionGroup::make([...array_slice($actions, 4), InvoiceActions::fromBooking()])->label('Mai multe')->button()->color('gray')->icon('heroicon-o-ellipsis-vertical'),

@@ -49,6 +49,11 @@ final class Permissions
         'users.manage' => 'Administrează utilizatorii',
         'audit.view' => 'Vede jurnalul de audit',
         'backups.manage' => 'Gestionează backup-uri',
+        'players.manage' => 'Creează și editează profiluri de jucători (nickname, avatar, afișare pe ecrane)',
+        'players.moderate' => 'Aprobă sau blochează nickname-uri',
+        'sessions.operate' => 'Pornește, întrerupe și finalizează sesiunile de joc; participanți și rezultate',
+        'display.manage' => 'Administrează ecranele din arenă, playlisturile și materialele promoționale',
+        'display.control' => 'Comenzi rapide pe ecranele din arenă',
     ];
 
     public const ROLES = [
@@ -58,13 +63,15 @@ final class Permissions
             'cms.manage', 'cms.publish', 'legal.manage', 'catalog.manage', 'prices.manage', 'marketing.*', 'social.manage', 'templates.manage',
             'messages.view', 'loyalty.manage', 'vouchers.manage', 'finance.view', 'finance.issue', 'finance.refund',
             'inventory.manage', 'fiscal.*', 'reports.view', 'ai.manage', 'audit.view',
+            'players.*', 'sessions.operate', 'display.*',
         ]],
         'reception' => ['label' => 'Recepție', 'permissions' => [
             'dashboard.view', 'bookings.view', 'bookings.manage', 'bookings.cancel', 'bookings.checkin', 'waivers.view',
             'customers.view', 'customers.manage', 'leads.manage', 'tasks.manage', 'vouchers.manage', 'finance.view', 'finance.issue', 'fiscal.operate',
+            'players.manage', 'players.moderate', 'sessions.operate', 'display.control',
         ]],
-        'operator' => ['label' => 'Operator arenă', 'permissions' => ['dashboard.view', 'bookings.view', 'bookings.checkin', 'tasks.manage']],
-        'marketing' => ['label' => 'Marketing', 'permissions' => ['dashboard.view', 'customers.view', 'marketing.*', 'social.manage', 'templates.manage', 'messages.view', 'cms.manage', 'cms.publish', 'reports.view', 'loyalty.manage']],
+        'operator' => ['label' => 'Operator arenă', 'permissions' => ['dashboard.view', 'bookings.view', 'bookings.checkin', 'tasks.manage', 'sessions.operate', 'display.control']],
+        'marketing' => ['label' => 'Marketing', 'permissions' => ['dashboard.view', 'customers.view', 'marketing.*', 'social.manage', 'templates.manage', 'messages.view', 'cms.manage', 'cms.publish', 'reports.view', 'loyalty.manage', 'display.manage']],
         'accountant' => ['label' => 'Contabil', 'permissions' => ['finance.view', 'finance.export', 'efactura.manage', 'inventory.manage', 'reports.view', 'fiscal.reconcile']],
         'editor' => ['label' => 'Editor conținut', 'permissions' => ['cms.manage', 'catalog.manage']],
     ];

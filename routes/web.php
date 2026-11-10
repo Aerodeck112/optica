@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\AnafOAuthController;
+use App\Http\Controllers\Admin\DisplayPreviewController;
 use App\Http\Controllers\Admin\FinanceDocumentController;
 use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\VoucherPrintController;
 use App\Http\Controllers\Admin\WaiverPrintController;
+use App\Http\Controllers\Display\DisplayController;
 use App\Http\Controllers\Site\AccountController;
 use App\Http\Controllers\Site\BookingApiController;
 use App\Http\Controllers\Site\BookingController;
@@ -82,6 +84,14 @@ Route::get('/admin-print/goods-receipts/{receipt}', [FinanceDocumentController::
 Route::get('/admin-print/social/media/{media}/{format}', [SocialMediaController::class, 'image'])->whereIn('format', ['portrait', 'square', 'story', 'original'])->middleware('auth')->name('admin.social.image');
 Route::get('/admin-print/social/posts/{post}/bundle', [SocialMediaController::class, 'bundle'])->middleware('auth')->name('admin.social.bundle');
 Route::get('/admin-print/efactura/{submission}/{kind}', [FinanceDocumentController::class, 'efacturaFile'])->whereIn('kind', ['xml', 'response'])->middleware('auth')->name('admin.efactura.file');
+Route::get('/admin-print/display/{screen}/preview', [DisplayPreviewController::class, 'show'])->middleware('auth')->name('admin.display.preview');
+Route::get('/admin-print/display/{screen}/state', [DisplayPreviewController::class, 'state'])->middleware('auth')->name('admin.display.preview.state');
+
+/*
+| Monitoarele din arenă: pagina playerului (fără date) și service worker-ul pentru cache-ul media aprobat.
+*/
+Route::get('/display/sw.js', [DisplayController::class, 'serviceWorker'])->name('display.sw');
+Route::get('/display/{slug}', [DisplayController::class, 'show'])->where('slug', '[a-z0-9\-]{2,60}')->name('display.show');
 Route::get('/cms-preview/{type}/{id}', PreviewController::class)->middleware(['auth', 'signed'])->name('cms.preview');
 
 /*
@@ -118,7 +128,7 @@ foreach (Locales::enabled() as $locale) {
             Route::get($segment('voucher_order').'/{order}/voucher', [VoucherOrderController::class, 'download'])->middleware('signed')->name('voucher.order.download');
 
             Route::get('/{slug?}', PageController::class)
-                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent|voucher|en|hu|declaratie|player-agreement|nyilatkozat)$)[a-z0-9\-]+')
+                ->where('slug', '(?!(u|admin-print|admin-anaf|admin|livewire|filament|api|forms|build|media|storage|up|webhooks|booking|account|unsubscribe|cms-preview|fiscal-agent|voucher|en|hu|declaratie|player-agreement|nyilatkozat|display)$)[a-z0-9\-]+')
                 ->name('page');
         });
 }

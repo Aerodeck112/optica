@@ -86,3 +86,11 @@ Verificările automate (125 de teste) rulează la fiecare modificare în GitHub 
 * Nu există WAF propriu; recomandăm Cloudflare (sau protecția furnizorului de găzduire) în fața site-ului.
 * Pe găzduire partajată, izolarea depinde de furnizor (alte conturi pe același server).
 * Testele de securitate sunt automate și de cod; nu s-a efectuat un test de penetrare extern.
+
+## Ecranele din arenă (dispozitive de afișare)
+
+- Pagina `/display/{ecran}` nu conține date; playerul le cere prin `/api/display/{ecran}/state` cu credențiala dispozitivului (Bearer, 64 de caractere, păstrată pe server doar ca hash SHA-256).
+- Asocierea se face cu un cod de unică folosință (HMAC în baza de date, 30 de minute, limitare de încercări pe ecran și pe IP). O nouă asociere sau revocarea invalidează credențiala anterioară; credențiala unui ecran nu funcționează pentru celălalt.
+- Accesul este read-only și limitat la identitatea publică aprobată (nickname + avatar); fără nume, contact sau date de rezervare. Răspunsurile au `Cache-Control: no-store`, `X-Robots-Tag: noindex`; `/display/` este exclus în `robots.txt` și nu apare în sitemap.
+- Nickname-urile sunt validate pe server (listă de caractere permise, fără HTML/emoji/caractere de control, unicitate normalizată, cuvinte interzise, blocare din CRM); playerul afișează textul numai prin `textContent`.
+- Previzualizarea din CRM folosește sesiunea utilizatorului (permisiunea `display.manage` sau `display.control`) și nu creează credențiale de dispozitiv.

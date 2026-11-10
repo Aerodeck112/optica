@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+<defs>
+<radialGradient id="bg" cx="50%" cy="36%" r="72%"><stop offset="0" stop-color="#1f2f6e"/><stop offset="1" stop-color="#070a1f"/></radialGradient>
+<linearGradient id="ac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b8cff"/><stop offset="1" stop-color="#3ee6ff"/></linearGradient>
+<linearGradient id="visor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ee6ff" stop-opacity=".95"/><stop offset=".55" stop-color="#140c33"/><stop offset="1" stop-color="#5b8cff" stop-opacity=".9"/></linearGradient>
+<linearGradient id="suit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9ecff"/><stop offset="1" stop-color="#9aa3d6"/></linearGradient>
+<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#cfe0ff" stop-opacity=".9"/><stop offset="1" stop-color="#5b8cff" stop-opacity="0"/></radialGradient>
+<clipPath id="disc"><circle cx="128" cy="128" r="128"/></clipPath>
+</defs>
+<g clip-path="url(#disc)">
+<rect width="256" height="256" fill="url(#bg)"/>
+<circle cx="40" cy="52" r="2.4" fill="#cfe0ff" opacity="0.8"/><circle cx="210" cy="46" r="1.6" fill="#cfe0ff" opacity="0.55"/><circle cx="62" cy="196" r="1.6" fill="#cfe0ff" opacity="0.8"/><circle cx="200" cy="186" r="2.4" fill="#cfe0ff" opacity="0.55"/><circle cx="222" cy="112" r="1.6" fill="#cfe0ff" opacity="0.8"/><circle cx="30" cy="128" r="1.6" fill="#cfe0ff" opacity="0.55"/><circle cx="96" cy="30" r="2.4" fill="#cfe0ff" opacity="0.8"/><circle cx="170" cy="222" r="1.6" fill="#cfe0ff" opacity="0.55"/>
+<circle cx="128" cy="118" r="92" fill="url(#glow)" opacity=".35"/>
+<path d="M128 150c-40-50-96-40-92-6 4 30 52 30 92 6zM128 150c40-50 96-40 92-6-4 30-52 30-92 6z" fill="#3ee6ff" opacity=".55"/><path d="M60 256c6-40 32-58 68-58s62 18 68 58z" fill="url(#ac)"/><circle cx="128" cy="122" r="44" fill="#f0e9ff"/><circle cx="128" cy="122" r="44" fill="none" stroke="#5b8cff" stroke-width="5"/><path d="M106 120q6-6 12 0M138 120q6-6 12 0" stroke="#2a1a6b" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M114 140q14 10 28 0" stroke="#2a1a6b" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="128" cy="62" r="10" fill="#cfe0ff"/><circle cx="128" cy="62" r="20" fill="#cfe0ff" opacity=".3"/>
+</g>
+<circle cx="128" cy="128" r="126" fill="none" stroke="#5b8cff" stroke-opacity=".55" stroke-width="4"/>
+</svg>

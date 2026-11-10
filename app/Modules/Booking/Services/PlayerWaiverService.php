@@ -3,6 +3,10 @@
 namespace App\Modules\Booking\Services;
 
 use App\Models\User;
+use App\Modules\Arena\Models\Player;
+use App\Modules\Arena\Services\AvatarCatalog;
+use App\Modules\Arena\Services\PlayerException;
+use App\Modules\Arena\Services\PlayerService;
 use App\Modules\Audit\AuditLogger;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\PlayerWaiver;
@@ -97,9 +101,42 @@ class PlayerWaiverService
                 'at' => now()->toIso8601String(),
             ]);
         }
+        $this->linkPlayer($waiver, $data, $booking, $minor);
         $this->audit->as('system', null)->log('waiver.signed', $waiver, ['booking' => $booking?->code, 'minor' => $minor, 'version' => $document->version]);
 
         return $waiver;
+    }
+
+    /**
+     * Profilul de jucător din declarație: același om (nume + data nașterii) primește același profil la fiecare vizită,
+     * deci istoricul nu se pierde. Nickname-ul introdus online se verifică la recepție; acordul de afișare pe ecrane
+     * se înregistrează separat (pentru minori, în numele adultului care semnează).
+     */
+    private function linkPlayer(PlayerWaiver $waiver, array $data, ?Booking $booking, bool $minor): void
+    {
+        $players = app(PlayerService::class);
+        $hash = PlayerService::identityHash($waiver->participant_name, (string) $data['birth_date']);
+        $player = Player::query()->where('identity_hash', $hash)->first() ?? $players->create([
+            'private_name' => $waiver->participant_name,
+            'identity_hash' => $hash,
+            'is_minor' => $minor,
+            'customer_id' => $booking?->customer_id,
+            'avatar_key' => $data['avatar_key'] ?? null,
+        ], 'online');
+        $player->forceFill(['is_minor' => $minor])->save();
+        if (filled($data['nickname'] ?? null) && ! $player->hasNickname()) {
+            try {
+                $players->changeNickname($player, $data['nickname'], 'online');
+            } catch (PlayerException) {
+                // validat deja în formular; o coliziune simultană lasă „nickname de completat” la recepție
+            }
+        }
+        if (filled($data['avatar_key'] ?? null) && $data['avatar_key'] !== $player->avatar_key && AvatarCatalog::exists($data['avatar_key'])) {
+            $players->changeAvatar($player, $data['avatar_key']);
+        }
+        $consent = ! empty($data['screen_display']);
+        $players->setDisplayConsent($player, $consent ? 'granted' : 'refused', 'waiver', $minor ? $waiver->guardian_name : null);
+        $waiver->forceFill(['player_id' => $player->id, 'screen_display' => $consent])->save();
     }
 
     public function verify(PlayerWaiver $waiver, User $user): void

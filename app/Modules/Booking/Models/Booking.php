@@ -3,6 +3,7 @@
 namespace App\Modules\Booking\Models;
 
 use App\Models\User;
+use App\Modules\Arena\Models\GameSession;
 use App\Modules\Catalog\Models\Game;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Crm\Models\Customer;
@@ -174,6 +175,11 @@ class Booking extends Model
     public function events(): HasMany
     {
         return $this->hasMany(BookingEvent::class)->latest('created_at')->latest('id');
+    }
+
+    public function gameSessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class);
     }
 
     public function waivers(): HasMany

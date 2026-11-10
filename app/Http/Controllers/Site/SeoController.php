@@ -66,6 +66,7 @@ class SeoController extends Controller
             $body = implode("\n", [
                 'User-agent: *',
                 'Disallow: /admin',
+                'Disallow: /display/',
                 'Disallow: /api/',
                 'Disallow: /forms/',
                 'Disallow: /account/',

@@ -3,7 +3,9 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\Bookings\BookingResource;
+use App\Filament\Resources\GameSessions\GameSessionResource;
 use App\Filament\Resources\PlayerWaivers\PlayerWaiverResource;
+use App\Modules\Arena\Services\GameSessionService;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
@@ -72,6 +74,15 @@ class CheckIn extends Page
         }
     }
 
+    /** Deschide (sau creează) sesiunea de joc a rezervării: acolo se asociază participanții și se completează nickname-urile. */
+    public function openSession(int $id)
+    {
+        abort_unless(auth()->user()?->can('sessions.operate'), 403);
+        $session = app(GameSessionService::class)->forBooking(Booking::query()->findOrFail($id), auth()->id());
+
+        return redirect(GameSessionResource::getUrl('view', ['record' => $session]));
+    }
+
     protected function getViewData(): array
     {
         $today = LocalTime::now()->toDateString();
@@ -82,6 +93,7 @@ class CheckIn extends Page
             'bookingUrl' => fn (Booking $b) => BookingResource::getUrl('view', ['record' => $b]),
             // datele din declarații le vede doar cine are acces; restul echipei vede doar numărul
             'waiversUrl' => auth()->user()?->can('waivers.view') ? fn (Booking $b) => PlayerWaiverResource::getUrl('index', ['tableSearch' => $b->code]) : null,
+            'canSessions' => (bool) auth()->user()?->can('sessions.operate'),
         ];
     }
 }

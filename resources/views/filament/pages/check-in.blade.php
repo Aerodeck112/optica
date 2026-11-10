@@ -36,6 +36,9 @@
                         @if ($found->canTransitionTo('checked_in'))
                             <x-filament::button size="lg" color="success" wire:click="checkIn({{ $found->id }})" icon="heroicon-o-check">Confirmă sosirea</x-filament::button>
                         @endif
+                        @if ($canSessions && $found->starts_at)
+                            <x-filament::button size="lg" color="primary" wire:click="openSession({{ $found->id }})" icon="heroicon-o-play-circle">Participanți și sesiune de joc</x-filament::button>
+                        @endif
                         <x-filament::button tag="a" color="gray" size="lg" :href="$bookingUrl($found)">Deschide rezervarea</x-filament::button>
                     </div>
                 </div>
@@ -58,7 +61,8 @@
                                 <td>@if ($waiversUrl)<a class="aw-link" href="{{ $waiversUrl($b) }}">@endif<span class="aw-badge {{ $b->waivers_count >= $b->participants ? 'aw-badge--ok' : 'aw-badge--warn' }}">{{ $b->waivers_count }}/{{ $b->participants }}</span>@if ($waiversUrl)</a>@endif</td>
                                 <td>{{ $b->package?->getTranslation('name', 'ro') }}</td>
                                 <td><span class="aw-badge {{ $b->status === 'checked_in' ? 'aw-badge--info' : ($b->status === 'confirmed' ? 'aw-badge--ok' : 'aw-badge--warn') }}">{{ $b->statusLabel() }}</span></td>
-                                <td>@if ($b->canTransitionTo('checked_in'))<x-filament::button size="sm" wire:click="checkIn({{ $b->id }})">Check-in</x-filament::button>@endif</td>
+                                <td style="display:flex;gap:.5rem;flex-wrap:wrap">@if ($b->canTransitionTo('checked_in'))<x-filament::button size="sm" wire:click="checkIn({{ $b->id }})">Check-in</x-filament::button>@endif
+                                    @if ($canSessions)<x-filament::button size="sm" color="gray" wire:click="openSession({{ $b->id }})">Sesiune</x-filament::button>@endif</td>
                             </tr>
                         @endforeach
                     </tbody>

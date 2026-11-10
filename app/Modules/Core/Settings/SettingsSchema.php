@@ -2,6 +2,8 @@
 
 namespace App\Modules\Core\Settings;
 
+use App\Modules\Arena\Services\LegendsService;
+
 /**
  * Definiția tuturor setărilor administrabile. Nicio valoare comercială nu este presupusă:
  * câmpurile necunoscute rămân goale („De completat”) și nu se afișează pe site.
@@ -72,6 +74,12 @@ final class SettingsSchema
             'booking.review_request_enabled' => ['group' => 'booking', 'label' => 'Include invitația de recenzie în mesajul de după vizită', 'type' => 'bool', 'default' => false],
             'booking.age_groups' => ['group' => 'booking', 'label' => 'Categorii de vârstă cerute la rezervare', 'type' => 'json', 'default' => ['under_12' => 'Sub 12 ani', '12_17' => '12–17 ani', 'adults' => '18+ ani']],
 
+            // ——— Ecrane afișare ———
+            'display.legend_levels' => ['group' => 'display', 'label' => 'Niveluri de fidelitate (Hall of Legends)', 'type' => 'text', 'default' => LegendsService::DEFAULT_LEVELS,
+                'help' => 'Câte un nivel pe rând: „număr minim de aventuri finalizate = nume”. Ex.: 1 = Recrut, 5 = Aventurier.'],
+            'display.nickname_blocklist' => ['group' => 'display', 'label' => 'Cuvinte interzise suplimentare în nickname', 'type' => 'text',
+                'help' => 'Câte unul pe rând. Se adaugă la lista de bază; nickname-urile respinse din CRM se blochează automat.'],
+
             // ——— Site ———
             'site.show_unconfirmed_games' => ['group' => 'site', 'label' => 'Afișează și jocurile din catalogul rețelei neconfirmate pentru Cluj (marcate clar)', 'type' => 'bool', 'default' => false],
             'site.default_og_image' => ['group' => 'site', 'label' => 'Imagine implicită pentru distribuire', 'type' => 'string', 'default' => '/media/brand/og-default.jpg'],
@@ -120,6 +128,7 @@ final class SettingsSchema
             'retention.lost_leads_days' => ['group' => 'retention', 'label' => 'Cereri pierdute (zile)', 'type' => 'int', 'default' => 365],
             'retention.inactive_customers_months' => ['group' => 'retention', 'label' => 'Anonimizare clienți fără activitate și fără obligații legale (luni)', 'type' => 'int', 'default' => 36],
             'retention.waivers_months' => ['group' => 'retention', 'label' => 'Declarații de participare (luni de la semnare)', 'type' => 'int', 'default' => 36, 'help' => 'Dovada informării și a acceptării regulilor, pentru eventuale incidente sau reclamații. Stabiliți perioada cu juristul și treceți-o în politica de confidențialitate.'],
+            'retention.game_sessions_months' => ['group' => 'retention', 'label' => 'Profiluri de jucător fără activitate (luni)', 'type' => 'int', 'default' => 36, 'help' => 'Profilurile fără nicio sesiune în această perioadă se anonimizează (nickname, avatar, nume), iar statisticile agregate rămân.'],
             'retention.audit_days' => ['group' => 'retention', 'label' => 'Jurnal de audit (zile)', 'type' => 'int', 'default' => 730],
         ];
     }
@@ -139,6 +148,7 @@ final class SettingsSchema
             'ai' => 'Asistent AI',
             'finance' => 'Facturare',
             'retention' => 'Retenție date',
+            'display' => 'Ecrane afișare',
         ];
     }
 

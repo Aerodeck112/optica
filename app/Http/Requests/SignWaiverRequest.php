@@ -2,6 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Modules\Arena\Models\Player;
+use App\Modules\Arena\Services\AvatarCatalog;
+use App\Modules\Arena\Services\NicknamePolicy;
+use App\Modules\Arena\Services\PlayerService;
+use Illuminate\Validation\Rule;
+
 class SignWaiverRequest extends PublicFormRequest
 {
     public function rules(): array
@@ -20,6 +26,15 @@ class SignWaiverRequest extends PublicFormRequest
             'marketing_email' => ['nullable', 'boolean'],
             'photo_consent' => ['nullable', 'boolean'],
             'locale' => ['nullable', 'string', 'max:5'],
+            'nickname' => ['nullable', 'string', 'max:40', function (string $attribute, $value, \Closure $fail) {
+                // același jucător (recunoscut după nume + data nașterii) își poate păstra nickname-ul
+                $existing = Player::query()->where('identity_hash', PlayerService::identityHash((string) $this->input('participant_name'), (string) $this->input('birth_date')))->first();
+                if ($problem = app(NicknamePolicy::class)->problem($value, $existing)) {
+                    $fail($problem);
+                }
+            }],
+            'avatar_key' => ['nullable', 'string', Rule::in(array_keys(AvatarCatalog::AVATARS))],
+            'screen_display' => ['nullable', 'boolean'],
         ];
     }
 
@@ -33,6 +48,7 @@ class SignWaiverRequest extends PublicFormRequest
             'signer_name' => __('site.waiver.signer_name'),
             'signature' => __('site.waiver.signature'),
             'accept' => __('site.waiver.accept'),
+            'nickname' => __('site.waiver.nickname'),
         ];
     }
 
