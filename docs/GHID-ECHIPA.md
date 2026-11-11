@@ -37,6 +37,20 @@ Fiecare jucător (sau părintele, pentru un minor) semnează declarația **înai
   perioada din **Setări → Retenție** (implicit 36 de luni).
 * Rolul „operator” vede doar numărul de declarații la check-in, nu și datele lor.
 
+### Semnarea pe tabletă (cod de 6 cifre sau card)
+* **Tableta**: deschideți pe ea pagina `/declaratie/tableta` (în panou: **Declarații → Deschide pagina tabletei**) și fixați-o
+  în modul kiosk (iPad: *Acces ghidat*; Android: *Fixarea ecranului* / „App pinning”). Pe tabletă **nu** vă autentificați în panou.
+* **La check-in**: butonul **Coduri pentru tabletă** dă câte un cod fiecărui participant care nu a semnat. Se dau întâi
+  **cardurile fizice** libere (AWC-001 … AWC-020); dacă nu ajung, restul primesc **bilețele** cu coduri noi (link „tipărește bilețelele”).
+  Pentru un card anume, scanați-i codul de bare în câmpul „Dai un card anume?”. Același buton există în rezervare și în sesiunea de joc;
+  pentru jucătorii fără rezervare: **Declarații → Coduri fără rezervare**.
+* **Jucătorul** tastează codul (sau îl scanează cu camera tabletei), citește, completează și semnează. Tableta revine singură la
+  tastatură, goală pentru următorul. Dacă grupul are sesiunea de joc deschisă, jucătorul intră direct în ea, cu nickname-ul și avatarul ales.
+* Un cod merge **o singură dată** și expiră după câteva ore (cel puțin 4 ore, sau la 3 ore după ora rezervării). Formularul
+  lăsat neatins câteva minute se închide singur. După semnare, **cardul se returnează la recepție** și poate fi dat altui jucător.
+* Cardurile nefolosite ale unui grup se iau înapoi cu „ia înapoi cardurile nefolosite” (la check-in). Un card pierdut se scoate din uz
+  din **Declarații → Carduri fizice** (codul lui nu mai funcționează); acolo vedeți și la ce grup se află fiecare card.
+
 ### Jucători, sesiuni de joc și ecranele din arenă
 * Cine rezervă nu este automat jucător. La sosire: **Check-in → Participanți și sesiune de joc** → **Adaugă din declarații**
   (sau jucători existenți / noi). Fiecare jucător are nevoie de **nickname** înainte de pornire; cei „de verificat” se aprobă.

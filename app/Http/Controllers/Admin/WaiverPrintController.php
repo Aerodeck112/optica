@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filament\Resources\PlayerWaivers\WaiverCodeActions;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Site\LegalController;
+use App\Modules\Arena\Models\GameSession;
 use App\Modules\Audit\AuditLogger;
+use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\PlayerWaiver;
+use App\Modules\Booking\Services\WaiverCodeService;
 use App\Modules\Cms\Services\SafeMarkdown;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -36,5 +40,19 @@ class WaiverPrintController extends Controller
 
         return response()->view('admin.waiver-qr', ['urls' => $urls, 'qr' => array_map(fn ($url) => $writer->writeString($url), $urls)])
             ->header('X-Robots-Tag', 'noindex');
+    }
+
+    /** Bilețelele cu codurile pentru tabletă (câte unul pentru fiecare jucător), fără date personale. */
+    public function codes(Request $request, WaiverCodeService $codes): Response
+    {
+        abort_unless(WaiverCodeActions::canIssue(), 403);
+        $booking = $request->filled('booking') ? Booking::query()->findOrFail((int) $request->query('booking')) : null;
+        $session = ! $booking && $request->filled('session') ? GameSession::query()->findOrFail((int) $request->query('session')) : null;
+
+        return response()->view('admin.waiver-codes', [
+            'codes' => $codes->active($booking, $session)->whereNull('waiver_card_id')->values(),
+            'booking' => $booking,
+            'tabletUrl' => lroute('waiver.tablet', [], 'ro'),
+        ])->header('X-Robots-Tag', 'noindex')->header('Cache-Control', 'no-store, private');
     }
 }

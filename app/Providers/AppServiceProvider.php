@@ -13,6 +13,7 @@ use App\Modules\Audit\Listeners\AuthenticationAuditSubscriber;
 use App\Modules\Booking\Events\BookingStatusChanged;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\PlayerWaiver;
+use App\Modules\Booking\Models\WaiverCode;
 use App\Modules\Catalog\Models\Game;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Cms\Models\Banner;
@@ -150,6 +151,7 @@ class AppServiceProvider extends ServiceProvider
             'display_asset' => DisplayAsset::class,
             'app_update' => AppUpdate::class,
             'player_waiver' => PlayerWaiver::class,
+            'waiver_code' => WaiverCode::class,
         ]);
     }
 
@@ -164,6 +166,9 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute((int) config('aw.ai.requests_per_minute_per_ip', 8))->by('ai:'.$request->ip()),
             Limit::perDay(300)->by('ai-d:'.$request->ip()),
         ]);
+        // tableta de la recepție: toți jucătorii semnează de pe aceeași adresă, deci limitele sunt mai largi decât la formulare
+        RateLimiter::for('waiver-code', fn (Request $request) => [Limit::perMinute(20)->by('wcode:'.$request->ip()), Limit::perDay(400)->by('wcode-d:'.$request->ip())]);
+        RateLimiter::for('waiver-tablet', fn (Request $request) => Limit::perMinute(30)->by('wtab:'.$request->ip()));
         RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(300)->by($request->ip()));
         RateLimiter::for('display', fn (Request $request) => Limit::perMinute(240)->by('display:'.$request->ip()));
         RateLimiter::for('display-activate', fn (Request $request) => [Limit::perMinute(10)->by('display-act:'.$request->ip()), Limit::perHour(40)->by('display-act-h:'.$request->ip())]);

@@ -50,13 +50,15 @@
         <script type="application/ld+json" nonce="{{ csp_nonce() }}">{!! json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) !!}</script>
     @endforeach
 </head>
-<body class="@if ($hasMobileBook) has-mobile-book @endif">
+@php($kiosk = $kiosk ?? false)
+<body class="@if ($hasMobileBook && ! $kiosk) has-mobile-book @endif @if ($kiosk) is-kiosk @endif">
     <a class="skip-link" href="#continut">{{ __('site.skip_to_content') }}</a>
 
     @if (config('aw.is_staging'))
         <div class="staging-ribbon">Mediu de test — conținutul nu este public</div>
     @endif
 
+    @unless ($kiosk)
     @foreach ($banners as $banner)
         <div class="promo-banner promo-banner--{{ $banner->tone }}" data-banner-id="{{ $banner->id }}-{{ $banner->updated_at?->timestamp }}">
             <div class="wrap promo-banner__inner">
@@ -73,11 +75,13 @@
     @endforeach
 
     @include('site.partials.header')
+    @endunless
 
     <main id="continut" tabindex="-1">
         @yield('content')
     </main>
 
+    @unless ($kiosk)
     @include('site.partials.footer')
 
     @if ($hasMobileBook)
@@ -97,6 +101,7 @@
             <x-aw-icon name="chat"/><span>{{ __('site.chat.open') }}</span>
         </button>
     @endif
+    @endunless
 
     <dialog class="lightbox" id="lightbox" aria-label="{{ __('site.games.gallery') }}">
         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">

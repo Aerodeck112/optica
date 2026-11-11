@@ -1,6 +1,15 @@
 @extends('site.layout')
 
 @section('content')
+@if ($tablet ?? null)
+    <div class="tablet-bar" data-tablet-idle="{{ min($tablet['idle'], 360) }}">
+        <img src="{{ asset('media/brand/aw-logo-horizontal.svg') }}" alt="Another World Cluj" width="180" height="40">
+        <form method="post" action="{{ $tablet['cancel'] }}" data-confirm="{{ __('site.waiver.tablet.cancel_confirm') }}" data-tablet-cancel>
+            @csrf
+            <button type="submit" class="btn btn--small btn--ghost">{{ __('site.waiver.tablet.cancel') }}</button>
+        </form>
+    </div>
+@endif
 <header class="page-hero">
     <div class="wrap">
         <h1>{{ __('site.waiver.title') }}</h1>
@@ -22,10 +31,12 @@
                 <div class="stack">
                     <p><strong>{{ __('site.waiver.booking', ['code' => $booking->code, 'date' => $booking->starts_at ? \App\Support\LocalTime::format($booking->starts_at, 'l, j F Y, H:i') : '—']) }}</strong></p>
                     <p>{{ __('site.waiver.progress', ['signed' => $progress['signed'], 'expected' => $progress['expected']]) }}</p>
+                    @unless ($tablet ?? null)
                     <p>
                         <button type="button" class="btn btn--small btn--ghost" data-copy-url="{{ url()->full() }}">{{ __('site.waiver.copy') }}</button>
                         <span class="small muted" data-copy-status hidden>{{ __('site.waiver.copied') }}</span>
                     </p>
+                    @endunless
                 </div>
             </div>
         @endif
@@ -55,7 +66,7 @@
                     @include('site.partials.field', ['name' => 'birth_date', 'type' => 'date', 'label' => __('site.waiver.birth_date'), 'required' => true, 'id' => 'waiver-birth', 'maxValue' => now()->toDateString()])
                 </div>
                 <div class="field-row mt-5">
-                    @unless ($booking)
+                    @unless ($booking || ($tablet ?? null))
                         @include('site.partials.field', ['name' => 'booking_code', 'label' => __('site.waiver.booking_code'), 'id' => 'waiver-booking', 'autocomplete' => 'off'])
                     @endunless
                     @include('site.partials.field', ['name' => 'email', 'type' => 'email', 'label' => __('site.waiver.email'), 'id' => 'waiver-email', 'autocomplete' => 'email'])

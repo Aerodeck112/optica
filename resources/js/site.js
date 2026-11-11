@@ -329,6 +329,83 @@ function initBooking() {
   if (manage) import('./booking.js').then((m) => m.initReschedule(manage));
 }
 
+/* ——— Tableta de la recepție: tastatura pentru codul de 6 cifre și revenirea automată ——— */
+function initTablet() {
+  const keypad = doc.querySelector('[data-tablet-keypad]');
+  if (keypad) {
+    const form = keypad.querySelector('[data-tablet-form]');
+    const input = keypad.querySelector('[data-tablet-code]');
+    const submit = keypad.querySelector('[data-tablet-submit]');
+    const error = keypad.querySelector('#tablet-code-error');
+    const digits = () => input.value.replace(/\D+/g, '').slice(0, 6);
+    const render = (value) => {
+      input.value = value.length > 3 ? `${value.slice(0, 3)} ${value.slice(3)}` : value;
+      submit.disabled = value.length !== 6;
+    };
+    let sending = false;
+    const send = () => {
+      if (sending || digits().length !== 6) return;
+      sending = true;
+      submit.disabled = true;
+      form.submit();
+    };
+    keypad.querySelectorAll('[data-key]').forEach((key) => key.addEventListener('click', () => {
+      let value = digits();
+      if (key.dataset.key === 'clear') value = '';
+      else if (key.dataset.key === 'back') value = value.slice(0, -1);
+      else if (value.length < 6) value += key.dataset.key;
+      if (error) error.textContent = '';
+      input.classList.remove('is-invalid');
+      render(value);
+      if (value.length === 6) setTimeout(send, 250);
+    }));
+    input.addEventListener('input', () => render(digits()));
+
+    // cardurile au cod de bare: pe tabletele cu cameră, codul se poate scana în loc de tastat
+    const scan = keypad.querySelector('[data-tablet-scan]');
+    const video = keypad.querySelector('[data-tablet-video]');
+    if (scan && video && 'BarcodeDetector' in window && navigator.mediaDevices) {
+      scan.hidden = false;
+      const label = scan.textContent;
+      let stream = null; let timer = null;
+      const stop = () => { clearInterval(timer); stream?.getTracks().forEach((t) => t.stop()); stream = null; video.hidden = true; scan.textContent = label; };
+      scan.addEventListener('click', async () => {
+        if (stream) { stop(); return; }
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+          video.srcObject = stream; video.hidden = false; await video.play(); scan.textContent = scan.dataset.stop;
+          const detector = new window.BarcodeDetector({ formats: ['code_128', 'qr_code'] });
+          timer = setInterval(async () => {
+            const found = await detector.detect(video).catch(() => []);
+            const value = found.map((f) => f.rawValue.replace(/\D+/g, '')).find((v) => v.length === 6);
+            if (value) { stop(); render(value); send(); }
+          }, 300);
+        } catch (e) { stop(); }
+      });
+    }
+    form.addEventListener('submit', (e) => { e.preventDefault(); send(); });
+    render(digits());
+
+    // mesajul de mulțumire dispare singur; pagina se reîncarcă din când în când (sesiune și token proaspete)
+    const done = keypad.querySelector('[data-tablet-done]');
+    if (done) setTimeout(() => done.remove(), 12000);
+    let idle;
+    const arm = () => { clearTimeout(idle); idle = setTimeout(() => { if (!digits().length) window.location.reload(); else arm(); }, 15 * 60 * 1000); };
+    ['pointerdown', 'keydown'].forEach((type) => doc.addEventListener(type, arm, { passive: true }));
+    arm();
+  }
+
+  const bar = doc.querySelector('[data-tablet-idle]');
+  if (bar) {
+    const cancel = bar.querySelector('[data-tablet-cancel]');
+    const limit = Math.max(60, Number(bar.dataset.tabletIdle) || 360) * 1000;
+    let idle;
+    const arm = () => { clearTimeout(idle); idle = setTimeout(() => cancel.submit(), limit); };
+    ['pointerdown', 'keydown', 'scroll', 'input'].forEach((type) => window.addEventListener(type, arm, { passive: true, capture: true }));
+    arm();
+  }
+}
+
 /* ——— Declarația de participare: semnătură desenată, minor/părinte, copierea linkului ——— */
 function initWaiver() {
   const form = doc.querySelector('form[data-waiver]');
@@ -489,5 +566,6 @@ initForms();
 initBooking();
 initCountdown();
 initWaiver();
+initTablet();
 initCopyLinks();
 initOpeningPopup();

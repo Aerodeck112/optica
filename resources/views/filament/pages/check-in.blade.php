@@ -26,7 +26,23 @@
                            <span class="aw-badge {{ $found->waivers_count >= $found->participants ? 'aw-badge--ok' : 'aw-badge--warn' }}">Declarații: {{ $found->waivers_count }}/{{ $found->participants }}</span>
                            @if ($waiversUrl)<a class="aw-link" href="{{ $waiversUrl($found) }}">vezi declarațiile</a>@endif</p>
                         @if ($found->waivers_count < $found->participants)
-                            <p class="aw-muted">Cei care nu au completat declarația o pot face acum, scanând codul QR de la recepție.</p>
+                            <p class="aw-muted">Cei care nu au completat declarația o pot face acum: pe tabletă, cu un cod de 6 cifre, sau scanând codul QR de la recepție.</p>
+                        @endif
+                        @if ($activeCodes->isNotEmpty())
+                            <div class="aw-row" style="gap:.5rem;margin-top:.5rem;flex-wrap:wrap" aria-label="Coduri pentru tabletă nefolosite">
+                                @foreach ($activeCodes as $waiverCode)
+                                    <span class="aw-badge aw-badge--info" style="font-size:1.1rem;letter-spacing:.08em;font-variant-numeric:tabular-nums">@if ($waiverCode->waiver_card_id){{ $waiverCode->card?->label() }}@else J{{ $waiverCode->position }} · {{ $waiverCode->formatted() }}@endif</span>
+                                @endforeach
+                                @if ($activeCodes->whereNull('waiver_card_id')->isNotEmpty())<a class="aw-link" href="{{ $codesPrintUrl($found) }}" target="_blank" rel="noopener">tipărește bilețelele</a>@endif
+                                @if ($activeCodes->whereNotNull('waiver_card_id')->isNotEmpty())<button type="button" class="aw-link" wire:click="releaseCards({{ $found->id }})">ia înapoi cardurile nefolosite</button>@endif
+                            </div>
+                        @endif
+                        @if ($canCodes && $found->waivers_count < $found->participants)
+                            <form wire:submit="assignCard" class="aw-row" style="gap:.5rem;margin-top:.75rem">
+                                <label for="card-input" class="aw-muted">Dai un card anume? Scanează-i codul de bare:</label>
+                                <input id="card-input" type="text" wire:model="cardInput" autocomplete="off" placeholder="cod de bare sau AWC-007" class="aw-select" style="min-width:12rem">
+                                <x-filament::button type="submit" size="sm" color="gray">Dă cardul</x-filament::button>
+                            </form>
                         @endif
                         @if ($found->starts_at && \App\Support\LocalTime::localDate($found->starts_at) !== \App\Support\LocalTime::now()->toDateString())
                             <p class="aw-badge aw-badge--warn">Atenție: rezervarea nu este pentru azi.</p>
@@ -35,6 +51,9 @@
                     <div class="aw-row">
                         @if ($found->canTransitionTo('checked_in'))
                             <x-filament::button size="lg" color="success" wire:click="checkIn({{ $found->id }})" icon="heroicon-o-check">Confirmă sosirea</x-filament::button>
+                        @endif
+                        @if ($canCodes && $found->waivers_count < $found->participants)
+                            <x-filament::button size="lg" color="gray" wire:click="issueCodes({{ $found->id }})" icon="heroicon-o-device-tablet">Coduri pentru tabletă</x-filament::button>
                         @endif
                         @if ($canSessions && $found->starts_at)
                             <x-filament::button size="lg" color="primary" wire:click="openSession({{ $found->id }})" icon="heroicon-o-play-circle">Participanți și sesiune de joc</x-filament::button>
@@ -62,6 +81,7 @@
                                 <td>{{ $b->package?->getTranslation('name', 'ro') }}</td>
                                 <td><span class="aw-badge {{ $b->status === 'checked_in' ? 'aw-badge--info' : ($b->status === 'confirmed' ? 'aw-badge--ok' : 'aw-badge--warn') }}">{{ $b->statusLabel() }}</span></td>
                                 <td style="display:flex;gap:.5rem;flex-wrap:wrap">@if ($b->canTransitionTo('checked_in'))<x-filament::button size="sm" wire:click="checkIn({{ $b->id }})">Check-in</x-filament::button>@endif
+                                    @if ($canCodes && $b->waivers_count < $b->participants)<x-filament::button size="sm" color="gray" wire:click="issueCodes({{ $b->id }})" icon="heroicon-o-device-tablet">Coduri</x-filament::button>@endif
                                     @if ($canSessions)<x-filament::button size="sm" color="gray" wire:click="openSession({{ $b->id }})">Sesiune</x-filament::button>@endif</td>
                             </tr>
                         @endforeach

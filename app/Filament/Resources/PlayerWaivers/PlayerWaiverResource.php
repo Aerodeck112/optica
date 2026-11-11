@@ -60,7 +60,9 @@ class PlayerWaiverResource extends Resource
                 TextEntry::make('is_minor')->label('Minor')->badge()->formatStateUsing(fn ($state) => $state ? 'Da — semnează părintele' : 'Nu')->color(fn ($state) => $state ? 'warning' : 'gray'),
                 TextEntry::make('booking.code')->label('Rezervare')->placeholder('Fără rezervare (recepție)'),
                 TextEntry::make('signed_at')->label('Semnată')->dateTime('d.m.Y H:i', config('aw.timezone')),
-                TextEntry::make('source')->label('Unde')->formatStateUsing(fn ($state) => $state === 'reception' ? 'La recepție (cod QR)' : 'Online (link rezervare)'),
+                TextEntry::make('source')->label('Unde')->formatStateUsing(fn ($state) => match ($state) {
+                    'reception' => 'La recepție (cod QR)', 'tablet' => 'Pe tableta de la recepție (cod de 6 cifre)', default => 'Online (link rezervare)'
+                }),
                 TextEntry::make('verified_at')->label('Verificată la recepție')->dateTime('d.m.Y H:i', config('aw.timezone'))->placeholder('Neverificată'),
                 TextEntry::make('verifier.name')->label('Verificată de')->placeholder('—'),
             ]),

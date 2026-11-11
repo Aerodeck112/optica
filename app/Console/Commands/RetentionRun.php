@@ -27,6 +27,8 @@ class RetentionRun extends Command
         $report['audit_logs'] = $this->purge(DB::table('audit_logs')->where('created_at', '<', now()->subDays($settings->int('retention.audit_days', 730))), $dry);
         $report['ai_conversations'] = $this->purge(DB::table('ai_conversations')->where('last_activity_at', '<', now()->subDays($settings->int('ai.retention_days', 30))), $dry);
         $report['player_waivers'] = $this->purge(DB::table('player_waivers')->where('signed_at', '<', now()->subMonths($settings->int('retention.waivers_months', 36))), $dry);
+        // codurile pentru tabletă nu mai au rost după expirare; dovada semnării rămâne în declarație
+        $report['waiver_codes'] = $this->purge(DB::table('waiver_codes')->where('expires_at', '<', now()->subDays(30)), $dry);
         $report['slot_holds'] = $this->purge(DB::table('slot_holds')->where('expires_at', '<', now()->subDay()), $dry);
         $report['login_tokens'] = $this->purge(DB::table('customer_login_tokens')->where('expires_at', '<', now()->subDay()), $dry);
         $report['webhook_events'] = $this->purge(DB::table('webhook_events')->where('created_at', '<', now()->subDays(90))->where('status', 'processed'), $dry);

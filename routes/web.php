@@ -23,6 +23,7 @@ use App\Http\Controllers\Site\SeoController;
 use App\Http\Controllers\Site\UnsubscribeController;
 use App\Http\Controllers\Site\VoucherOrderController;
 use App\Http\Controllers\Site\WaiverController;
+use App\Http\Controllers\Site\WaiverTabletController;
 use App\Modules\Marketing\Services\ShortUnsubscribeLink;
 use App\Support\Locales;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,7 @@ Route::middleware('auth:customer')->group(function () {
 Route::get('/admin-anaf/authorize', [AnafOAuthController::class, 'authorize'])->middleware('auth')->name('admin.anaf.authorize');
 Route::get('/admin-anaf/callback', [AnafOAuthController::class, 'callback'])->middleware('auth')->name('admin.anaf.callback');
 Route::get('/admin-print/waivers/qr', [WaiverPrintController::class, 'qr'])->middleware('auth')->name('admin.waivers.qr');
+Route::get('/admin-print/waivers/codes', [WaiverPrintController::class, 'codes'])->middleware('auth')->name('admin.waivers.codes');
 Route::get('/admin-print/waivers/{waiver}', [WaiverPrintController::class, 'waiver'])->middleware('auth')->name('admin.waivers.print');
 Route::get('/admin-print/vouchers/{voucher}', VoucherPrintController::class)->middleware('auth')->name('admin.vouchers.print');
 Route::get('/admin-print/invoices/{invoice}/pdf', [FinanceDocumentController::class, 'invoicePdf'])->middleware('auth')->name('admin.invoices.pdf');
@@ -118,6 +120,11 @@ foreach (Locales::enabled() as $locale) {
 
             Route::get($segment('legal').'/{slug}', [LegalController::class, 'show'])->name('legal.show');
 
+            Route::get($segment('waiver').'/'.$segment('tablet'), [WaiverTabletController::class, 'keypad'])->name('waiver.tablet');
+            Route::post($segment('waiver').'/'.$segment('tablet'), [WaiverTabletController::class, 'enter'])->middleware('throttle:waiver-code')->name('waiver.tablet.enter');
+            Route::get($segment('waiver').'/'.$segment('tablet').'/'.$segment('tablet_form'), [WaiverTabletController::class, 'form'])->name('waiver.tablet.form');
+            Route::post($segment('waiver').'/'.$segment('tablet').'/'.$segment('tablet_form'), [WaiverTabletController::class, 'sign'])->middleware('throttle:waiver-tablet')->name('waiver.tablet.sign');
+            Route::post($segment('waiver').'/'.$segment('tablet').'/reset', [WaiverTabletController::class, 'cancel'])->name('waiver.tablet.cancel');
             Route::get($segment('waiver'), [WaiverController::class, 'show'])->name('waiver.show');
             Route::post($segment('waiver'), [WaiverController::class, 'store'])->middleware('throttle:public-forms')->name('waiver.store');
             Route::get($segment('waiver').'/{code}', [WaiverController::class, 'show'])->middleware('signed')->where('code', '[A-Z0-9]{6,20}')->name('waiver.booking');

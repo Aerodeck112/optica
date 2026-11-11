@@ -9,5 +9,7 @@ return [
     'account' => 'fiok',
     'voucher_order' => 'utalvany/rendeles',
     'waiver' => 'nyilatkozat',
+    'tablet' => 'tablet',
+    'tablet_form' => 'alairas',
     'legal' => 'jogi',
 ];

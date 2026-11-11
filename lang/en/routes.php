@@ -9,5 +9,7 @@ return [
     'account' => 'account',
     'voucher_order' => 'voucher/order',
     'waiver' => 'player-agreement',
+    'tablet' => 'tablet',
+    'tablet_form' => 'sign',
     'legal' => 'legal',
 ];

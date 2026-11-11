@@ -7,6 +7,7 @@ use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\GameSessions\GameSessionResource;
 use App\Filament\Resources\Invoices\InvoiceActions;
 use App\Filament\Resources\Payments\PaymentActions;
+use App\Filament\Resources\PlayerWaivers\WaiverCodeActions;
 use App\Modules\Arena\Services\GameSessionService;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -31,6 +32,8 @@ class ViewBooking extends ViewRecord
             Action::make('gameSession')->label('Sesiune de joc')->icon('heroicon-o-play-circle')->color('gray')
                 ->visible(fn () => auth()->user()?->can('sessions.operate') && $this->getRecord()->starts_at && in_array($this->getRecord()->status, ['confirmed', 'checked_in', 'completed'], true))
                 ->action(fn () => redirect(GameSessionResource::getUrl('view', ['record' => app(GameSessionService::class)->forBooking($this->getRecord(), auth()->id())]))),
+            WaiverCodeActions::make(fn () => $this->getRecord())
+                ->visible(fn () => WaiverCodeActions::canIssue() && ! in_array($this->getRecord()->status, ['cancelled', 'no_show'], true)),
             PaymentActions::record()->after($refresh),
             ...array_slice($actions, 0, 4),
             ActionGroup::make([...array_slice($actions, 4), InvoiceActions::fromBooking()])->label('Mai multe')->button()->color('gray')->icon('heroicon-o-ellipsis-vertical'),

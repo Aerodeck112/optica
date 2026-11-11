@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\GameSessions\Pages;
 
 use App\Filament\Resources\GameSessions\GameSessionResource;
+use App\Filament\Resources\PlayerWaivers\WaiverCodeActions;
 use App\Modules\Arena\Models\GameSession;
 use App\Modules\Arena\Models\SessionParticipant;
 use App\Modules\Arena\Services\GameSessionService;
@@ -51,6 +52,8 @@ class ViewGameSession extends ViewRecord
                 ->schema([TextInput::make('planned_minutes')->label('Durată planificată (minute)')->numeric()->minValue(5)->maxValue(240)->required()])
                 ->action(fn (array $data) => $this->run(fn (GameSession $s) => app(GameSessionService::class)->adjustDuration($s, (int) $data['planned_minutes'], auth()->id()), 'Durata a fost actualizată.')),
             $this->resultsAction(),
+            WaiverCodeActions::make(fn () => $this->getRecord()->booking, fn () => $this->getRecord())
+                ->visible(fn () => WaiverCodeActions::canIssue() && ! in_array($this->getRecord()->status, ['completed', 'cancelled'], true)),
             ActionGroup::make([
                 EditAction::make()->label('Detalii (joc, arenă, test)'),
                 Action::make('cancel')->label('Anulează sesiunea')->icon('heroicon-o-x-circle')->color('danger')

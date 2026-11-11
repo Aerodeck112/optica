@@ -10,5 +10,7 @@ return [
     'account' => 'cont',
     'voucher_order' => 'voucher/comanda',
     'waiver' => 'declaratie',
+    'tablet' => 'tableta',
+    'tablet_form' => 'semnare',
     'legal' => 'legal',
 ];

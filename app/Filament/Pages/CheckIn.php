@@ -5,11 +5,14 @@ namespace App\Filament\Pages;
 use App\Filament\Resources\Bookings\BookingResource;
 use App\Filament\Resources\GameSessions\GameSessionResource;
 use App\Filament\Resources\PlayerWaivers\PlayerWaiverResource;
+use App\Filament\Resources\PlayerWaivers\WaiverCodeActions;
 use App\Modules\Arena\Services\GameSessionService;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
 use App\Modules\Booking\Services\CheckinCode;
+use App\Modules\Booking\Services\WaiverCodeException;
+use App\Modules\Booking\Services\WaiverCodeService;
 use App\Support\LocalTime;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -37,6 +40,8 @@ class CheckIn extends Page
     public ?int $foundId = null;
 
     public ?string $message = null;
+
+    public string $cardInput = '';
 
     public static function canAccess(): bool
     {
@@ -83,6 +88,49 @@ class CheckIn extends Page
         return redirect(GameSessionResource::getUrl('view', ['record' => $session]));
     }
 
+    /** Coduri de 6 cifre pentru tabletă: câte unul pentru fiecare participant care nu a semnat încă. */
+    public function issueCodes(int $id): void
+    {
+        abort_unless(WaiverCodeActions::canIssue(), 403);
+        $booking = Booking::query()->findOrFail($id);
+        $service = app(WaiverCodeService::class);
+        $count = $service->missing($booking);
+        if ($count === 0) {
+            Notification::make()->info()->title('Toți participanții au deja declarație sau cod. Codurile active apar în fișa rezervării.')->send();
+            $this->foundId = $booking->id;
+
+            return;
+        }
+        WaiverCodeActions::announce($service->issue($booking, $count, null, auth()->id(), useCards: true), $booking);
+        $this->foundId = $booking->id;
+    }
+
+    /** Recepția scanează codul de bare de pe un card și îl dă grupului găsit. */
+    public function assignCard(): void
+    {
+        abort_unless(WaiverCodeActions::canIssue() && $this->foundId, 403);
+        $booking = Booking::query()->findOrFail($this->foundId);
+        try {
+            $code = app(WaiverCodeService::class)->assignCard($this->cardInput, $booking, null, auth()->id());
+            Notification::make()->success()->title("{$code->card?->label()} este acum valabil pentru {$booking->code}.")->send();
+        } catch (WaiverCodeException $e) {
+            Notification::make()->danger()->title($e->getMessage())->send();
+        }
+        $this->cardInput = '';
+    }
+
+    /** Cardurile nefolosite ale grupului se iau înapoi (codul lor nu mai merge până la următoarea dare). */
+    public function releaseCards(int $id): void
+    {
+        abort_unless(WaiverCodeActions::canIssue(), 403);
+        $service = app(WaiverCodeService::class);
+        $booking = Booking::query()->findOrFail($id);
+        $cards = $service->active($booking)->whereNotNull('waiver_card_id');
+        $cards->each(fn ($code) => $service->revoke($code, auth()->id()));
+        Notification::make()->success()->title($cards->isEmpty() ? 'Grupul nu are carduri nefolosite.' : 'Cardurile au revenit la recepție: '.$cards->count().'.')->send();
+        $this->foundId = $booking->id;
+    }
+
     protected function getViewData(): array
     {
         $today = LocalTime::now()->toDateString();
@@ -94,6 +142,9 @@ class CheckIn extends Page
             // datele din declarații le vede doar cine are acces; restul echipei vede doar numărul
             'waiversUrl' => auth()->user()?->can('waivers.view') ? fn (Booking $b) => PlayerWaiverResource::getUrl('index', ['tableSearch' => $b->code]) : null,
             'canSessions' => (bool) auth()->user()?->can('sessions.operate'),
+            'canCodes' => WaiverCodeActions::canIssue(),
+            'activeCodes' => $this->foundId ? app(WaiverCodeService::class)->active(Booking::query()->find($this->foundId))->load('card') : collect(),
+            'codesPrintUrl' => fn (Booking $b) => WaiverCodeActions::printUrl($b),
         ];
     }
 }
