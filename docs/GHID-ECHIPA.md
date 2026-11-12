@@ -51,6 +51,15 @@ Fiecare jucător (sau părintele, pentru un minor) semnează declarația **înai
 * Cardurile nefolosite ale unui grup se iau înapoi cu „ia înapoi cardurile nefolosite” (la check-in). Un card pierdut se scoate din uz
   din **Declarații → Carduri fizice** (codul lui nu mai funcționează); acolo vedeți și la ce grup se află fiecare card.
 
+### Oferte „pentru fiecare participant” (de ex. WELCOME13)
+* O singură persoană rezervă pe site pentru tot grupul; fiecare participant primește sesiunea gratuită.
+* La sosire, **fiecare participant semnează declarația** (pe tabletă sau pe telefon) — așa își confirmă sesiunea gratuită.
+  La check-in apare „Oferta … acoperă N participanți: X/N confirmați”.
+* Oferta e valabilă **o singură dată de persoană**. Dacă cineva a mai beneficiat (aceeași persoană, recunoscută după nume și
+  data nașterii din declarație), check-in-ul arată un avertisment roșu cu rezervarea anterioară: pentru acea persoană se
+  încasează tariful obișnuit.
+* Opțiunea se pornește/oprește din **Coduri de reducere → cod → „Gratuit pentru fiecare participant din rezervare”**.
+
 ### Jucători, sesiuni de joc și ecranele din arenă
 * Cine rezervă nu este automat jucător. La sosire: **Check-in → Participanți și sesiune de joc** → **Adaugă din declarații**
   (sau jucători existenți / noi). Fiecare jucător are nevoie de **nickname** înainte de pornire; cei „de verificat” se aprobă.

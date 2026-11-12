@@ -336,7 +336,7 @@ export function initBooking(root) {
       promoStatus.classList.add('field__error');
       promoInput.setAttribute('aria-invalid', 'true');
     } else if (q.discount) {
-      promoStatus.textContent = `${q.discount.label}: ${q.discount.amount}`;
+      promoStatus.textContent = `${q.discount.label}: ${q.discount.amount}${q.promo_note ? ` — ${q.promo_note}` : ''}`;
       promoStatus.classList.remove('field__error');
       promoInput.removeAttribute('aria-invalid');
     }

@@ -76,10 +76,12 @@ class BookingApiController extends Controller
         $quote = $this->pricing->quote($package, $startsAt, $participants, array_map('intval', $data['addons'] ?? []));
         $locale = app()->getLocale();
         $promoError = null;
+        $promoNote = null;
         if (filled($data['promo_code'] ?? null)) {
             try {
                 $evaluated = $this->promos->evaluate($data['promo_code'], $package, $startsAt, $participants, $quote);
                 $quote = $quote->withDiscount($evaluated['discount_minor'], $this->promos->label($evaluated['promo'], $evaluated['discount_minor']));
+                $promoNote = $evaluated['promo']->per_participant ? __('site.promo.per_participant_note') : null;
             } catch (BookingException $e) {
                 $promoError = $e->getMessage();
             }
@@ -95,6 +97,7 @@ class BookingApiController extends Controller
             'lines' => $quote->priced ? $lines : [],
             'discount' => $quote->discountMinor > 0 ? ['label' => $quote->discountLabel, 'amount' => '−'.Money::format($quote->discountMinor)] : null,
             'promo_error' => $promoError,
+            'promo_note' => $promoNote,
             'total' => $quote->priced ? Money::format($quote->dueMinor()) : null,
             'deposit' => $quote->priced && $quote->depositMinor ? Money::format($quote->depositMinor) : null,
             'note' => $package->supportsInstantBooking() ? null : __('site.booking.request_mode'),

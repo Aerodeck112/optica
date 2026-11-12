@@ -3,6 +3,7 @@
 namespace App\Modules\Marketing\Services;
 
 use App\Modules\Booking\Models\Booking;
+use App\Modules\Booking\Models\PlayerWaiver;
 use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\Quote;
 use App\Modules\Catalog\Models\Package;
@@ -11,6 +12,7 @@ use App\Modules\Marketing\Models\PromoCodeRedemption;
 use App\Support\LocalTime;
 use App\Support\Money;
 use Carbon\CarbonInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Verifică și aplică codurile de reducere. Reducerea se calculează doar din prețul pachetului (nu din opțiuni)
@@ -81,12 +83,44 @@ class PromoCodeService
     public function label(PromoCode $promo, ?int $discountMinor = null): string
     {
         $what = match ($promo->discount_type) {
-            'free_participants' => trans_choice('site.promo.free_sessions', $promo->discount_value, ['count' => $promo->discount_value]),
+            'free_participants' => $promo->per_participant
+                ? __('site.promo.free_each')
+                : trans_choice('site.promo.free_sessions', $promo->discount_value, ['count' => $promo->discount_value]),
             'percent' => '−'.$promo->discount_value.'%',
             default => '−'.Money::format($discountMinor ?? $promo->discount_value),
         };
 
         return __('site.promo.line', ['code' => $promo->code, 'what' => $what]);
+    }
+
+    /**
+     * La o ofertă „pentru fiecare participant”, fiecare persoană beneficiază o singură dată. Persoana se recunoaște
+     * după declarația semnată la locație (nume + data nașterii); aici apar cei care au mai beneficiat într-o rezervare
+     * anterioară, ca recepția să încaseze tariful obișnuit pentru ei.
+     *
+     * @return Collection<int, array{name: string, booking: string, date: string}>
+     */
+    public function repeatBeneficiaries(Booking $booking): Collection
+    {
+        $promo = $booking->promoCode;
+        if (! $promo?->per_participant || ! $booking->starts_at) {
+            return collect();
+        }
+        $own = PlayerWaiver::query()->where('booking_id', $booking->id)->whereNotNull('player_id')->get(['player_id', 'participant_name'])->keyBy('player_id');
+        if ($own->isEmpty()) {
+            return collect();
+        }
+
+        return PlayerWaiver::query()->with('booking')
+            ->whereIn('player_id', $own->keys())->where('booking_id', '!=', $booking->id)
+            ->whereHas('booking', fn ($q) => $q->where('promo_code_id', $promo->id)->where('starts_at', '<', $booking->starts_at)
+                ->whereNotIn('status', [...PromoCode::RELEASED_STATUSES, 'no_show']))
+            ->get()->unique('player_id')->values()
+            ->map(fn (PlayerWaiver $earlier) => [
+                'name' => (string) $own[$earlier->player_id]->participant_name,
+                'booking' => (string) $earlier->booking->code,
+                'date' => LocalTime::format($earlier->booking->starts_at, 'd.m.Y, H:i'),
+            ]);
     }
 
     public function sessionPeriod(PromoCode $promo): string
@@ -116,7 +150,7 @@ class PromoCodeService
 
         return match ($promo->discount_type) {
             'free_participants' => $package->pricing_model === 'per_person' && $packageLines
-                ? (int) $packageLines[0]['unit_price_minor'] * min($participants, max(1, $promo->discount_value))
+                ? (int) $packageLines[0]['unit_price_minor'] * ($promo->per_participant ? $participants : min($participants, max(1, $promo->discount_value)))
                 : 0,
             'percent' => (int) round($packageTotal * min(100, $promo->discount_value) / 100),
             'fixed' => min($packageTotal, $promo->discount_value),

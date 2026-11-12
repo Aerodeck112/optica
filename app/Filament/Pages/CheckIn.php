@@ -13,6 +13,7 @@ use App\Modules\Booking\Services\BookingService;
 use App\Modules\Booking\Services\CheckinCode;
 use App\Modules\Booking\Services\WaiverCodeException;
 use App\Modules\Booking\Services\WaiverCodeService;
+use App\Modules\Marketing\Services\PromoCodeService;
 use App\Support\LocalTime;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -136,13 +137,14 @@ class CheckIn extends Page
         $today = LocalTime::now()->toDateString();
 
         return [
-            'found' => $this->foundId ? Booking::query()->with('package')->withCount('waivers')->find($this->foundId) : null,
+            'found' => $this->foundId ? Booking::query()->with(['package', 'promoCode'])->withCount('waivers')->find($this->foundId) : null,
             'arrivals' => Booking::query()->with('package')->withCount('waivers')->onLocalDate($today)->whereIn('status', ['pending', 'confirmed', 'checked_in'])->orderBy('starts_at')->get(),
             'bookingUrl' => fn (Booking $b) => BookingResource::getUrl('view', ['record' => $b]),
             // datele din declarații le vede doar cine are acces; restul echipei vede doar numărul
             'waiversUrl' => auth()->user()?->can('waivers.view') ? fn (Booking $b) => PlayerWaiverResource::getUrl('index', ['tableSearch' => $b->code]) : null,
             'canSessions' => (bool) auth()->user()?->can('sessions.operate'),
             'canCodes' => WaiverCodeActions::canIssue(),
+            'offerRepeats' => $this->foundId ? app(PromoCodeService::class)->repeatBeneficiaries(Booking::query()->with('promoCode')->find($this->foundId)) : collect(),
             'activeCodes' => $this->foundId ? app(WaiverCodeService::class)->active(Booking::query()->find($this->foundId))->load('card') : collect(),
             'codesPrintUrl' => fn (Booking $b) => WaiverCodeActions::printUrl($b),
         ];

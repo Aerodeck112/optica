@@ -37,6 +37,7 @@ class PromoCode extends Model
             'session_from' => 'immutable_date',
             'session_until' => 'immutable_date',
             'is_active' => 'boolean',
+            'per_participant' => 'boolean',
             'discount_value' => 'integer',
             'max_redemptions' => 'integer',
             'max_per_customer' => 'integer',

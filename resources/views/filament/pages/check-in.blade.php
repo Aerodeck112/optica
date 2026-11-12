@@ -25,6 +25,16 @@
                            <span class="aw-badge {{ $found->payment_status === 'paid' ? 'aw-badge--ok' : 'aw-badge--warn' }}">{{ $found->paymentStatusLabel() }} · rest {{ money($found->balanceMinor()) }}</span>
                            <span class="aw-badge {{ $found->waivers_count >= $found->participants ? 'aw-badge--ok' : 'aw-badge--warn' }}">Declarații: {{ $found->waivers_count }}/{{ $found->participants }}</span>
                            @if ($waiversUrl)<a class="aw-link" href="{{ $waiversUrl($found) }}">vezi declarațiile</a>@endif</p>
+                        @if ($found->promoCode?->per_participant)
+                            <p class="aw-badge {{ $found->waivers_count >= $found->participants ? 'aw-badge--ok' : 'aw-badge--warn' }}" style="font-size:.9rem;margin-top:.35rem">
+                                Oferta {{ $found->promoCode->code }} acoperă {{ $found->participants }} {{ $found->participants === 1 ? 'participant' : 'participanți' }}: fiecare o confirmă semnând declarația ({{ $found->waivers_count }}/{{ $found->participants }} confirmați).
+                            </p>
+                            @foreach ($offerRepeats as $repeat)
+                                <p class="aw-badge aw-badge--bad" role="alert" style="font-size:.9rem;margin-top:.35rem">
+                                    {{ $repeat['name'] }} a mai beneficiat de oferta {{ $found->promoCode->code }} (rezervarea {{ $repeat['booking'] }}, {{ $repeat['date'] }}): pentru această persoană se încasează tariful obișnuit.
+                                </p>
+                            @endforeach
+                        @endif
                         @if ($found->waivers_count < $found->participants)
                             <p class="aw-muted">Cei care nu au completat declarația o pot face acum: pe tabletă, cu un cod de 6 cifre, sau scanând codul QR de la recepție.</p>
                         @endif

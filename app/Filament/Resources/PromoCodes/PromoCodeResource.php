@@ -73,6 +73,9 @@ class PromoCodeResource extends Resource
                     Select::make('package_ids')->label('Doar pentru pachetele')->multiple()->placeholder('Toate pachetele')
                         ->options(fn () => Package::query()->orderBy('sort')->get()->mapWithKeys(fn (Package $p) => [$p->id => $p->getTranslation('name', 'ro')])),
                 ]),
+                Toggle::make('per_participant')->label('Gratuit pentru fiecare participant din rezervare')
+                    ->visible(fn (Get $get) => $get('discount_type') === 'free_participants')
+                    ->helperText('O persoană rezervă pentru tot grupul și nimeni nu plătește pachetul (valoarea de mai sus nu mai contează). Fiecare persoană beneficiază o singură dată: la check-in, recepția vede cine a mai folosit oferta, după declarația semnată.'),
             ]),
             Section::make('Perioade și limite')->schema([
                 Grid::make(4)->schema([
@@ -95,7 +98,7 @@ class PromoCodeResource extends Resource
             ->columns([
                 TextColumn::make('code')->label('Cod')->weight('bold')->copyable()->searchable()->description(fn (PromoCode $record) => $record->name),
                 TextColumn::make('discount_type')->label('Reducere')->state(fn (PromoCode $record) => match ($record->discount_type) {
-                    'free_participants' => $record->discount_value.' '.($record->discount_value === 1 ? 'persoană gratuită' : 'persoane gratuite'),
+                    'free_participants' => $record->per_participant ? 'gratuit pentru fiecare participant' : $record->discount_value.' '.($record->discount_value === 1 ? 'persoană gratuită' : 'persoane gratuite'),
                     'percent' => $record->discount_value.'%',
                     default => Money::format($record->discount_value),
                 }),

@@ -31,6 +31,9 @@
                 <div class="stack">
                     <p><strong>{{ __('site.waiver.booking', ['code' => $booking->code, 'date' => $booking->starts_at ? \App\Support\LocalTime::format($booking->starts_at, 'l, j F Y, H:i') : '—']) }}</strong></p>
                     <p>{{ __('site.waiver.progress', ['signed' => $progress['signed'], 'expected' => $progress['expected']]) }}</p>
+                    @if ($booking->promoCode?->per_participant)
+                        <p>{{ __('site.waiver.offer_note', ['code' => $booking->promoCode->code]) }}</p>
+                    @endif
                     @unless ($tablet ?? null)
                     <p>
                         <button type="button" class="btn btn--small btn--ghost" data-copy-url="{{ url()->full() }}">{{ __('site.waiver.copy') }}</button>

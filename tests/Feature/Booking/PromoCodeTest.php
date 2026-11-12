@@ -9,10 +9,13 @@ use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Services\BookingData;
 use App\Modules\Booking\Services\BookingException;
 use App\Modules\Booking\Services\BookingService;
+use App\Modules\Booking\Services\PlayerWaiverService;
 use App\Modules\Catalog\Models\Package;
+use App\Modules\Cms\Models\LegalDocument;
 use App\Modules\Cms\Models\Page;
 use App\Modules\Finance\Services\InvoiceService;
 use App\Modules\Marketing\Models\PromoCode;
+use App\Modules\Marketing\Services\PromoCodeService;
 use App\Support\LocalTime;
 use Carbon\CarbonImmutable;
 use Database\Seeders\BaseDataSeeder;
@@ -93,6 +96,33 @@ class PromoCodeTest extends TestCase
 
         app(BookingService::class)->cancel($first, 'Test', 'user');
         $this->assertSame(11000, $this->book('2026-11-14')->discount_minor);
+    }
+
+    public function test_a_per_participant_code_frees_the_whole_group_and_reception_sees_who_already_benefited(): void
+    {
+        PromoCode::query()->update(['per_participant' => true]);
+        LegalDocument::query()->where('type', 'player_waiver')->update(['effective_at' => '2026-11-01 00:00:00']);
+        $quote = ['package_id' => $this->session->id, 'participants' => 3, 'starts_at' => LocalTime::fromLocal('2026-11-13', '15:00')->toIso8601String(), 'promo_code' => 'WELCOME13'];
+        $this->postJson('/api/booking/quote', $quote)->assertOk()->assertJsonPath('total', '0 lei')
+            ->assertJsonPath('discount.label', 'Cod WELCOME13 — sesiune gratuită pentru fiecare participant')
+            ->assertJsonPath('promo_note', __('site.promo.per_participant_note'));
+
+        $first = $this->book('2026-11-13', 3);
+        $this->assertSame([33000, 0], [$first->discount_minor, $first->balanceMinor()]);
+
+        // aceeași persoană (nume + data nașterii) vine din nou, rezervată de altcineva
+        $second = $this->book('2026-11-14', 2, email: 'prieten@example.test');
+        $sign = fn (Booking $booking, string $name, string $birth) => app(PlayerWaiverService::class)->sign([
+            'participant_name' => $name, 'birth_date' => $birth, 'signer_name' => $name, 'signature' => 'data:image/png;base64,x',
+        ], $booking);
+        $sign($first, 'Ion Testescu', '1990-05-12');
+        $sign($second, 'Ion Testescu', '1990-05-12');
+        $sign($second, 'Ana Testescu', '1992-01-20');
+
+        $service = app(PromoCodeService::class);
+        $this->assertSame([], $service->repeatBeneficiaries($first->refresh())->all());
+        $this->assertSame([['name' => 'Ion Testescu', 'booking' => $first->code, 'date' => '13.11.2026, 15:00']], $service->repeatBeneficiaries($second->refresh())->all());
+        $this->get($second->waiverUrl())->assertSee(__('site.waiver.offer_note', ['code' => 'WELCOME13']));
     }
 
     public function test_the_code_is_refused_outside_its_package_dates_and_period(): void

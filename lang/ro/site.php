@@ -60,6 +60,7 @@ return [
         'busy' => 'Se salvează…',
         'signed' => 'Mulțumim! Declarația pentru :name a fost înregistrată.',
         'next' => 'Poți completa acum declarația pentru următorul participant.',
+        'offer_note' => 'Pentru această rezervare se aplică oferta :code: semnând declarația, îți confirmi sesiunea gratuită. Oferta este valabilă o singură dată pentru fiecare persoană.',
         'tablet' => [
             'title' => 'Declarația de participare',
             'lede' => 'Tastează codul de 6 cifre primit la recepție.',
@@ -166,7 +167,7 @@ return [
         'offer' => 'Oferta de deschidere: prima ta sesiune VR de 60 de minute e gratuită în weekendul 13–15 noiembrie.',
         'cta' => 'Rezervă cu codul',
         'later' => 'Mai târziu',
-        'terms' => 'O sesiune gratuită de persoană, o dată pentru fiecare e-mail sau telefon. Valabil până pe :date.',
+        'terms' => 'Rezervi pentru tot grupul: fiecare participant are sesiunea gratuită, o singură dată de persoană, confirmată la sosire prin declarație. Valabil până pe :date.',
     ],
     'promo' => [
         'field' => 'Cod de reducere',
@@ -177,6 +178,8 @@ return [
         'exhausted' => 'Locurile pentru această ofertă s-au epuizat.',
         'already_used' => 'Codul a fost deja folosit pentru acest e-mail sau telefon.',
         'free_sessions' => '{1} o sesiune gratuită|[2,*] :count sesiuni gratuite',
+        'free_each' => 'sesiune gratuită pentru fiecare participant',
+        'per_participant_note' => 'Fiecare participant primește sesiunea gratuită. La sosire, fiecare o confirmă semnând declarația; oferta e valabilă o singură dată pentru fiecare persoană.',
         'line' => 'Cod :code — :what',
         'until' => 'până pe :date',
         'from' => 'începând cu :date',

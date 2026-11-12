@@ -61,6 +61,7 @@ return [
         'busy' => 'Mentés…',
         'signed' => 'Köszönjük! :name nyilatkozatát rögzítettük.',
         'next' => 'Most kitöltheted a következő játékos nyilatkozatát.',
+        'offer_note' => 'Erre a foglalásra a(z) :code ajánlat érvényes: a nyilatkozat aláírásával megerősíted az ingyenes játékodat. Az ajánlat személyenként egyszer érvényes.',
         'tablet' => [
             'title' => 'Részvételi nyilatkozat',
             'lede' => 'Írd be a recepción kapott 6 jegyű kódot.',
@@ -167,7 +168,7 @@ return [
         'offer' => 'Nyitási ajánlat: az első 60 perces VR-játékod ingyenes a nyitóhétvégén, november 13–15.',
         'cta' => 'Foglalás a kóddal',
         'later' => 'Később',
-        'terms' => 'Személyenként egy ingyenes játék, e-mail-címenként vagy telefonszámonként egyszer. Érvényes: :date-ig.',
+        'terms' => 'Foglalj az egész csapatnak: minden résztvevő ingyen játszik, személyenként egyszer, érkezéskor a nyilatkozat aláírásával megerősítve. Érvényes: :date-ig.',
     ],
     'promo' => [
         'field' => 'Kedvezménykód',
@@ -178,6 +179,8 @@ return [
         'exhausted' => 'Az ajánlat helyei elfogytak.',
         'already_used' => 'A kódot ehhez az e-mail-címhez vagy telefonszámhoz már felhasználták.',
         'free_sessions' => '{1} egy ingyenes játék|[2,*] :count ingyenes játék',
+        'free_each' => 'ingyenes játék minden résztvevőnek',
+        'per_participant_note' => 'Minden résztvevő ingyenes játékot kap. Érkezéskor mindenki a nyilatkozat aláírásával erősíti meg; az ajánlat személyenként egyszer érvényes.',
         'line' => ':code kód — :what',
         'until' => ':date-ig',
         'from' => ':date-tól',

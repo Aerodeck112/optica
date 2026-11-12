@@ -61,6 +61,7 @@ return [
         'busy' => 'Saving…',
         'signed' => 'Thank you! The agreement for :name has been recorded.',
         'next' => 'You can now complete the agreement for the next player.',
+        'offer_note' => 'The :code offer applies to this booking: by signing the agreement you confirm your free session. The offer is valid once per person.',
         'tablet' => [
             'title' => 'Player agreement',
             'lede' => 'Enter the 6-digit code you received at the front desk.',
@@ -167,7 +168,7 @@ return [
         'offer' => 'Opening offer: your first 60-minute VR session is free over the opening weekend, 13–15 November.',
         'cta' => 'Book with the code',
         'later' => 'Maybe later',
-        'terms' => 'One free session per person, once per e-mail address or phone number. Valid until :date.',
+        'terms' => 'Book for the whole group: every participant gets the free session, once per person, confirmed on arrival by signing the agreement. Valid until :date.',
     ],
     'promo' => [
         'field' => 'Discount code',
@@ -178,6 +179,8 @@ return [
         'exhausted' => 'This offer is fully booked.',
         'already_used' => 'This code has already been used for this e-mail address or phone number.',
         'free_sessions' => '{1} one free session|[2,*] :count free sessions',
+        'free_each' => 'free session for every participant',
+        'per_participant_note' => 'Every participant gets the free session. On arrival, each person confirms it by signing the agreement; the offer is valid once per person.',
         'line' => 'Code :code — :what',
         'until' => 'until :date',
         'from' => 'from :date',
