@@ -44,6 +44,9 @@ Fiecare jucător (sau părintele, pentru un minor) semnează declarația **înai
   **cardurile fizice** libere (AWC-001 … AWC-020); dacă nu ajung, restul primesc **bilețele** cu coduri noi (link „tipărește bilețelele”).
   Pentru un card anume, scanați-i codul de bare în câmpul „Dai un card anume?”. Același buton există în rezervare și în sesiunea de joc;
   pentru jucătorii fără rezervare: **Declarații → Coduri fără rezervare**.
+* **În Declarații**, lista „Azi lipsesc declarații” arată rezervările de azi la care nu au semnat toți (nici online, nici pe tabletă).
+  Pentru persoana din fața dvs. apăsați **Cod pentru o persoană** (primește un card liber sau un cod pe bilețel); pentru tot grupul,
+  **Coduri pentru toți**; pentru cineva fără rezervare, **Cod pentru o persoană fără rezervare**.
 * **Jucătorul** tastează codul (sau îl scanează cu camera tabletei), citește, completează și semnează. Tableta revine singură la
   tastatură, goală pentru următorul. Dacă grupul are sesiunea de joc deschisă, jucătorul intră direct în ea, cu nickname-ul și avatarul ales.
 * Un cod merge **o singură dată** și expiră după câteva ore (cel puțin 4 ore, sau la 3 ore după ora rezervării). Formularul

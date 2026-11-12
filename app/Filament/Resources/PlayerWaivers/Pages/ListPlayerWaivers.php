@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PlayerWaivers\Pages;
 
 use App\Filament\Resources\PlayerWaivers\PlayerWaiverResource;
 use App\Filament\Resources\PlayerWaivers\WaiverCodeActions;
+use App\Filament\Resources\PlayerWaivers\Widgets\MissingWaivers;
 use App\Modules\Audit\AuditLogger;
 use App\Modules\Booking\Models\WaiverCard;
 use App\Modules\Booking\Services\WaiverCodeService;
@@ -17,6 +18,11 @@ use Illuminate\Support\HtmlString;
 class ListPlayerWaivers extends ListRecords
 {
     protected static string $resource = PlayerWaiverResource::class;
+
+    protected function getHeaderWidgets(): array
+    {
+        return [MissingWaivers::class];
+    }
 
     protected function getHeaderActions(): array
     {

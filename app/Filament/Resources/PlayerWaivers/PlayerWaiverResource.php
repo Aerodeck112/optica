@@ -126,6 +126,11 @@ class PlayerWaiverResource extends Resource
             });
     }
 
+    public static function getWidgets(): array
+    {
+        return [Widgets\MissingWaivers::class];
+    }
+
     public static function getPages(): array
     {
         return [

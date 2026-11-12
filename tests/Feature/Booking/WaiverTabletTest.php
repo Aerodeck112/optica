@@ -3,6 +3,7 @@
 namespace Tests\Feature\Booking;
 
 use App\Filament\Pages\CheckIn;
+use App\Filament\Resources\PlayerWaivers\Widgets\MissingWaivers;
 use App\Http\Controllers\Site\WaiverTabletController;
 use App\Models\User;
 use App\Modules\Arena\Models\SessionParticipant;
@@ -20,6 +21,7 @@ use App\Support\LocalTime;
 use Carbon\CarbonImmutable;
 use Database\Seeders\BaseDataSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\Support\BookingFixtures;
@@ -176,5 +178,29 @@ class WaiverTabletTest extends TestCase
 
         $this->actingAs($reception)->get(route('admin.waivers.codes', ['booking' => $booking->id]))->assertOk()->assertSee($codes[2]->formatted());
         $this->actingAs($marketing)->get(route('admin.waivers.codes', ['booking' => $booking->id]))->assertForbidden();
+    }
+
+    public function test_the_waivers_page_lists_today_unsigned_bookings_and_gives_a_code_to_one_person_at_a_time(): void
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+        $booking = $this->booking(2);
+        $done = $this->booking(1);
+        app(WaiverCodeService::class)->redeem(app(WaiverCodeService::class)->issue($done, 1)->sole(),
+            fn (?Booking $b) => app(PlayerWaiverService::class)->sign($this->form() + ['birth_date' => '1990-05-12'], $b));
+        $reception = User::factory()->create(['is_active' => true]);
+        $reception->assignRole('reception');
+        $this->actingAs($reception);
+
+        $this->get('/admin/player-waivers')->assertOk()->assertSeeLivewire(MissingWaivers::class);
+        Livewire::test(MissingWaivers::class)
+            ->assertCanSeeTableRecords([$booking])->assertCanNotSeeTableRecords([$done])
+            ->callAction(TestAction::make('one')->table($booking))
+            ->assertNotified();
+
+        $code = WaiverCode::query()->where('booking_id', $booking->id)->with('card')->sole();
+        $this->assertSame(1, $code->card->number, 'întâi se dă un card liber');
+
+        Livewire::test(MissingWaivers::class)->callAction(TestAction::make('walkIn')->table());
+        $this->assertSame(1, WaiverCode::query()->whereNull('booking_id')->count());
     }
 }
