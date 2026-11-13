@@ -60,9 +60,9 @@ class FiscalDeviceResource extends Resource
             TextInput::make('model')->label('Model aparat')->maxLength(120)->placeholder('De completat'),
             TextInput::make('serial_number')->label('Serie fiscală')->maxLength(60)->placeholder('De completat'),
             KeyValue::make('vat_mapping')->label('Cote TVA → grupa fiscală a aparatului')->keyLabel('Cota (%)')->valueLabel('Grupa (A, B, C…)')
-                ->helperText('Se stabilește cu service-ul autorizat al casei de marcat. Exemplu: 21 → A, 11 → B.')->columnSpanFull(),
+                ->helperText('Se stabilește cu service-ul autorizat al casei de marcat (vedeți cotele programate pe un raport X). Exemplu: 21 → A, 11 → B. Pentru Daisy prin Fisco se pot scrie literele A–D sau cifrele 1–4.')->columnSpanFull(),
             KeyValue::make('payment_mapping')->label('Metode de plată → cod în aparat')->keyLabel('Metoda')->valueLabel('Cod')
-                ->default(['cash' => '', 'card_pos' => ''])->helperText('Metode: '.implode(', ', array_map(fn ($k, $v) => "{$k} ({$v})", array_keys(Payment::METHODS), Payment::METHODS)))->columnSpanFull(),
+                ->default(['cash' => '', 'card_pos' => ''])->helperText('Daisy prin programul Fisco: cash = 1, card_pos = 2. '.'Metode: '.implode(', ', array_map(fn ($k, $v) => "{$k} ({$v})", array_keys(Payment::METHODS), Payment::METHODS)))->columnSpanFull(),
             Toggle::make('is_active')->label('Activă')->helperText('Un singur aparat activ e folosit implicit la recepție (aparatele reale au prioritate față de simulator).'),
             Placeholder::make('agent_key')->label('Cheie agent')->visibleOn('edit')
                 ->content(fn (?FiscalDevice $record) => $record?->agent_key_id ? $record->agent_key_id.' (secretul nu se mai afișează; generați o cheie nouă dacă l-ați pierdut)' : 'Negenerată'),

@@ -14,7 +14,9 @@
  *   AW_SERVER=https://anotherworldcluj.ro
  *   AW_AGENT_KEY=fa_...            (generat în panou: Financiar → Case de marcat → Cheie agent)
  *   AW_AGENT_SECRET=...
- *   DRIVER=file                    (file | dry-run)
+ *   DRIVER=fisco                   (fisco | file | dry-run)
+ *   FISCO_URL=http://127.0.0.1:4040     (driver fisco: API-ul local al programului Fisco, ex. pentru Daisy Compact M)
+ *   FISCO_NAME_MAX=36                   (driver fisco: lungimea maximă a denumirii pe bon)
  *   FILE_OUT_DIR=C:\bonuri\de-tiparit   (driver file: aici se scrie comanda JSON)
  *   FILE_IN_DIR=C:\bonuri\rezultate     (driver file: aici programul aparatului scrie {command_id}.result.json)
  *   RESULT_TIMEOUT=60              (secunde de așteptare a rezultatului)
@@ -87,6 +89,9 @@ function printReceipt(string $driver, array $config, array $command): array
 
         return ['status' => 'failed', 'error' => 'Agent în mod dry-run: nu s-a tipărit nimic.'];
     }
+    if ($driver === 'fisco') {
+        return printViaFisco($config, $command);
+    }
     if ($driver === 'file') {
         $out = rtrim((string) ($config['FILE_OUT_DIR'] ?? ''), '/\\');
         $in = rtrim((string) ($config['FILE_IN_DIR'] ?? ''), '/\\');
@@ -106,6 +111,107 @@ function printReceipt(string $driver, array $config, array $command): array
     }
 
     throw new RuntimeException("Driver necunoscut: {$driver}");
+}
+
+/**
+ * Driverul „fisco”: programul Fisco (fisco.ro) rulează pe același calculator, comunică el cu casa de marcat
+ * (Daisy, Datecs, Tremol) și primește bonul prin API-ul lui local, în sintaxa simplificată:
+ *   S^Denumire^preț_în_bani^cantitate_în_miimi^buc^grupa_TVA(1–5)^departament
+ *   P^tip_plată(1 numerar, 2 card)^sumă_în_bani
+ * Cheia de idempotență este id-ul comenzii: o retrimitere (ex. răspuns pierdut) nu tipărește al doilea bon.
+ */
+function printViaFisco(array $config, array $command): array
+{
+    $commands = fiscoCommands($command, (int) ($config['FISCO_NAME_MAX'] ?? 36));
+    $url = rtrim((string) ($config['FISCO_URL'] ?? 'http://127.0.0.1:4040'), '/').'/api/v1/print?wait=30';
+    $deadline = time() + max(30, (int) ($config['RESULT_TIMEOUT'] ?? 90));
+    $sentOnce = false;
+    do {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => 40,
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Accept: application/json'],
+            CURLOPT_POSTFIELDS => json_encode(['syntax' => 'simplu', 'commands' => $commands, 'idempotency_key' => $command['command_id']], JSON_UNESCAPED_UNICODE),
+        ]);
+        $response = curl_exec($ch);
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
+        if ($response === false) {
+            // conexiune refuzată înainte de orice trimitere: sigur nu s-a tipărit nimic
+            if (! $sentOnce && in_array($errno, [CURLE_COULDNT_CONNECT, CURLE_COULDNT_RESOLVE_HOST], true)) {
+                return ['status' => 'failed', 'error' => 'Programul Fisco nu răspunde pe '.$config['FISCO_URL'].'. Porniți Fisco și reemiteți bonul.'];
+            }
+            throw new RuntimeException('Fisco: '.$error); // incert
+        }
+        $sentOnce = true;
+        $data = json_decode((string) $response, true) ?: [];
+        $status = (string) ($data['status'] ?? '');
+        $result = (array) ($data['result'] ?? []);
+        if ($status === 'printed') {
+            return [
+                'status' => 'printed',
+                'fiscal_number' => (string) ($result['SlipNumber'] ?? $result['nFNum'] ?? ''),
+                'z_report_number' => isset($result['nZrep']) ? (string) $result['nZrep'] : null,
+                'error' => null,
+            ];
+        }
+        if ($status === 'failed' || (($data['ok'] ?? null) === false && $status === '')) {
+            return ['status' => 'failed', 'error' => 'Fisco: '.trim((string) ($data['error'] ?? $result['error'] ?? $result['message'] ?? 'bonul a fost refuzat de casa de marcat'))];
+        }
+        // „queued” / „processing”: aceeași cerere (aceeași cheie) doar așteaptă rezultatul, nu tipărește din nou
+        usleep(500000);
+    } while (time() < $deadline);
+
+    throw new RuntimeException('Fisco nu a confirmat bonul în timpul alocat.'); // incert: se verifică în jurnalul aparatului
+}
+
+/** Comenzile în sintaxa simplificată Fisco. Totalul plăților trebuie să fie egal cu totalul bonului. */
+function fiscoCommands(array $command, int $nameMax): array
+{
+    $clean = fn (string $text) => trim(preg_replace('/\s+/u', ' ', str_replace(['^', "\r", "\n"], ' ', $text)) ?? '');
+    $group = function ($value) {
+        $value = strtoupper(trim((string) $value));
+        if (preg_match('/^[1-5]$/', $value)) {
+            return (int) $value;
+        }
+        if (preg_match('/^[A-E]$/', $value)) {
+            return ord($value) - 64;
+        }
+        throw new RuntimeException('Grupa TVA lipsă sau greșită pentru o linie a bonului; completați corespondența cotelor în panou (Financiar → Case de marcat).');
+    };
+    $lines = [];
+    $total = 0;
+    foreach ((array) ($command['items'] ?? []) as $item) {
+        $name = mb_substr($clean((string) ($item['name'] ?? 'Serviciu')), 0, max(8, $nameMax)) ?: 'Serviciu';
+        $quantity = (float) ($item['quantity'] ?? 1);
+        $unit = (int) ($item['unit_price_minor'] ?? 0);
+        $amount = (int) ($item['amount_minor'] ?? 0);
+        // dacă preț × cantitate nu dă exact valoarea liniei (rotunjiri), linia se trimite ca 1 buc la valoarea totală
+        if ($quantity <= 0 || (int) round($unit * $quantity) !== $amount) {
+            $quantity = 1.0;
+            $unit = $amount;
+        }
+        $lines[] = sprintf('S^%s^%d^%d^buc^%d^1', $name, $unit, (int) round($quantity * 1000), $group($item['vat_group'] ?? null));
+        $total += $amount;
+    }
+    $paid = 0;
+    foreach ((array) ($command['payments'] ?? []) as $payment) {
+        $code = (string) ($payment['code'] ?? '');
+        if (! preg_match('/^\d+$/', $code)) {
+            throw new RuntimeException('Codul metodei de plată lipsește; completați-l în panou (numerar = 1, card = 2 pentru Fisco).');
+        }
+        $lines[] = sprintf('P^%s^%d', $code, (int) $payment['amount_minor']);
+        $paid += (int) $payment['amount_minor'];
+    }
+    if (! $lines || $paid !== $total) {
+        throw new RuntimeException('Bon invalid: plățile ('.$paid.') nu sunt egale cu totalul ('.$total.').');
+    }
+
+    return $lines;
 }
 
 echo "Agent pornit (driver: {$driver}).\n";
