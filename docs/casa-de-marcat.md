@@ -13,6 +13,13 @@ Nu a fost testat cu o casă de marcat reală; conectarea finală se face împreu
    al aparatului / pe raportul Z și alege *Reconciliază* → „tipărit” (cu numărul) sau „netipărit”; doar în al doilea caz
    se poate reemite.
 
+## Pachetul pentru Windows (fără instalare PHP)
+
+`tools/fiscal-agent/windows/` conține fișierele ajutătoare (`1-PROBA.bat`, `2-PORNESTE-AGENTUL.bat`, `3-PORNIRE-AUTOMATA.bat`,
+`4-OPRESTE-PORNIREA-AUTOMATA.bat`, `php.ini`, `CITESTE-MA.txt`). Pachetul „AW-Agent-Casa” se face punând lângă ele agentul și
+un PHP portabil oficial (windows.php.net, 8.3 NTS x64, verificat cu suma SHA-256 publicată) în subfolderul `php\`, plus
+`cacert.pem` (curl.se) pentru HTTPS. PHP pentru Windows cere „Microsoft Visual C++ Redistributable x64”, de obicei deja instalat.
+
 ## Instalare pe calculatorul de la recepție
 
 Cerințe: PHP 8.1+ cu extensia `curl` (pe Windows: pachetul oficial PHP, adăugat în PATH).

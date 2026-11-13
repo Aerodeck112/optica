@@ -1,0 +1,22 @@
+AGENTUL CASEI DE MARCAT - Another World Cluj
+(Daisy Compact M prin programul Fisco; Windows 10/11, 64 de biti)
+
+PHP este deja inclus in acest folder - nu trebuie instalat nimic separat.
+
+1. Copiati tot folderul AW-Agent-Casa in C:\ (rezulta C:\AW-Agent-Casa).
+2. Deschideti aw-fiscal-agent.ini cu Notepad si completati:
+     AW_AGENT_KEY=     (panou: Financiar -> Case de marcat -> casa -> Cheie agent)
+     AW_AGENT_SECRET=  (se afiseaza o singura data, la generarea cheii)
+   Lasati DRIVER=dry-run pentru prima proba. Salvati.
+3. Dublu-clic pe 1-PROBA.bat. Fara erori = in panou casa apare "vazuta acum".
+   Daca apare mesajul despre "Visual C++ Redistributable", instalati-l de la
+   https://aka.ms/vs/17/release/vc_redist.x64.exe si repetati.
+4. Cu Fisco pornit si casa conectata: in aw-fiscal-agent.ini schimbati DRIVER=fisco, salvati,
+   faceti in panou o incasare mica cu "Emite bon fiscal" si rulati din nou 1-PROBA.bat.
+   Bonul trebuie sa iasa din casa, iar in panou (Financiar -> Bonuri fiscale) apare numarul bonului.
+5. Dublu-clic pe 3-PORNIRE-AUTOMATA.bat: de acum agentul porneste singur la deschiderea Windows
+   (o fereastra care trebuie lasata deschisa; poate fi minimizata).
+   Pornire imediata, fara restart: 2-PORNESTE-AGENTUL.bat.
+
+Nu copiati aw-fiscal-agent.ini si journal.json pe alte calculatoare (contin secretul agentului).
+Daca Windows Defender intreaba la prima rulare, alegeti "More info" -> "Run anyway".
