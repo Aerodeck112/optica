@@ -186,6 +186,7 @@ class Calendar extends Page
                 'occ_start' => LocalTime::toLocal($occ->starts_at), 'occ_end' => LocalTime::toLocal($occ->ends_at),
                 'title' => $b->contact_name.' · '.$b->participants.' pers.', 'subtitle' => $b->package?->getTranslation('name', 'ro').' · '.$b->code,
                 'url' => BookingResource::getUrl('view', ['record' => $b]), 'id' => $b->id,
+                'prep_minutes' => min($b->package?->bufferAfterMinutes() ?? 0, (int) $occ->starts_at->diffInMinutes($occ->ends_at)),
             ];
         }
         foreach ($blocks as $block) {

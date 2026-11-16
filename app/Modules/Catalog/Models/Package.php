@@ -4,6 +4,7 @@ namespace App\Modules\Catalog\Models;
 
 use App\Modules\Cms\Models\Media;
 use App\Modules\Core\Concerns\PublishedInLocales;
+use App\Modules\Core\Settings\SettingsRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -91,6 +92,12 @@ class Package extends Model
 
     public function occupiedMinutes(int $extraMinutes = 0): int
     {
-        return (int) $this->buffer_before_minutes + (int) $this->slot_minutes + $extraMinutes + (int) $this->buffer_after_minutes;
+        return (int) $this->buffer_before_minutes + (int) $this->slot_minutes + $extraMinutes + $this->bufferAfterMinutes();
+    }
+
+    /** Pauza blocată după fiecare rezervare: cea a pachetului sau pauza de pregătire a arenei din setări, dacă e mai mare. */
+    public function bufferAfterMinutes(): int
+    {
+        return max((int) $this->buffer_after_minutes, max(0, app(SettingsRepository::class)->int('booking.prep_minutes', 20)));
     }
 }

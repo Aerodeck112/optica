@@ -2,7 +2,9 @@
 
 namespace App\Modules\Booking\Services;
 
+use App\Modules\Booking\Models\BookingResource;
 use App\Modules\Booking\Models\Resource;
+use App\Modules\Booking\Models\ResourceBlock;
 use App\Modules\Catalog\Models\Package;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Support\LocalTime;
@@ -56,11 +58,12 @@ class AvailabilityService
         $experienceMinutes = (int) $package->slot_minutes + $extraMinutes;
         $exclusive = $package->session_mode !== 'shared';
 
+        $bufferAfter = $package->bufferAfterMinutes();
         $slots = [];
         // Iterăm în UTC între deschidere și închidere: în zilele cu schimbarea orei, etichetele locale rămân corecte.
-        for ($start = $window['open']; $start->addMinutes($experienceMinutes)->lessThanOrEqualTo($window['close']); $start = $start->addMinutes($interval)) {
+        foreach ($this->candidateStarts($window, $resources, $experienceMinutes, $interval, $ignoreBookingId) as $start) {
             $occupiedStart = $start->subMinutes((int) $package->buffer_before_minutes);
-            $occupiedEnd = $start->addMinutes($experienceMinutes + (int) $package->buffer_after_minutes);
+            $occupiedEnd = $start->addMinutes($experienceMinutes + $bufferAfter);
 
             $reason = null;
             $resourceId = null;
@@ -88,6 +91,38 @@ class AvailabilityService
         }
 
         return ['status' => 'ok', 'slots' => $slots, 'message' => $window['note']];
+    }
+
+    /**
+     * Orele de început: grila din setări, plus momentul imediat de după fiecare rezervare existentă (sfârșitul pauzei
+     * de pregătire). Astfel runda următoare poate începe exact după pauză (ex. 10:00 → 11:20), fără minute pierdute.
+     *
+     * @param  array{open: CarbonImmutable, close: CarbonImmutable}  $window
+     * @param  array<int, resource>  $resources
+     * @return array<int, CarbonImmutable>
+     */
+    private function candidateStarts(array $window, array $resources, int $experienceMinutes, int $interval, ?int $ignoreBookingId): array
+    {
+        $fits = fn (CarbonImmutable $start) => $start->greaterThanOrEqualTo($window['open']) && $start->addMinutes($experienceMinutes)->lessThanOrEqualTo($window['close']);
+        $starts = [];
+        for ($start = $window['open']; $fits($start); $start = $start->addMinutes($interval)) {
+            $starts[$start->getTimestamp()] = $start;
+        }
+        $family = array_values(array_unique(array_merge(...array_map(fn (Resource $r) => $r->conflictFamilyIds(), $resources))));
+        $ends = BookingResource::query()->whereIn('resource_id', $family)->where('is_active', true)
+            ->where('ends_at', '>', $window['open'])->where('ends_at', '<', $window['close'])
+            ->when($ignoreBookingId, fn ($q) => $q->where('booking_id', '!=', $ignoreBookingId))
+            ->pluck('ends_at')
+            ->merge(ResourceBlock::query()->whereIn('resource_id', $family)->where('ends_at', '>', $window['open'])->where('ends_at', '<', $window['close'])->pluck('ends_at'));
+        foreach ($ends as $end) {
+            $start = CarbonImmutable::parse($end)->utc()->second(0);
+            if ($fits($start)) {
+                $starts[$start->getTimestamp()] = $start;
+            }
+        }
+        ksort($starts);
+
+        return array_values($starts);
     }
 
     /** Verifică un singur moment de început (folosit de AI și de formularele fără JS). */

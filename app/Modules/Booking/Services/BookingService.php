@@ -579,7 +579,7 @@ class BookingService
     {
         return [
             $startsAt->subMinutes((int) $package->buffer_before_minutes),
-            $startsAt->addMinutes((int) $package->slot_minutes + $extraMinutes + (int) $package->buffer_after_minutes),
+            $startsAt->addMinutes((int) $package->slot_minutes + $extraMinutes + $package->bufferAfterMinutes()),
         ];
     }
 

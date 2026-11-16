@@ -1,5 +1,5 @@
 @php
-    $slot = 15;
+    $slot = 5; // rânduri de 5 minute: orele de tipul 11:20 / 12:40 se așază exact, fără suprapuneri din rotunjire
     $rowsPerHour = 60 / $slot;
     $rowCount = ($maxHour - $minHour) * $rowsPerHour;
     $rowOf = fn ($time) => max(0, intdiv(((int) $time->format('G') - $minHour) * 60 + (int) $time->format('i'), $slot));
@@ -34,7 +34,7 @@
             @foreach ($legend as $key => $label)
                 <span class="aw-ev aw-ev--{{ $key }}" style="display:inline-block;margin:0;padding:.125rem .5rem">{{ $label }}</span>
             @endforeach
-            <span>Zona hașurată = închis. Rezervările includ pauzele dintre grupuri.</span>
+            <span>Zona hașurată = închis. Partea dungată de la finalul unei rezervări = pauza de pregătire a arenei (nu se poate rezerva).</span>
         </div>
 
         @if ($resources->isEmpty())
@@ -51,7 +51,7 @@
                 <div class="aw-card">{{ $window['note'] }}</div>
             @endif
             <div style="overflow-x:auto">
-                <div class="aw-cal-grid" style="grid-template-columns: 4rem repeat({{ $resources->count() }}, minmax(12rem, 1fr)); grid-template-rows: auto repeat({{ $rowCount }}, 1rem); min-width: {{ 4 + 12 * $resources->count() }}rem">
+                <div class="aw-cal-grid" style="grid-template-columns: 4rem repeat({{ $resources->count() }}, minmax(12rem, 1fr)); grid-template-rows: auto repeat({{ $rowCount }}, .375rem); min-width: {{ 4 + 12 * $resources->count() }}rem">
                     <div class="aw-cal-head" style="grid-row:1;grid-column:1"></div>
                     @foreach ($resources as $i => $resource)
                         <div class="aw-cal-head" style="grid-row:1;grid-column:{{ $i + 2 }}">{{ $resource->name }}@if ($resource->capacity) <span class="aw-muted">· max. {{ $resource->capacity }}</span>@endif</div>
@@ -67,20 +67,69 @@
                             <div class="aw-cal-cell {{ $closed ? 'aw-cal-closed' : '' }}" style="grid-row:{{ $r }} / span {{ $rowsPerHour }};grid-column:{{ $i + 2 }};min-height:0"></div>
                         @endforeach
                     @endfor
-                    @foreach ($dayEvents as $e)
+                    @php
+                        // rezervările care se suprapun cu adevărat pe aceeași arenă se așază una lângă alta (benzi), cu avertisment
+                        $lanes = [];
+                        $byResource = [];
+                        foreach ($dayEvents as $k => $ev) {
+                            $byResource[$ev['resource_id']][] = $k;
+                        }
+                        foreach ($byResource as $keys) {
+                            usort($keys, fn ($a, $b) => $dayEvents[$a]['occ_start'] <=> $dayEvents[$b]['occ_start']);
+                            $cluster = [];
+                            $clusterEnd = null;
+                            $laneEnds = [];
+                            $flush = function () use (&$cluster, &$lanes, &$laneEnds) {
+                                foreach ($cluster as $k) {
+                                    $lanes[$k]['count'] = max(1, count($laneEnds));
+                                }
+                                $cluster = [];
+                                $laneEnds = [];
+                            };
+                            foreach ($keys as $k) {
+                                $ev = $dayEvents[$k];
+                                if ($clusterEnd !== null && $ev['occ_start'] >= $clusterEnd) {
+                                    $flush();
+                                    $clusterEnd = null;
+                                }
+                                $lane = null;
+                                foreach ($laneEnds as $i => $end) {
+                                    if ($ev['occ_start'] >= $end) {
+                                        $lane = $i;
+                                        break;
+                                    }
+                                }
+                                $lane ??= count($laneEnds);
+                                $laneEnds[$lane] = $ev['occ_end'];
+                                $lanes[$k] = ['lane' => $lane];
+                                $cluster[] = $k;
+                                $clusterEnd = $clusterEnd === null || $ev['occ_end'] > $clusterEnd ? $ev['occ_end'] : $clusterEnd;
+                            }
+                            $flush();
+                        }
+                    @endphp
+                    @foreach ($dayEvents as $k => $e)
                         @php
                             $col = $resources->search(fn ($r) => $r->id === $e['resource_id']);
                             $startRow = $rowOf($e['occ_start']) + 2;
-                            $span = max(2, (int) ceil($e['occ_start']->diffInMinutes($e['occ_end']) / $slot));
+                            $span = max(3, (int) ceil($e['occ_start']->diffInMinutes($e['occ_end']) / $slot));
+                            $laneCount = $lanes[$k]['count'] ?? 1;
+                            $laneIndex = $lanes[$k]['lane'] ?? 0;
+                            $laneStyle = $laneCount > 1 ? 'justify-self:start;width:calc('.round(100 / $laneCount, 3).'% - 8px);margin-left:calc('.round(100 * $laneIndex / $laneCount, 3).'% + 4px);' : '';
                         @endphp
                         @continue($col === false)
                         @if ($e['url'])
-                            <a href="{{ $e['url'] }}" class="aw-ev aw-ev--{{ $e['status'] }}" style="grid-row:{{ $startRow }} / span {{ $span }};grid-column:{{ $col + 2 }};margin:1px 4px;overflow:hidden;z-index:1">
+                            @php $occMinutes = max(1, $e['occ_start']->diffInMinutes($e['occ_end'])); @endphp
+                            <a href="{{ $e['url'] }}" class="aw-ev aw-ev--{{ $e['status'] }}" style="grid-row:{{ $startRow }} / span {{ $span }};grid-column:{{ $col + 2 }};margin:1px 4px;{{ $laneStyle }}overflow:hidden;z-index:1;position:relative">
+                                @if ($laneCount > 1)<span class="aw-badge aw-badge--bad" style="font-size:.6875rem;margin-bottom:.125rem">Suprapunere — verificați orele</span>@endif
                                 <strong>{{ $e['start']->format('H:i') }}–{{ $e['end']->format('H:i') }} {{ $e['title'] }}</strong>
                                 <span>{{ $e['subtitle'] }}</span>
+                                @if (($e['prep_minutes'] ?? 0) > 0)
+                                    <span class="aw-ev-prep" style="height:{{ round($e['prep_minutes'] / $occMinutes * 100, 2) }}%">Pregătire arenă · {{ $e['prep_minutes'] }} min (până la {{ $e['occ_end']->format('H:i') }})</span>
+                                @endif
                             </a>
                         @else
-                            <div class="aw-ev aw-ev--block" style="grid-row:{{ $startRow }} / span {{ $span }};grid-column:{{ $col + 2 }};margin:1px 4px;overflow:hidden;z-index:1">
+                            <div class="aw-ev aw-ev--block" style="grid-row:{{ $startRow }} / span {{ $span }};grid-column:{{ $col + 2 }};margin:1px 4px;{{ $laneStyle }}overflow:hidden;z-index:1">
                                 <strong>{{ $e['start']->format('H:i') }}–{{ $e['end']->format('H:i') }} {{ $e['title'] }}</strong>
                                 <span>{{ $e['subtitle'] }}</span>
                                 @if ($canManageBlocks)

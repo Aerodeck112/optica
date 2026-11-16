@@ -55,6 +55,7 @@ final class SettingsSchema
 
             // ——— Rezervări ———
             'booking.online_enabled' => ['group' => 'booking', 'label' => 'Rezervare online activă', 'type' => 'bool', 'default' => true],
+            'booking.prep_minutes' => ['group' => 'booking', 'label' => 'Pauză de pregătire după fiecare rundă (minute)', 'type' => 'int', 'default' => 20, 'help' => 'Timp blocat automat după fiecare rezervare, pentru pregătirea arenei: nimeni nu se poate programa în această pauză, nici online, nici la recepție. Dacă un pachet are o pauză proprie mai mare, se folosește aceea. 0 = fără pauză.'],
             'booking.slot_interval_minutes' => ['group' => 'booking', 'label' => 'Interval între ore de început (minute)', 'type' => 'int', 'default' => 30],
             'booking.min_lead_minutes' => ['group' => 'booking', 'label' => 'Termen minim înainte de rezervare (minute)', 'type' => 'int', 'default' => 120],
             'booking.max_advance_days' => ['group' => 'booking', 'label' => 'Rezervare cu cel mult (zile înainte)', 'type' => 'int', 'default' => 90],

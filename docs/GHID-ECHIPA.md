@@ -13,6 +13,13 @@ aplicația de autentificare (2FA).
 * **Recepție → Calendar** (zi / săptămână / lună): ocuparea arenei. Un interval se poate bloca (mentenanță, eveniment intern),
   o dată sau recurent.
 
+### Pauza de pregătire dintre runde
+După fiecare rezervare, arena este blocată automat **20 de minute** pentru pregătirea rundei următoare (în calendar: banda
+dungată „Pregătire arenă” de la finalul rezervării). În pauză nu se poate programa nimeni, nici online, nici la recepție;
+runda următoare poate începe imediat după pauză (ex. 10:00 → 11:20 → 12:40). Durata se schimbă din
+**Setări locație → Rezervări → Pauză de pregătire după fiecare rundă** (0 = fără pauză); dacă un pachet are o pauză proprie
+mai mare, se folosește aceea. Schimbarea se aplică rezervărilor făcute de atunci înainte.
+
 ### Rezervare la telefon sau la ghișeu
 **Rezervări → Rezervare nouă**: pachet, dată, oră din lista orelor libere, participanți pe categorii de vârstă, datele
 adultului responsabil. Dacă clientul are un cod de reducere, completați-l la **Detalii → Cod de reducere**: totalul
