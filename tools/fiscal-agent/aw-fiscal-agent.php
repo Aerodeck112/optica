@@ -45,6 +45,25 @@ $driver = $config['DRIVER'] ?? 'dry-run';
 $journalPath = __DIR__.'/journal.json';
 $once = in_array('--once', $argv, true);
 
+// un singur agent odată: pornirea automată îl poate lansa de mai multe ori fără risc (al doilea se oprește singur)
+$lock = fopen(__DIR__.'/agent.lock', 'c');
+if (! $lock || ! flock($lock, LOCK_EX | LOCK_NB)) {
+    echo "Agentul rulează deja pe acest calculator.\n";
+    exit(0);
+}
+
+/** Mesajele agentului apar pe ecran și în agent.log (păstrat sub 2 MB), pentru verificare ulterioară. */
+function logLine(string $message): void
+{
+    $line = date('Y-m-d H:i:s').' '.$message;
+    echo $line, "\n";
+    $log = __DIR__.'/agent.log';
+    if (is_file($log) && filesize($log) > 2_000_000) {
+        @rename($log, $log.'.1');
+    }
+    @file_put_contents($log, $line."\n", FILE_APPEND);
+}
+
 function journal(string $path): array
 {
     return is_file($path) ? (json_decode((string) file_get_contents($path), true) ?: []) : [];
@@ -214,7 +233,7 @@ function fiscoCommands(array $command, int $nameMax): array
     return $lines;
 }
 
-echo "Agent pornit (driver: {$driver}).\n";
+logLine("Agent pornit (driver: {$driver}).");
 do {
     try {
         request($config, 'POST', '/api/fiscal-agent/heartbeat', ['agent_version' => '1.0', 'device_status' => $driver]);
@@ -236,7 +255,7 @@ do {
         foreach ($data['commands'] ?? [] as $command) {
             $journal = journal($journalPath);
             if (isset($journal[$command['command_id']])) {
-                echo "Comanda {$command['command_id']} există deja în jurnal; nu se retipărește.\n";
+                logLine("Comanda {$command['command_id']} există deja în jurnal; nu se retipărește.");
 
                 continue;
             }
@@ -245,7 +264,7 @@ do {
             try {
                 $result = printReceipt($driver, $config, $command);
             } catch (Throwable $e) {
-                echo 'Rezultat incert: ', $e->getMessage(), "\n";
+                logLine('Rezultat incert: '.$e->getMessage());
 
                 continue; // fără raportare: serverul o va marca „incertă”
             }
@@ -257,10 +276,15 @@ do {
                 $journal[$command['command_id']]['reported'] = true;
                 saveJournal($journalPath, $journal);
             }
-            echo "Comanda {$command['command_id']}: {$result['status']}\n";
+            logLine("Comanda {$command['command_id']}: {$result['status']}".(($result['error'] ?? null) ? ' — '.$result['error'] : ''));
         }
     } catch (Throwable $e) {
-        fwrite(STDERR, date('H:i:s').' '.$e->getMessage()."\n");
+        // aceeași eroare (ex. internet căzut) se notează cel mult o dată pe minut
+        static $lastError = '', $lastErrorAt = 0;
+        if ($e->getMessage() !== $lastError || time() - $lastErrorAt >= 60) {
+            logLine('Eroare: '.$e->getMessage());
+            [$lastError, $lastErrorAt] = [$e->getMessage(), time()];
+        }
     }
     if (! $once) {
         sleep((int) ($config['POLL_SECONDS'] ?? 3));

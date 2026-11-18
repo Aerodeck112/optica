@@ -1,4 +1,7 @@
 <x-filament-panels::page>
+    @if ($agentWarning)
+        <div class="aw-card" role="alert" style="border-color:#f59e0b;background:#fffbeb;color:#92400e;font-weight:600">⚠ {{ $agentWarning }}</div>
+    @endif
     <div class="aw-sale">
         <section class="aw-card aw-stack">
             <div class="aw-row aw-between">

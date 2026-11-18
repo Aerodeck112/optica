@@ -106,4 +106,12 @@ class CounterSaleTest extends TestCase
         $operator->assignRole('operator');
         $this->actingAs($operator)->get(CounterSales::getUrl())->assertForbidden();
     }
+
+    public function test_the_sales_page_warns_when_the_cash_register_agent_is_not_running(): void
+    {
+        Livewire::actingAs($this->reception)->test(CounterSales::class)->assertSee('Agentul casei de marcat nu rulează (niciodată)');
+
+        FiscalDevice::query()->update(['last_seen_at' => now()]);
+        Livewire::actingAs($this->reception)->test(CounterSales::class)->assertDontSee('Agentul casei de marcat nu rulează');
+    }
 }

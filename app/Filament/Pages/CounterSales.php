@@ -157,9 +157,25 @@ class CounterSales extends Page
             'sales' => CounterSale::query()->with(['lines', 'seller'])->where('created_at', '>=', LocalTime::fromLocal($today, '00:00'))->latest('id')->limit(30)->get(),
             'receipts' => FiscalReceipt::query()->whereIn('payment_id', CounterSale::query()->where('created_at', '>=', LocalTime::fromLocal($today, '00:00'))->pluck('payment_id')->filter())->get()->groupBy('payment_id'),
             'hasDevice' => app(FiscalReceiptService::class)->defaultDevice() !== null,
+            'agentWarning' => self::agentWarning(),
             'canCancel' => (bool) auth()->user()?->can('finance.refund'),
             'methods' => CounterSaleService::METHODS,
         ];
+    }
+
+    /** Casa de marcat lucrează prin agentul de pe calculatorul de la recepție: avertisment dacă agentul nu a mai răspuns. */
+    public static function agentWarning(): ?string
+    {
+        $device = app(FiscalReceiptService::class)->defaultDevice();
+        if (! $device || $device->driver !== 'agent') {
+            return null;
+        }
+        if ($device->last_seen_at && $device->last_seen_at->greaterThan(now()->subMinutes(2))) {
+            return null;
+        }
+        $seen = $device->last_seen_at ? 'ultima dată acum '.$device->last_seen_at->locale('ro')->diffForHumans(null, true) : 'niciodată';
+
+        return "Agentul casei de marcat nu rulează ({$seen}): bonurile rămân în coadă și se tipăresc când pornește. Pe calculatorul casei: 2-PORNESTE-AGENTUL.bat (sau 3-PORNIRE-AUTOMATA.bat, o singură dată).";
     }
 
     private function defaultWarehouseId(): ?int

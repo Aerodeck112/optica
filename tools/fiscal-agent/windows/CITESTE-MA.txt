@@ -14,9 +14,16 @@ PHP este deja inclus in acest folder - nu trebuie instalat nimic separat.
 4. Cu Fisco pornit si casa conectata: in aw-fiscal-agent.ini schimbati DRIVER=fisco, salvati,
    faceti in panou o incasare mica cu "Emite bon fiscal" si rulati din nou 1-PROBA.bat.
    Bonul trebuie sa iasa din casa, iar in panou (Financiar -> Bonuri fiscale) apare numarul bonului.
-5. Dublu-clic pe 3-PORNIRE-AUTOMATA.bat: de acum agentul porneste singur la deschiderea Windows
-   (o fereastra care trebuie lasata deschisa; poate fi minimizata).
-   Pornire imediata, fara restart: 2-PORNESTE-AGENTUL.bat.
+5. Dublu-clic pe 3-PORNIRE-AUTOMATA.bat (o singura data). Agentul ruleaza in fundal, fara fereastra:
+   porneste la deschiderea Windows si, daca se opreste, Windows il reporneste in cel mult 5 minute.
+   ATENTIE: 1-PROBA.bat trimite un singur bon si se opreste - este doar pentru proba, nu pentru lucru zilnic.
+
+   Alte fisiere:
+     2-PORNESTE-AGENTUL.bat     pornire imediata, in fundal
+     5-STARE-AGENT.bat          ultimele mesaje si daca ruleaza
+     4-OPRESTE-AGENTUL.bat      oprire si anularea pornirii automate
+     6-AGENT-IN-FEREASTRA.bat   pentru depanare (vedeti tot ce face)
+   Calculatorul nu trebuie sa intre in Sleep in programul de lucru (Setari -> Alimentare -> Repaus: niciodata).
 
 Nu copiati aw-fiscal-agent.ini si journal.json pe alte calculatoare (contin secretul agentului).
 Daca Windows Defender intreaba la prima rulare, alegeti "More info" -> "Run anyway".

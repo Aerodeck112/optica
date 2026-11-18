@@ -1,4 +1,7 @@
 <x-filament-panels::page>
+    @if ($agentWarning = \App\Filament\Pages\CounterSales::agentWarning())
+        <div class="aw-card" role="alert" style="border-color:#f59e0b;background:#fffbeb;color:#92400e;font-weight:600">⚠ {{ $agentWarning }}</div>
+    @endif
     <div class="aw-stack">
         <form wire:submit="lookup" class="aw-card aw-stack" x-data="awQrScanner($wire)">
             <label for="checkin-code" class="aw-h">Scanează codul QR sau tastează codul rezervării</label>
