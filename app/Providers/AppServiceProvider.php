@@ -41,6 +41,7 @@ use App\Modules\Finance\Models\FiscalReceipt;
 use App\Modules\Finance\Models\Invoice;
 use App\Modules\Finance\Models\Payment;
 use App\Modules\Finance\Models\Refund;
+use App\Modules\Inventory\Models\CounterSale;
 use App\Modules\Inventory\Models\GoodsReceipt;
 use App\Modules\Inventory\Models\InventoryCount;
 use App\Modules\Inventory\Models\Item;
@@ -151,6 +152,7 @@ class AppServiceProvider extends ServiceProvider
             'display_asset' => DisplayAsset::class,
             'app_update' => AppUpdate::class,
             'player_waiver' => PlayerWaiver::class,
+            'counter_sale' => CounterSale::class,
             'waiver_code' => WaiverCode::class,
         ]);
     }

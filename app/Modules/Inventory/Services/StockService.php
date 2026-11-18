@@ -107,6 +107,15 @@ class StockService
         return DB::transaction(fn () => $this->apply($item, $warehouseId, (string) $signed, $stored, null, $note, $userId), self::DEADLOCK_ATTEMPTS);
     }
 
+    /**
+     * Mișcare legată de un document (ex. vânzarea la recepție), în tranzacția apelantului.
+     * Cantitatea e cu semn: negativă = ieșire, pozitivă = reintrare (ex. anularea vânzării).
+     */
+    public function moveFor(Model $reference, Item $item, int $warehouseId, string $signedQuantity, string $type, int $userId, ?string $note = null): StockMovement
+    {
+        return $this->apply($item, $warehouseId, $signedQuantity, $type, $reference, $note, $userId);
+    }
+
     /** Pornește un inventar: cantitățile scriptice actuale, pentru toate articolele urmărite. */
     public function startCount(Warehouse $warehouse, int $userId): InventoryCount
     {

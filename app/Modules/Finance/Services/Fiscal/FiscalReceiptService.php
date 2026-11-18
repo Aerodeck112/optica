@@ -7,6 +7,7 @@ use App\Modules\Finance\Models\FiscalDevice;
 use App\Modules\Finance\Models\FiscalReceipt;
 use App\Modules\Finance\Models\Payment;
 use App\Modules\Finance\Services\VatCalculator;
+use App\Modules\Inventory\Models\CounterSale;
 use App\Support\LocalTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -166,6 +167,16 @@ class FiscalReceiptService
     /** Articolele bonului: detaliat dacă încasarea acoperă integral rezervarea, altfel o linie de avans / rest. */
     private function itemsFor(Payment $payment): array
     {
+        // vânzare la recepție: pe bon apar produsele vândute, fiecare cu cota ei de TVA
+        if ($payment->purpose === 'sale' && ($sale = CounterSale::query()->with('lines')->where('payment_id', $payment->id)->first())) {
+            return $sale->lines->map(fn ($line) => [
+                'name' => mb_substr($line->name, 0, 36),
+                'quantity' => rtrim(rtrim((string) $line->quantity, '0'), '.'),
+                'unit_price_minor' => (int) $line->unit_price_minor,
+                'amount_minor' => (int) $line->amount_minor,
+                'vat_rate' => (string) $line->vat_rate,
+            ])->values()->all();
+        }
         $booking = $payment->booking?->loadMissing('items', 'package');
         $date = LocalTime::now();
         if ($booking && $payment->purpose === 'booking' && (int) $booking->discount_minor === 0

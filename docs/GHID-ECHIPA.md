@@ -86,6 +86,15 @@ Pe pagina rezervării: **Încasează** → metoda (numerar, card POS, transfer) 
 * Un dublu-clic nu înregistrează încasarea de două ori.
 * Lista încasărilor rezervării este în partea de jos a paginii.
 
+### Vânzare produse (băuturi, gustări, suveniruri)
+**Recepție → Vânzare produse**: atingeți produsele (apar cele din **Stocuri → Articole** care au „Preț de vânzare”), ajustați
+cantitățile din „Bon curent”, alegeți **Numerar** sau **Card (POS)** și apăsați **Încasează**. Stocul scade automat, încasarea se
+înregistrează, iar bonul fiscal (fiecare produs pe linia lui) pleacă la casa de marcat. Opțional, vânzarea se leagă de o rezervare de azi.
+* Un produs fără stoc nu se poate adăuga; stocul vine din recepții (NIR). Dublu-clicul pe „Încasează” nu vinde de două ori.
+* Lista „Vânzările de azi” arată starea bonului; un bon eșuat se reemite cu **Emite bonul**.
+* **Anulează** (manager): produsele revin în stoc, încasarea se anulează; dacă bonul a fost tipărit, se face și bonul de stornare
+  din casa de marcat, conform procedurii.
+
 ### Modificări
 Pe pagina rezervării: **Confirmă**, **Reprogramează** (doar ore libere), **Anulează** (cu motiv), **Neprezentare**,
 **Finalizează**, **Modifică detaliile**, **Retrimite e-mailul**. Clientul primește automat mesajele corespunzătoare
