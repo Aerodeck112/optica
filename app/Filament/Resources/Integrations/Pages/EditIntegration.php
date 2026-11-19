@@ -104,6 +104,12 @@ class EditIntegration extends EditRecord
         $record->save();
         app(AuditLogger::class)->log('integration.updated', $record, ['driver' => $record->driver, 'mode' => $record->mode, 'credential_keys' => array_keys($credentials)]);
 
+        // plățile online se verifică imediat la salvare: până la un test reușit, site-ul nu oferă plata online
+        if ($record->key === 'payments' && $record->mode !== 'disabled' && $record->status === 'adapter_ready') {
+            $result = app(IntegrationTester::class)->test($record);
+            Notification::make()->{$result['ok'] ? 'success' : 'warning'}()->persistent()->title($result['ok'] ? 'Plățile online sunt active' : 'Plățile online nu sunt încă active')->body($result['message'])->send();
+        }
+
         return $record;
     }
 

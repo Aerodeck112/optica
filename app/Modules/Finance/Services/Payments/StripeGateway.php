@@ -44,7 +44,7 @@ class StripeGateway implements PaymentGateway
             'payment_intent_data' => ['metadata' => ['payment_uuid' => $payment->uuid]],
         ]);
         if (! $response->successful() || ! $response->json('url')) {
-            throw new \RuntimeException('Procesatorul de plăți nu a creat sesiunea (HTTP '.$response->status().').');
+            throw new \RuntimeException('Stripe nu a creat pagina de plată (HTTP '.$response->status().'): '.mb_substr((string) ($response->json('error.message') ?? $response->body()), 0, 300));
         }
 
         return ['url' => (string) $response->json('url'), 'reference' => (string) $response->json('id'), 'expires_at' => $expires];

@@ -47,7 +47,10 @@ final class IntegrationCatalog
             ],
             'payments' => [
                 'label' => 'Plăți online (avansuri, vouchere)',
-                'help' => 'Datele cardului sunt introduse doar pe pagina procesatorului; aplicația nu le vede și nu le stochează.',
+                'help' => 'Datele cardului sunt introduse doar pe pagina Stripe; aplicația nu le vede și nu le stochează. '
+                    .'În Stripe → Developers → Webhooks adăugați adresa '.rtrim((string) config('app.url'), '/').'/api/webhooks/stripe '
+                    .'cu evenimentele checkout.session.completed, checkout.session.async_payment_succeeded, checkout.session.async_payment_failed și checkout.session.expired, '
+                    .'apoi copiați aici „Secret key” (sk_…) și „Signing secret” (whsec_…). La salvare, conexiunea se verifică automat.',
                 'drivers' => [
                     'stripe' => ['label' => 'Stripe Checkout', 'credentials' => [
                         'secret_key' => ['label' => 'Cheie secretă (sk_…)', 'secret' => true], 'webhook_secret' => ['label' => 'Secret semnătură webhook (whsec_…)', 'secret' => true],
