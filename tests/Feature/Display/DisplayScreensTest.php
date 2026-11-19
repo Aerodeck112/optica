@@ -12,6 +12,7 @@ use App\Modules\Arena\Services\GameSessionService;
 use App\Modules\Arena\Services\PlayerService;
 use App\Modules\Booking\Models\Resource;
 use App\Modules\Display\Models\DisplayScreen;
+use App\Modules\Display\Services\DisplayStateBuilder;
 use App\Modules\Display\Services\PairingService;
 use Database\Seeders\BaseDataSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
@@ -182,5 +183,28 @@ class DisplayScreensTest extends TestCase
         $this->get('/admin/display-playlists/'.$this->live->display_playlist_id.'/edit')->assertOk()->assertSee('Previzualizarea rotației');
         $this->get('/admin/display-assets')->assertOk();
         $this->get('/admin/display-screens/'.$this->live->id.'/edit')->assertOk();
+    }
+
+    public function test_the_lounge_screen_shows_local_cameras_between_ads_without_sending_video_through_the_server(): void
+    {
+        $lounge = DisplayScreen::query()->where('slug', 'lounge')->firstOrFail();
+        $state = app(DisplayStateBuilder::class)->build($lounge);
+
+        $this->assertSame('http://127.0.0.1:1984', $state['cameras']['url']);
+        $this->assertSame(['cam1', 'cam2', 'cam3', 'cam4'], array_column($state['cameras']['streams'], 'stream'));
+        $this->assertSame('cameras', collect($state['playlist']['items'])->firstWhere('main', true)['type']);
+        $this->assertTrue(collect($state['playlist']['items'])->contains('type', 'promo'), 'reclamele rulează între camere');
+        $this->assertArrayHasKey('live', $state);
+
+        // doar go2rtc de pe același PC; o adresă publică este ignorată
+        $lounge->forceFill(['settings' => ['cameras_url' => 'https://camere.example.com', 'cameras' => "sala = Sala\nbad name! = X"]])->save();
+        $state = app(DisplayStateBuilder::class)->build($lounge->fresh());
+        $this->assertNull($state['cameras']['url']);
+        $this->assertSame([['stream' => 'sala', 'label' => 'Sala']], $state['cameras']['streams']);
+
+        $csp = $this->get('/display/lounge')->assertOk()->headers->get('Content-Security-Policy');
+        $this->assertStringContainsString('frame-src \'self\' http://127.0.0.1:* http://localhost:*', $csp);
+        $this->assertStringNotContainsString('upgrade-insecure-requests', $csp);
+        $this->assertStringContainsString('upgrade-insecure-requests', $this->get('/')->headers->get('Content-Security-Policy'));
     }
 }

@@ -1,0 +1,22 @@
+ECRANUL DIN LOUNGE - camerele din sala de joc + reclamele Another World
+(PC-ul cu Windows din spatele televizorului)
+
+Cum functioneaza: programul gratuit go2rtc ruleaza pe acest calculator, preia imaginea camerelor Hikvision din
+reteaua locala si o da paginii ecranului. Imaginile NU trec prin internet si nu ajung pe site.
+
+1. go2rtc: descarcati "go2rtc_win64.zip" de la https://github.com/AlexxIT/go2rtc/releases (ultima versiune),
+   dezarhivati si puneti go2rtc.exe in acest folder (C:\AW-Lounge-Camere).
+2. Deschideti go2rtc.yaml cu Notepad si completati pentru fiecare camera: utilizatorul, parola si IP-ul
+   (sau IP-ul NVR-ului si canalul: 102, 202, 302, 402). Salvati.
+3. Dublu-clic pe 2-PORNIRE-AUTOMATA.bat (o singura data). La prima pornire Windows poate intreba de firewall:
+   alegeti "Allow" doar pentru retele private.
+4. Dublu-clic pe 3-VERIFICA-CAMERELE.bat: se deschide pagina go2rtc; la fiecare camera, linkul "stream" trebuie sa arate imaginea.
+5. In panoul site-ului: Ecrane afisare -> Ecrane -> "Ecran 3 - Lounge (camere)" -> Mai mult -> Asociaza dispozitiv (cod de 30 de minute).
+6. In Chrome, pe acest calculator, deschideti https://anotherworldcluj.ro/display/lounge si introduceti codul.
+   Daca Chrome intreaba de accesul la "dispozitivele din reteaua locala", alegeti Permite
+   (sau rulati o data chrome-permite-camere-locale.reg ca administrator).
+7. Ecran complet si pornire automata: aceeasi scurtatura kiosk ca la celelalte ecrane (docs/ECRANE-AFISARE.md, sectiunea 2),
+   cu adresa https://anotherworldcluj.ro/display/lounge.
+
+Etichetele camerelor si adresa go2rtc se schimba din panou: Ecrane -> Lounge -> sectiunea "Camere".
+Durata camerelor si reclamele dintre ele: Ecrane afisare -> Playlisturi -> "Lounge - camere si reclame".

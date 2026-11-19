@@ -117,6 +117,7 @@ export class Engine {
       case 'live': return S.liveScene(ctx, { reveal: spec.reveal });
       case 'leaderboard': return S.leaderboardScene(ctx);
       case 'podium': return S.podiumScene(ctx);
+      case 'cameras': return S.camerasScene(ctx, spec.duration);
       case 'asset':
         if (spec.asset.kind === 'video') {
           return S.videoScene(ctx, spec.asset, spec.duration, (ok) => {
@@ -146,6 +147,7 @@ export class Engine {
       const left = Math.max(5, (Date.parse(override.expires_at) - this.ctx.clock.now()) / 1000);
       if (override.command === 'live' && this.state.screen?.type === 'live_arena') return { type: 'live', main: true, duration: Math.min(60, left) };
       if (override.command === 'leaderboard' && this.state.legends) return { type: 'leaderboard', main: true, duration: Math.min(60, left) };
+      if (override.command === 'cameras' && this.state.cameras) return { type: 'cameras', main: true, duration: Math.min(120, left) };
       if (override.command === 'asset') {
         const asset = this.findAsset(Number(override.asset_id));
         if (asset && !this.isFailed(asset)) return { type: 'asset', asset, duration: asset.kind === 'video' ? Math.min(600, Math.max(asset.duration, 30)) : Math.min(60, left) };
@@ -174,7 +176,8 @@ export class Engine {
   }
 
   mainSpec(playlist) {
-    const item = playlist.items.find((i) => i.main) || { type: this.state.screen?.type === 'live_arena' ? 'live' : 'leaderboard', duration: 50 };
+    const fallback = { live_arena: 'live', lounge: 'cameras' }[this.state.screen?.type] || 'leaderboard';
+    const item = playlist.items.find((i) => i.main) || { type: fallback, duration: 50 };
     return { type: item.type, main: true, duration: Math.max(item.duration || 50, playlist.min_main || 45) };
   }
 
@@ -215,6 +218,7 @@ export class Engine {
       case 'podium': return (this.state.legends?.rows || []).length >= 1;
       case 'message': return !!item.message;
       case 'live': return this.state.screen?.type === 'live_arena';
+      case 'cameras': return !!this.state.cameras;
       default: return true;
     }
   }

@@ -49,13 +49,17 @@ class SecurityHeaders
         }
 
         if (! $headers->has('Content-Security-Policy') && str_contains((string) $headers->get('Content-Type'), 'text/html')) {
-            $headers->set('Content-Security-Policy', $this->publicPolicy($nonce));
+            $headers->set('Content-Security-Policy', $this->publicPolicy($nonce, $request->is('display/*')));
         }
 
         return $response;
     }
 
-    private function publicPolicy(string $nonce): string
+    /**
+     * Ecranele (/display/…): camerele lounge-ului vin de la go2rtc de pe același PC (http://127.0.0.1 / localhost),
+     * deci aici se permit doar acele cadre locale și nu se forțează https pentru ele.
+     */
+    private function publicPolicy(string $nonce, bool $display = false): string
     {
         $script = ["'self'", "'nonce-{$nonce}'"];
         $connect = ["'self'"];
@@ -90,6 +94,10 @@ class SecurityHeaders
         foreach ((array) config('services.payments.form_action_hosts', []) as $host) {
             $form[] = $host;
         }
+        if ($display) {
+            $frame[] = 'http://127.0.0.1:*';
+            $frame[] = 'http://localhost:*';
+        }
 
         return implode('; ', [
             "default-src 'self'",
@@ -104,7 +112,7 @@ class SecurityHeaders
             'form-action '.implode(' ', array_unique($form)),
             "base-uri 'self'",
             "object-src 'none'",
-            'upgrade-insecure-requests',
+            ...($display ? [] : ['upgrade-insecure-requests']),
         ]);
     }
 

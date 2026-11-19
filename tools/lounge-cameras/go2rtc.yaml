@@ -1,0 +1,21 @@
+# Camerele Hikvision din sala de joc, pentru ecranul din lounge.
+# Inlocuiti UTILIZATOR, PAROLA si adresele IP cu ale voastre (le aveti de la instalatorul camerelor / din NVR).
+# Fisierul ramane DOAR pe calculatorul televizorului: parolele camerelor nu ajung pe site.
+#
+# Camere individuale:   rtsp://UTILIZATOR:PAROLA@IP-CAMERA:554/Streaming/Channels/102   (102 = flux secundar, usor; 101 = flux principal, calitate maxima)
+# Prin NVR Hikvision:    rtsp://UTILIZATOR:PAROLA@IP-NVR:554/Streaming/Channels/102     (camera 1)  202 (camera 2)  302 (camera 3)  402 (camera 4)
+# Daca parola are caractere speciale (@ : / #), scrieti-le codificat: @ = %40, : = %3A, / = %2F, # = %23
+
+streams:
+  cam1: rtsp://UTILIZATOR:PAROLA@192.168.1.64:554/Streaming/Channels/102
+  cam2: rtsp://UTILIZATOR:PAROLA@192.168.1.65:554/Streaming/Channels/102
+  cam3: rtsp://UTILIZATOR:PAROLA@192.168.1.66:554/Streaming/Channels/102
+  cam4: rtsp://UTILIZATOR:PAROLA@192.168.1.67:554/Streaming/Channels/102
+
+# accesibil doar de pe acest calculator
+api:
+  listen: "127.0.0.1:1984"
+rtsp:
+  listen: ""
+webrtc:
+  listen: "127.0.0.1:8555"

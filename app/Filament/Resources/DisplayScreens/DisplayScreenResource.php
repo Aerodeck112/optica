@@ -15,6 +15,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
@@ -81,6 +82,14 @@ class DisplayScreenResource extends Resource
                     DatePicker::make('settings.period_to')->label('Până la (inclusiv)')->visible(fn (Get $get) => $get('settings.period') === 'custom'),
                 ]),
             ])->collapsible(),
+            Section::make('Camere (ecranul Lounge)')->visible(fn (Get $get) => $get('type') === 'lounge')->schema([
+                Grid::make(2)->schema([
+                    TextInput::make('settings.cameras_url')->label('Adresa go2rtc pe PC-ul televizorului')->placeholder('http://127.0.0.1:1984')
+                        ->helperText('go2rtc rulează pe același calculator cu televizorul și preia camerele Hikvision din rețeaua locală (vezi ghidul). Imaginile nu trec prin internet.'),
+                    Textarea::make('settings.cameras')->label('Camere (câte una pe rând: numele fluxului din go2rtc = eticheta)')->rows(5)
+                        ->placeholder("cam1 = Sala de joc 1\ncam2 = Sala de joc 2\ncam3 = Sala de joc 3\ncam4 = Sala de joc 4"),
+                ]),
+            ])->collapsible(),
             Section::make('Live și reclame')->schema([
                 Grid::make(3)->schema([
                     Toggle::make('settings.intro')->label('Prezentare la începutul sesiunii')->inline(false)->default(true),
@@ -109,7 +118,7 @@ class DisplayScreenResource extends Resource
         return $table->defaultSort('id')->poll('20s')
             ->columns([
                 TextColumn::make('name')->label('Ecran')->weight('bold')->description(fn (DisplayScreen $s) => url($s->publicPath())),
-                TextColumn::make('type')->label('Conținut')->formatStateUsing(fn ($state) => $state === 'live_arena' ? 'Live Arena' : 'Hall of Legends'),
+                TextColumn::make('type')->label('Conținut')->formatStateUsing(fn ($state) => ['live_arena' => 'Live Arena', 'lounge' => 'Lounge (camere)'][$state] ?? 'Hall of Legends'),
                 TextColumn::make('resource.name')->label('Arena')->placeholder('Toate'),
                 TextColumn::make('status')->label('Player')->badge()->state(fn (DisplayScreen $s) => match (true) {
                     ! $s->isPaired() => 'Neasociat',
@@ -181,8 +190,8 @@ class DisplayScreenResource extends Resource
         return Action::make('quick')->label('Comandă rapidă')->icon('heroicon-o-bolt')->color('warning')
             ->visible(fn () => self::userCan('display.control'))
             ->schema(fn (DisplayScreen $s) => [
-                Select::make('command')->label('Ce afișez')->required()->live()->options(array_filter(DisplayScreen::COMMANDS, fn ($label, $key) => ! ($s->type === 'hall_of_legends' && $key === 'live')
-                    && ! ($s->type === 'live_arena' && $key === 'leaderboard'), ARRAY_FILTER_USE_BOTH)),
+                Select::make('command')->label('Ce afișez')->required()->live()->options(array_filter(DisplayScreen::COMMANDS, fn ($label, $key) => ! ($s->type !== 'live_arena' && $key === 'live')
+                    && ! ($s->type !== 'hall_of_legends' && $key === 'leaderboard') && ! ($s->type !== 'lounge' && $key === 'cameras'), ARRAY_FILTER_USE_BOTH)),
                 Select::make('asset_id')->label('Material')->visible(fn (Get $get) => $get('command') === 'asset')->required(fn (Get $get) => $get('command') === 'asset')
                     ->options(fn () => DisplayAsset::query()->where('is_active', true)->get()->filter(fn ($a) => $a->appliesTo($s->type))->pluck('title', 'id')),
                 Select::make('minutes')->label('Timp')->options([5 => '5 minute', 15 => '15 minute', 30 => '30 de minute', 60 => 'O oră', 180 => '3 ore'])->default(15)->required(),

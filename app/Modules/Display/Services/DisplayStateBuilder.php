@@ -52,11 +52,22 @@ class DisplayStateBuilder
 
         if ($screen->type === 'live_arena') {
             $state['live'] = $this->live($screen, $now);
+        } elseif ($screen->type === 'lounge') {
+            // camerele se văd direct de pe PC-ul ecranului (go2rtc); aici doar adresa locală și etichetele
+            $state['cameras'] = ['url' => $screen->camerasUrl(), 'streams' => $screen->cameras()];
+            $state['live'] = $this->live($screen, $now);
         } else {
             $state['legends'] = $this->legendsBlock($config);
         }
 
         return $state;
+    }
+
+    private function mainType(DisplayScreen $screen): string
+    {
+        return match ($screen->type) {
+            'live_arena' => 'live', 'lounge' => 'cameras', default => 'leaderboard',
+        };
     }
 
     private function playlist(DisplayScreen $screen, CarbonImmutable $local): array
@@ -68,7 +79,7 @@ class DisplayStateBuilder
                 if (! $item->isScheduledAt($local)) {
                     continue;
                 }
-                $type = $item->type === 'main' ? ($screen->type === 'live_arena' ? 'live' : 'leaderboard') : $item->type;
+                $type = $item->type === 'main' ? $this->mainType($screen) : $item->type;
                 $items[] = array_filter([
                     'id' => $item->id,
                     'type' => $type,
@@ -83,7 +94,7 @@ class DisplayStateBuilder
         }
         if (! collect($items)->contains(fn ($i) => ! empty($i['main']))) {
             // fără conținut principal configurat: ecranul își păstrează rolul
-            array_unshift($items, ['id' => 0, 'type' => $screen->type === 'live_arena' ? 'live' : 'leaderboard', 'main' => true, 'duration' => 50, 'weight' => 10]);
+            array_unshift($items, ['id' => 0, 'type' => $this->mainType($screen), 'main' => true, 'duration' => 50, 'weight' => 10]);
         }
 
         return [

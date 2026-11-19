@@ -470,3 +470,82 @@ export function messageScene(ctx, text, duration) {
   ctx.setBackground(null);
   return baseScene('message', node, duration);
 }
+
+/* ———————————————————— LOUNGE: CAMERELE DIN SALA DE JOC ———————————————————— */
+
+/*
+ * Imaginile vin de la go2rtc, care rulează pe PC-ul televizorului și preia fluxurile RTSP ale camerelor din rețeaua
+ * locală. Grila de camere este un strat permanent al scenei: între reclame doar se ascunde, ca fluxurile să nu se
+ * reconecteze la fiecare schimbare de scenă. Serverul site-ului nu vede imaginile.
+ */
+let cameraLayer = null;
+let cameraKey = '';
+let cameraUsers = 0;
+
+function cameraGrid(cams) {
+  const stage = document.getElementById('stage');
+  const key = JSON.stringify(cams || {});
+  if (cameraLayer && cameraKey === key) return cameraLayer;
+  cameraLayer?.remove();
+  cameraKey = key;
+  const streams = cams?.streams || [];
+  const cols = streams.length <= 1 ? 1 : streams.length <= 4 ? 2 : 3;
+  cameraLayer = el('div', { class: 'cams', 'data-cols': String(cols), 'aria-hidden': 'true' });
+  if (!cams?.url || !streams.length) {
+    cameraLayer.append(el('div', { class: 'cams__missing', text: 'Camerele nu sunt configurate pe acest ecran (go2rtc).' }));
+  }
+  for (const cam of streams) {
+    const frame = el('iframe', {
+      class: 'cams__frame',
+      src: `${cams.url}/stream.html?src=${encodeURIComponent(cam.stream)}&mode=webrtc,mse,hls,mjpeg`,
+      allow: 'autoplay',
+      referrerpolicy: 'no-referrer',
+      title: cam.label,
+    });
+    cameraLayer.append(el('figure', { class: 'cams__cell' }, [frame, el('figcaption', { class: 'cams__label', text: cam.label })]));
+  }
+  stage.insertBefore(cameraLayer, stage.querySelector('[data-scenes]'));
+  return cameraLayer;
+}
+
+export function camerasScene(ctx, duration) {
+  const layer = cameraGrid(ctx.state.cameras);
+  const chip = el('div', { class: 'cams-chip' });
+  const node = el('section', { class: 'scene scene--cams' }, chip);
+  const scene = baseScene('cameras', node, duration);
+  const render = (now) => {
+    const session = ctx.state.live?.session;
+    const next = ctx.state.live?.next;
+    chip.replaceChildren();
+    if (session) {
+      const started = Date.parse(session.started_at);
+      const pausedAt = session.paused_at ? Date.parse(session.paused_at) : null;
+      const elapsed = Math.max(0, ((pausedAt ?? now) - started) / 1000 - (session.paused_seconds || 0));
+      const left = Math.max(0, (session.planned_seconds || 0) - elapsed);
+      chip.append(
+        el('span', { class: 'live-pill' }, [el('span', { class: 'live-pill__dot' }), el('span', { text: session.status === 'paused' ? 'PAUZĂ' : 'LIVE' })]),
+        el('strong', { text: session.game?.title || 'Aventura VR' }),
+        el('span', { text: `${session.count || 0} jucători · mai sunt ${formatDuration(left)}` }),
+      );
+    } else if (next) {
+      const text = countdownText(next, now);
+      chip.append(el('strong', { text: 'Următoarea rundă' }), el('span', { text: text ? `în ${text}` : next.label }));
+    } else {
+      chip.append(el('strong', { text: ctx.state.screen?.title || 'Sala de joc — live' }));
+    }
+  };
+  cameraUsers += 1;
+  requestAnimationFrame(() => layer.classList.add('is-on'));
+  render(ctx.clock.now());
+  scene.tick = (now) => render(now);
+  scene.update = () => true;
+  ctx.setBackground(null);
+  const dispose = scene.dispose;
+  scene.dispose = () => {
+    dispose();
+    cameraUsers -= 1;
+    if (cameraUsers <= 0) { cameraUsers = 0; layer.classList.remove('is-on'); }
+  };
+  scene.hud = true;
+  return scene;
+}

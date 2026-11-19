@@ -10,3 +10,4 @@
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
 tools/fiscal-agent/windows/* text eol=crlf
+tools/lounge-cameras/* text eol=crlf

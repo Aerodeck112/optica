@@ -108,3 +108,20 @@ Pe aceeași arenă poate rula o singură sesiune la un moment dat; fiecare ecran
 - Numele real al jucătorului (opțional, intern) și numele adultului care a dat acordul pentru un minor se păstrează criptat.
 - Profilurile fără nicio sesiune în perioada din **Setări → Retenție** (implicit 36 de luni) se anonimizează automat; participările rămân doar ca statistică.
 - **De completat de operator**: politica de confidențialitate trebuie să menționeze afișarea nickname-ului pe ecranele locației (temei: consimțământ, retragere oricând la recepție) și perioada de păstrare a profilurilor.
+
+## 9. Ecranul din lounge (camerele din sala de joc)
+
+Televizorul din zona părinților are un PC cu Windows. Ecranul **Ecran 3 — Lounge (camere)** (`/display/lounge`) arată camerele
+din sala de joc (implicit 4, în grilă 2 × 2), cu banda „LIVE” (jocul, jucătorii, timpul rămas sau runda următoare); între ele
+rulează materialele Another World din playlistul „Lounge — camere și reclame” (cel mult o reclamă la rând, implicit).
+
+- Imaginile vin de la **go2rtc** (gratuit, open source), care rulează pe PC-ul televizorului și preia fluxurile RTSP ale
+  camerelor / NVR-ului Hikvision din rețeaua locală. Pagina ecranului le afișează de la `http://127.0.0.1:1984`; **imaginile
+  nu trec prin internet și nu ajung pe server**, iar parolele camerelor rămân doar în `go2rtc.yaml` pe acel PC.
+- Pachetul de instalare (go2rtc.yaml pentru Hikvision, pornire în fundal și automată, verificare): `tools/lounge-cameras/`
+  (`CITESTE-MA.txt`). go2rtc.exe se descarcă de pe pagina oficială a proiectului.
+- Din panou (**Ecrane → Lounge → Camere**): adresa go2rtc (doar `127.0.0.1` / `localhost`) și camerele, câte una pe rând,
+  `nume_flux = Etichetă`. Comanda rapidă „Afișează camerele” le aduce imediat pe ecran.
+- Grila de camere rămâne încărcată și doar se ascunde în timpul reclamelor, ca fluxurile să nu se reconecteze.
+- Chrome poate cere o singură dată permisiunea de acces la „dispozitivele din rețeaua locală” (pentru 127.0.0.1): se acceptă
+  la prima pornire, înainte de modul kiosk, sau se aplică politica din `chrome-permite-camere-locale.reg`.

@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+; Optional: Chrome permite site-ului anotherworldcluj.ro sa afiseze camerele de pe acest calculator (127.0.0.1)
+; fara sa mai intrebe. Necesar daca Chrome afiseaza intrebarea despre "dispozitivele din reteaua locala" in modul kiosk.
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\LocalNetworkAccessAllowedForUrls]
+"1"="https://anotherworldcluj.ro"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Edge\LocalNetworkAccessAllowedForUrls]
+"1"="https://anotherworldcluj.ro"
