@@ -8,6 +8,7 @@ use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\PlayerWaiver;
 use App\Modules\Booking\Services\BookingData;
 use App\Modules\Booking\Services\BookingService;
+use App\Modules\Booking\Services\PlayerWaiverService;
 use App\Modules\Crm\Models\Consent;
 use App\Support\LocalTime;
 use Carbon\CarbonImmutable;
@@ -170,5 +171,50 @@ class PlayerWaiverTest extends TestCase
         $this->post($url, $this->form(['nickname' => 'AltNume']))->assertSessionHas('waiver_signed');
         $this->assertSame(1, Player::query()->count());
         $this->assertSame(['IonVR', 'refused'], [$player->refresh()->nickname, $player->display_consent]);
+    }
+
+    private function familyForm(array $overrides = []): array
+    {
+        return $overrides + [
+            'mode' => 'family', 'signer_name' => 'Ana Testescu', 'email' => 'ana@example.test', 'guardian_phone' => '0700 000 001',
+            'self' => '1', 'signer_birth_date' => '1988-03-04', 'self_nickname' => 'AnaVR',
+            'children' => [
+                ['name' => 'Maria Testescu', 'birth_date' => '2016-06-01', 'nickname' => 'Mia'],
+                ['name' => 'Luca Testescu', 'birth_date' => '2018-09-15', 'nickname' => ''],
+            ],
+            'screen_display' => '1', 'signature' => $this->signature(), 'accept' => '1', '_started' => time() - 60,
+        ];
+    }
+
+    public function test_a_parent_signs_once_for_themselves_and_their_children(): void
+    {
+        $booking = $this->booking(3);
+
+        $this->post($booking->waiverUrl(), $this->familyForm())->assertSessionHas('waiver_signed', 'Ana Testescu, Maria Testescu, Luca Testescu');
+
+        $waivers = PlayerWaiver::query()->orderBy('id')->get();
+        $this->assertSame(['self', 'guardian', 'guardian'], $waivers->pluck('signer_role')->all());
+        $this->assertSame([false, true, true], $waivers->pluck('is_minor')->all());
+        $this->assertSame([null, 'Ana Testescu', 'Ana Testescu'], $waivers->pluck('guardian_name')->all());
+        $this->assertSame(1, $waivers->pluck('signature')->unique()->count(), 'o singură semnătură pentru toată familia');
+        $this->assertSame(['AnaVR', 'Mia', null], $waivers->map(fn ($w) => $w->player->nickname)->all());
+        $this->assertSame(['signed' => 3, 'expected' => 3, 'complete' => true], app(PlayerWaiverService::class)->progress($booking));
+    }
+
+    public function test_family_form_rejects_an_adult_listed_as_a_child_and_an_empty_form(): void
+    {
+        $url = $this->booking(2)->waiverUrl();
+
+        $this->post($url, $this->familyForm(['children' => [['name' => 'Adult Testescu', 'birth_date' => '1990-01-01']]]))->assertSessionHasErrors('children.0.birth_date');
+        $this->post($url, $this->familyForm(['self' => '0', 'children' => []]))->assertSessionHasErrors('self');
+        $this->assertSame(0, PlayerWaiver::query()->count());
+    }
+
+    public function test_the_booker_link_opens_the_form_prefilled_while_the_shared_link_stays_empty(): void
+    {
+        $booking = $this->booking();
+
+        $this->get($booking->waiverUrl(forBooker: true))->assertOk()->assertSee('value="Client Fictiv"', false)->assertSee('client@example.test');
+        $this->get($booking->waiverUrl())->assertOk()->assertDontSee('value="Client Fictiv"', false);
     }
 }

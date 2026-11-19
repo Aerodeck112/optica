@@ -63,55 +63,60 @@
                 <input type="hidden" name="locale" value="{{ app()->getLocale() }}">
                 @include('site.partials.form-guard', ['id' => 'waiver'])
 
-                <h2 style="font-size: var(--fs-lg)">{{ __('site.waiver.participant') }}</h2>
-                <div class="field-row mt-5">
-                    @include('site.partials.field', ['name' => 'participant_name', 'label' => __('site.waiver.participant_name'), 'required' => true, 'id' => 'waiver-participant', 'autocomplete' => 'off'])
-                    @include('site.partials.field', ['name' => 'birth_date', 'type' => 'date', 'label' => __('site.waiver.birth_date'), 'required' => true, 'id' => 'waiver-birth', 'maxValue' => now()->toDateString()])
-                </div>
-                <div class="field-row mt-5">
-                    @unless ($booking || ($tablet ?? null))
-                        @include('site.partials.field', ['name' => 'booking_code', 'label' => __('site.waiver.booking_code'), 'id' => 'waiver-booking', 'autocomplete' => 'off'])
-                    @endunless
-                    @include('site.partials.field', ['name' => 'email', 'type' => 'email', 'label' => __('site.waiver.email'), 'id' => 'waiver-email', 'autocomplete' => 'email'])
-                </div>
+                @php
+                    $prefill = $prefill ?? [];
+                    $children = array_values((array) old('children', []));
+                    $selfChecked = old('mode') ? (bool) old('self') : true;
+                    $maxDate = now()->toDateString();
+                @endphp
+                <input type="hidden" name="mode" value="family">
+                @if ($prefill)
+                    <div class="notice mt-2"><x-aw-icon name="info"/><p>{{ __('site.waiver.family.prefill_note') }}</p></div>
+                @endif
 
-                <fieldset class="mt-6" data-guardian @if (! old('guardian_name')) hidden @endif style="border:0;padding:0">
-                    <legend class="field__label">{{ __('site.waiver.minor_title') }}</legend>
-                    <p class="small muted mt-3">{{ __('site.waiver.minor_note') }}</p>
-                    <div class="mt-4">
-                        @include('site.partials.field', ['name' => 'guardian_name', 'label' => __('site.waiver.guardian_name'), 'id' => 'waiver-guardian', 'autocomplete' => 'name'])
-                    </div>
-                    <div class="field-row mt-5">
-                        @include('site.partials.field', ['name' => 'guardian_relationship', 'label' => __('site.waiver.guardian_relationship'), 'id' => 'waiver-relationship'])
-                        @include('site.partials.field', ['name' => 'guardian_phone', 'type' => 'tel', 'label' => __('site.waiver.guardian_phone'), 'id' => 'waiver-guardian-phone', 'autocomplete' => 'tel'])
-                    </div>
-                </fieldset>
-
-                <h2 class="mt-7" style="font-size: var(--fs-lg)">{{ __('site.waiver.player_title') }}</h2>
-                <p class="small muted mt-3">{{ __('site.waiver.player_note') }}</p>
+                <h2 class="mt-5" style="font-size: var(--fs-lg)">{{ __('site.waiver.family.who_signs') }}</h2>
+                <p class="small muted mt-2">{{ __('site.waiver.family.who_signs_note') }}</p>
                 <div class="mt-5">
-                    @include('site.partials.field', ['name' => 'nickname', 'label' => __('site.waiver.nickname'), 'hint' => __('site.waiver.nickname_hint'), 'id' => 'waiver-nickname', 'autocomplete' => 'off', 'max' => 18])
+                    @include('site.partials.field', ['name' => 'signer_name', 'label' => __('site.waiver.signer_name'), 'required' => true, 'id' => 'waiver-signer', 'autocomplete' => 'name', 'value' => $prefill['signer_name'] ?? ''])
                 </div>
-                <fieldset class="mt-5" style="border:0;padding:0">
-                    <legend class="field__label">{{ __('site.waiver.avatar') }}</legend>
-                    <div class="avatar-grid mt-3">
-                        @foreach (\App\Modules\Arena\Services\AvatarCatalog::AVATARS as $key => [$avatarName, $avatarCategory])
-                            <label class="avatar-choice" title="{{ $avatarName }}">
-                                <input type="radio" name="avatar_key" value="{{ $key }}" @checked(old('avatar_key') === $key)>
-                                <img src="{{ \App\Modules\Arena\Services\AvatarCatalog::url($key) }}" alt="{{ $avatarName }}" width="64" height="64" loading="lazy">
-                            </label>
+                <div class="field-row mt-5">
+                    @include('site.partials.field', ['name' => 'guardian_phone', 'type' => 'tel', 'label' => __('site.waiver.family.phone'), 'id' => 'waiver-phone', 'autocomplete' => 'tel', 'value' => $prefill['phone'] ?? ''])
+                    @include('site.partials.field', ['name' => 'email', 'type' => 'email', 'label' => __('site.waiver.email'), 'id' => 'waiver-email', 'autocomplete' => 'email', 'value' => $prefill['email'] ?? ''])
+                </div>
+                @unless ($booking || ($tablet ?? null))
+                    <div class="mt-5">@include('site.partials.field', ['name' => 'booking_code', 'label' => __('site.waiver.booking_code'), 'id' => 'waiver-booking', 'autocomplete' => 'off'])</div>
+                @endunless
+
+                <h2 class="mt-7" style="font-size: var(--fs-lg)">{{ __('site.waiver.family.who_plays') }}</h2>
+                @error('self')<p class="field__error mt-2" role="alert">{{ $message }}</p>@enderror
+                <label class="check mt-4 family-self"><input type="checkbox" name="self" value="1" data-family-self @checked($selfChecked)><span><strong>{{ __('site.waiver.family.self') }}</strong></span></label>
+                <div class="field-row mt-3" data-family-self-fields @unless ($selfChecked) hidden @endunless>
+                    @include('site.partials.field', ['name' => 'signer_birth_date', 'type' => 'date', 'label' => __('site.waiver.family.self_birth'), 'required' => true, 'id' => 'waiver-self-birth', 'maxValue' => $maxDate])
+                    @include('site.partials.field', ['name' => 'self_nickname', 'label' => __('site.waiver.family.nickname_optional'), 'id' => 'waiver-self-nick', 'autocomplete' => 'off'])
+                </div>
+
+                <fieldset class="mt-6 family-children" style="border:0;padding:0">
+                    <legend class="field__label">{{ __('site.waiver.family.children_title') }}</legend>
+                    <p class="small muted mt-2">{{ __('site.waiver.family.children_note') }}</p>
+                    <div class="stack mt-4" data-family-children data-session-date="{{ $sessionDate }}">
+                        @foreach ($children as $i => $child)
+                            @include('site.waiver.child-row', ['i' => $i, 'child' => $child, 'maxDate' => $maxDate])
                         @endforeach
                     </div>
-                    <p class="field__hint mt-3">{{ __('site.waiver.avatar_hint') }}</p>
-                    @error('avatar_key')<p class="field__error">{{ $message }}</p>@enderror
+                    <template data-family-child-template>
+                        @include('site.waiver.child-row', ['i' => '__I__', 'child' => [], 'maxDate' => $maxDate])
+                    </template>
+                    <button type="button" class="btn btn--ghost mt-4" data-family-add>{{ __('site.waiver.family.add_child') }}</button>
+                    <div class="mt-4" data-family-relationship @if (! $children) hidden @endif>
+                        @include('site.partials.field', ['name' => 'guardian_relationship', 'label' => __('site.waiver.family.relationship'), 'id' => 'waiver-relationship', 'value' => __('site.waiver.family.relationship_default')])
+                    </div>
                 </fieldset>
-                <label class="check mt-5"><input type="checkbox" name="screen_display" value="1" @checked(old('screen_display'))><span data-screen-adult>{{ __('site.waiver.screen_display') }}</span><span data-screen-minor hidden>{{ __('site.waiver.screen_display_minor') }}</span></label>
+
+                <p class="small muted mt-6">{{ __('site.waiver.player_note') }}</p>
+                <label class="check mt-3"><input type="checkbox" name="screen_display" value="1" @checked(old('screen_display'))><span>{{ __('site.waiver.family.screen_display') }}</span></label>
 
                 <h2 class="mt-7" style="font-size: var(--fs-lg)">{{ __('site.waiver.signature_title') }}</h2>
                 <label class="check mt-5"><input type="checkbox" name="accept" value="1" required @checked(old('accept'))><span>{{ __('site.waiver.accept') }}</span></label>
-                <div class="mt-5">
-                    @include('site.partials.field', ['name' => 'signer_name', 'label' => __('site.waiver.signer_name'), 'required' => true, 'id' => 'waiver-signer', 'autocomplete' => 'name'])
-                </div>
                 <div class="field mt-5" data-signature>
                     <span class="field__label" id="waiver-signature-label">{{ __('site.waiver.signature') }}</span>
                     <canvas class="signature-pad" width="600" height="220" role="img" aria-labelledby="waiver-signature-label" aria-describedby="waiver-signature-hint"></canvas>
@@ -127,7 +132,7 @@
                     <legend class="field__label">{{ __('site.waiver.optional') }}</legend>
                     <label class="check mt-4"><input type="checkbox" name="marketing_email" value="1" @checked(old('marketing_email'))><span>{{ __('site.waiver.marketing') }}</span></label>
                     <label class="check" data-photo-adult><input type="checkbox" name="photo_consent" value="1" @checked(old('photo_consent'))><span>{{ __('site.waiver.photo') }}</span></label>
-                    <p class="field__hint mt-3" data-photo-minor hidden>{{ __('site.waiver.photo_minor') }}</p>
+                    <p class="field__hint mt-3">{{ __('site.waiver.photo_minor') }}</p>
                 </fieldset>
 
                 <p class="small muted mt-5">

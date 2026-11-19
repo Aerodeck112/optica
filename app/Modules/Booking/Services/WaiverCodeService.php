@@ -150,25 +150,28 @@ class WaiverCodeService
 
     /**
      * Folosește codul: semnarea și marcarea codului se fac împreună, deci același cod nu poate semna de două ori
-     * (nici de pe două tablete în aceeași secundă).
+     * (nici de pe două tablete în aceeași secundă). Un cod acoperă o familie: părintele semnează pentru el și copii.
      *
-     * @param  callable(?Booking): PlayerWaiver  $sign
+     * @param  callable(?Booking): (PlayerWaiver|Collection<int, PlayerWaiver>)  $sign
+     * @return Collection<int, PlayerWaiver>
      */
-    public function redeem(WaiverCode $code, callable $sign): PlayerWaiver
+    public function redeem(WaiverCode $code, callable $sign): Collection
     {
-        $waiver = DB::transaction(function () use ($code, $sign) {
+        $waivers = DB::transaction(function () use ($code, $sign) {
             $locked = WaiverCode::query()->lockForUpdate()->find($code->id);
             if (! $locked || ! $locked->isActive()) {
                 throw new WaiverCodeException('Codul a fost deja folosit sau a expirat.');
             }
-            $waiver = $sign($locked->booking);
-            $locked->forceFill(['used_at' => now(), 'player_waiver_id' => $waiver->id])->save();
+            $result = $sign($locked->booking);
+            $waivers = $result instanceof PlayerWaiver ? collect([$result]) : collect($result);
+            $locked->forceFill(['used_at' => now(), 'player_waiver_id' => $waivers->first()?->id])->save();
 
-            return $waiver;
+            return $waivers;
         });
-        $this->joinSession($code->refresh(), $waiver);
+        $code->refresh();
+        $waivers->each(fn (PlayerWaiver $waiver) => $this->joinSession($code, $waiver));
 
-        return $waiver;
+        return $waivers;
     }
 
     public function revoke(WaiverCode $code, ?int $userId = null): void

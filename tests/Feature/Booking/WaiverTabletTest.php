@@ -82,7 +82,7 @@ class WaiverTabletTest extends TestCase
 
         $this->post('/declaratie/tableta', ['code' => substr($first, 0, 3).' '.substr($first, 3)])->assertRedirect('/declaratie/tableta/semnare');
         $this->get('/declaratie/tableta/semnare')->assertOk()->assertSee($booking->code)->assertDontSee('name="booking_code"', false);
-        $this->post('/declaratie/tableta/semnare', $this->form())->assertRedirect('/declaratie/tableta')->assertSessionHas('waiver_signed', 'Ion Testescu');
+        $this->post('/declaratie/tableta/semnare', $this->form())->assertRedirect('/declaratie/tableta')->assertSessionHas('waiver_signed', 'Ion');
 
         $waiver = PlayerWaiver::query()->sole();
         $this->assertSame(['tablet', $booking->id], [$waiver->source, $waiver->booking_id]);
@@ -202,5 +202,22 @@ class WaiverTabletTest extends TestCase
 
         Livewire::test(MissingWaivers::class)->callAction(TestAction::make('walkIn')->table());
         $this->assertSame(1, WaiverCode::query()->whereNull('booking_id')->count());
+    }
+
+    public function test_one_tablet_code_lets_a_parent_sign_for_the_whole_family_at_once(): void
+    {
+        $booking = $this->booking(3);
+        $code = app(WaiverCodeService::class)->issue($booking, 1)->sole()->code;
+        $legacy = $this->form();
+
+        $this->post('/declaratie/tableta', ['code' => $code]);
+        $this->post('/declaratie/tableta/semnare', [
+            'mode' => 'family', 'signer_name' => 'Ana Testescu', 'self' => '1', 'signer_birth_date' => '1988-03-04',
+            'children' => [['name' => 'Maria Testescu', 'birth_date' => '2016-06-01'], ['name' => 'Luca Testescu', 'birth_date' => '2018-09-15']],
+            'signature' => $legacy['signature'], 'accept' => '1', '_started' => time() - 60,
+        ])->assertRedirect('/declaratie/tableta')->assertSessionHas('waiver_signed', 'Ana, Maria, Luca');
+
+        $this->assertSame(3, PlayerWaiver::query()->where('booking_id', $booking->id)->where('source', 'tablet')->count());
+        $this->assertNotNull(WaiverCode::query()->sole()->used_at);
     }
 }

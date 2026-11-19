@@ -11,6 +11,7 @@ use App\Modules\Cms\Seo\Seo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use RuntimeException;
 
 /**
@@ -70,7 +71,7 @@ class WaiverTabletController extends WaiverController
         }
 
         try {
-            $waiver = $codes->redeem($code, fn (?Booking $booking) => $this->signRequest($request, $booking, 'tablet'));
+            $waivers = $codes->redeem($code, fn (?Booking $booking) => $this->signRequest($request, $booking, 'tablet'));
         } catch (WaiverCodeException) {
             return $this->backToKeypad($request, __('site.waiver.tablet.used'));
         } catch (RuntimeException) {
@@ -78,7 +79,7 @@ class WaiverTabletController extends WaiverController
         }
         $request->session()->forget(self::SESSION_KEY);
 
-        return redirect(lroute('waiver.tablet'))->with('waiver_signed', $waiver->participant_name);
+        return redirect(lroute('waiver.tablet'))->with('waiver_signed', $waivers->pluck('participant_name')->map(fn ($n) => Str::of($n)->before(' '))->implode(', '));
     }
 
     public function cancel(Request $request): RedirectResponse

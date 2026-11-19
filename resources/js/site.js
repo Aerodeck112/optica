@@ -466,26 +466,54 @@ function initWaiver() {
     }
   });
 
-  // sub 18 ani în ziua sesiunii: semnează părintele/reprezentantul legal
-  const birth = form.querySelector('input[name="birth_date"]');
-  const guardian = form.querySelector('[data-guardian]');
-  const photoAdult = form.querySelector('[data-photo-adult]');
-  const photoMinor = form.querySelector('[data-photo-minor]');
-  const toggleMinor = () => {
-    if (!birth.value) return;
-    const born = new Date(birth.value + 'T00:00:00');
-    const adultFrom = new Date(born.getFullYear() + 18, born.getMonth(), born.getDate());
-    const minor = adultFrom > new Date(form.dataset.sessionDate + 'T00:00:00');
-    guardian.hidden = !minor;
-    guardian.querySelector('input[name="guardian_name"]').required = minor;
-    photoAdult.hidden = minor;
-    photoMinor.hidden = !minor;
-    if (minor) photoAdult.querySelector('input').checked = false;
-    form.querySelector('[data-screen-adult]')?.toggleAttribute('hidden', minor);
-    form.querySelector('[data-screen-minor]')?.toggleAttribute('hidden', !minor);
+  // familia: „Joc și eu” + copii (nume și data nașterii); un copil adult e semnalat înainte de trimitere
+  const self = form.querySelector('[data-family-self]');
+  const selfFields = form.querySelector('[data-family-self-fields]');
+  const list = form.querySelector('[data-family-children]');
+  const template = form.querySelector('[data-family-child-template]');
+  const relationship = form.querySelector('[data-family-relationship]');
+  if (!self || !list || !template) return;
+  const sessionDate = new Date((list.dataset.sessionDate || form.dataset.sessionDate) + 'T00:00:00');
+  const isAdult = (value) => {
+    if (!value) return false;
+    const born = new Date(value + 'T00:00:00');
+    return new Date(born.getFullYear() + 18, born.getMonth(), born.getDate()) <= sessionDate;
   };
-  birth.addEventListener('change', toggleMinor);
-  toggleMinor();
+  const syncSelf = () => {
+    selfFields.hidden = !self.checked;
+    const birth = selfFields.querySelector('input[type="date"]');
+    if (birth) birth.required = self.checked;
+  };
+  const syncChildren = () => {
+    const rows = list.querySelectorAll('[data-family-child]');
+    relationship.hidden = rows.length === 0;
+    rows.forEach((row) => {
+      const birth = row.querySelector('[data-family-birth]');
+      row.querySelector('[data-family-adult]').hidden = !isAdult(birth.value);
+    });
+  };
+  let next = list.querySelectorAll('[data-family-child]').length;
+  const addChild = () => {
+    const html = template.innerHTML.replaceAll('__I__', String(next++));
+    list.insertAdjacentHTML('beforeend', html);
+    const row = list.lastElementChild;
+    row.querySelector('input')?.focus();
+    syncChildren();
+  };
+  form.querySelector('[data-family-add]').addEventListener('click', addChild);
+  list.addEventListener('click', (e) => {
+    const remove = e.target.closest('[data-family-remove]');
+    if (remove) { remove.closest('[data-family-child]').remove(); syncChildren(); }
+  });
+  list.addEventListener('change', syncChildren);
+  self.addEventListener('change', syncSelf);
+  form.addEventListener('submit', (e) => {
+    const adult = [...list.querySelectorAll('[data-family-birth]')].find((input) => isAdult(input.value));
+    if (adult) { e.preventDefault(); syncChildren(); adult.focus(); }
+  });
+  // fără „Joc și eu” și fără copii, formularul începe direct cu un copil de completat
+  syncSelf();
+  syncChildren();
 }
 
 /* ——— Popup oferta de deschidere: o dată pe zi pentru fiecare vizitator ——— */

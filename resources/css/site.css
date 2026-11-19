@@ -1296,3 +1296,11 @@
   .is-kiosk .avatar-grid { grid-template-columns: repeat(auto-fill, minmax(4.25rem, 1fr)); }
   .is-kiosk .check input { width: 1.5rem; height: 1.5rem; }
 }
+
+/* declarația pentru familie: câte un rând pe copil */
+@layer pages {
+  .family-child { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: var(--space-3); align-items: start; padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-m); background: rgb(28 38 104 / 0.25); }
+  .family-child__remove { margin-top: 1.9rem; }
+  .family-self { font-size: var(--fs-md); }
+  @media (max-width: 720px) { .family-child { grid-template-columns: 1fr 1fr; } .family-child .field:first-child { grid-column: 1 / -1; } }
+}

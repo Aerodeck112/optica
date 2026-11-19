@@ -188,11 +188,15 @@ class Booking extends Model
     }
 
     /** Linkul (semnat) către declarația de participare a acestei rezervări, în limba rezervării. */
-    public function waiverUrl(): string
+    /**
+     * Linkul declarațiilor rezervării. Cu $forBooker, formularul se deschide precompletat cu datele celui care a rezervat
+     * (folosit doar în pagina de confirmare, pe care o vede el); linkul de trimis celorlalți nu conține date.
+     */
+    public function waiverUrl(bool $forBooker = false): string
     {
         $locale = in_array($this->locale, Locales::enabled(), true) ? $this->locale : Locales::DEFAULT;
 
-        return URL::signedRoute($locale.'.waiver.booking', ['code' => $this->code]);
+        return URL::signedRoute($locale.'.waiver.booking', ['code' => $this->code] + ($forBooker ? ['eu' => 1] : []));
     }
 
     public function payments(): HasMany

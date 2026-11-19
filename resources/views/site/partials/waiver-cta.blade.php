@@ -5,8 +5,8 @@
     <p class="muted">{{ __('site.waiver.cta_text') }}</p>
     <p class="small">{{ __('site.waiver.progress', ['signed' => $waiverProgress['signed'], 'expected' => $waiverProgress['expected']]) }}</p>
     <div class="cluster">
-        <a class="btn btn--primary" href="{{ $booking->waiverUrl() }}">{{ __('site.waiver.cta') }}</a>
-        <button type="button" class="btn btn--ghost" data-copy-url="{{ $booking->waiverUrl() }}">{{ __('site.waiver.copy') }}</button>
+        <a class="btn btn--primary" href="{{ $booking->waiverUrl(forBooker: true) }}">{{ __('site.waiver.family.cta_self') }}</a>
+        <button type="button" class="btn btn--ghost" data-copy-url="{{ $booking->waiverUrl() }}">{{ __('site.waiver.family.copy_others') }}</button>
         <span class="small muted" data-copy-status hidden>{{ __('site.waiver.copied') }}</span>
     </div>
 </div>
