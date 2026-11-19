@@ -52,4 +52,12 @@ class StripeSetupTest extends TestCase
         $this->assertTrue(Integration::query()->where('key', 'payments')->sole()->isUsable());
         $this->assertContains('online', (array) app(SettingsRepository::class)->get('booking.payment_methods'));
     }
+
+    public function test_the_browser_may_follow_the_redirect_to_the_stripe_payment_page_after_submitting_a_form(): void
+    {
+        $this->seed(BaseDataSeeder::class);
+        $csp = (string) $this->get('/rezervare')->headers->get('Content-Security-Policy');
+
+        $this->assertMatchesRegularExpression("#form-action 'self'[^;]* https://checkout\\.stripe\\.com#", $csp);
+    }
 }

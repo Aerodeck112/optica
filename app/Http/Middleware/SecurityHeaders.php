@@ -91,6 +91,9 @@ class SecurityHeaders
             $script[] = 'https://challenges.cloudflare.com';
             $frame[] = 'https://challenges.cloudflare.com';
         }
+        // după trimiterea rezervării / comenzii de voucher, site-ul redirecționează către pagina de plată Stripe;
+        // browserul aplică „form-action” și redirecționărilor, deci pagina Stripe trebuie permisă explicit
+        $form[] = 'https://checkout.stripe.com';
         foreach ((array) config('services.payments.form_action_hosts', []) as $host) {
             $form[] = $host;
         }
