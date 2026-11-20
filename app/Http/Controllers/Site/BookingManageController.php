@@ -47,8 +47,9 @@ class BookingManageController extends Controller
     public function pay(string $token)
     {
         $booking = $this->resolve($token);
+        $manage = lroute('booking.manage', ['token' => $token], $booking->locale);
         if (! $this->canPayOnline($booking)) {
-            return back()->withErrors(['pay' => __('site.booking.payment_unavailable')]);
+            return redirect($manage)->withErrors(['pay' => __('site.booking.payment_unavailable')]);
         }
 
         try {
@@ -58,19 +59,15 @@ class BookingManageController extends Controller
                 lroute('booking.manage', ['token' => $token], $booking->locale),
             );
         } catch (PaymentException $e) {
-            return back()->withErrors(['pay' => $e->getMessage()]);
+            return redirect($manage)->withErrors(['pay' => $e->getMessage()]);
         }
 
         return redirect()->away($payment->checkout_url);
     }
 
-    /** Plata online e oferită doar dacă procesatorul e configurat și clientul a ales-o sau rezervarea are de achitat avans. */
     private function canPayOnline(Booking $booking): bool
     {
-        return $this->gateways->active() !== null
-            && in_array($booking->status, ['pending', 'confirmed'], true)
-            && ($booking->payment_method === 'online' || ($booking->status === 'pending' && $booking->deposit_minor > 0))
-            && $this->payments->amountDueOnline($booking) > 0;
+        return $this->payments->canPayOnline($booking);
     }
 
     public function cancel(Request $request, string $token)

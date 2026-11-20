@@ -273,6 +273,9 @@ return [
     ],
 
     'booking' => [
+        'pay_now' => 'Plătește acum online — :amount',
+        'pay_now_busy' => 'Se deschide pagina securizată Stripe…',
+        'pay_now_note' => 'Plata se face pe pagina securizată Stripe, cu cardul. Poți plăti și la locație.',
         'checkin_qr_alt' => 'Cod QR pentru check-in, rezervarea :code',
         'checkin_qr_help' => 'La sosire, arată acest cod QR la recepție sau spune codul rezervării. Codul nu conține date personale.',
         'title' => 'Rezervă aventura',

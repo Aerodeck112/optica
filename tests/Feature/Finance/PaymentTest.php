@@ -12,6 +12,8 @@ use App\Modules\Finance\Models\Payment;
 use App\Modules\Finance\Services\Payments\PaymentException;
 use App\Modules\Finance\Services\Payments\PaymentService;
 use App\Modules\Finance\Services\Payments\RefundService;
+use App\Modules\Notifications\Services\TemplateRenderer;
+use App\Modules\Notifications\Services\VariableBuilder;
 use App\Support\LocalTime;
 use Carbon\CarbonImmutable;
 use Database\Seeders\BaseDataSeeder;
@@ -260,5 +262,33 @@ class PaymentTest extends TestCase
 
         $response->assertRedirect('https://checkout.stripe.com/c/pay/cs_test_1');
         $this->assertSame('pending', Booking::query()->latest('id')->first()->status);
+    }
+
+    public function test_a_booking_paid_at_the_venue_still_gets_a_pay_button_on_the_confirmation_page_and_in_the_email(): void
+    {
+        $this->fakeCheckout();
+        $result = app(BookingService::class)->create(new BookingData(
+            package: $this->package($this->arena()), startsAt: LocalTime::fromLocal('2026-10-22', '15:00'), participants: 2,
+            contactName: 'Client Fictiv', contactEmail: 'client@example.test', contactPhone: '0700 000 000', source: 'web',
+            acceptedPolicyTypes: ['terms', 'booking_policy'], ageGroups: ['adults' => 2], paymentMethod: 'at_location',
+        ));
+        $booking = $result['booking'];
+        $confirmation = lroute('booking.confirmation', ['code' => $booking->code], 'ro').'?t='.$result['manage_token'];
+
+        $this->get($confirmation)->assertOk()->assertSee('Plătește acum online — 100 lei')->assertSee(route('booking.manage.pay', ['token' => $result['manage_token']]), false);
+
+        // linkul din e-mail deschide direct pagina Stripe
+        $vars = app(VariableBuilder::class)->build(['booking' => $booking->fresh()]);
+        $this->assertStringEndsWith('/plata', $vars['booking.pay_url']);
+        $renderer = app(TemplateRenderer::class);
+        $body = "**Total:** {{ booking.total }}\n[Plătește acum online cu cardul ({{ booking.pay_amount }})]({{ booking.pay_url }})\nAdresa";
+        $this->assertStringContainsString('cu cardul (100 lei)]('.$vars['booking.pay_url'].')', $renderer->render($body, $vars));
+        $this->get($vars['booking.pay_url'])->assertRedirect('https://checkout.stripe.com/c/pay/cs_test_1');
+
+        // fără Stripe configurat: nici butonul, nici rândul din e-mail
+        Integration::query()->where('key', 'payments')->update(['mode' => 'disabled']);
+        $this->get($confirmation)->assertOk()->assertDontSee('Plătește acum online');
+        $vars = app(VariableBuilder::class)->build(['booking' => $booking->fresh()]);
+        $this->assertSame("**Total:** 100 lei\nAdresa", $renderer->render($body, $vars));
     }
 }

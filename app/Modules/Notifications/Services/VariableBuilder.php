@@ -6,6 +6,7 @@ use App\Modules\Booking\Models\Booking;
 use App\Modules\Core\Settings\SettingsRepository;
 use App\Modules\Crm\Models\Customer;
 use App\Modules\Crm\Models\Lead;
+use App\Modules\Finance\Services\Payments\PaymentService;
 use App\Modules\Loyalty\Models\VoucherOrder;
 use App\Modules\Loyalty\Services\VoucherOrderService;
 use App\Modules\Marketing\Services\ShortUnsubscribeLink;
@@ -70,6 +71,8 @@ class VariableBuilder
                 'booking.manage_url' => $context['manage_url'] ?? ($booking->manageUrl() ?? ''),
                 'booking.previous_date' => isset($context['previous_start']) && $context['previous_start'] ? LocalTime::format($context['previous_start'], 'l, j F Y, H:i') : '',
                 'booking.waiver_url' => $booking->code ? $booking->waiverUrl() : '',
+                'booking.pay_url' => app(PaymentService::class)->payUrl($booking),
+                'booking.pay_amount' => Money::format(app(PaymentService::class)->amountDueOnline($booking)),
                 'staff.admin_url' => url('/admin/bookings/'.$booking->id),
             ];
         }

@@ -115,6 +115,22 @@ class PaymentService
     }
 
     /** Suma cerută online: avansul dacă nu a fost achitat, altfel restul de plată. */
+    /** Plata online e oferită oricărei rezervări cu sumă de plată, cât timp procesatorul (Stripe) este configurat. */
+    public function canPayOnline(Booking $booking): bool
+    {
+        return $this->gateways->active() !== null
+            && in_array($booking->status, ['pending', 'confirmed'], true)
+            && $this->amountDueOnline($booking) > 0;
+    }
+
+    /** Linkul de plată (din e-mail): deschide direct pagina Stripe; gol dacă nu se poate plăti online. */
+    public function payUrl(Booking $booking): string
+    {
+        $manage = $this->canPayOnline($booking) ? $booking->manageUrl() : null;
+
+        return $manage ? rtrim($manage, '/').'/plata' : '';
+    }
+
     public function amountDueOnline(Booking $booking): int
     {
         if (! in_array($booking->status, ['pending', 'confirmed'], true)) {

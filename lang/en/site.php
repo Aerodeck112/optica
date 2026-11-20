@@ -274,6 +274,9 @@ return [
     ],
 
     'booking' => [
+        'pay_now' => 'Pay online now — :amount',
+        'pay_now_busy' => 'Opening the secure Stripe page…',
+        'pay_now_note' => 'Payment is made by card on Stripe’s secure page. You can also pay at the venue.',
         'checkin_qr_alt' => 'Check-in QR code, booking :code',
         'checkin_qr_help' => 'When you arrive, show this QR code at the reception or tell us your booking code. The code contains no personal data.',
         'title' => 'Book your adventure',

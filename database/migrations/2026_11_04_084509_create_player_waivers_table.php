@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Cms\Models\LegalDocument;
+use Carbon\CarbonImmutable;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -60,7 +61,7 @@ return new class extends Migration
                 'slug' => $data['slug'],
                 'body' => $data['body'],
                 'status' => 'published',
-                'effective_at' => now(),
+                'effective_at' => min(now(), CarbonImmutable::parse('2026-11-04 00:00:00', 'Europe/Bucharest')), // versiunea 1.0 e în vigoare de la lansare, nu de la momentul instalării
                 'review_flags' => array_map(fn ($text) => ['text' => $text, 'resolved' => false], $data['flags']),
             ]);
             $document->content_hash = $document->computeHash();

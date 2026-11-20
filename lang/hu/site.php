@@ -274,6 +274,9 @@ return [
     ],
 
     'booking' => [
+        'pay_now' => 'Fizetés most online — :amount',
+        'pay_now_busy' => 'A biztonságos Stripe-oldal megnyílik…',
+        'pay_now_note' => 'A fizetés kártyával, a Stripe biztonságos oldalán történik. A helyszínen is fizethetsz.',
         'checkin_qr_alt' => 'QR-kód a bejelentkezéshez, :code foglalás',
         'checkin_qr_help' => 'Érkezéskor mutasd meg ezt a QR-kódot a recepción, vagy mondd be a foglalási kódot. A kód nem tartalmaz személyes adatot.',
         'title' => 'Foglald le a kalandot',

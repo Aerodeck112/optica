@@ -1304,3 +1304,9 @@
   .family-self { font-size: var(--fs-md); }
   @media (max-width: 720px) { .family-child { grid-template-columns: 1fr 1fr; } .family-child .field:first-child { grid-column: 1 / -1; } }
 }
+
+/* butonul de plată online din pagina de confirmare */
+@layer pages {
+  .pay-now { margin: var(--space-6) auto 0; text-align: center; }
+  .pay-now__btn { font-size: var(--fs-md); padding: 1rem 2rem; min-height: 3.5rem; }
+}

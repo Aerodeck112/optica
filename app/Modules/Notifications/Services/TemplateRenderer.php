@@ -25,6 +25,8 @@ class TemplateRenderer
         'booking.manage_url' => 'Link gestionare rezervare',
         'booking.previous_date' => 'Data anterioară (la reprogramare)',
         'booking.waiver_url' => 'Link declarație de participare',
+        'booking.pay_url' => 'Link plată online (gol dacă nu se poate plăti online; rândul cu link gol nu apare)',
+        'booking.pay_amount' => 'Suma de plătit online',
         'lead.reference' => 'Număr cerere',
         'lead.type' => 'Tip cerere',
         'lead.date' => 'Data dorită',
@@ -47,9 +49,12 @@ class TemplateRenderer
 
     public function render(string $template, array $vars): string
     {
-        return preg_replace_callback('/\{\{\s*([a-z_.]+)\s*\}\}/', function ($m) use ($vars) {
+        $text = preg_replace_callback('/\{\{\s*([a-z_.]+)\s*\}\}/', function ($m) use ($vars) {
             return array_key_exists($m[1], $vars) ? (string) $vars[$m[1]] : '';
         }, $template);
+
+        // un rând cu un link gol (ex. plata online când nu e disponibilă) nu apare deloc
+        return preg_replace('/^.*\]\(\s*\).*(\R|$)/m', '', $text);
     }
 
     /** @return array<int, string> variabilele necunoscute dintr-un șablon (folosit la validarea în panou) */

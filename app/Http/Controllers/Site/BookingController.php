@@ -173,6 +173,7 @@ class BookingController extends Controller
             'token' => (string) $request->query('t'),
             'justCreated' => (bool) $request->session()->get('booking_just_created'),
             'paymentReturned' => $request->boolean('paid'),
+            'payAmount' => ! $request->boolean('paid') && $this->payments->canPayOnline($booking) ? $this->payments->amountDueOnline($booking) : 0,
             'seo' => $seo,
             'showMobileBook' => false,
         ])->header('Referrer-Policy', 'no-referrer');

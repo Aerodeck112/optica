@@ -22,6 +22,14 @@
         <p class="result__code" aria-label="{{ __('site.booking.code') }}">{{ $booking->code }}</p>
         @if (session('payment_error'))<div class="alert alert--error" role="alert">{{ session('payment_error') }} {{ __('site.booking.payment_retry_hint') }}</div>@endif
 
+        @if ($payAmount > 0)
+            <form class="pay-now" data-guard method="post" action="{{ route('booking.manage.pay', ['token' => $token]) }}">
+                @csrf
+                <button type="submit" class="btn btn--primary pay-now__btn" data-busy="{{ __('site.booking.pay_now_busy') }}">{{ __('site.booking.pay_now', ['amount' => money($payAmount)]) }}</button>
+                <p class="small muted mt-3">{{ __('site.booking.pay_now_note') }}</p>
+            </form>
+        @endif
+
         <dl class="details-list">
             <dt>{{ __('site.booking.summary_experience') }}</dt><dd>{{ $booking->package?->name }}</dd>
             @if ($booking->starts_at)

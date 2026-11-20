@@ -112,6 +112,8 @@ foreach (Locales::enabled() as $locale) {
             Route::get($segment('booking'), [BookingController::class, 'show'])->name('booking.show');
             Route::get($segment('booking').'/'.$segment('booking_confirmation').'/{code}', [BookingController::class, 'confirmation'])->name('booking.confirmation');
             Route::get($segment('booking').'/'.$segment('booking_manage').'/{token}', [BookingManageController::class, 'show'])->name('booking.manage');
+            // linkul de plată din e-mail: deschide direct pagina Stripe pentru suma de achitat
+            Route::get($segment('booking').'/'.$segment('booking_manage').'/{token}/plata', [BookingManageController::class, 'pay'])->middleware('throttle:public-forms')->name('booking.manage.pay.link');
 
             Route::get($segment('news'), [NewsController::class, 'index'])->name('news.index');
             Route::get($segment('news').'/{slug}', [NewsController::class, 'show'])->name('news.show');
